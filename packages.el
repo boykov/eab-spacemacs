@@ -12,13 +12,20 @@
 
 (defvar eab-spacemacs-packages
   '(
-    ;; package eabs go here
+    edit-list
+    ;; package eab-spacemacss go here
     )
   "List of all packages to install and/or initialize. Built-in packages
 which require an initialization must be listed explicitly in the list.")
 
 (defvar eab-spacemacs-excluded-packages '()
   "List of packages to exclude.")
+
+(defun eab-spacemacs/init-edit-list ()
+  (use-package edit-list
+    :config
+    (progn
+      )))
 
 ;; For each package, define a function eab/init-<package-eab>
 ;;
