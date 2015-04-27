@@ -10,14 +10,14 @@
 ;;
 ;;; License: GPLv3
 
-(defvar eab-pre-extensions
+(defvar eab-spacemacs-pre-extensions
   '(
     eab-misc
     ;; pre extension eabs go here
     )
   "List of all extensions to load before the packages.")
 
-(defvar eab-post-extensions
+(defvar eab-spacemacs-post-extensions
   '(
     eab-dotemacs
     ;; post extension eabs go here
@@ -25,21 +25,21 @@
   "List of all extensions to load after the packages.")
 
 
-(defun eab/init-eab-misc ()
+(defun eab-spacemacs/init-eab-misc ()
   ;; (add-to-list 'load-path (concat user-emacs-directory "private/eab/extensions/eab-misc"))
   (setq dotfiles-dir user-emacs-directory)
   (setq dotemacs-children-prefix dotfiles-dir)
-  (load (concat dotfiles-dir "private/eab/extensions/eab-misc/dotemacs.el"))
+  (load (concat dotfiles-dir "private/eab-spacemacs/extensions/eab-misc/dotemacs.el"))
   )
 
-(defun eab/init-eab-dotemacs ()
-  (dotemacs-load-children '("private/eab/extensions/eab-dotemacs/eab-packages-minimal"))
-  (dotemacs-load-children '("private/eab/extensions/eab-dotemacs/eab-kbd")))
+(defun eab-spacemacs/init-eab-dotemacs ()
+  (dotemacs-load-children '("private/eab-spacemacs/extensions/eab-dotemacs/eab-packages-minimal"))
+  (dotemacs-load-children '("private/eab-spacemacs/extensions/eab-dotemacs/eab-kbd")))
 
 
 ;; For each extension, define a function eab/init-<extension-eab>
 ;;
-;; (defun eab/init-my-extension ()
+;; (defun eab-spacemacs/init-my-extension ()
 ;;   "Initialize my extension"
 ;;   )
 ;;

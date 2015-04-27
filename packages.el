@@ -10,19 +10,19 @@
 ;;
 ;;; License: GPLv3
 
-(defvar eab-packages
+(defvar eab-spacemacs-packages
   '(
     ;; package eabs go here
     )
   "List of all packages to install and/or initialize. Built-in packages
 which require an initialization must be listed explicitly in the list.")
 
-(defvar eab-excluded-packages '()
+(defvar eab-spacemacs-excluded-packages '()
   "List of packages to exclude.")
 
 ;; For each package, define a function eab/init-<package-eab>
 ;;
-;; (defun eab/init-my-package ()
+;; (defun eab-spacemacs/init-my-package ()
 ;;   "Initialize my package"
 ;;   )
 ;;
