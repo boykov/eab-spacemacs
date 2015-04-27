@@ -1,0 +1,6 @@
+[submodule "extensions/eab-misc"]
+	path = extensions/eab-misc
+	url = http://github.com/boykov/eab-misc
+[submodule "extensions/eab-dotemacs"]
+	path = extensions/eab-dotemacs
+	url = http://github.com/boykov/eab-dotemacs
