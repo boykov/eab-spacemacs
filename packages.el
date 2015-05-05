@@ -13,6 +13,7 @@
 (defvar eab-spacemacs-packages
   '(
     edit-list
+    workgroups2
     ;; package eab-spacemacss go here
     )
   "List of all packages to install and/or initialize. Built-in packages
@@ -23,6 +24,12 @@ which require an initialization must be listed explicitly in the list.")
 
 (defun eab-spacemacs/init-edit-list ()
   (use-package edit-list
+    :config
+    (progn
+      )))
+
+(defun eab-spacemacs/init-workgroups2 ()
+  (use-package workgroups2
     :config
     (progn
       )))
