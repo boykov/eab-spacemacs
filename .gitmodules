@@ -4,3 +4,6 @@
 [submodule "extensions/eab-dotemacs"]
 	path = extensions/eab-dotemacs
 	url = http://github.com/boykov/eab-dotemacs
+[submodule "extensions/ace-jump-mode"]
+	path = extensions/ace-jump-mode
+	url = http://github.com/boykov/ace-jump-mode
