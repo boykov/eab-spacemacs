@@ -14,6 +14,7 @@
   '(
     eab-misc
     eab-dotemacs
+    eab-ace-jump-mode
     ;; pre extension eabs go here
     )
   "List of all extensions to load before the packages.")
@@ -30,6 +31,9 @@
 
 (defun eab-spacemacs/init-eab-dotemacs ()
   (use-package eab-kbd))
+
+(defun eab-spacemacs/init-eab-ace-jump-mode ()
+  (use-package ace-jump-mode))
 
 ;; For each extension, define a function eab/init-<extension-eab>
 ;;

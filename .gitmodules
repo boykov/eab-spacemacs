@@ -7,3 +7,6 @@
 [submodule "extensions/ace-jump-mode"]
 	path = extensions/ace-jump-mode
 	url = http://github.com/boykov/ace-jump-mode
+[submodule "extensions/eab-ace-jump-mode"]
+	path = extensions/eab-ace-jump-mode
+	url = http://github.com/boykov/ace-jump-mode
