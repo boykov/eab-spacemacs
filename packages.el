@@ -12,8 +12,11 @@
 
 (defvar eab-spacemacs-packages
   '(
+    page-break-lines
     edit-list
     workgroups2
+    projectile
+    async
     ;; package eab-spacemacss go here
     )
   "List of all packages to install and/or initialize. Built-in packages
@@ -21,6 +24,21 @@ which require an initialization must be listed explicitly in the list.")
 
 (defvar eab-spacemacs-excluded-packages '()
   "List of packages to exclude.")
+
+(defun eab-spacemacs/init-async ()
+  (use-package async))
+
+(defun eab-spacemacs/init-projectile ()
+  (use-package projectile
+    :init
+    (projectile-global-mode)
+    ))
+
+(defun eab-spacemacs/init-page-break-lines ()
+  (use-package page-break-lines
+    :init
+    (global-page-break-lines-mode t)
+    ))
 
 (defun eab-spacemacs/init-edit-list ()
   (use-package edit-list
