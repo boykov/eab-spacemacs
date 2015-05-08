@@ -30,27 +30,27 @@ which require an initialization must be listed explicitly in the list.")
 
 (defun eab-spacemacs/init-projectile ()
   (use-package projectile
-    :init
-    (projectile-global-mode)
-    ))
+	       :init
+	       (projectile-global-mode)
+	       ))
 
 (defun eab-spacemacs/init-page-break-lines ()
   (use-package page-break-lines
-    :init
-    (global-page-break-lines-mode t)
-    ))
+	       :init
+	       (global-page-break-lines-mode t)
+	       ))
 
 (defun eab-spacemacs/init-edit-list ()
   (use-package edit-list
-    :config
-    (progn
-      )))
+	       :config
+	       (progn
+		 )))
 
 (defun eab-spacemacs/init-workgroups2 ()
   (use-package workgroups2
-    :config
-    (progn
-      )))
+	       :config
+	       (progn
+		 )))
 
 ;; For each package, define a function eab/init-<package-eab>
 ;;
