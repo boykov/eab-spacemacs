@@ -12,6 +12,8 @@
 
 (defvar eab-spacemacs-packages
   '(
+    key-chord
+    auto-dictionary
     page-break-lines
     edit-list
     workgroups2
@@ -24,6 +26,14 @@ which require an initialization must be listed explicitly in the list.")
 
 (defvar eab-spacemacs-excluded-packages '()
   "List of packages to exclude.")
+
+(defun eab-spacemacs/init-auto-dictionary ()
+  (use-package auto-dictionary))
+
+(defun eab-spacemacs/init-key-chord ()
+  (use-package key-chord
+	       :init
+	       (setq key-chord-two-keys-delay 0.05)))
 
 (defun eab-spacemacs/init-async ()
   (use-package async))
