@@ -7,3 +7,6 @@
 [submodule "extensions/eab-ace-jump-mode"]
 	path = extensions/eab-ace-jump-mode
 	url = http://github.com/boykov/ace-jump-mode
+[submodule "extensions/eab-org-mode"]
+	path = extensions/eab-org-mode
+	url = git://orgmode.org/org-mode.git
