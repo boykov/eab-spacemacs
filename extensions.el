@@ -30,7 +30,8 @@
   )
 
 (defun eab-spacemacs/init-eab-dotemacs ()
-  (use-package eab-kbd))
+  (use-package eab-kbd-layer0)
+  (use-package eab-workgroups2))
 
 (defun eab-spacemacs/init-eab-ace-jump-mode ()
   (use-package ace-jump-mode))
