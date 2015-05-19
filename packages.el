@@ -14,11 +14,8 @@
   '(
     key-chord
     auto-dictionary
-    page-break-lines
     edit-list
     workgroups2
-    projectile
-    async
     ergoemacs-mode
     ;; package eab-spacemacss go here
     )
@@ -38,20 +35,6 @@ which require an initialization must be listed explicitly in the list.")
   (use-package key-chord
 	       :init
 	       (setq key-chord-two-keys-delay 0.05)))
-
-(defun eab-spacemacs/init-async ()
-  (use-package async))
-
-(defun eab-spacemacs/init-projectile ()
-  (use-package projectile
-	       :init
-	       (setq projectile-require-project-root t)
-	       ))
-
-(defun eab-spacemacs/init-page-break-lines ()
-  (use-package page-break-lines
-	       :init
-	       ))
 
 (defun eab-spacemacs/init-edit-list ()
   (use-package edit-list
