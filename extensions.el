@@ -21,12 +21,17 @@
 
 (defvar eab-spacemacs-post-extensions
   '(
+    eab-org-mode/lisp
     ;; post extension eabs go here
     )
   "List of all extensions to load after the packages.")
 
 
 (defun eab-spacemacs/init-eab-misc ()
+  )
+
+(defun eab-spacemacs/init-eab-org-mode/lisp ()
+  (require 'org)
   )
 
 (defun eab-spacemacs/init-eab-dotemacs ()
