@@ -21,3 +21,8 @@
       (shell-command "echo > $HOME/dotemacs.error")
       (kill-emacs))))
 
+(defun display-startup-echo-area-message ()
+  "Change the default welcome message of minibuffer to another one."
+  (message (with-current-buffer (get-buffer-create "*spacemacs*")
+	     (buffer-substring-no-properties (point-min) (point-max))))
+  (message "Spacemacs is ready."))
