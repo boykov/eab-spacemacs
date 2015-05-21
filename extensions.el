@@ -35,6 +35,7 @@
   )
 
 (defun eab-spacemacs/init-eab-dotemacs ()
+  (use-package eab-kbd)
   (use-package eab-kbd-layer0)
   (use-package eab-workgroups2))
 
