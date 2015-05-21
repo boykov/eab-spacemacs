@@ -1,5 +1,5 @@
 all:
-	cd /home/eab/data/gitno/github/dotspace/ && make -f /home/eab/data/gitno/github/dotspace/Makefile all
+	$(MAKE) -C dotspace all
 
 gnome:
-	cd /home/eab/data/gitno/github/dotspace/ && make -f /home/eab/data/gitno/github/dotspace/Makefile gnome
+	$(MAKE) -C dotspace gnome
