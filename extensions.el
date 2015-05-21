@@ -15,13 +15,13 @@
     eab-misc
     eab-dotemacs
     eab-ace-jump-mode
+    eab-org-mode/lisp
     ;; pre extension eabs go here
     )
   "List of all extensions to load before the packages.")
 
 (defvar eab-spacemacs-post-extensions
   '(
-    eab-org-mode/lisp
     ;; post extension eabs go here
     )
   "List of all extensions to load after the packages.")
@@ -36,8 +36,7 @@
 
 (defun eab-spacemacs/init-eab-dotemacs ()
   (use-package eab-kbd)
-  (use-package eab-kbd-layer0)
-  (use-package eab-workgroups2))
+  (use-package eab-kbd-layer0))
 
 (defun eab-spacemacs/init-eab-ace-jump-mode ()
   (use-package ace-jump-mode))
