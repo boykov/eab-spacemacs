@@ -16,6 +16,8 @@
     eab-dotemacs
     eab-ace-jump-mode
     eab-org-mode/lisp
+    eev-current
+    bbdb
     ;; pre extension eabs go here
     )
   "List of all extensions to load before the packages.")
@@ -26,6 +28,12 @@
     )
   "List of all extensions to load after the packages.")
 
+
+(defun eab-spacemacs/init-eev-current ()
+  )
+
+(defun eab-spacemacs/init-bbdb ()
+  )
 
 (defun eab-spacemacs/init-eab-misc ()
   )

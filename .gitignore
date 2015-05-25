@@ -1,2 +1,9 @@
 extensions/eab-org-mode/
 dotspace
+/extensions/bbdb/
+/extensions/eev-current/
+/extensions/el-expectations/
+/extensions/gnuplot-mode/
+/extensions/org-link-minor-mode/
+/extensions/pymacs/
+/extensions/wikipedia-mode/
