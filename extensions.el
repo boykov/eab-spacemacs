@@ -18,16 +18,37 @@
     eab-org-mode/lisp
     eev-current
     bbdb
+    el-expectations
+    gnuplot-mode
+    org-link-minor-mode
+    pymacs
+    wikipedia-mode
     ;; pre extension eabs go here
     )
   "List of all extensions to load before the packages.")
 
 (defvar eab-spacemacs-post-extensions
   '(
+    eab-dotemacs/lisp
     ;; post extension eabs go here
     )
   "List of all extensions to load after the packages.")
 
+
+(defun eab-spacemacs/init-wikipedia-mode ()
+  )
+
+(defun eab-spacemacs/init-pymacs ()
+  )
+
+(defun eab-spacemacs/init-org-link-minor-mode ()
+  )
+
+(defun eab-spacemacs/init-gnuplot-mode ()
+  )
+
+(defun eab-spacemacs/init-el-expectations ()
+  )
 
 (defun eab-spacemacs/init-eev-current ()
   )
@@ -45,6 +66,9 @@
 (defun eab-spacemacs/init-eab-dotemacs ()
   (use-package eab-kbd)
   (use-package eab-kbd-layer0))
+
+(defun eab-spacemacs/init-eab-dotemacs/lisp ()
+  (use-package eab-workgroups2))
 
 (defun eab-spacemacs/init-eab-ace-jump-mode ()
   (use-package ace-jump-mode))

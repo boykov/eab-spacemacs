@@ -14,6 +14,8 @@
 
 (load "/home/eab/data/gitno/github/dotspace/eab-spacemacs/extensions/eab-dotemacs/eab-packages.el")
 
+(load "/home/eab/.emacs.d/eab-path.el")
+
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 
 (defvar eab-spacemacs-packages
