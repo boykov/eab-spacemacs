@@ -16,8 +16,9 @@
     eab-dotemacs
     eab-ace-jump-mode
     eab-org-mode/lisp
+    eab-org-mode/contrib/lisp ;; for htmlize.el
     eev-current
-    bbdb
+    bbdb/lisp
     el-expectations
     gnuplot-mode
     org-link-minor-mode
@@ -53,7 +54,7 @@
 (defun eab-spacemacs/init-eev-current ()
   )
 
-(defun eab-spacemacs/init-bbdb ()
+(defun eab-spacemacs/init-bbdb/lisp ()
   )
 
 (defun eab-spacemacs/init-eab-misc ()
@@ -61,6 +62,9 @@
 
 (defun eab-spacemacs/init-eab-org-mode/lisp ()
   (require 'org)
+  )
+
+(defun eab-spacemacs/init-eab-org-mode/contrib/lisp ()
   )
 
 (defun eab-spacemacs/init-eab-dotemacs ()
