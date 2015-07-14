@@ -68,8 +68,7 @@
   )
 
 (defun eab-spacemacs/init-eab-dotemacs ()
-  (use-package eab-kbd)
-  (use-package eab-kbd-layer0))
+  (use-package eab-kbd))
 
 (defun eab-spacemacs/init-eab-dotemacs/lisp ()
   (use-package eab-workgroups2)
