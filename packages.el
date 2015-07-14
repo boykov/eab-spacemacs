@@ -90,6 +90,7 @@ which require an initialization must be listed explicitly in the list.")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defun eab-spacemacs/init-docker nil)
 (defun eab-spacemacs/init-dired+ nil)
 (defun eab-spacemacs/init-dired-details nil)
 (defun eab-spacemacs/init-dired-details+ nil)
