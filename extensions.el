@@ -62,6 +62,7 @@
 
 (defun eab-spacemacs/init-eab-org-mode/lisp ()
   (require 'org)
+  (require 'org-id)
   (require 'org-agenda)
   (require 'org-clock)
   (require 'org-table)
@@ -80,7 +81,6 @@
 
 (defun eab-spacemacs/init-eab-dotemacs/lisp ()
   (use-package eab-workgroups2)
-;;  (wg-change-modeline)
   (use-package eab-ui-minimal)
   (use-package eab-shell)
   (use-package eab-shell-utils)
