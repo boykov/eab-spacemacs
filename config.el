@@ -147,7 +147,7 @@
 (setq-put pm-macro-files `(,(concat user-emacs-directory "private/eab-spacemacs/extensions/eab-dotemacs/eab-pmacros.el")))
 (setq-put power-macros-file (concat user-emacs-directory "private/eab-spacemacs/extensions/eab-dotemacs/eab-pmacros.el"))
 (setq-put reftex-default-bibliography '("~/git/lit/boykov.bib"))
-(setq-put eab/secrets-path (concat user-emacs-directory "private/eab-secrets.el.gpg"))
+(setq-put eab/secrets-path (concat user-emacs-directory "eab-private/eab-secrets.el.gpg"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -175,7 +175,7 @@
 
 (setq-put keyfreq-file (concat (eab/history-dir) ".emacs.keyfreq"))
 
-(setq-put eab/check-cc-path "~/git/auto/check-cc.sh") ;; see private/eab-secrets.el.gpg
+(setq-put eab/check-cc-path "~/git/auto/check-cc.sh") ;; see eab-private/eab-secrets.el.gpg
 (setq-put eab/maple-path "~/data/maple16/bin/maple")
 (setq-put eab/maxima-path "maxima")
 (setq-put eab/ipython-path "/usr/local/bin/ipython")
@@ -189,7 +189,7 @@
 
 (setq-put achievements-file (concat (eab/history-dir) ".achievements"))
 (setq-put auto-install-directory (concat user-emacs-directory "auto-install/"))
-(setq-put bbdb-file (concat user-emacs-directory "private/.bbdb"))
+(setq-put bbdb-file (concat user-emacs-directory "eab-private/.bbdb"))
 (setq-put bibtex-files '("~/git/lit/boykov.bib"))
 (setq-put bmkp-last-as-first-bookmark-file (concat (eab/history-dir) ".emacs.bmk"))
 (setq-put bookmark-default-file (concat (eab/history-dir) ".emacs.bmk"))
