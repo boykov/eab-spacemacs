@@ -205,7 +205,7 @@
 (setq-put url-configuration-directory (concat (eab/history-dir) "url/"))
 
 (setq-put eab/yasnippets-path (concat user-emacs-directory "private/eab-spacemacs/extensions/yasnippet-snippets"))
-(setq-put eab/eab-snippets-path (concat user-emacs-directory "snippets"))
+(setq-put eab/eab-snippets-path (concat user-emacs-directory "private/eab-spacemacs/extensions/eab-dotemacs/snippets"))
 
 ;; DONE похоже, из-за bbdb-loaddefs подгружается еще один путь,
 ;; который отличается в символе /. А потом еще и auctex аналогично.
