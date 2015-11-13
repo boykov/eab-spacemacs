@@ -61,12 +61,6 @@
   dired-details
   dired-details+
   elpa-mirror
-  smex
-  undo-tree
-  yasnippet
-  region-bindings-mode
-  smartparens
-  projectile
   ace-window
   ace-jump-buffer
   ace-link
@@ -101,26 +95,20 @@
   oneonone
   emacsc
   deferred ;; depend
-  paredit
   async ;; another name: emacs-async
-  org-agenda-property
-  ido-at-point
   web-server
   take-off
   restclient
   wide-n
   god-mode
   fancy-narrow
-  popup
   outshine
   outorg
   goto-chg
   epc
   ctable
   concurrent
-  auto-complete
   python-environment
-  deferred
   jedi
   ;; ipython
   bibretrieve
@@ -141,7 +129,6 @@
   purty-mode
   flx
   guide-key
-  popwin
   xml-rpc
   web
   string-edit
@@ -254,12 +241,6 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-dired-details nil)
 (defun eab-spacemacs/init-dired-details+ nil)
 (defun eab-spacemacs/init-elpa-mirror nil)
-(defun eab-spacemacs/init-smex nil)
-(defun eab-spacemacs/init-undo-tree nil)
-(defun eab-spacemacs/init-yasnippet nil)
-(defun eab-spacemacs/init-region-bindings-mode nil)
-(defun eab-spacemacs/init-smartparens nil)
-(defun eab-spacemacs/init-projectile nil)
 (defun eab-spacemacs/init-ace-window nil)
 (defun eab-spacemacs/init-ace-jump-buffer nil)
 (defun eab-spacemacs/init-ace-link nil)
@@ -294,26 +275,20 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-oneonone nil)
 (defun eab-spacemacs/init-emacsc nil)
 (defun eab-spacemacs/init-deferred nil)
-(defun eab-spacemacs/init-paredit nil)
 (defun eab-spacemacs/init-async nil)
-(defun eab-spacemacs/init-org-agenda-property nil)
-(defun eab-spacemacs/init-ido-at-point nil)
 (defun eab-spacemacs/init-web-server nil)
 (defun eab-spacemacs/init-take-off nil)
 (defun eab-spacemacs/init-restclient nil)
 (defun eab-spacemacs/init-wide-n nil)
 (defun eab-spacemacs/init-god-mode nil)
 (defun eab-spacemacs/init-fancy-narrow nil)
-(defun eab-spacemacs/init-popup nil)
 (defun eab-spacemacs/init-outshine nil)
 (defun eab-spacemacs/init-outorg nil)
 (defun eab-spacemacs/init-goto-chg nil)
 (defun eab-spacemacs/init-epc nil)
 (defun eab-spacemacs/init-ctable nil)
 (defun eab-spacemacs/init-concurrent nil)
-(defun eab-spacemacs/init-auto-complete nil)
 (defun eab-spacemacs/init-python-environment nil)
-(defun eab-spacemacs/init-deferred nil)
 (defun eab-spacemacs/init-jedi nil)
 (defun eab-spacemacs/init-bibretrieve nil)
 (defun eab-spacemacs/init-git-annex nil)
@@ -333,7 +308,6 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-purty-mode nil)
 (defun eab-spacemacs/init-flx nil)
 (defun eab-spacemacs/init-guide-key nil)
-(defun eab-spacemacs/init-popwin nil)
 (defun eab-spacemacs/init-xml-rpc nil)
 (defun eab-spacemacs/init-web nil)
 (defun eab-spacemacs/init-string-edit nil)
