@@ -45,7 +45,6 @@
   smex
   smartparens
   auto-install
-  projectile
   flx-ido
   ido-at-point
   paredit
@@ -95,7 +94,6 @@
   oneonone
   emacsc
   deferred ;; depend
-  async ;; another name: emacs-async
   web-server
   take-off
   restclient
@@ -154,10 +152,8 @@
   fakir ;; kv
   elnode ;; kv
   el-x
-  diminish
   ;; descbinds-anything
   db
-  dash
   creole ;; kv
   clojure-mode
   browse-kill-ring
@@ -218,7 +214,6 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-smex nil)
 (defun eab-spacemacs/init-smartparens nil)
 (defun eab-spacemacs/init-auto-install nil)
-(defun eab-spacemacs/init-projectile nil)
 (defun eab-spacemacs/init-flx-ido nil)
 (defun eab-spacemacs/init-ido-at-point nil)
 (defun eab-spacemacs/init-paredit nil)
@@ -275,7 +270,6 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-oneonone nil)
 (defun eab-spacemacs/init-emacsc nil)
 (defun eab-spacemacs/init-deferred nil)
-(defun eab-spacemacs/init-async nil)
 (defun eab-spacemacs/init-web-server nil)
 (defun eab-spacemacs/init-take-off nil)
 (defun eab-spacemacs/init-restclient nil)
@@ -333,9 +327,7 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-fakir nil)
 (defun eab-spacemacs/init-elnode nil)
 (defun eab-spacemacs/init-el-x nil)
-(defun eab-spacemacs/init-diminish nil)
 (defun eab-spacemacs/init-db nil)
-(defun eab-spacemacs/init-dash nil)
 (defun eab-spacemacs/init-creole nil)
 (defun eab-spacemacs/init-clojure-mode nil)
 (defun eab-spacemacs/init-browse-kill-ring nil)
