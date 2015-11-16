@@ -14,6 +14,7 @@
   '(
     eab-misc
     eab-dotemacs
+    eab-dotemacs/lisp
     eab-ace-jump-mode
     eab-org-mode/lisp
     eab-org-mode/contrib/lisp ;; for htmlize.el
@@ -30,7 +31,6 @@
 
 (defvar eab-spacemacs-post-extensions
   '(
-    eab-dotemacs/lisp
     ;; post extension eabs go here
     )
   "List of all extensions to load after the packages.")
@@ -80,6 +80,9 @@
   (use-package eab-kbd))
 
 (defun eab-spacemacs/init-eab-dotemacs/lisp ()
+  )
+
+(defun eab-spacemacs/init-eab-dotemacs/lisp-1 ()
   (use-package eab-workgroups2)
   (use-package eab-ui-minimal)
   (use-package eab-shell)
