@@ -62,6 +62,7 @@
 
 (defun eab-spacemacs/init-eab-org-mode/lisp ()
   (require 'org)
+  (require 'org-habit)
   (require 'org-id)
   (require 'org-agenda)
   (require 'org-clock)
