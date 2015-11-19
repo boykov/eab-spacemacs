@@ -97,7 +97,6 @@
   web-server
   take-off
   restclient
-  wide-n
   god-mode
   fancy-narrow
   outshine
@@ -116,7 +115,6 @@
   pkg-info
   epl
   s
-  python-info
   achievements
   org-grep
   org
