@@ -170,7 +170,9 @@ which require an initialization must be listed explicitly in the list.")
   "List of packages to exclude.")
 
 (defun eab-spacemacs/init-ergoemacs-mode ()
-  (use-package ergoemacs-mode))
+  (require 'ergoemacs-translate)
+  (require 'ergoemacs-functions)
+  )
 
 (defun eab-spacemacs/init-key-chord ()
   (use-package key-chord
