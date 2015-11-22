@@ -75,6 +75,7 @@
   )
 
 (defun eab-spacemacs/init-eab-org-mode/contrib/lisp ()
+  (require 'htmlize)
   )
 
 (defun eab-spacemacs/init-eab-dotemacs ()

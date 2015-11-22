@@ -12,6 +12,7 @@
 
 (defvar eab-spacemacs-packages
   '(
+  htmlize
   spacemacs-theme
   ergoemacs-mode
   key-chord
@@ -171,6 +172,8 @@ which require an initialization must be listed explicitly in the list.")
   (require 'ergoemacs-translate)
   (require 'ergoemacs-functions)
   )
+
+(defun eab-spacemacs/init-htmlize () nil)
 
 (defun eab-spacemacs/init-key-chord ()
   (use-package key-chord
