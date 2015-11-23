@@ -110,7 +110,13 @@
 
 
 ;; (eab/print-0 (wg-workgroup-names))
-;; (mapcar 'wg-create-workgroup '(":aaaa:" ":ag:" ":ahmed:" ":auto:" ":bempp:" ":bie:" ":dbsym:" ":dot:" ":doteab:" ":draft:" ":eabdot:" ":gsie:" ":jac:" ":lat:" ":site:" ":testbed:" ":tmp:" "asynk" "bib" "boy" "path"))
+
+(defun eab/create-workgroups ()
+  (interactive)
+  (mapcar 'wg-create-workgroup
+	  (mapcar '(lambda (x) (concat ":" x ":"))
+		  (mapcar 'file-name-nondirectory
+			  (file-expand-wildcards "~/git/auto/wg/*")))))
 
 (setq-put eab/wg-update-list
 	  '(("~/.emacs.d/" ":dot:")
