@@ -12,7 +12,7 @@
 
 (defvar eab-spacemacs-packages
   '(
-  gnuplot-mode
+  gnuplot
   htmlize
   spacemacs-theme
   ergoemacs-mode
@@ -173,6 +173,8 @@ which require an initialization must be listed explicitly in the list.")
   (require 'ergoemacs-translate)
   (require 'ergoemacs-functions)
   )
+
+(defun eab-spacemacs/init-gnuplot () nil)
 
 (defun eab-spacemacs/init-htmlize () nil)
 
