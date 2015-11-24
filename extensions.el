@@ -23,7 +23,6 @@
     gnuplot-mode
     org-link-minor-mode
     pymacs
-    wikipedia-mode
     ;; pre extension eabs go here
     )
   "List of all extensions to load before the packages.")
@@ -33,10 +32,6 @@
     ;; post extension eabs go here
     )
   "List of all extensions to load after the packages.")
-
-
-(defun eab-spacemacs/init-wikipedia-mode ()
-  )
 
 (defun eab-spacemacs/init-pymacs ()
   )
