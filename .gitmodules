@@ -7,3 +7,15 @@
 [submodule "extensions/eab-ace-jump-mode"]
 	path = extensions/eab-ace-jump-mode
 	url = http://github.com/boykov/ace-jump-mode
+[submodule "extensions/org-link-minor-mode"]
+	path = extensions/org-link-minor-mode
+	url = http://github.com/seanohalpin/org-link-minor-mode.git
+[submodule "extensions/bbdb"]
+	path = extensions/bbdb
+	url = http://github.com/boykov/bbdb.git
+[submodule "extensions/pymacs"]
+	path = extensions/pymacs
+	url = http://github.com/pinard/Pymacs.git
+[submodule "extensions/yasnippet-snippets"]
+	path = extensions/yasnippet-snippets
+	url = https://github.com/AndreaCrotti/yasnippet-snippets

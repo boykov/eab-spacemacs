@@ -1,10 +1,4 @@
 extensions/eab-org-mode/
 dotspace
-/extensions/bbdb/
 /extensions/eev-current/
-/extensions/yasnippet-snippets/
-/extensions/el-expectations/
-/extensions/gnuplot-mode/
-/extensions/org-link-minor-mode/
-/extensions/pymacs/
-/extensions/wikipedia-mode/
+
