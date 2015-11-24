@@ -142,8 +142,7 @@
 (setq-put eab/print-dir "~/pub/print/")
 (setq-put eab/tmp-ps "/tmp/tmp.ps")
 
-(setq-put eab/eeansi-path "/home/eab/git/auto/eeansi.sh")
-;; (setq-put eab/eegchannel-path (expand-file-name (concat user-emacs-directory "el-get/eev-current/eegchannel")))
+(setq-put eab/eeansi-path (expand-file-name "~/.eev/eeansi.sh"))
 (setq-put eab/eegchannel-path (expand-file-name (concat user-emacs-directory "private/eab-spacemacs/extensions/eev-current/eegchannel")))
 
 
