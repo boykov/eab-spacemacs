@@ -20,7 +20,6 @@
     eab-org-mode/contrib/lisp ;; for htmlize.el
     eev-current
     bbdb/lisp
-    el-expectations
     gnuplot-mode
     org-link-minor-mode
     pymacs
@@ -46,9 +45,6 @@
   )
 
 (defun eab-spacemacs/init-gnuplot-mode ()
-  )
-
-(defun eab-spacemacs/init-el-expectations ()
   )
 
 (defun eab-spacemacs/init-eev-current ()
