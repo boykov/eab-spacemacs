@@ -12,6 +12,7 @@
 
 (defvar eab-spacemacs-packages
   '(
+  gnuplot-mode
   htmlize
   spacemacs-theme
   ergoemacs-mode

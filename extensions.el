@@ -20,7 +20,6 @@
     eab-org-mode/contrib/lisp ;; for htmlize.el
     eev-current
     bbdb/lisp
-    gnuplot-mode
     org-link-minor-mode
     pymacs
     ;; pre extension eabs go here
@@ -37,9 +36,6 @@
   )
 
 (defun eab-spacemacs/init-org-link-minor-mode ()
-  )
-
-(defun eab-spacemacs/init-gnuplot-mode ()
   )
 
 (defun eab-spacemacs/init-eev-current ()
