@@ -213,7 +213,11 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-git-commit nil)
 (defun eab-spacemacs/init-magit-annex nil)
 (defun eab-spacemacs/init-magit-filenotify nil)
-(defun eab-spacemacs/init-orgit nil)
+(defun eab-spacemacs/init-orgit nil
+  ;; TODO cancel rev-export disabling
+  (require 'orgit)
+  (defun orgit-rev-export (path desc format))
+  )
 (defun eab-spacemacs/init-auctex nil)
 (defun eab-spacemacs/init-org-agenda-property nil)
 (defun eab-spacemacs/init-region-bindings-mode nil)
