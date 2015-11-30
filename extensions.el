@@ -59,6 +59,9 @@
   (require 'ox)
   (require 'ob)
   (require 'ob-ditaa)
+  (require 'ob-dot)
+  (require 'ob-shell)
+  (require 'ob-latex)
   )
 
 (defun eab-spacemacs/init-eab-org-mode/contrib/lisp ()
