@@ -62,6 +62,9 @@
   (require 'ob-dot)
   (require 'ob-shell)
   (require 'ob-latex)
+  (require 'ob-python)
+  (require 'ob-makefile)
+  (require 'ob-R)
   )
 
 (defun eab-spacemacs/init-eab-org-mode/contrib/lisp ()
