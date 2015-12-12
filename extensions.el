@@ -57,6 +57,7 @@
   (require 'org-bbdb)
   (require 'org-element)
   (require 'ox)
+  (require 'ox-freemind)
   (require 'ob)
   (require 'ob-ditaa)
   (require 'ob-dot)
