@@ -30,7 +30,7 @@
   (interactive)
   (org-publish-remove-all-timestamps)
   (async-eval
-      (lambda (result) (message "async result: <%s>" result))
+      (lambda (result) (sauron-add-event 'eab 3 (concat "async result: <" result ">")))
     (progn
       (require 'server)
       (server-eval-at "serverN" '(progn
