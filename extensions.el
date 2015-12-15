@@ -13,8 +13,6 @@
 (defvar eab-spacemacs-pre-extensions
   '(
     eab-misc
-    eab-dotemacs
-    eab-dotemacs/lisp
     eab-ace-jump-mode
     eab-org-mode/lisp
     eab-org-mode/contrib/lisp ;; for htmlize.el
@@ -70,12 +68,6 @@
 
 (defun eab-spacemacs/init-eab-org-mode/contrib/lisp ()
   (require 'htmlize)
-  )
-
-(defun eab-spacemacs/init-eab-dotemacs ()
-  (use-package eab-kbd))
-
-(defun eab-spacemacs/init-eab-dotemacs/lisp ()
   )
 
 (defun eab-spacemacs/init-eab-dotemacs/lisp-1 ()
