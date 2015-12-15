@@ -1,0 +1,6 @@
+# -*- coding: utf-8 -*-
+# key: clc
+# name: clc
+# --
+#+BEGIN: clocktable :indent t :maxlevel ${1:2} :narrow 80! :link t :scope subtree
+#+END:

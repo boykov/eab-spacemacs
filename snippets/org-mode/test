@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: test
+# key: test
+# binding: direct-keybinding
+# expand-env: ((some-var some-value))
+# type: command
+# --

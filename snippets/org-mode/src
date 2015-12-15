@@ -1,0 +1,6 @@
+# -*- coding: utf-8 -*-
+# name: src
+# --
+#+begin_src $1
+$0
+#+end_src

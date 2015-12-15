@@ -1,0 +1,4 @@
+# -*- coding: utf-8 -*-
+# name: ins
+# --
+sudo apt-get install ${1}

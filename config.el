@@ -15,6 +15,7 @@
 ;; ---------------------------------------------------------------------------
 
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+(add-to-list 'load-path (concat user-emacs-directory "private/eab-spacemacs/lisp"))
 
 (defun eab/loaded-ok ()
   (if (not configuration-layer-error-count)
@@ -210,7 +211,7 @@
 (setq-put url-configuration-directory (concat (eab/history-dir) "url/"))
 
 (setq-put eab/yasnippets-path (concat user-emacs-directory "private/eab-spacemacs/extensions/yasnippet-snippets"))
-(setq-put eab/eab-snippets-path (concat user-emacs-directory "private/eab-spacemacs/extensions/eab-dotemacs/snippets"))
+(setq-put eab/eab-snippets-path (concat user-emacs-directory "private/eab-spacemacs/snippets"))
 
 ;; DONE похоже, из-за bbdb-loaddefs подгружается еще один путь,
 ;; который отличается в символе /. А потом еще и auctex аналогично.
