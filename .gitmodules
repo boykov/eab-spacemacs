@@ -21,4 +21,4 @@
 	url = https://github.com/boykov/eev-current.git
 [submodule "extensions/eab-org-mode"]
 	path = extensions/eab-org-mode
-	url = /home/eab/Dropbox/git/org-mode.bak
+	url = ~/Dropbox/git/org-mode.bak
