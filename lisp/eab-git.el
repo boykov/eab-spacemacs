@@ -1,5 +1,6 @@
 (require 'magit)
 (setq magit-stage-all-confirm nil)
+(add-hook 'magit-status-mode-hook 'magit-filenotify-mode)
 ;; org-magit workaround
 (defvar magit-currently-shown-commit nil)
 (defadvice magit-show-commit (after eab-magit-show-commit activate)
