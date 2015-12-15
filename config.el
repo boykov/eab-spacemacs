@@ -150,8 +150,8 @@
 (setq-put abbrev-file-name (concat (eab/history-dir) ".abbrev_defs"))
 (setq-put ido-save-directory-list-file (concat (eab/history-dir) ".ido.last"))
 (setq-put mc/list-file (concat (eab/history-dir) ".mc-lists.el"))
-(setq-put pm-macro-files `(,(concat user-emacs-directory "private/eab-spacemacs/extensions/eab-dotemacs/eab-pmacros.el")))
-(setq-put power-macros-file (concat user-emacs-directory "private/eab-spacemacs/extensions/eab-dotemacs/eab-pmacros.el"))
+(setq-put pm-macro-files `(,(concat user-emacs-directory "private/eab-spacemacs/lisp/eab-pmacros.el")))
+(setq-put power-macros-file (concat user-emacs-directory "private/eab-spacemacs/lisp/eab-pmacros.el"))
 (setq-put reftex-default-bibliography '("~/git/lit/boykov.bib"))
 (setq-put eab/secrets-path (concat user-emacs-directory "eab-private/eab-secrets.el.gpg"))
 
