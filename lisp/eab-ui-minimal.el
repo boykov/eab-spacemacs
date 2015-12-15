@@ -16,8 +16,8 @@
 
 (require 'autorevert)
 (global-auto-revert-mode)
-;; TODO remove this fix
-(setq auto-revert-use-notify nil)
+;; DONE remove this fix
+;; (setq auto-revert-use-notify nil)
 
 (require 'async-eval)
 

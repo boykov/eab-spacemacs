@@ -378,7 +378,7 @@
 ;; (define-key eab/wg-map (kbd "e") (ilam (eab/twit-search "emacs")))
 (define-key eab/wg-map (kbd "[") (ilam (eab/twit-search "хазин")))
 (define-key eab/wg-map (kbd "]") (ilam (eab/twit-search "фурсов")))
-;; (define-key eab/wg-map (kbd "s") 'bmkp-cycle) ;; TODO [#A] сделать обертку, выбирающую navlist в соответствии с группой
+;; (define-key eab/wg-map (kbd "s") 'bmkp-cycle) ;; TODO сделать обертку, выбирающую navlist в соответствии с группой
 ;; (define-key eab/wg-map (kbd "t") (ilam (bmkp-choose-navlist-of-type "any")))
 ;; DONE по имени буфера: нарушение SPOT!
 (define-key eab/wg-map (kbd "h") (ilam (switch-to-buffer eab/agenda-H-command)))
@@ -1140,11 +1140,10 @@
 	    (define-key help-mode-map "F" 'help-go-forward)
 	    (define-key view-mode-map "F" 'nil)))
 
-;; TODO does it really work?
+;; DONE does it really work? Only back
 (add-hook 'dictionary-mode-hook
 	  (lambda ()
-	    (define-key dictionary-mode-map "B" 'eab/help-mode-back)
-	    (define-key dictionary-mode-map "F" 'eab/help-mode-forward)))
+	    (define-key dictionary-mode-map "B" 'eab/help-mode-back)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;	       	       _       	       	 _
