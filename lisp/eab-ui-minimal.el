@@ -16,8 +16,8 @@
 
 (require 'autorevert)
 (global-auto-revert-mode)
-;; DONE remove this fix
-;; (setq auto-revert-use-notify nil)
+;; TODO with notify my workflow breaks
+(setq auto-revert-use-notify nil)
 
 (require 'async-eval)
 
