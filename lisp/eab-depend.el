@@ -102,7 +102,7 @@
 (require 'gnuplot)
 
 (setq explicit-bash-args '("--noediting" "-i"))
-(setq shell-file-name "/bin/bash")
+(if (file-exists-p "/bin/bash") (setq shell-file-name "/bin/bash"))
 
 (require 'dired-x)
 (setq diredp-hide-details-initially-flag nil)
