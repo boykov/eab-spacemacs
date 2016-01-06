@@ -4,6 +4,8 @@
 (require 'wgrep)
 (setq wgrep-enable-key "r")
 
+(setq grep-use-null-device nil)
+
 (defun eab/gz-grep (extension)
   (if (string= extension "gz")
       "zgrep"
