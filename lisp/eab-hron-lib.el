@@ -485,13 +485,17 @@
 	      (+ (* total-days 24)
 		 (string-to-number (match-string 2 str))
 		 (/ (string-to-number (match-string 3 str)) 60.0)))
+	     (now (org-parse-time-string (eab/hron-current-time-stamp)))
+	     (days
+	      (-
+	       (string-to-number
+		(cadr
+		 (split-string
+		  (calendar-day-of-year-string (list (nth 4 now) (nth 3 now) (nth 5 now))))))
+	       1))
+	     (hours (/ (nth 2 now) 24.0))
 	     (forecast-hours
-	      (* (/ 365.0
-		    (string-to-number
-		     (cadr
-		      (split-string
-		       (calendar-day-of-year-string
-			(calendar-current-date))))))
+	      (* (/ 365.0 (+ days hours))
 		 total-hours)))
 	;; forecast-hours) 0.0))
 	(if (>= forecast-hours 24)
