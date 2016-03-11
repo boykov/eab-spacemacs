@@ -64,7 +64,7 @@
   (require 'ob-python)
   (require 'ob-makefile)
   (require 'ob-R)
-  (require 'ob-rec)
+;;  (require 'ob-rec)
   )
 
 (defun eab-spacemacs/init-eab-org-mode/contrib/lisp ()
