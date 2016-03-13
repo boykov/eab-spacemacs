@@ -64,7 +64,7 @@
   (interactive)
   (flet ((ac-candidates () `(,eab-last-selected-candidate)))
     (ac-fuzzy-complete))
-  (ac-expand))
+  (ac-expand 0))
 
 ;; (ad-remove-advice 'ac-inline-show 'after 'eab-ac-expand)
 ;; (ad-deactivate 'ac-inline-show)
