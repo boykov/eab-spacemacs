@@ -1,4 +1,5 @@
 (require 'ace-jump-mode)
+(require 'avy)
 ;; (require 'ace-window)
 
 (setq ace-jump-mode-gray-background nil) ;; it is faster
@@ -25,6 +26,7 @@
 	    (if (not (equal isearch-string ""))
 		(isearch-exit)))))
     (isearch-exit)
+    ;; TODO ace -> avy
     (ace-jump-do (concat "\\b" isearch-string))))
 
 ;; Move to [[file:el-get/ace-jump-mode/ace-jump-mode.el][file:~/.emacs.d/el-get/ace-jump-mode/ace-jump-mode.el]]

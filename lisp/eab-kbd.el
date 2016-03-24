@@ -493,7 +493,7 @@
 (global-set-key (kbd "C-x t") 'dictionary-search)
 (global-set-key (kbd "M-V") 'helm-show-kill-ring)
 (global-set-key (kbd "M-Z") 'undo-tree-redo)
-(global-set-key (kbd "M-d") 'ace-jump-mode)
+(global-set-key (kbd "M-d") 'avy-goto-word-1)
 (global-set-key (kbd "s-Y") 'auto-complete-mode)
 (global-set-key (kbd "s-g") 'helm-google-suggest)
 (global-set-key (kbd "s-/") 'ac-start)  ;; temacs

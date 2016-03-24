@@ -14,6 +14,7 @@
   '(
     eab-misc
     eab-ace-jump-mode
+    eab-avy
     eab-org-mode/lisp
     eab-org-mode/contrib/lisp ;; for htmlize.el
     eev-current
@@ -128,6 +129,9 @@
 
 (defun eab-spacemacs/init-eab-ace-jump-mode ()
   (use-package ace-jump-mode))
+
+(defun eab-spacemacs/init-eab-avy ()
+  (use-package avy))
 
 ;; For each extension, define a function eab/init-<extension-eab>
 ;;
