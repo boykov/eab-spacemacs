@@ -4,6 +4,9 @@
 [submodule "extensions/eab-ace-jump-mode"]
 	path = extensions/eab-ace-jump-mode
 	url = http://github.com/boykov/ace-jump-mode
+[submodule "extensions/eab-avy"]
+	path = extensions/eab-avy
+	url = http://github.com/boykov/avy
 [submodule "extensions/org-link-minor-mode"]
 	path = extensions/org-link-minor-mode
 	url = http://github.com/seanohalpin/org-link-minor-mode.git
