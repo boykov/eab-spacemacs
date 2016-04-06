@@ -38,12 +38,12 @@
 	      ;; ("H" "Chrono" tags "LEVEL<4+repeat-norepeat+CLOCK>=\"<-1y>\"|LEVEL<3+repeat" nil)
 	      ("F" "frequency" tags "+CLOCKSUM={[3-9]d.*}+CLOCK>=\"<-1m>\"-ARCHIVE-noagenda" nil)
 	      ("Q" "all" tags "+CLOCKSUM<=\"0:25\"+CLOCKSUM>\"0:05\"-ARCHIVE-noagenda" nil)
+	      ("O" "Old" tags "-ARCHIVE-noagenda" ((org-agenda-skip-function 'eab/very-old)))
 	      ("H" "Chrono" tags "-ARCHIVE-noagenda" ((org-agenda-skip-function 'eab/skip-old)))
 	      ("W" "Work" tags "+w1c-ARCHIVE-noagenda" ((org-agenda-skip-function 'eab/skip-old)))
 	      ("M" "Work" tags "+media" ((org-agenda-skip-function 'eab/skip-old)))
 	      ("D" "Day" tags "+CLOCK>=\"<-2d>\"+CLOCK<=\"<-1d>\"-ARCHIVE-noagenda" nil)
 	      ("J" "Chrono" tags "LEVEL<5+CLOCK>=\"<-5d>\"-ARCHIVE-noagenda" nil)
-	      ;; ("J" "Chrono" tags "LEVEL<3+repeat|LEVEL<4+repeat+ЖЖ-ARCHIVE" nil)
 	      ("f" "Filter" tags-todo "-STYLE=\"habit\"-СЛОН-exclude-DONE/-SOMEDAY" nil)
 	      ("N" "Next" tags "NEXT-WAITING-CANCELLED/!" nil)
 	      ("p" "Projects" tags-todo "LEVEL=1" nil)
@@ -83,9 +83,15 @@
 
 (defun eab/skip-old ()
     (let ((next-headline (save-excursion (or (outline-next-heading) (point-max)))))
-      (if (eab/is-newer "2014-11-27")
+      (if (eab/is-newer "2015-04-01")
 	  nil
 	next-headline)))
+
+(defun eab/very-old ()
+  (let ((next-headline (save-excursion (or (outline-next-heading) (point-max)))))
+    (if (and (eab/is-newer "2007-01-01") (not (eab/is-newer "2012-01-01")))
+	nil
+      next-headline)))
 
 (defun eab/is-newer (date)
   (let ((time (ignore-errors (eab/org-clock-get-last-clock-out-time))))
