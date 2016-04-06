@@ -475,6 +475,22 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defun eab/days-to-minutes (str)
+  (if (string-match
+       "\\([0-9]*?\\)\\(?:d \\)*\\([0-9]+\\):\\([0-9]+\\)"
+       str)
+      (let* ((days
+	      (string-to-number (match-string 1 str)))
+	     (hours
+	      (string-to-number (match-string 2 str)))
+	     (minutes
+	      (string-to-number (match-string 3 str)))
+	     (total-minutes
+	      (+ minutes
+		 (* hours 60)
+		 (* days 24 60))))
+	total-minutes)))
+
 (defun eab/forecast-hron (str)
   (if (string-match
        "\\([0-9]*?\\)\\(?:d \\)*\\([0-9]+\\):\\([0-9]+\\)"
