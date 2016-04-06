@@ -44,6 +44,8 @@
 (add-hook 'bibtex-mode-hook (lambda () (bibtex-set-dialect 'BibTeX)))
 (add-hook 'grep-mode-hook 'org-link-minor-mode)
 
+(setq org-adapt-indentation nil)
+
 ;; DONE не помогает! Надо еще какое-то шаманство, чтобы заработали ID на org-store-link по-умолчанию
 ;; DONE после этой команды (featurep 'org-id) дает nil
 (setq org-id-link-to-org-use-id 'create-if-interactive)
