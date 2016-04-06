@@ -47,14 +47,14 @@
 	 . (lambda ()
 	     (all-completions ac-prefix eab/american-english)))))
 
-(defadvice ac-inline-show (after eab-ac-expand activate)
-  (if (> (length ac-candidates) 1)
-      (let ((ac-common-part (try-completion ac-prefix ac-candidates)))
-	(ac-expand-common))
-    (progn
-      (ac-expand-string ac-common-part)
-      (ac-inline-hide)))
-  (setq eab-last-selected-candidate ac-selected-candidate))
+;; (defadvice ac-inline-show (after eab-ac-expand activate)
+;;   (if (> (length ac-candidates) 1)
+;;       (let ((ac-common-part (try-completion ac-prefix ac-candidates)))
+;; 	(ac-expand-common))
+;;     (progn
+;;       (ac-expand-string ac-common-part)
+;;       (ac-inline-hide)))
+;;   (setq eab-last-selected-candidate ac-selected-candidate))
 
 ;; (ad-remove-advice 'ac-inline-show 'after 'eab-ac-expand)
 ;; (ad-deactivate 'ac-inline-show)
