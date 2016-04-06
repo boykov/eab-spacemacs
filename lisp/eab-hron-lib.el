@@ -345,12 +345,35 @@
    (format-time-string
     (car org-time-stamp-formats)
     (apply 'encode-time  (org-parse-time-string (eab/hron-add-current 0 0)))))
-  (insert "\" :maxlevel 1 :narrow 80! :link t :tags \"-ЖЖ\" :scope (eab/clocktable-scope)\n")
+  (insert "\" :maxlevel 1 :narrow 80! :link t :scope (eab/clocktable-scope)\n")
   (insert "#+END:")
   (previous-line)
   (org-ctrl-c-ctrl-c)
   (eab/extract-csum)
   (kill-buffer (current-buffer))
+  (setq 3GG (eab/days-to-minutes (substring eab/hron-csum-day 1 -1)))
+  (let ((buf (generate-new-buffer "untitled")))
+    (switch-to-buffer buf))
+  (org-mode)
+  (insert "* контрольная сумма\n")
+  (insert "#+BEGIN: clocktable :step day :tstart \"")
+  (insert
+   (format-time-string
+    (car org-time-stamp-formats)
+    (apply 'encode-time (org-parse-time-string  (eab/hron-add-current -24 0)))))
+  (insert "\" :tend \"")
+  (insert
+   (format-time-string
+    (car org-time-stamp-formats)
+    (apply 'encode-time  (org-parse-time-string (eab/hron-add-current 0 0)))))
+  (insert (concat "\" :maxlevel 1 :narrow 80! :link t :scope (\"" org-directory "clock/timeline.org\") \n"))
+  (insert "#+END:")
+  (previous-line)
+  (org-ctrl-c-ctrl-c)
+  (eab/extract-csum)
+  (kill-buffer (current-buffer))
+  (setq 1GG (eab/days-to-minutes (substring eab/hron-csum-day 1 -1)))
+  (setq eab/hron-csum-day (concat "*" (org-minutes-to-clocksum-string (- 3GG (* 2 1GG))) "*"))
   (kill-buffer (current-buffer)))
 
 (defun eab/check-csum-all-GREP ()
