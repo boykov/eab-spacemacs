@@ -22,7 +22,8 @@
 		      (file-name-extension buffer-file-name)))
 	 (str (concat (eab/gz-grep extension) " -i -nH -e  "))
 	 (grep-command-no-list
-	  (if (file-exists-p ".gitignore")
+	  (if (or (file-exists-p ".gitignore")
+		  (string= (shell-command-to-string "git clean -xnd `pwd` | wc -l") "0\n"))
 	      `,(concat str " `git ls-files \\`git rev-parse --show-toplevel\\``")
 	    `,(concat str " *."
 		      extension)))
