@@ -18,6 +18,14 @@
 
 (require 'projectile)
 (setq projectile-require-project-root t)
+(setq projectile-project-root-files-bottom-up
+      '(".git"        ; Git VCS root dir
+	".projectile" ; projectile project marker
+	".hg"         ; Mercurial VCS root dir
+	".fslckout"   ; Fossil VCS root dir
+	".bzr"        ; Bazaar VCS root dir
+	"_darcs"      ; Darcs VCS root dir
+	))
 
 (require 'auto-install)
 (eab/bind-path auto-install-directory)
