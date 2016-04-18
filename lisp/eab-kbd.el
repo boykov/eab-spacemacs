@@ -310,6 +310,8 @@
 
 (define-key eab/temacs-map (kbd "b") 'bookmark-set)
 (define-key eab/temacs-map (kbd "n SPC") 'dash-to-space3)
+(define-key eab/temacs-map (kbd "nf") 'eab/pm-write-last-kbd-macro)
+(define-key eab/temacs-map (kbd "nd") 'delete-end-clock)
 (define-key eab/temacs-map (kbd "nn") 'star-to-space2)
 (define-key eab/temacs-map (kbd "ns") 'split-clock)
 (define-key eab/temacs-map (kbd "nc") 'insert-clock)

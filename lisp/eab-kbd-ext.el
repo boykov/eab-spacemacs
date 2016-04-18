@@ -169,4 +169,15 @@
 
 ;; (eab/print-0 (eab/check-map dired-mode-map))
 
+(defun eab/pm-write-last-kbd-macro (name)
+  (interactive "MName of macro: ")
+  (with-temp-buffer
+    (insert "\n\n")
+    (insert
+     (concat "(pm-def-macro\n '"
+	     name
+	     "\n nil nil\n \"\"\n \""
+	     (format-kbd-macro) "\")\n"))
+    (write-region (point-min) (point-max) power-macros-file t)))
+
 (provide 'eab-kbd-ext)

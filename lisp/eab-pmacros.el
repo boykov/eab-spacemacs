@@ -12,28 +12,16 @@
    [?\M-L ?\M-: ?f ?o ?r ?w ?\C-m return])
 
 (;--------------------------- power-macros ---------------------------
- ;---------------------s-n e - global definition----------------------
- ;--------------------------------------------------------------------
-	pm-def-macro
-	'wrap-clock
-	'global [8388718 101]
-	""
-	"M-k M-C-u M-p RET :CLOCK: M-O M-C-o M-j RET :END: M-: :CLO RET"
- ;--------------------------------------------------------------------
-)
-
-
-(;--------------------------- power-macros ---------------------------
  ;---------------------s-n s - global definition----------------------
  ;--------------------------------------------------------------------
 	pm-def-macro
 	'split-clock
 	'global [8388718 115]
 	""
-	"M-s C-n M-s M-SPC M-; :end: RET M-k M-h C-x n n s-a RET M-i M-SPC M-J M-k C-u M-a
- shell-command-on-region RET grep SPC CLOCK: RET M-L M-s M-SPC M-i M-X
- M-J M-SPC M-k M-X M-% SPC +CLOCK:.* C-q LFD 2*RET ! M-SPC M-J s-a RET
- M-SPC M-L M-X C-x k RET M-s C-x n w"
+	"M-s C-n M-s M-SPC M-; :end: RET M-k M-h C-x n n s-a RET M-i M-SPC M-J
+ M-k C-u M-a shell-command-on-region RET grep SPC CLOCK: RET M-L M-s
+ M-SPC M-i M-X M-J M-SPC M-k M-X M-% SPC +CLOCK:.* C-q LFD 2*RET !
+ M-SPC M-J s-a RET M-SPC M-L M-X C-x k RET M-s C-x n w"
  ;--------------------------------------------------------------------
 )
 
@@ -47,6 +35,18 @@
 	""
 	"C-c C-s 2014-04-28 RET TAB S-C-k M-; scheduled RET M-p M-j SPC +q DEL
  1w M-s"
+ ;--------------------------------------------------------------------
+)
+
+
+(;--------------------------- power-macros ---------------------------
+ ;---------------------s-n e - global definition----------------------
+ ;--------------------------------------------------------------------
+	pm-def-macro
+	'wrap-clock
+	'global [8388718 101]
+	""
+	"M-k M-C-u M-p RET :CLOCK: M-O M-C-o M-j RET :END: M-: :CLO RET"
  ;--------------------------------------------------------------------
 )
 
@@ -124,3 +124,14 @@
  ;--------------------------------------------------------------------
 )
 
+
+(;--------------------------- power-macros ---------------------------
+ ;--------------------C-l n d - global definition---------------------
+ ;--------------------------------------------------------------------
+	pm-def-macro
+	'delete-end-clock
+	'global "nd"
+	"delete block between :END: and next :CLOCK:"
+	"ESC : :end RET ESC SPC ESC ; :cloc RET ESC k ESC h ESC X"
+ ;--------------------------------------------------------------------
+)
