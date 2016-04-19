@@ -352,7 +352,7 @@
 (define-key eab/wg-map (kbd "m") (ilam (eab/wg-switch-to-workgroup ":dbsym:")))
 (define-key eab/wg-map (kbd "e") (ilam (eab/wg-switch-to-workgroup ":dotspace:")))
 (define-key eab/wg-map (kbd "C-e") (ilam (eab/wg-switch-to-workgroup ":eab-spacemacs:")))
-(define-key eab/wg-map (kbd "d") (ilam (eab/wg-switch-to-workgroup ":.emacs.d:")))
+(define-key eab/wg-map (kbd "d") (ilam (eab/wg-switch-to-workgroup ":spacemacs:")))
 (define-key eab/wg-map (kbd "l") (ilam (eab/wg-switch-to-workgroup ":cc:")))
 (define-key eab/wg-map (kbd "a") (ilam (eab/wg-switch-to-workgroup ":clock:")))
 (define-key eab/wg-map (kbd "4") (ilam (eab/wg-switch-to-workgroup ":mail:")))
