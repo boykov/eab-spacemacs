@@ -112,12 +112,18 @@
 
 ;; (eab/print-0 (wg-workgroup-names))
 
+(defun eab/wg-create-workgroup (path)
+  (let* ((true-path (file-truename path))
+	 (nondir (file-name-nondirectory true-path))
+	 (name (concat ":" nondir ":")))
+    (wg-create-workgroup name)
+    (dired true-path)
+    (eab/wg-update-workgroup)))
+
 (defun eab/create-workgroups ()
   (interactive)
-  (mapcar 'wg-create-workgroup
-	  (mapcar '(lambda (x) (concat ":" x ":"))
-		  (mapcar 'file-name-nondirectory
-			  (file-expand-wildcards "~/git/auto/wg/*")))))
+  (mapcar 'eab/wg-create-workgroup
+	  (file-expand-wildcards "~/git/auto/wg/*")))
 
 (setq-put eab/wg-update-list
 	  '(("~/.emacs.d/" ":.emacs.d:")
