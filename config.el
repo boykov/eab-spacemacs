@@ -120,6 +120,9 @@
     (dired true-path)
     (eab/wg-update-workgroup)))
 
+;; TODO можно использовать `gr list` вместо wg/*: все-равно вручную
+;; пополняю оба эти списка хотя, симлинки требуют меньше зависимостей
+;; (на чистой системе это важно)
 (defun eab/create-workgroups ()
   (interactive)
   (mapcar 'eab/wg-create-workgroup

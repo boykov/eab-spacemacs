@@ -16,6 +16,7 @@
     (eab/update-all-dblocks) ;; DONE why doesn't work?
     ;; DONE it seems to hangs up `eab/update-reports-nightly'
     (eab/update-reports-nightly)
+    (eab/create-template "plot")
     (org-publish-remove-all-timestamps)
     (org-publish-project "html" t)
     (org-publish-project "html-clock" t)
