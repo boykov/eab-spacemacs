@@ -902,6 +902,9 @@
   (define-key grep-mode-map (kbd "M-n") 'nil)
   (define-key grep-mode-map (kbd "C-w") 'wgrep-change-to-wgrep-mode))
 
+(eab/add-hook ag-mode-hook eab/ag-hook
+  (define-key ag-mode-map (kbd "C-w") 'wgrep-change-to-wgrep-mode))
+
 (eab/add-hook gnus-started-hook eab/gnus-article-hook
   (define-key gnus-article-mode-map (kbd "M-g") 'nil)
   (define-key gnus-article-mode-map (kbd "M-u") 'nil)

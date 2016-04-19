@@ -53,6 +53,8 @@
   paredit
   grep-a-lot
   wgrep
+  ag
+  wgrep-ag
   undo-tree
   ;; workgroups
   edit-list
@@ -232,6 +234,8 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-paredit nil)
 (defun eab-spacemacs/init-grep-a-lot nil)
 (defun eab-spacemacs/init-wgrep nil)
+(defun eab-spacemacs/init-ag nil)
+(defun eab-spacemacs/init-wgrep-ag nil)
 (defun eab-spacemacs/init-undo-tree nil)
 
 (defun eab-spacemacs/init-edit-list ()

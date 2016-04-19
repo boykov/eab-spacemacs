@@ -43,6 +43,7 @@
 
 (add-hook 'bibtex-mode-hook (lambda () (bibtex-set-dialect 'BibTeX)))
 (add-hook 'grep-mode-hook 'org-link-minor-mode)
+(add-hook 'ag-mode-hook 'org-link-minor-mode)
 
 (setq org-adapt-indentation nil)
 

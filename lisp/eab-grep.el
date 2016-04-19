@@ -9,7 +9,9 @@
 (defun eab/gz-grep (extension)
   (if (string= extension "gz")
       "zgrep"
-    "grep"))
+    "LANG=C grep"))
+
+(setq grep-highlight-matches 'auto-detect)
 
 ;; DONE fixed bug (grep-compute-defaults): if grep-history is empty than
 ;; grep-command isn't parsed correctly
@@ -20,7 +22,7 @@
   (let* ((grep-host-defaults-alist nil)
 	 (extension (ignore-errors
 		      (file-name-extension buffer-file-name)))
-	 (str (concat (eab/gz-grep extension) " -i -nH -e  "))
+	 (str (concat (eab/gz-grep extension) " --color=auto -i -nH -e  "))
 	 (grep-command-no-list
 	  (if (or (file-exists-p ".gitignore")
 		  (string= (shell-command-to-string "git clean -xnd `pwd` | wc -l") "0\n"))
