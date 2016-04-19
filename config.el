@@ -120,14 +120,10 @@
 			  (file-expand-wildcards "~/git/auto/wg/*")))))
 
 (setq-put eab/wg-update-list
-	  '(("~/.emacs.d/" ":dot:")
-	    ("~/git/dotemacs/" ":dot:")
-	    ("~/git/dotemacs/lisp/" ":dot:")
-	    ("~/.emacs.d/lisp/" ":dot:")
-	    ("~/git/org/" ":ag:")
-	    ("~/git/org/clock/" ":ag:")
-	    ("~/git/difwave/" ":gsie:")
-	    ("~/git/cc/" ":lat:")))
+	  '(("~/.emacs.d/" ":.emacs.d:")
+	    ("~/git/org/" ":clock:")
+	    ("~/git/org/clock/" ":clock:")
+	    ("~/git/cc/" ":cc:")))
 
 (setq-put eab/workgroups-save (concat (eab/history-dir) ".emacs_workgroups"))
 (setq-put wg-session-file (eab/bind-path eab/workgroups-save))
