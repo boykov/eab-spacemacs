@@ -1,5 +1,6 @@
 (require 'magit)
 (setq magit-stage-all-confirm nil)
+(setq magit-push-always-verify nil)
 ;; (add-hook 'magit-status-mode-hook 'magit-filenotify-mode) ;; TODO too slow
 ;; org-magit workaround
 (defvar magit-currently-shown-commit nil)
