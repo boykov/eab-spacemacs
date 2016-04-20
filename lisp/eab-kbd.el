@@ -883,7 +883,7 @@
 (eab/add-hook compilation-mode-hook eab/compilation-hook
   (define-key compilation-button-map (kbd "M-RET") 'eab/compile-goto-error)
   (define-key compilation-button-map (kbd "RET") 'compile-goto-error)
-  (define-key compilation-mode-map (kbd "g") (ilam (let ((compilation-buffer-name-function nil)) (recompile))))
+  (define-key compilation-mode-map (kbd "g") (ilam (let ((compilation-buffer-name-function nil)) (eab/recompile))))
   (define-key compilation-mode-map (kbd "\C-d") eab/compile-map)
   (define-key compilation-mode-map (kbd "\C-o") 'nil)
   (define-key compilation-mode-map (kbd "M-k") 'nil)
@@ -898,7 +898,7 @@
   (define-key grep-mode-map (kbd "M-p") 'nil)
   (define-key grep-mode-map (kbd "M-RET") 'eab/compile-goto-error)
   (define-key grep-mode-map (kbd "RET") 'compile-goto-error)
-  (define-key grep-mode-map (kbd "g") (ilam (let ((compilation-buffer-name-function nil)) (recompile))))
+  (define-key grep-mode-map (kbd "g") (ilam (let ((compilation-buffer-name-function nil)) (eab/recompile))))
   (define-key grep-mode-map (kbd "M-n") 'nil)
   (define-key grep-mode-map (kbd "C-w") 'wgrep-change-to-wgrep-mode))
 

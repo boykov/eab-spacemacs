@@ -15,6 +15,13 @@
       (add-to-list 'after-save-hook 'recompile)
       (message "Recompiling after saving."))))
 
+(defun eab/recompile ()
+  (let ((pos (line-at-pos)))
+    (recompile)
+    (run-with-idle-timer 0.2 nil
+			 `(lambda () (goto-line ,pos)))
+    ))
+
 (defun eab/compile (&optional cmd)
   (interactive)
   (compile cmd)
