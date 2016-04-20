@@ -48,6 +48,10 @@
   (grep-a-lot-set-current-buffer (grep-a-lot-last-buffer))
   (eab/switch-window (grep-a-lot-last-buffer)))
 
+(defun eab/kill-last-grep ()
+  (interactive)
+  (kill-buffer (grep-a-lot-last-buffer)))
+
 (defun eab/switch-grep-next ()
   (interactive)
   (switch-to-buffer (grep-a-lot-next-buffer) nil 't)

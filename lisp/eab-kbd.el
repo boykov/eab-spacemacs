@@ -268,6 +268,7 @@
 (define-key eab/one-key-map (kbd "o") 'proced)
 (define-key eab/one-key-map (kbd "-") 'eepitch-sage-python)
 (define-key eab/one-key-map (kbd "g") 'eab/switch-grep)
+(define-key eab/one-key-map (kbd "G") 'eab/kill-last-grep)
 (define-key eab/one-key-map (kbd "l") 'helm-locate)
 
 ;; (global-set-key (kbd "C-.") eab/one-key-map)
