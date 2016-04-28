@@ -26,7 +26,7 @@
 	 (str (concat (eab/gz-grep extension) " --color=auto -i -nH -e  "))
 	 (grep-command-no-list
 	  (if (or (file-exists-p ".gitignore")
-		  (string= (shell-command-to-string "git clean -xnd `pwd` | wc -l") "0\n"))
+		  (string= (shell-command-to-string "git clean -xn `pwd` | wc -l") "0\n"))
 	      `,(concat str " `git ls-files \\`git rev-parse --show-toplevel\\``")
 	    `,(concat str " *."
 		      extension)))

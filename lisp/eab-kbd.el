@@ -448,7 +448,7 @@
 (global-set-key (kbd "C-h C-k") 'eab/describe-key-find)
 (global-set-key (kbd "C-h C-v") 'eab/find-variable-at-point)
 (global-set-key (kbd "C-s-j") 'eab/insert-greek)  ;; temacs
-(global-set-key (kbd "C-x b") 'eab/switch-to-buffer)
+(global-set-key (kbd "C-x b") 'switch-to-buffer)
 (global-set-key (kbd "C-x g") 'eab/grep)
 (global-set-key (kbd "C-x C-g") (kbd "C-u C-x g"))
 (global-set-key (kbd "M-.") 'eab/etags-find-or-pop) ;; вместе с тэгами используются eab/find-function-at-point или jedi
