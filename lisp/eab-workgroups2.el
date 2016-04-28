@@ -19,6 +19,12 @@
 	  (reverse
 	   (append (list id) eab/wg-workgroups-history))))))
 
+(defun eab/show-wg-workgroups-history ()
+  (mapcar 'wg-workgroup-name
+	  (mapcar
+	   (lambda (uid) (wg-find-workgroup-by :uid uid t))
+	   eab/wg-workgroups-history)))
+
 (defadvice wg-switch-to-workgroup (before eab-wg-switch-to-workgroup activate)
   (let ((workgroup (wg-current-workgroup t)))
     (if workgroup
@@ -118,6 +124,21 @@
 
 (defun eab/wg-switch-to-workgroup (name)
   (wg-switch-to-workgroup (wg-get-workgroup name)))
+
+(defun eab/wg-switch-to-workgroup-history (workgroup &optional noerror)
+  (interactive
+   (list (wg-completing-read "Workgroup history: " (eab/show-wg-workgroups-history) nil 't nil nil nil)))
+  (wg-switch-to-workgroup workgroup))
+
+(defun eab/wg-switch-to-previous-workgroup ()
+  (interactive)
+  (let* ((wg-cur (wg-workgroup-name (wg-current-workgroup)))
+	(wg-list (-difference (eab/show-wg-workgroups-history) (list wg-cur))))
+    (if (or
+	 (eq last-command 'eab/wg-switch-to-previous-workgroup)
+	 (eq last-command 'wg-switch-to-previous-workgroup))
+	(wg-switch-to-workgroup (caddr wg-list))
+      (wg-switch-to-workgroup (car wg-list)))))
 
 (defun eab/wg-names ()
   (wg-workgroup-names))

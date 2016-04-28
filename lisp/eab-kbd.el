@@ -360,7 +360,9 @@
 (define-key eab/wg-map (kbd "5") (ilam (eab/wg-switch-to-workgroup ":ahmed-examples:")))
 (define-key eab/wg-map (kbd "i") (ilam (eab/wg-switch-to-workgroup ":lit:")))
 (define-key eab/wg-map (kbd "p") 'wg-switch-to-previous-workgroup)
-(define-key eab/wg-map (kbd "s") 'wg-switch-to-workgroup) ;; +
+(define-key eab/wg-map (kbd "P") 'eab/wg-switch-to-previous-workgroup)
+(define-key eab/wg-map (kbd "s") 'eab/wg-switch-to-workgroup-history) ;; +
+(define-key eab/wg-map (kbd "S") 'wg-switch-to-workgroup) ;; +
 (define-key eab/wg-map (kbd "x") 'wg-kill-ring-save-working-config) ;; wg-kill-ring-save-working-wconfig
 (define-key eab/wg-map (kbd "v") 'wg-yank-config) ;; wg-yank-wconfig
 (define-key eab/wg-map (kbd "r") 'eab/wg-revert-workgroup)

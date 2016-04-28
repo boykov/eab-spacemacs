@@ -34,6 +34,7 @@
 
 ;; DONE сделать cache для projectile-project-buffer-names
 ;; см. patch projectile-project-buffer-p
+;; TODO если тормозит, сделать (not (tramp-tramp-file-p default-directory))
 (defun eab/cxb ()
   "`ido-switch-buffer' modification with `projectile-project-buffer-names'"
   ;; and `eab/wg-names'
