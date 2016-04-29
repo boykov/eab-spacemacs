@@ -238,7 +238,7 @@
        (shell-command
 	(concat "grep -v -e \"^\\#\\+\" " org-directory "clock/" x " > " org-directory "gen/" name "/" x )))
 	    fnames)
-    (shell-command (concat org-directory "create-" name ".sh"))
+    (shell-command (concat org-directory "misc/create-" name ".sh"))
     (mapcar (lambda (x)
 	      (shell-command (concat "rm -f " org-directory "gen/" name "/" x)))
 	    fnames))
