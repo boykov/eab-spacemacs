@@ -205,15 +205,15 @@
 (setq eab/nightly-scope
       (mapcar (lambda (x)
 		(concat org-directory "gen/nightly/" x))
-	      '("hron.org"
-		"improve.org"
-		"media.org"
-		"write.org"
-		"work.org"
-		"persons.org"
-		"budget.org"
-		"health.org"
-		"self.org")))
+	      '("100.org"
+		"200.org"
+		"300.org"
+		"400.org"
+		"500.org"
+		"600.org"
+		"700.org"
+		"800.org"
+		"900.org")))
 
 (defun eab/nightly-scope () eab/nightly-scope)
 
@@ -321,13 +321,23 @@
 (defun eab/clock-sum-all ()
   "Do `org-clock-sum' on `eab/clocktable-scope' files."
   (interactive)
-  (mapcar (lambda (f) (eab/org-clock-sum f)) eab/clocktable-scope))
+  (mapcar (lambda (f) (eab/org-clock-sum f)) (eab/clocktable-scope)))
 
-(setq eab/clocktable-scope
-       (file-expand-wildcards (concat (file-name-as-directory org-directory) "clock/*.org")))
+(defun eab/clocktable-scope-1 ()
+  (file-expand-wildcards (concat (file-name-as-directory org-directory) "clock/*.org")))
+
+(setq eab/clocktable-scope (eab/clocktable-scope-1))
 
 (defun eab/clocktable-scope () eab/clocktable-scope)
 
+(defun eab/renew-agenda-files-1 ()
+  (setq eab/clocktable-scope (eab/clocktable-scope-1))
+  (setq org-agenda-files (eab/org-agenda-files)))
+
+(defun eab/renew-agenda-files ()
+  (interactive)
+  (eab/renew-agenda-files-1)
+  (server-eval-at "serverN" '(eab/renew-agenda-files-1)))
 
 (defun eab/check-csum-day (&optional date)
   (interactive)

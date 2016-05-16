@@ -11,15 +11,17 @@
 	(tags priority-down category-keep)
 	(search category-keep)))
 
+(defun eab/org-agenda-files ()
+  (remove-if
+   (lambda (s) (or (string= s (concat org-directory "archive/archive.org"))
+		   (string= s (concat org-directory "clock/level-0.org"))
+		   (member s (file-expand-wildcards (concat org-directory "clock/*arch.org")))))
+   (append
+    (file-expand-wildcards (concat org-directory "archive/*.org"))
+    (file-expand-wildcards (concat org-directory "clock/*.org")))))
+
 ;; see file:eab-hron-lib.el
-(setq org-agenda-files
-      (remove-if
-       (lambda (s) (or (string= s (concat org-directory "archive/archive.org"))
-		       (string= s (concat org-directory "clock/level-0.org"))
-		       (member s (file-expand-wildcards (concat org-directory "clock/*arch.org")))))
-       (append
-	(file-expand-wildcards (concat org-directory "archive/*.org"))
-	(file-expand-wildcards (concat org-directory "clock/*.org")))))
+(setq org-agenda-files (eab/org-agenda-files))
 
 (setq org-agenda-custom-commands
       (quote (("S" "Started Tasks" todo "STARTED"
@@ -38,7 +40,7 @@
 	      ;; ("H" "Chrono" tags "LEVEL<4+repeat-norepeat+CLOCK>=\"<-1y>\"|LEVEL<3+repeat" nil)
 	      ("F" "frequency" tags "+CLOCKSUM={[3-9]d.*}+CLOCK>=\"<-1m>\"-ARCHIVE-noagenda" nil)
 	      ("Q" "all" tags "+CLOCKSUM<=\"0:25\"+CLOCKSUM>\"0:05\"-ARCHIVE-noagenda" nil)
-	      ("O" "Old" tags "-ARCHIVE-noagenda" ((org-agenda-skip-function 'eab/very-old)))
+	      ("O" "eab/very-old" tags "-ARCHIVE-noagenda" ((org-agenda-skip-function 'eab/very-old)))
 	      ("H" "Chrono" tags "-ARCHIVE-noagenda" ((org-agenda-skip-function 'eab/skip-old)))
 	      ("W" "Work" tags "+w1c-ARCHIVE-noagenda" ((org-agenda-skip-function 'eab/skip-old)))
 	      ("M" "Work" tags "+media" ((org-agenda-skip-function 'eab/skip-old)))
