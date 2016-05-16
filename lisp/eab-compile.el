@@ -19,8 +19,7 @@
   (let ((pos (line-at-pos)))
     (recompile)
     (run-with-idle-timer 0.2 nil
-			 `(lambda () (goto-line ,pos)))
-    ))
+			 `(lambda () (goto-line ,pos)))))
 
 (defun eab/compile (&optional cmd)
   (interactive)

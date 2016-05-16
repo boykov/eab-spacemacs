@@ -369,8 +369,8 @@
 (define-key eab/wg-map (kbd "R") 'wg-revert-workgroup) ;; +
 (define-key eab/wg-map (kbd "u") 'eab/wg-update-workgroup) ;; eab/wg-update-workgroup)
 (define-key eab/wg-map (kbd "U") 'wg-save-session) ;; wg-update-workgroup)
-(define-key eab/wg-map (kbd "S") 'eab/eab-wg-save)
-(define-key eab/wg-map (kbd "L") 'eab/eab-wg-load)
+;; (define-key eab/wg-map (kbd "S") 'eab/eab-wg-save)
+;; (define-key eab/wg-map (kbd "L") 'eab/eab-wg-load)
 ;; TODO wg-make-workgroups-mode-map
 (define-key eab/wg-map (kbd "z") 'wg-undo-wconfig-change)
 (define-key eab/wg-map (kbd "C-z") 'wg-undo-wconfig-change)
