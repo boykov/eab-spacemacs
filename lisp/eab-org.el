@@ -18,6 +18,7 @@
 (require 'org-archive)
 (require 'org-bbdb)
 (require 'ox-latex)
+(require 'ox-extra)
 
 (require 'tex)
 (require 'tex-site)
@@ -31,6 +32,8 @@
 (eab/bind-path org-mobile-directory)
 (eab/bind-path bibtex-files)
 (eab/bind-path org-ditaa-jar-path)
+
+(ox-extras-activate '(ignore-headlines))
 
 ;; (org-mobile-create-sumo-agenda) - Create a file that contains all custom agenda views.
 
