@@ -20,7 +20,7 @@
 	""
 	"M-s C-n M-s M-SPC M-; :end: RET M-k M-h C-x n n s-a RET M-i M-SPC M-J
  M-k C-u M-a shell-command-on-region RET grep SPC CLOCK: RET M-L M-s
- M-SPC M-i M-X M-J M-SPC M-k M-X M-% SPC +CLOCK:.* C-q LFD 2*RET !
+ M-SPC M-i M-X M-J M-SPC M-k M-X M-% SPC *CLOCK:.* C-q LFD 2*RET !
  M-SPC M-J s-a RET M-SPC M-L M-X C-x k RET M-s C-x n w"
  ;--------------------------------------------------------------------
 )
