@@ -29,6 +29,9 @@
   (if (eq eab/cxb-ido-item 'list)
       (setq eab/cxb-ido-item 'buffer)
     (setq eab/cxb-ido-item 'list))
+  (if (eq eab/wg-ido-item 'list)
+      (setq eab/wg-ido-item 'buffer)
+    (setq eab/wg-ido-item 'list))
   (setq ido-exit 'eab-refresh)
   (exit-minibuffer))
 

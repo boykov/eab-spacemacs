@@ -125,10 +125,31 @@
 (defun eab/wg-switch-to-workgroup (name)
   (wg-switch-to-workgroup (wg-get-workgroup name)))
 
-(defun eab/wg-switch-to-workgroup-history (workgroup &optional noerror)
-  (interactive
-   (list (wg-completing-read "Workgroup history: " (eab/show-wg-workgroups-history) nil 't nil nil nil)))
-  (wg-switch-to-workgroup workgroup))
+(defvar eab/wg-ido-item 'list "list: only `(eab/show-wg-workgroups-history)`, buffer: all workgroups")
+
+(defun eab/wg-switch-to-workgroup-history (&optional noerror)
+  (interactive)
+  (eab/wg-switch-to-workgroup-history-1))
+
+(defun eab/wg-switch-to-workgroup-history-1 ()
+  (interactive)
+  (let ((ido-current-directory nil)
+	(ido-directory-nonreadable nil)
+	(ido-directory-too-big nil)
+	(ido-context-switch-command 'ignore)
+	(ido-choice-list
+	 (if (eq eab/wg-ido-item 'list)
+	     (eab/show-wg-workgroups-history)
+	   (wg-workgroup-names))))
+    (ido-read-internal 'list "Workgroup history: " 'ido-buffer-history nil))
+  (cond
+   ((eq ido-exit 'eab-refresh)
+    (eab/wg-switch-to-workgroup-history-1))
+   (t
+    (if ido-matches
+	(progn
+	  (setq eab/wg-ido-item 'list)
+	(wg-switch-to-workgroup (ido-name (car ido-matches))))))))
 
 (defun eab/wg-switch-to-previous-workgroup ()
   (interactive)
