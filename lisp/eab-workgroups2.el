@@ -153,11 +153,18 @@
 
 (defun eab/wg-switch-to-previous-workgroup ()
   (interactive)
+  (if (eq last-command-event 26)
+      (eab/wg-switch-to-previous-workgroup-1)
+    (wg-switch-to-previous-workgroup)))
+
+(defun eab/wg-switch-to-previous-workgroup-1 ()
+  (interactive)
   (let* ((wg-cur (wg-workgroup-name (wg-current-workgroup)))
 	(wg-list (-difference (eab/show-wg-workgroups-history) (list wg-cur))))
     (if (or
-	 (eq last-command 'eab/wg-switch-to-previous-workgroup)
-	 (eq last-command 'wg-switch-to-previous-workgroup))
+	 (eq last-command 'eab/wg-switch-to-previous-workgroup-1)
+	 (eq last-command 'wg-switch-to-previous-workgroup)
+	 (eq last-command 'eab/wg-switch-to-previous-workgroup))
 	(wg-switch-to-workgroup (caddr wg-list))
       (wg-switch-to-workgroup (car wg-list)))))
 
