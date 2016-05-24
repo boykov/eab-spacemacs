@@ -347,7 +347,7 @@
 
 ;; (define-key eab/wg-map (kbd "b") (ilam (switch-to-buffer "&bitlbee")))
 (define-key eab/wg-map (kbd "g") (ilam (eab/wg-switch-to-workgroup ":gsie:")))
-(define-key eab/wg-map (kbd "b") (ilam (eab/wg-switch-to-workgroup ":bie:")))
+(define-key eab/wg-map (kbd "b") (ilam (eab/wg-switch-to-workgroup ":abiem:")))
 (define-key eab/wg-map (kbd "j") (ilam (eab/wg-switch-to-workgroup ":jac:")))
 (define-key eab/wg-map (kbd "t") (ilam (eab/wg-switch-to-workgroup ":testbed:")))
 (define-key eab/wg-map (kbd "m") (ilam (eab/wg-switch-to-workgroup ":dbsym:")))
