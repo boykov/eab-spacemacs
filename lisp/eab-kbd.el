@@ -153,6 +153,7 @@
 (global-set-key (kbd "M-u") 'backward-word)
 (global-set-key (kbd "M-v") 'yank)
 (global-set-key (kbd "M-x") 'kill-region)
+(global-set-key (kbd "M-y") 'god-mode-all)
 (global-set-key (kbd "s-,") 'kmacro-end-or-call-macro-repeat)
 (global-set-key (kbd "s-.") nil)
 (global-set-key (kbd "s-m") 'kmacro-keymap)

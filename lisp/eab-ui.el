@@ -8,6 +8,11 @@
 ;; TODO depend on auto-complete, eab/trans-path, howdoi
 (eab/bind-path eab/trans-path)
 
+(setq god-mod-alist
+      '(("g" . "C-")
+	(nil . "M-")
+	("G" . "C-M-")))
+
 ;; edit timer-idle-list
 (if (eab/ondaemon "server")
     (progn
