@@ -46,8 +46,10 @@
     (setq wg-dissociate-buffer-on-kill-buffer nil)
     (setq eab/cxb-ido-item
 	  ;; (if (ignore-errors (projectile-project-buffer-names))
-	  (if (projectile-project-p)
-	      'list
+	  (if (not (file-remote-p default-directory))
+	      (if (projectile-project-p)
+		  'list
+		'buffer)
 	    'buffer))
     ;; prevent run-hook wg-auto-dissociate-buffer-hook for
     ;; with-temp-buffer in expand-file-name
@@ -77,9 +79,10 @@
          (require-match (confirm-nonexistent-file-or-buffer))
 	 (ido-choice-list
 	  (ignore-errors
-	    (let
-		((l (projectile-project-buffer-names)))
-	      (append (cdr l) (list (car l))))))
+	    (if (not (file-remote-p default-directory))
+		(let
+		    ((l (projectile-project-buffer-names)))
+		  (append (cdr l) (list (car l)))))))
          (buf (ido-read-internal
 	       eab/cxb-ido-item
 	       (concat (symbol-name eab/cxb-ido-item) ": ")
