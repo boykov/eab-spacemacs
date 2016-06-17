@@ -21,9 +21,11 @@
 
 (defun eab/show-wg-workgroups-history ()
   (mapcar 'wg-workgroup-name
-	  (mapcar
-	   (lambda (uid) (wg-find-workgroup-by :uid uid t))
-	   eab/wg-workgroups-history)))
+	  (remove-if
+	   (lambda (x) (not x))
+	   (mapcar
+	    (lambda (uid) (wg-find-workgroup-by :uid uid t))
+	    eab/wg-workgroups-history))))
 
 (defadvice wg-switch-to-workgroup (before eab-wg-switch-to-workgroup activate)
   (let ((workgroup (wg-current-workgroup t)))
