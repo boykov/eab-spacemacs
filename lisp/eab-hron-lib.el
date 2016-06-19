@@ -15,8 +15,8 @@
     (server-eval-at "server" '(sauron-add-event 'eab 3 "Come in to eab/batch-publish"))
     (eab/update-all-dblocks) ;; DONE why doesn't work?
     ;; DONE it seems to hangs up `eab/update-reports-nightly'
-    (eab/update-reports-nightly)
     (eab/create-template "plot")
+    (eab/update-reports-nightly)
     (org-publish-remove-all-timestamps)
     (org-publish-project "html" t)
     (org-publish-project "html-clock" t)
@@ -200,29 +200,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Nightly
 
-;; See `eab/nightly-scope' in eab-path-org.el
-
-(setq eab/nightly-scope
-      (mapcar (lambda (x)
-		(concat org-directory "gen/nightly/" x))
-	      '("100.org"
-		"200.org"
-		"300.org"
-		"400.org"
-		"500.org"
-		"600.org"
-		"700.org"
-		"800.org"
-		"900.org")))
-
-(defun eab/nightly-scope () eab/nightly-scope)
-
 ;; TODO при отсеивании "лишних" #+ строк для nightly может так
 ;; получиться, что уберутся и src блоки и тогда ссылка
 ;; call_blockname() перестанет работать: нет такого блока
 (defun eab/create-nightly ()
   (interactive)
-  (eab/create-template "nightly")
+  (shell-command (concat org-directory "misc/create-" "nightly" ".sh"))
   )
 
 (defun eab/create-template (name)
@@ -264,12 +247,6 @@
 (defun eab/update-reports-nightly ()
   (interactive)
   (eab/create-nightly)
-  (ignore-errors (kill-buffer "time-reports-step.org"))
-  (shell-command
-   (concat "cp -f " org-directory "templates/time-reports-step.org  " org-directory "gen/time-reports-step.org"))
-  (find-file (concat org-directory "gen/time-reports-step.org"))
-  (org-update-all-dblocks)
-  (save-buffer)
   (org-publish-remove-all-timestamps)
   ;; (org-publish-project "html-nightly" t)
   (ignore-errors (kill-buffer "time-reports-nightly.org"))
