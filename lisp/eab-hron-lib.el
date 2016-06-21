@@ -200,6 +200,26 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Nightly
 
+;; See `eab/nightly-scope' in eab-path-org.el
+
+(setq eab/nightly-scope
+      (mapcar (lambda (x)
+		(concat org-directory "gen/nightly/" x))
+	      '("all2006.org"
+		"all2007.org"
+		"all2008.org"
+		"all2009.org"
+		"all2010.org"
+		"all2011.org"
+		"all2012.org"
+		"all2013.org"
+		"all2014.org"
+		"all2015.org"
+		"all2016.org"
+		)))
+
+(defun eab/nightly-scope () eab/nightly-scope)
+
 ;; TODO при отсеивании "лишних" #+ строк для nightly может так
 ;; получиться, что уберутся и src блоки и тогда ссылка
 ;; call_blockname() перестанет работать: нет такого блока
