@@ -7,6 +7,35 @@
 
 (setq grep-use-null-device nil)
 
+(setcar (car grep-regexp-alist) "^\\(.+?\\)\\(:[ \t]*\\)\\([1-9][0-9]*\\)[ \t]*\\2")
+
+(defun eab/grep-align ()
+  (interactive)
+  (read-only-mode -1)
+  (toggle-truncate-lines 1)
+  (save-excursion
+    (beginning-of-buffer)
+    (compilation-next-error 1)
+    (call-interactively 'set-mark-command)
+    (end-of-buffer)
+    (backward-paragraph)
+    (align-regexp (region-beginning) (region-end) "\\(:[0-9]+\\)\\(\\):" 2 1 t))
+  (read-only-mode 1))
+
+(defun eab/wgrep-change-to-wgrep-mode ()
+  (interactive)
+  (eab/grep-align)
+  (call-interactively 'wgrep-change-to-wgrep-mode))
+
+(defun eab/grep-utf ()
+  (interactive)
+  (let* ((ss (split-string (car compilation-arguments) "LANG=C "))
+	(compilation-arguments
+	 (append
+	  (if (> (length ss) 1) (list (cadr ss)) (list (car compilation-arguments)))
+	  (cdr compilation-arguments))))
+    (eab/recompile)))
+
 (defun eab/gz-grep (extension)
   (if (string= extension "gz")
       "zgrep"
