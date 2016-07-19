@@ -80,7 +80,7 @@
 ;;(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 
 (setq enable-recursive-minibuffers t)
-(setq truncate-lines nil)
+(setq-default truncate-lines 't)
 (setq truncate-partial-width-windows nil)
 
 (setq x-select-enable-clipboard t)
