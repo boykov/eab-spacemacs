@@ -1,1 +1,1 @@
-# eab-dotemacs
+My emacs config is used as spacemacs private layer with [spacemacs-core layer](https://github.com/boykov/spacemacs/tree/eab-draft/layers/%2Bdistribution/spacemacs-core) (see the [discussion](https://github.com/syl20bnr/spacemacs/issues/1298).
