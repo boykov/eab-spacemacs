@@ -84,7 +84,7 @@
 		   (if (eq (point) (point-at-bol)) 0 1)))
 	  (point (point)))
       (compile-goto-error)
-      (run-with-timer 0 nil `(lambda ()
+      (run-with-timer 0.01 nil `(lambda ()
 				 (let ((cb (current-buffer)))
 				       (pop-to-buffer ,buf)
 				       (recenter ,line)
@@ -104,6 +104,6 @@
 	    (switch-to-buffer cb)
 	    (goto-char p ))))))
   (compile-goto-error)
-  (run-with-timer 0 nil 'eab/compile-goto-error-same-window-internal))
+  (run-with-timer 0.01 nil 'eab/compile-goto-error-same-window-internal))
 
 (provide 'eab-compile)
