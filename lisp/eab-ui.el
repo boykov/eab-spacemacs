@@ -13,6 +13,8 @@
 	(nil . "M-")
 	("G" . "C-M-")))
 
+(setq ring-bell-function 'ignore)
+
 ;; edit timer-idle-list
 (if (eab/ondaemon "server")
     (progn
