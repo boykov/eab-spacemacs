@@ -25,8 +25,8 @@
       (recompile arg))
     (run-with-idle-timer 0.2 nil
 			 `(lambda ()
-			    (while (< (point-max) ,point)
-				(sleep-for 0.2))
+			    ;; (while (< (point-max) ,point)
+			    ;; 	(sleep-for 0.2))
 			    (goto-line ,pos)
 			    (goto-char ,point)))))
 
