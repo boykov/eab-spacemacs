@@ -155,6 +155,7 @@
   (eab/kill-buffer eab/agenda-W-command)
   (execute-kbd-macro (read-kbd-macro "C-c a W"))
   (setq-local default-directory (expand-file-name (file-name-as-directory org-directory)))
+  ;; TODO emacs 25.1.50.2 problem with listp org-link
   (eab/kill-buffer eab/agenda-a-command)
   (execute-kbd-macro (read-kbd-macro "C-c a a"))
   (setq-local default-directory (expand-file-name (file-name-as-directory org-directory)))
