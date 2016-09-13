@@ -13,6 +13,7 @@
 (defvar eab-spacemacs-packages
   '(
   php-mode
+  sql-indent
   gnuplot
   htmlize
   spacemacs-theme
@@ -178,6 +179,8 @@ which require an initialization must be listed explicitly in the list.")
   )
 
 (defun eab-spacemacs/init-php-mode () nil)
+
+(defun eab-spacemacs/init-sql-indent () nil)
 
 (defun eab-spacemacs/init-gnuplot () nil)
 
