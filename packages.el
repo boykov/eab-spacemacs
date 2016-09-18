@@ -12,6 +12,8 @@
 
 (defvar eab-spacemacs-packages
   '(
+  general
+  which-key
   php-mode
   sql-indent
   gnuplot
@@ -177,6 +179,21 @@ which require an initialization must be listed explicitly in the list.")
   (require 'ergoemacs-translate)
   (require 'ergoemacs-functions)
   )
+
+(defun eab-spacemacs/init-general ()
+  (require 'general)
+  (general-define-key
+   :prefix "C-x d"
+   "d" '(ido-dired :which-key "ido dired")
+   "o" (ilam (dired eab/org-publish-directory))
+   "h" (ilam (dired "~/desktop"))
+   "p" (ilam (dired eab/downloads-path))
+   "t" (ilam (dired "~/tmp")))
+  (which-key-add-key-based-replacements
+    "C-x d o" "org pub dir"))
+
+(defun eab-spacemacs/init-which-key ()
+  (which-key-mode))
 
 (defun eab-spacemacs/init-php-mode () nil)
 
