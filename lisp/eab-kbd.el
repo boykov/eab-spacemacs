@@ -273,6 +273,7 @@
 (define-key eab/one-key-map (kbd "l") 'helm-locate)
 (define-key eab/one-key-map (kbd "C") 'docker-containers)
 (define-key eab/one-key-map (kbd "I") 'docker-images)
+(define-key eab/one-key-map (kbd "d") docker-command-map)
 
 ;; (global-set-key (kbd "C-.") eab/one-key-map)
 (global-set-key (kbd "C-e") eab/one-key-map)
