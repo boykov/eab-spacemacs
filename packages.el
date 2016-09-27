@@ -12,6 +12,7 @@
 
 (defvar eab-spacemacs-packages
   '(
+  ldap-mode
   general
   which-key
   php-mode
@@ -179,6 +180,8 @@ which require an initialization must be listed explicitly in the list.")
   (require 'ergoemacs-translate)
   (require 'ergoemacs-functions)
   )
+
+(defun eab-spacemacs/init-ldap-mode () nil)
 
 (defun eab-spacemacs/init-general ()
   (require 'general)
