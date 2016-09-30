@@ -30,7 +30,8 @@
 (defadvice wg-switch-to-workgroup (before eab-wg-switch-to-workgroup activate)
   (let ((workgroup (wg-current-workgroup t)))
     (if workgroup
-	(eab/wg-add-workgroup-to-history (wg-workgroup-uid workgroup)))))
+	(if (eab/wg-base? (wg-workgroup-name workgroup))
+	    (eab/wg-add-workgroup-to-history (wg-workgroup-uid workgroup))))))
 
 ;; (ad-remove-advice 'wg-switch-to-workgroup 'before 'eab-wg-set-previous-workgroup)
 ;; (ad-deactivate 'wg-switch-to-workgroup)
@@ -187,5 +188,38 @@
 
 (defun eab/wg-current-workgroup ()
   (wg-workgroup-name (wg-current-workgroup)))
+
+(defun eab/wg-create-workgroup ()
+  (interactive)
+  (wg-create-workgroup (eab/wg-new-default-workgroup-name (eab/wg-current-workgroup))))
+
+(defun eab/wg-new-default-workgroup-name (name)
+  "Return a new, unique, default workgroup name."
+  (let ((names (wg-workgroup-names t)) (index -1) result)
+    (while (not result)
+      (let ((new-name (format (concat (eab/wg-base-name name) "xxx%s") (cl-incf index))))
+        (unless (member new-name names)
+          (setq result new-name))))
+    result))
+
+(defun eab/wg-rotate-base ()
+  (interactive)
+  (let ((base (eab/wg-base-name (eab/wg-current-workgroup))))
+    (if (not (eab/wg-base? (eab/wg-current-workgroup)))
+	(let* ((num (string-to-number (cadr (split-string (eab/wg-current-workgroup) "xxx"))))
+	       (name (format (concat base "xxx%s") (+ num 1))))
+	  (if (not (member name (wg-workgroup-names t)))
+	      (wg-switch-to-workgroup (wg-get-workgroup base))
+	    (wg-switch-to-workgroup name)))
+      (let* ((name (format (concat (eab/wg-current-workgroup) "xxx0"))))
+	(if (member name (wg-workgroup-names t))
+	    (wg-switch-to-workgroup name)
+	  (message "No extra workgroups"))))))
+
+(defun eab/wg-base? (name)
+  (if (string= name (eab/wg-base-name name)) 't nil))
+
+(defun eab/wg-base-name (name)
+  (car (split-string name "xxx")))
 
 (provide 'eab-workgroups2)

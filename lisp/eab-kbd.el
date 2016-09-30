@@ -364,6 +364,7 @@
 (define-key eab/wg-map (kbd "5") (ilam (eab/wg-switch-to-workgroup ":ahmed-examples:")))
 (define-key eab/wg-map (kbd "i") (ilam (eab/wg-switch-to-workgroup ":lit:")))
 (define-key eab/wg-map (kbd "p") 'eab/wg-switch-to-previous-workgroup)
+(define-key eab/wg-map (kbd "o") 'eab/wg-rotate-base)
 (define-key eab/wg-map (kbd "P") 'eab/wg-switch-to-previous-workgroup-1)
 (define-key eab/wg-map (kbd "s") 'eab/wg-switch-to-workgroup-history) ;; +
 (define-key eab/wg-map (kbd "S") 'wg-switch-to-workgroup) ;; +
@@ -379,7 +380,8 @@
 (define-key eab/wg-map (kbd "z") 'wg-undo-wconfig-change)
 (define-key eab/wg-map (kbd "C-z") 'wg-undo-wconfig-change)
 (define-key eab/wg-map (kbd "Z") 'wg-redo-wconfig-change)
-(define-key eab/wg-map (kbd "n") 'wg-create-workgroup) ;; +
+(define-key eab/wg-map (kbd "n") 'eab/wg-create-workgroup) ;; +
+(define-key eab/wg-map (kbd "N") 'wg-create-workgroup) ;; +
 (define-key eab/wg-map (kbd "k") 'wg-kill-workgroup) ;; +
 (define-key eab/wg-map (kbd "c") (ilam (eab/wg-kill-tmp) (wg-clone-workgroup (wg-current-workgroup) ":tmp:"))) ;; +
 (define-key eab/wg-map (kbd "SPC") 'eab/wg-revert-and-update)
