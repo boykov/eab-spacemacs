@@ -7,8 +7,6 @@
 ;; Requirements: 
 ;; Status: not intended to be distributed yet
 
-(require 'docker)
-
 (require 'rec-mode)
 
 (require 'view)

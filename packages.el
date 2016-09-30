@@ -271,7 +271,9 @@ which require an initialization must be listed explicitly in the list.")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun eab-spacemacs/init-docker nil)
+(defun eab-spacemacs/init-docker ()
+  (require 'docker)
+  (define-key eab/one-key-map (kbd "d") docker-command-map))
 (defun eab-spacemacs/init-dired+ nil)
 (defun eab-spacemacs/init-dired-details nil)
 (defun eab-spacemacs/init-dired-details+ nil)
