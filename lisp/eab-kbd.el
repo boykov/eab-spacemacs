@@ -380,7 +380,7 @@
 (define-key eab/wg-map (kbd "z") 'wg-undo-wconfig-change)
 (define-key eab/wg-map (kbd "C-z") 'wg-undo-wconfig-change)
 (define-key eab/wg-map (kbd "Z") 'wg-redo-wconfig-change)
-(define-key eab/wg-map (kbd "n") 'eab/wg-create-workgroup) ;; +
+(define-key eab/wg-map (kbd "n") 'eab/wg-create-workgroup-xxx) ;; +
 (define-key eab/wg-map (kbd "N") 'wg-create-workgroup) ;; +
 (define-key eab/wg-map (kbd "k") 'wg-kill-workgroup) ;; +
 (define-key eab/wg-map (kbd "c") (ilam (eab/wg-kill-tmp) (wg-clone-workgroup (wg-current-workgroup) ":tmp:"))) ;; +

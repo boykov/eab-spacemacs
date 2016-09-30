@@ -189,7 +189,7 @@
 (defun eab/wg-current-workgroup ()
   (wg-workgroup-name (wg-current-workgroup)))
 
-(defun eab/wg-create-workgroup ()
+(defun eab/wg-create-workgroup-xxx ()
   (interactive)
   (wg-create-workgroup (eab/wg-new-default-workgroup-name (eab/wg-current-workgroup))))
 
