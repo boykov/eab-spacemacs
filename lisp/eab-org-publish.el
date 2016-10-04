@@ -116,6 +116,22 @@
 	;;  :publishing-function org-latex-publish-to-pdf
 	;;  :author-info nil
 	;;  :creator-info nil)
-	("html" :components ("html-base" "org-static"))))
+	("html" :components ("html-base" "org-static"))
+	("html-ldap"
+	 :base-directory "/home/eab/git/cc/cc-ldap-centos/docs"
+	 :publishing-directory "/home/eab/git/cc/boykov.github.io/ldap"
+	 ;; :base-url ,(concat eab/org-publish-directory-file "archive/")
+	 ;; :working-directory ,(concat eab/org-publish-directory "archive/")
+	 :online-suffix ".html"
+	 :working-suffix ".org"
+	 ;; :recursive t
+	 :section_numbers nil
+	 :table-of-contents nil
+	 :base-extension "org"
+	 :publishing-function org-html-publish-to-html
+
+	 :style-include-default t
+	 :author-info nil
+	 :creator-info nil)))
 
 (provide 'eab-org-publish)
