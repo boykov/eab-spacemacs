@@ -594,7 +594,7 @@
   (define-key magit-log-mode-map (kbd "M-n") 'nil)
   (define-key magit-log-mode-map (kbd "M-p") 'nil)
   (define-key magit-mode-map (kbd "W") (kbd "l a"))
-  (define-key magit-mode-map (kbd "Q") (kbd "l - a l = a E v g e n y SPC B  o y k o v RET l"))
+  (define-key magit-mode-map (kbd "Q") (kbd "l = a E v g e n y SPC B o y k o v RET b"))
   ;;  (ilam (execute-kbd-macro (read-kbd-macro "l - a l l")))
   (define-key magit-mode-map (kbd "J") 'magit-commit-amend)
   (define-key magit-mode-map (kbd "M-n") 'nil)
