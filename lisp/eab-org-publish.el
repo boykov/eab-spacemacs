@@ -134,4 +134,12 @@
 	 :author-info nil
 	 :creator-info nil)))
 
+(setq org-html-head-extra "
+<style type=\"text/css\">
+  pre.src:before {
+    top: -5px;
+  }
+</style>
+")
+
 (provide 'eab-org-publish)
