@@ -233,9 +233,9 @@
 (define-key eab/compile-map (kbd "p") 'eab/ido-wmctrl-pdf)
 (define-key eab/compile-map (kbd "i") (ilam (eab/switch-wmctrl-window "Ying05ahigh-order.pdf")))
 (define-key eab/compile-map (kbd "3") (ilam (eab/switch-wmctrl-window "boykov-2013-pnu.pdf")))
-(define-key eab/compile-map (kbd "c") (ilam (execute-kbd-macro (read-kbd-macro "C-l ESC a (projectile-compile-project SPC nil) RET ESC SPC ESC h ESC X make SPC clear RET"))))
-(define-key eab/compile-map (kbd "t") (ilam (execute-kbd-macro (read-kbd-macro "C-l ESC a (projectile-compile-project SPC nil) RET ESC SPC ESC h ESC X make SPC test RET"))))
-(define-key eab/compile-map (kbd "2") (ilam (execute-kbd-macro (read-kbd-macro "C-l ESC a (projectile-compile-project SPC nil) RET ESC SPC ESC h ESC X make SPC test2 RET"))))
+(define-key eab/compile-map (kbd "c") (ilam (execute-kbd-macro (read-kbd-macro "C-d d ESC SPC ESC h ESC X make SPC clear RET"))))
+(define-key eab/compile-map (kbd "t") (ilam (execute-kbd-macro (read-kbd-macro "C-d d ESC SPC ESC h ESC X make SPC test RET"))))
+(define-key eab/compile-map (kbd "2") (ilam (execute-kbd-macro (read-kbd-macro "C-d d ESC SPC ESC h ESC X make SPC test2 RET"))))
 
 
 (defvar eab/one-key-map (make-sparse-keymap)
