@@ -1,5 +1,10 @@
 (require 'org-src)
 
+(defun eab/detangle ()
+  (interactive)
+  (save-window-excursion
+    (org-babel-detangle)))
+
 (defun eab/tangle-init ()
   "Function is used in init.org, testbedhub"
   (org-babel-tangle)
