@@ -2,8 +2,20 @@
 
 (require 'dired-async)
 
-(setq dired-listing-switches "-al --group-directories-first -h")
 (setq dired-dwim-target 't)
+
+(setq dired-listing-switches "-al -h")
+(setq eab/dired-group-directories-off t)
+
+(defun eab/dired-group-directories-toggle ()
+  (interactive)
+  (if eab/dired-group-directories-off
+      (progn
+	(setq dired-listing-switches "-al --group-directories-first -h")
+	(setq eab/dired-group-directories-off nil))
+    (progn
+      (setq dired-listing-switches "-al -h")
+      (setq eab/dired-group-directories-off 't))))
 
 (defun eab/make-list-paths (&optional arg)
   "In dired-mode set last kill-ring value to full paths of marked files like Total Commander. (e.g)
