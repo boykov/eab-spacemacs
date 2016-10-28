@@ -1,5 +1,7 @@
 ;; require dired
 
+(require 'dired-async)
+
 (setq dired-listing-switches "-al --group-directories-first -h")
 (setq dired-dwim-target 't)
 
