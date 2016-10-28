@@ -117,7 +117,14 @@
 	;;  :author-info nil
 	;;  :creator-info nil)
 	("html" :components ("html-base" "org-static"))
-	("html-ldap"
+	("html-ldap-static"
+	 :base-directory "/home/eab/git/cc/cc-ldap-centos/docs/"
+	 :base-extension "png"
+	 :publishing-directory "/home/eab/git/cc/boykov.github.io/ldap"
+	 :recursive t
+	 :publishing-function org-publish-attachment
+	 )
+	("html-ldap-base"
 	 :base-directory "/home/eab/git/cc/cc-ldap-centos/docs"
 	 :publishing-directory "/home/eab/git/cc/boykov.github.io/ldap"
 	 ;; :base-url ,(concat eab/org-publish-directory-file "archive/")
@@ -132,7 +139,8 @@
 
 	 :style-include-default t
 	 :author-info nil
-	 :creator-info nil)))
+	 :creator-info nil)
+	("html-ldap" :components ("html-ldap-base" "html-ldap-static"))))
 
 (setq org-html-head-extra "
 <style type=\"text/css\">
