@@ -868,7 +868,7 @@
   (define-key term-raw-map (kbd "C-e") 'nil)
   (define-key term-raw-map (kbd "C-o") 'nil)
   (define-key term-raw-map (kbd "C-h") 'nil)
-  (define-key term-raw-map (kbd "C-c s") 'nil)
+  ;; (define-key term-raw-map (kbd "C-c s") 'nil)
   (define-key term-raw-map (kbd "M-1") 'nil)
   (define-key term-raw-map (kbd "C-r") 'term-send-raw)
   (define-key term-raw-map (kbd "M-r") 'eab/append-this-line)
