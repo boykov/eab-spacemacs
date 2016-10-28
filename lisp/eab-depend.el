@@ -94,6 +94,7 @@
 (require 'tramp)
 (eab/bind-path tramp-persistency-file-name)
 (setq tramp-default-method "ssh")
+(add-to-list 'tramp-remote-path 'tramp-own-remote-path)
 
 (require 'comint)
 
