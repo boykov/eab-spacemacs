@@ -124,19 +124,27 @@
 	 :recursive t
 	 :publishing-function org-publish-attachment
 	 )
-	("html-ldap-base"
-	 :base-directory "/home/eab/git/cc/cc-ldap-centos/docs"
-	 :publishing-directory "/home/eab/git/cc/boykov.github.io/ldap"
-	 ;; :base-url ,(concat eab/org-publish-directory-file "archive/")
-	 ;; :working-directory ,(concat eab/org-publish-directory "archive/")
+	("modem"
+	 :base-directory "/home/eab/git/eab-auto/org"
+	 :publishing-directory "/home/eab/git/cc/boykov.github.io/modem"
 	 :online-suffix ".html"
 	 :working-suffix ".org"
-	 ;; :recursive t
 	 :section_numbers nil
 	 :table-of-contents nil
 	 :base-extension "org"
 	 :publishing-function org-html-publish-to-html
-
+	 :style-include-default t
+	 :author-info nil
+	 :creator-info nil)
+	("html-ldap-base"
+	 :base-directory "/home/eab/git/cc/cc-ldap-centos/docs"
+	 :publishing-directory "/home/eab/git/cc/boykov.github.io/ldap"
+	 :online-suffix ".html"
+	 :working-suffix ".org"
+	 :section_numbers nil
+	 :table-of-contents nil
+	 :base-extension "org"
+	 :publishing-function org-html-publish-to-html
 	 :style-include-default t
 	 :author-info nil
 	 :creator-info nil)
