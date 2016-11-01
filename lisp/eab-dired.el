@@ -1,7 +1,7 @@
 ;; require dired
 
 (require 'dired-async)
-
+(dired-async-mode)
 (setq dired-dwim-target 't)
 
 (setq dired-listing-switches "-al -h")
