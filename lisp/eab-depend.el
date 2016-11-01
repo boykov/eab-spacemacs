@@ -51,7 +51,7 @@
 (setq 
  mark-ring-max 64
  global-mark-ring-max 64
- history-length 1000
+ history-length 5000
  kill-ring-max 500
  eshell-history-size 1000
  )
