@@ -96,6 +96,15 @@
 (setq tramp-default-method "ssh")
 (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
 
+(defun eab/tramp-docker-cleanup ()
+  (interactive)
+  (tramp-cleanup-connection
+   (tramp-dissect-file-name
+    (concat "/docker:"
+	    (car (progn
+		   (docker-utils-select-if-empty)
+		   (docker-utils-get-marked-items-ids))) ":"))))
+
 (require 'comint)
 
 (require 'gnuplot)
