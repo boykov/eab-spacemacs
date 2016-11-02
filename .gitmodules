@@ -1,27 +1,27 @@
 [submodule "extensions/eab-misc"]
-	path = extensions/eab-misc
+	path = local/eab-misc
 	url = http://github.com/boykov/eab-misc
 [submodule "extensions/eab-ace-jump-mode"]
-	path = extensions/eab-ace-jump-mode
+	path = local/eab-ace-jump-mode
 	url = http://github.com/boykov/ace-jump-mode
 [submodule "extensions/eab-avy"]
-	path = extensions/eab-avy
+	path = local/eab-avy
 	url = http://github.com/boykov/avy
 [submodule "extensions/org-link-minor-mode"]
-	path = extensions/org-link-minor-mode
+	path = local/org-link-minor-mode
 	url = http://github.com/seanohalpin/org-link-minor-mode.git
 [submodule "extensions/bbdb"]
-	path = extensions/bbdb
+	path = local/bbdb
 	url = http://github.com/boykov/bbdb.git
 [submodule "extensions/pymacs"]
-	path = extensions/pymacs
+	path = local/pymacs
 	url = http://github.com/pinard/Pymacs.git
 [submodule "extensions/yasnippet-snippets"]
-	path = extensions/yasnippet-snippets
+	path = local/yasnippet-snippets
 	url = https://github.com/AndreaCrotti/yasnippet-snippets
 [submodule "extensions/eev-current"]
-	path = extensions/eev-current
+	path = local/eev-current
 	url = https://github.com/boykov/eev-current.git
 [submodule "extensions/eab-org-mode"]
-	path = extensions/eab-org-mode
+	path = local/eab-org-mode
 	url = git@github.com:boykov/org-mode.git
