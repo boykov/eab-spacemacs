@@ -153,7 +153,7 @@
 (setq-put eab/tmp-ps "/tmp/tmp.ps")
 
 (setq-put eab/eeansi-path (expand-file-name "~/.eev/eeansi.sh"))
-(setq-put eab/eegchannel-path (expand-file-name (concat user-emacs-directory "private/eab-spacemacs/extensions/eev-current/eegchannel")))
+(setq-put eab/eegchannel-path (expand-file-name (concat user-emacs-directory "private/eab-spacemacs/local/eev-current/eegchannel")))
 
 
 (setq-put abbrev-file-name (concat (eab/history-dir) ".abbrev_defs"))
@@ -172,7 +172,7 @@
 
 
 (setq-put custom-file (concat user-emacs-directory "custom.el"))
-(setq-put eab/emaxima-path (concat user-emacs-directory "private/eab-spacemacs/extensions/eab-misc/emaxima"))
+(setq-put eab/emaxima-path (concat user-emacs-directory "private/eab-spacemacs/local/eab-misc/emaxima"))
 
 (setq-put auto-save-list-file-prefix (concat (eab/history-dir) "auto-save-list/.saves-"))
 
@@ -219,7 +219,7 @@
 (setq-put tramp-persistency-file-name (concat (eab/history-dir) "tramp"))
 (setq-put url-configuration-directory (concat (eab/history-dir) "url/"))
 
-(setq-put eab/yasnippets-path (concat user-emacs-directory "private/eab-spacemacs/extensions/yasnippet-snippets"))
+(setq-put eab/yasnippets-path (concat user-emacs-directory "private/eab-spacemacs/local/yasnippet-snippets"))
 (setq-put eab/eab-snippets-path (concat user-emacs-directory "private/eab-spacemacs/snippets"))
 
 ;; DONE похоже, из-за bbdb-loaddefs подгружается еще один путь,
