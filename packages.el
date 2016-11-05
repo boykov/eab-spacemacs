@@ -12,10 +12,9 @@
 
 (defvar eab-spacemacs-packages
   '(
-  web-mode
+  projectile
   ldap-mode
   general
-  which-key
   php-mode
   sql-indent
   gnuplot
@@ -24,7 +23,6 @@
   ergoemacs-mode
   key-chord
   auto-dictionary ;; switcher for flyspell
-  auto-complete ;; depend
   ;; auto-complete-emacs-lisp ;; no melpa depend auto-complete
   howdoi
   ac-dabbrev
@@ -63,7 +61,6 @@
   undo-tree
   ;; workgroups
   edit-list
-  yasnippet
 
   docker
   dired+
@@ -192,7 +189,7 @@ which require an initialization must be listed explicitly in the list.")
   (require 'ergoemacs-functions)
   )
 
-(defun eab-spacemacs/init-web-mode () nil)
+(defun eab-spacemacs/init-projectile () nil)
 
 (defun eab-spacemacs/init-ldap-mode () nil)
 
@@ -207,9 +204,6 @@ which require an initialization must be listed explicitly in the list.")
    "t" (ilam (dired "~/tmp")))
   (which-key-add-key-based-replacements
     "C-x d o" "org pub dir"))
-
-(defun eab-spacemacs/init-which-key ()
-  (which-key-mode))
 
 (defun eab-spacemacs/init-php-mode () nil)
 
@@ -228,7 +222,6 @@ which require an initialization must be listed explicitly in the list.")
   (use-package auto-dictionary))
 
 (defun eab-spacemacs/init-spacemacs-theme nil)
-(defun eab-spacemacs/init-auto-complete nil)
 (defun eab-spacemacs/init-howdoi nil)
 (defun eab-spacemacs/init-ac-dabbrev nil)
 (defun eab-spacemacs/init-etags-table nil)
@@ -279,8 +272,6 @@ which require an initialization must be listed explicitly in the list.")
 	       :config
 	       (progn
 		 )))
-
-(defun eab-spacemacs/init-yasnippet nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

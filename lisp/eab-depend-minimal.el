@@ -57,5 +57,6 @@
 				     '(org-delete-char
 				       org-self-insert-command)))
 
+(which-key-mode)
 
 (provide 'eab-depend-minimal)
