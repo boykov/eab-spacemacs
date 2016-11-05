@@ -278,17 +278,6 @@
 (global-set-key (kbd "C-e") eab/one-key-map)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defvar eab/dired-map (make-sparse-keymap)
-  "keymap for fast dired")
-
-(define-key eab/dired-map (kbd "d") 'ido-dired)
-(define-key eab/dired-map (kbd "o") (ilam (dired eab/org-publish-directory)))
-(define-key eab/dired-map (kbd "h") (ilam (dired "~/desktop")))
-(define-key eab/dired-map (kbd "s") (ilam (dired "~/share")))
-(define-key eab/dired-map (kbd "p") (ilam (dired eab/downloads-path)))
-(define-key eab/dired-map (kbd "t") (ilam (dired "~/tmp")))
-
-(global-set-key (kbd "C-x d") eab/dired-map)
 
 (global-set-key (kbd "C-x r b")
 		(lambda ()

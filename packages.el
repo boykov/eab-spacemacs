@@ -194,16 +194,7 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-ldap-mode () nil)
 
 (defun eab-spacemacs/init-general ()
-  (require 'general)
-  (general-define-key
-   :prefix "C-x d"
-   "d" '(ido-dired :which-key "ido dired")
-   "o" (ilam (dired eab/org-publish-directory))
-   "h" (ilam (dired "~/desktop"))
-   "p" (ilam (dired eab/downloads-path))
-   "t" (ilam (dired "~/tmp")))
-  (which-key-add-key-based-replacements
-    "C-x d o" "org pub dir"))
+  (require 'general))
 
 (defun eab-spacemacs/init-php-mode () nil)
 
@@ -510,6 +501,15 @@ which require an initialization must be listed explicitly in the list.")
   (use-package eab-org-latex)
   (use-package eab-org-reftex)
   (global-set-key (kbd "C-h c") 'describe-key-briefly)
+  (global-set-key (kbd "C-x d") nil)
+  (general-define-key
+   :prefix "C-x d"
+   "d" '(ido-dired :which-key "ido-dired")
+   "o" `(,(ilam (dired eab/org-publish-directory)) :which-key ,eab/org-publish-directory)
+   "h" `(,(ilam (dired "~/desktop")) :which-key "~/desktop")
+   "s" `(,(ilam (dired "~/share")) :which-key "~/share")
+   "p" `(,(ilam (dired eab/downloads-path)) :which-key ,eab/downloads-path)
+   "t" `(,(ilam (dired "~/tmp")) :which-key "~/tmp"))
   )
 
 (defun eab-spacemacs/init-eab-ace-jump-mode ()
