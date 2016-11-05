@@ -16,8 +16,6 @@
 
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 (add-to-list 'load-path (concat user-emacs-directory "private/eab-spacemacs/lisp"))
-(add-to-list 'load-path (concat user-emacs-directory "elpa/use-package-20151112.1439/"))
-(add-to-list 'load-path (concat user-emacs-directory "elpa/bind-key-20150321.213/"))
 (add-to-list 'load-path (concat user-emacs-directory "elpa/evil-20160827.1510/"))
 
 
@@ -226,5 +224,4 @@
 ;; который отличается в символе /. А потом еще и auctex аналогично.
 ;; DONE какой-то из доп. пакетов el-get в eab-packages ломает подсветку: оказалось, это дело в 8.0.3 версии org-mode
 
-(require 'use-package)
-(use-package eab-kbd)
+(require' eab-kbd)
