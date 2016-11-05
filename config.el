@@ -16,7 +16,6 @@
 
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 (add-to-list 'load-path (concat user-emacs-directory "private/eab-spacemacs/lisp"))
-(add-to-list 'load-path (concat user-emacs-directory "elpa/evil-20160827.1510/"))
 
 
 (defun eab/loaded-ok ()
