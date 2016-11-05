@@ -519,7 +519,6 @@ which require an initialization must be listed explicitly in the list.")
 
 (defun eab-spacemacs/init-eab-ace-jump-mode ()
   (evil-mode -1)
-  (global-set-key (kbd "M-m") 'sp-forward-sexp)
   (use-package ace-jump-mode)
   )
 
