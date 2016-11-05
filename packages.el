@@ -509,6 +509,7 @@ which require an initialization must be listed explicitly in the list.")
   (use-package eab-hron-lib)
   (use-package eab-org-latex)
   (use-package eab-org-reftex)
+  (global-set-key (kbd "C-h c") 'describe-key-briefly)
   )
 
 (defun eab-spacemacs/init-eab-ace-jump-mode ()
