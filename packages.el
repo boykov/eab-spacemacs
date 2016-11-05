@@ -142,6 +142,9 @@
   org-ehtml
   noflet
   minimap
+  markdown-mode
+  auto-complete
+  yasnippet
   logito
   kv
   jira
@@ -348,6 +351,9 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-org-ehtml nil)
 (defun eab-spacemacs/init-noflet nil)
 (defun eab-spacemacs/init-minimap nil)
+(defun eab-spacemacs/init-markdown-mode nil)
+(defun eab-spacemacs/init-auto-complete nil)
+(defun eab-spacemacs/init-yasnippet nil)
 (defun eab-spacemacs/init-logito nil)
 (defun eab-spacemacs/init-kv nil)
 (defun eab-spacemacs/init-jira nil)
