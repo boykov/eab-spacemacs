@@ -565,6 +565,8 @@
 (eab/add-hook markdown-mode-hook eab/markdown-hook
   (define-key markdown-mode-map (kbd "C-M-b") 'nil)
   (define-key markdown-mode-map (kbd "C-M-f") 'nil)
+  (define-key markdown-mode-map (kbd "M-l") 'nil)
+  (define-key markdown-mode-map (kbd "M-i") 'nil)
   (define-key markdown-mode-map (kbd "M-n") 'nil)
   (define-key markdown-mode-map (kbd "M-p") 'nil)
   (define-key markdown-mode-map (kbd "<tab>") 'nil))
