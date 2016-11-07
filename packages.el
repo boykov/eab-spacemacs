@@ -169,16 +169,15 @@
   ;; anything-ipython
   ;; anything-extension
   ;; anything-complete
-    (eab-misc :location local)
-    (eab-ace-jump-mode :location local)
-    (eab-avy :location local)
-    (eab-org-mode/lisp :location local)
-    (eab-org-mode/contrib/lisp :location local) ;; for htmlize.el
-    (eev-current :location local)
-    (bbdb/lisp :location local)
-    (org-link-minor-mode :location local)
-    (pymacs :location local)
-
+  (eab-misc :location local)
+  (eab-ace-jump-mode :location local)
+  (eab-avy :location local)
+  (eab-org-mode/lisp :location local)
+  (eab-org-mode/contrib/lisp :location local) ;; for htmlize.el
+  (eev-current :location local)
+  (bbdb/lisp :location local)
+  (org-link-minor-mode :location local)
+  (pymacs :location local)
   )
   "List of all packages to install and/or initialize. Built-in packages
 which require an initialization must be listed explicitly in the list.")
@@ -191,25 +190,21 @@ which require an initialization must be listed explicitly in the list.")
   (require 'ergoemacs-functions)
   )
 
-(defun eab-spacemacs/init-projectile () nil)
-
-(defun eab-spacemacs/init-ldap-mode () nil)
+(defun eab-spacemacs/init-projectile nil)
+(defun eab-spacemacs/init-ldap-mode nil)
 
 (defun eab-spacemacs/init-general ()
   (require 'general))
 
-(defun eab-spacemacs/init-php-mode () nil)
-
-(defun eab-spacemacs/init-sql-indent () nil)
-
-(defun eab-spacemacs/init-gnuplot () nil)
-
-(defun eab-spacemacs/init-htmlize () nil)
+(defun eab-spacemacs/init-php-mode nil)
+(defun eab-spacemacs/init-sql-indent nil)
+(defun eab-spacemacs/init-gnuplot nil)
+(defun eab-spacemacs/init-htmlize nil)
 
 (defun eab-spacemacs/init-key-chord ()
   (use-package key-chord
-	       :init
-	       (setq key-chord-two-keys-delay 0.05)))
+    :init
+    (setq key-chord-two-keys-delay 0.05)))
 
 (defun eab-spacemacs/init-auto-dictionary ()
   (use-package auto-dictionary))
@@ -240,11 +235,13 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-git-commit nil)
 (defun eab-spacemacs/init-magit-annex nil)
 (defun eab-spacemacs/init-magit-filenotify nil)
+
 (defun eab-spacemacs/init-orgit nil
   ;; TODO cancel rev-export disabling
   (require 'orgit)
   (defun orgit-rev-export (path desc format))
   )
+
 (defun eab-spacemacs/init-auctex nil)
 (defun eab-spacemacs/init-org-agenda-property nil)
 (defun eab-spacemacs/init-region-bindings-mode nil)
@@ -271,6 +268,7 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-docker ()
   (require 'docker)
   (define-key eab/one-key-map (kbd "d") docker-command-map))
+
 (defun eab-spacemacs/init-dired+ nil)
 (defun eab-spacemacs/init-dired-details nil)
 (defun eab-spacemacs/init-dired-details+ nil)
@@ -373,57 +371,11 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-clojure-mode nil)
 (defun eab-spacemacs/init-browse-kill-ring nil)
 (defun eab-spacemacs/init-bm nil)
-
-;; For each package, define a function eab/init-<package-eab>
-;;
-;; (defun eab-spacemacs/init-my-package ()
-;;   "Initialize my package"
-;;   )
-;;
-;; Often the body of an initialize function uses `use-package'
-;; For more info on `use-package', see readme:
-;; https://github.com/jwiegley/use-package
-
-
-
-;;; extensions.el --- eab Layer extensions File for Spacemacs
-;;
-;; Copyright (c) 2012-2014 Sylvain Benner
-;; Copyright (c) 2014-2015 Sylvain Benner & Contributors
-;;
-;; Author: Sylvain Benner <sylvain.benner@gmail.com>
-;; URL: https://github.com/syl20bnr/spacemacs
-;;
-;; This file is not part of GNU Emacs.
-;;
-;;; License: GPLv3
-
-(defvar eab-spacemacs-pre-extensions
-  '(
-    ;; pre extension eabs go here
-    )
-  "List of all extensions to load before the packages.")
-
-(defvar eab-spacemacs-post-extensions
-  '(
-    ;; post extension eabs go here
-    )
-  "List of all extensions to load after the packages.")
-
-(defun eab-spacemacs/init-pymacs ()
-  )
-
-(defun eab-spacemacs/init-org-link-minor-mode ()
-  )
-
-(defun eab-spacemacs/init-eev-current ()
-  )
-
-(defun eab-spacemacs/init-bbdb/lisp ()
-  )
-
-(defun eab-spacemacs/init-eab-misc ()
-  )
+(defun eab-spacemacs/init-pymacs nil)
+(defun eab-spacemacs/init-org-link-minor-mode nil)
+(defun eab-spacemacs/init-eev-current nil)
+(defun eab-spacemacs/init-bbdb/lisp nil)
+(defun eab-spacemacs/init-eab-misc nil)
 
 (defun eab-spacemacs/init-eab-org-mode/lisp ()
   (require 'org)
@@ -545,12 +497,13 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-eab-avy ()
   (use-package avy))
 
-;; For each extension, define a function eab/init-<extension-eab>
+;; For each package, define a function eab/init-<package-eab>
 ;;
-;; (defun eab-spacemacs/init-my-extension ()
-;;   "Initialize my extension"
+;; (defun eab-spacemacs/init-my-package ()
+;;   "Initialize my package"
 ;;   )
 ;;
 ;; Often the body of an initialize function uses `use-package'
 ;; For more info on `use-package', see readme:
 ;; https://github.com/jwiegley/use-package
+
