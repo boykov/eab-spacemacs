@@ -218,26 +218,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Keymaps
 
-(defvar eab/compile-map (make-sparse-keymap)
-  "Compile keymap.")
-
-(define-key eab/compile-map (kbd "q") 'eab/nocommand)
-(define-key eab/compile-map (kbd "a") 'eab/compile-helm)
-(define-key eab/compile-map (kbd "d") 'projectile-compile-project)
-(define-key eab/compile-map (kbd "s") 'smart-compile)
-(define-key eab/compile-map (kbd "l") (ilam (TeX-command "LaTeX" 'TeX-master-file)))
-(define-key eab/compile-map (kbd "b") (ilam (TeX-command "BibTeX" 'TeX-master-file)))
-(define-key eab/compile-map (kbd "L") (ilam (TeX-command "LaTeX" 'TeX-master-file)))
-(define-key eab/compile-map (kbd "v") (ilam (eab/switch-wmctrl-window "main.pdf")))
-;; (define-key eab/compile-map (kbd "b") (ilam (eab/switch-wmctrl-window "BoykovEA_5.pdf")))
-(define-key eab/compile-map (kbd "p") 'eab/ido-wmctrl-pdf)
-(define-key eab/compile-map (kbd "i") (ilam (eab/switch-wmctrl-window "Ying05ahigh-order.pdf")))
-(define-key eab/compile-map (kbd "3") (ilam (eab/switch-wmctrl-window "boykov-2013-pnu.pdf")))
-(define-key eab/compile-map (kbd "c") (ilam (execute-kbd-macro (read-kbd-macro "C-d d ESC SPC ESC h ESC X make SPC clear RET"))))
-(define-key eab/compile-map (kbd "t") (ilam (execute-kbd-macro (read-kbd-macro "C-d d ESC SPC ESC h ESC X make SPC test RET"))))
-(define-key eab/compile-map (kbd "2") (ilam (execute-kbd-macro (read-kbd-macro "C-d d ESC SPC ESC h ESC X make SPC test2 RET"))))
-
-
 (defvar eab/one-key-map (make-sparse-keymap)
   "One-key keymap.")
 
@@ -423,7 +403,6 @@
 (global-set-key (kbd "<f6>") 'eab/revert-buffer)
 (global-set-key (kbd "<print>") 'eab/make-list-paths)
 (global-set-key (kbd "<kp-end>") (ilam (switch-to-buffer eab/agenda-H-command)))
-(global-set-key (kbd "C-d") eab/compile-map)
 (global-set-key (kbd "C-,") 'eab/eepitch-this-line)
 (global-set-key (kbd "C-r") 'eab/eepitch-this-line)
 (global-set-key (kbd "M-DEL") 'eab/completion-at-point)
