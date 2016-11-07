@@ -405,7 +405,7 @@ which require an initialization must be listed explicitly in the list.")
   (require 'htmlize)
   )
 
-(defun eab-spacemacs/init-eab-dotemacs/lisp-1 ()
+(defun eab-spacemacs/user-config ()
   (use-package eab-workgroups2)
   (use-package eab-ui-minimal)
   (use-package eab-shell)

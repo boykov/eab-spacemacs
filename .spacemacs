@@ -148,7 +148,7 @@ user code."
   "Configuration function.
  This function is called at the very end of Spacemacs initialization after
 layers configuration."
-  (eab-spacemacs/init-eab-dotemacs/lisp-1))
+  (eab-spacemacs/user-config))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
