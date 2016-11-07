@@ -427,6 +427,7 @@ which require an initialization must be listed explicitly in the list.")
 
 (defun eab-spacemacs/init-eab-org-mode/lisp ()
   (require 'org)
+  (require 'org-crypt)
   (require 'org-habit)
   (require 'org-id)
   (require 'org-agenda)
