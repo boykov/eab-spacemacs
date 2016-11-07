@@ -110,24 +110,7 @@
 	    ))
 ;; See also eab-header in ~/texmf/tex/latex/eab-styles/eab-header.sty
 
-
-;; (eab/print-0 (wg-workgroup-names))
-
-(defun eab/wg-create-workgroup (path)
-  (let* ((true-path (file-truename path))
-	 (nondir (file-name-nondirectory true-path))
-	 (name (concat ":" nondir ":")))
-    (wg-create-workgroup name)
-    (dired true-path)
-    (eab/wg-update-workgroup)))
-
-;; TODO можно использовать `gr list` вместо wg/*: все-равно вручную
-;; пополняю оба эти списка хотя, симлинки требуют меньше зависимостей
-;; (на чистой системе это важно)
-(defun eab/create-workgroups ()
-  (interactive)
-  (mapcar 'eab/wg-create-workgroup
-	  (file-expand-wildcards "~/git/auto/wg/*")))
+(setq-put eab/wg-path "~/git/auto/wg/*")
 
 (setq-put eab/wg-update-list
 	  '(("~/.emacs.d/" ":.emacs.d:")
