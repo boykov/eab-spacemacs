@@ -544,7 +544,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; add-hook
 
-(eab/add-hook docker-containers-mode eab/docker-containers-hook
+(eab/add-hook docker-containers-mode-hook eab/docker-containers-hook
   (define-key docker-containers-mode-map (kbd "c") 'eab/tramp-docker-cleanup))
 
 (eab/add-hook rec-mode-hook eab/rec-hook
