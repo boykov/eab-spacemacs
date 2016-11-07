@@ -135,7 +135,6 @@
   xml-rpc
   web
   string-edit
-  smart-operator
   redo+
   pcache
   org-plus-contrib
@@ -342,7 +341,6 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-xml-rpc nil)
 (defun eab-spacemacs/init-web nil)
 (defun eab-spacemacs/init-string-edit nil)
-(defun eab-spacemacs/init-smart-operator nil)
 (defun eab-spacemacs/init-redo+ nil)
 (defun eab-spacemacs/init-pcache nil)
 (defun eab-spacemacs/init-org-plus-contrib nil)
