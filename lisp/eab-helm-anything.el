@@ -45,10 +45,10 @@
 			 anything-c-source-extended-command-history
 			 ))
 
-(setq helm-sources '(helm-c-source-buffers-list
-		     helm-c-source-file-name-history
-		     helm-c-source-files-in-current-dir
-		     helm-c-source-complex-command-history
+(setq helm-sources '(helm-source-buffers-list
+		     helm-source-file-name-history
+		     helm-source-files-in-current-dir
+		     helm-source-complex-command-history
 		     ))
 
 (ignore-errors
