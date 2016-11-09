@@ -266,8 +266,7 @@ which require an initialization must be listed explicitly in the list.")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun eab-spacemacs/init-docker ()
-  (require 'docker)
-  (define-key eab/one-key-map (kbd "d") docker-command-map))
+  (require 'docker))
 
 (defun eab-spacemacs/init-dired+ nil)
 (defun eab-spacemacs/init-dired-details nil)
@@ -462,6 +461,7 @@ which require an initialization must be listed explicitly in the list.")
   (use-package eab-org-latex)
   (use-package eab-org-reftex)
   (global-set-key (kbd "C-h c") 'describe-key-briefly)
+  (define-key eab/one-key-map (kbd "d") docker-command-map)
   (global-set-key (kbd "C-x d") nil)
   (general-define-key
    :prefix "C-x d"
