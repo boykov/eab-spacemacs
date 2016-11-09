@@ -201,12 +201,6 @@
 (define-key minibuffer-local-map (kbd "M-K") 'next-matching-history-element)
 (define-key minibuffer-local-map (kbd "M-v") 'nil)
 
-(define-key kmacro-keymap "m" 'kmacro-start-macro)
-(define-key kmacro-keymap "," 'kmacro-end-or-call-macro-repeat)
-(define-key kmacro-keymap "i" 'kmacro-insert-counter)
-(define-key kmacro-keymap "s" 'kmacro-set-counter)
-(define-key kmacro-keymap "v" 'insert-kbd-macro)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;	 _  __
 ;;	| |/ /___ _   _	_ __ ___   __ _	_ __  ___

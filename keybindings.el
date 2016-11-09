@@ -1,5 +1,13 @@
 (use-package eab-kbd)
 
+(general-define-key
+ :keymaps 'kmacro-keymap
+ "m" 'kmacro-start-macro
+ "," 'kmacro-end-or-call-macro-repeat
+ "i" 'kmacro-insert-counter
+ "s" 'kmacro-set-counter
+ "v" 'insert-kbd-macro)
+
 (global-set-key (kbd "C-d") nil)
 (general-define-key
  :prefix "C-d"
