@@ -218,45 +218,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Keymaps
 
-(defvar eab/one-key-map (make-sparse-keymap)
-  "One-key keymap.")
-
-(define-key eab/one-key-map (kbd "b") 'maplev-cmaple-send-buffer)
-(define-key eab/one-key-map (kbd "t") 'eab/switch-eepitch-target)
-(define-key eab/one-key-map (kbd "a") (ilam (eepitch-ansi-term "1")))
-(define-key eab/one-key-map (kbd "1") (ilam (eepitch-ansi-term "1")))
-(define-key eab/one-key-map (kbd "2") (ilam (eepitch-ansi-term "2")))
-(define-key eab/one-key-map (kbd "3") (ilam (eepitch-ansi-term "3")))
-(define-key eab/one-key-map (kbd "4") (ilam (eepitch-ansi-term "4")))
-(define-key eab/one-key-map (kbd "5") (ilam (eepitch-ansi-term "5")))
-(define-key eab/one-key-map (kbd "6") (ilam (eepitch-ansi-term "6")))
-(define-key eab/one-key-map (kbd "7") (ilam (eepitch-ansi-term "7")))
-(define-key eab/one-key-map (kbd "8") (ilam (eepitch-ansi-term "8")))
-(define-key eab/one-key-map (kbd "9") (ilam (eepitch-ansi-term "9")))
-(define-key eab/one-key-map (kbd "c") 'eab/switch-compile)
-(define-key eab/one-key-map (kbd "x") 'nil)
-(define-key eab/one-key-map (kbd "h") 'eab/switch-help)
-(define-key eab/one-key-map (kbd "z") 'undo-tree-visualize)
-(define-key eab/one-key-map (kbd "s") 'eab/switch-async)
-(define-key eab/one-key-map (kbd "p") 'eepitch-python)
-(define-key eab/one-key-map (kbd "P") 'eepitch-php)
-(define-key eab/one-key-map (kbd "i") 'eepitch-ipython)
-(define-key eab/one-key-map (kbd "m") 'eab/switch-message)
-(define-key eab/one-key-map (kbd "k") (ilam (eepitch-kill)))
-(define-key eab/one-key-map (kbd "M") 'eepitch-maxima)
-(define-key eab/one-key-map (kbd "@") 'eepitch-maple)
-(define-key eab/one-key-map (kbd "f") 'eepitch-shell-cluster)
-(define-key eab/one-key-map (kbd "o") 'proced)
-(define-key eab/one-key-map (kbd "-") 'eepitch-sage-python)
-(define-key eab/one-key-map (kbd "g") 'eab/switch-grep)
-(define-key eab/one-key-map (kbd "G") 'eab/kill-last-grep)
-(define-key eab/one-key-map (kbd "l") 'helm-locate)
-(define-key eab/one-key-map (kbd "C") 'docker-containers)
-(define-key eab/one-key-map (kbd "I") 'docker-images)
-
-;; (global-set-key (kbd "C-.") eab/one-key-map)
-(global-set-key (kbd "C-e") eab/one-key-map)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (global-set-key (kbd "C-x r b")
