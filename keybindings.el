@@ -1,5 +1,17 @@
 (use-package eab-kbd)
 
+(defvar eab/layer0 (make-sparse-keymap)
+  "Keymap for minimal configuration")
+
+(general-define-key
+ :keymaps 'eab/layer0
+ "M-z" 'undo
+ "C-b" 'switch-to-buffer
+ "M-a" 'execute-extended-command
+ "C-t" 'transpose-sexps
+ "M-m" 'forward-sexp
+ "M-n" 'backward-sexp)
+
 (general-define-key
  :keymaps 'kmacro-keymap
  "m" 'kmacro-start-macro
