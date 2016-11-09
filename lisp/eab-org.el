@@ -23,6 +23,8 @@
 (require 'tex)
 (require 'tex-site)
 
+(setq org-odt-display-outline-level 1)
+
 (eab/bind-path org-directory)
 (eab/bind-path eab/org-publish-directory)
 (eab/bind-path eab/org-publish-directory-file)
