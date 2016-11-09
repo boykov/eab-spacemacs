@@ -99,7 +99,7 @@
   (interactive)
   (let ((wg-target (wg-read-workgroup-name)))
     (wg-kill-ring-save-working-wconfig (wg-current-workgroup))
-    (call-interactively 'wg-revert-workgroup)
+    (call-interactively 'eab/wg-revert-workgroup)
     (wg-switch-to-workgroup wg-target)
     (with-output-to-string (wg-yank-wconfig)))
   (message "eab/wg-revert-and-update finished."))
