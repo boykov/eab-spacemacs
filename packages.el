@@ -119,6 +119,7 @@
   git-annex
   websocket
   org-jekyll
+  org-redmine
   pkg-info
   epl
   s
@@ -324,6 +325,10 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-git-annex nil)
 (defun eab-spacemacs/init-websocket nil)
 (defun eab-spacemacs/init-org-jekyll nil)
+
+(defun eab-spacemacs/init-org-redmine ()
+  (require 'org-redmine))
+
 (defun eab-spacemacs/init-pkg-info nil)
 (defun eab-spacemacs/init-epl nil)
 (defun eab-spacemacs/init-s nil)
