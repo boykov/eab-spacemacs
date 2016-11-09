@@ -461,6 +461,7 @@ which require an initialization must be listed explicitly in the list.")
   (use-package eab-org-latex)
   (use-package eab-org-reftex)
   (global-set-key (kbd "C-h c") 'describe-key-briefly)
+  (global-set-key (kbd "M-O") 'forward-paragraph)
   (general-define-key
    :prefix "C-e"
    "d" docker-command-map)
