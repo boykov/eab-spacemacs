@@ -38,15 +38,6 @@
 
 ;; check inet connection first
 (eab/bind-path eab/check-inet-path)
-(if (eq (if (boundp 'eab/check-inet-path) (shell-command eab/check-inet-path)) 0)
-    (auto-install-update-emacswiki-package-name t))
-(auto-install-compatibility-setup) ;; for install-elisp users
-;; 1. M-x auto-install-batch RET
-;; 2. Input “anything”
-
-;; DONE после перезагрузки firefox
-;; about:config -> accesskeys -> toggle toggle
-;; shell: ru (TAB) l (TAB)
 
 (key-chord-mode 1) ; TODO заедает, если не в конце dotemacs, не включается по-умолчанию (или выключается из-за чего-то)
 (yas-reload-all)
