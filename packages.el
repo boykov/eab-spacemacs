@@ -465,6 +465,8 @@ which require an initialization must be listed explicitly in the list.")
   (general-define-key
    :prefix "C-e"
    "d" docker-command-map)
+  (defvar eab/dired-map (make-sparse-keymap)
+    "keymap for fast dired")
   (global-set-key (kbd "C-x d") nil)
   (general-define-key
    :prefix "C-x d"

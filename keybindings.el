@@ -2,7 +2,6 @@
 
 (defvar eab/layer0 (make-sparse-keymap)
   "Keymap for minimal configuration")
-
 (general-define-key
  :keymaps 'eab/layer0
  "M-z" 'undo
@@ -20,6 +19,8 @@
  "s" 'kmacro-set-counter
  "v" 'insert-kbd-macro)
 
+(defvar eab/compile-map (make-sparse-keymap)
+  "Compile keymap.")
 (global-set-key (kbd "C-d") nil)
 (general-define-key
  :prefix "C-d"
@@ -38,6 +39,8 @@
  "2" `(,(ilam (execute-kbd-macro (read-kbd-macro "C-d d ESC SPC ESC h ESC X make SPC test2 RET"))) :which-key ""))
 (setq eab/compile-map (lookup-key global-map (kbd "C-d")))
 
+(defvar eab/one-key-map (make-sparse-keymap)
+  "One-key keymap.")
 (global-set-key (kbd "C-e") nil)
 (general-define-key
  :prefix "C-e"
