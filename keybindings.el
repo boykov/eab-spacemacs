@@ -77,3 +77,70 @@
  "C" 'docker-containers
  "I" 'docker-images)
 (setq eab/one-key-map (lookup-key global-map (kbd "C-e")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; TODO таки приходим постепенно к модальным режимам, как в vim
+;; альтернативой может служить специальный minor-mode, в котором
+;; нужная функциональность, например навигация org-mode работает
+;; вместо обычной на j i k l, а обычная навигация M-i, M-k... временно
+;; доступна через более сложные сочетания. Еще вариант - аналогично
+;; region-bindings-mode, когда включается minor-mode, в котором
+;; сочетания имеют другое значение. Можно использовать прямые хоткеи
+;; и, например, J I K L для org-shift.. За основу можно взять
+;; https://github.com/edwtjo/evil-org-mode/blob/master/evil-org.el
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defvar eab/wg-map (make-sparse-keymap)
+  "Keymap for workgroups operations.")
+(global-set-key (kbd "C-a") nil)
+(general-define-key
+ :prefix "C-a"
+ ;;  "b" `(,(ilam (switch-to-buffer "&bitlbee")) :which-key "")
+ "g" `(,(ilam (eab/wg-switch-to-workgroup ":gsie:")) :which-key "")
+ "f" `(,(ilam (eab/wg-switch-to-workgroup ":ccfebras:")) :which-key "")
+ "b" `(,(ilam (eab/wg-switch-to-workgroup ":abiem:")) :which-key "")
+ "j" `(,(ilam (eab/wg-switch-to-workgroup ":jac:")) :which-key "")
+ "t" `(,(ilam (eab/wg-switch-to-workgroup ":testbed:")) :which-key "")
+ "m" `(,(ilam (eab/wg-switch-to-workgroup ":dbsym:")) :which-key "")
+ "C-e" `(,(ilam (eab/wg-switch-to-workgroup ":dotspace:")) :which-key "")
+ "e" `(,(ilam (eab/wg-switch-to-workgroup ":eab-spacemacs:")) :which-key "")
+ "d" `(,(ilam (eab/wg-switch-to-workgroup ":spacemacs:")) :which-key "")
+ "l" `(,(ilam (eab/wg-switch-to-workgroup ":cc:")) :which-key "")
+ "a" `(,(ilam (eab/wg-switch-to-workgroup ":clock:")) :which-key ":clock:")
+ "4" `(,(ilam (eab/wg-switch-to-workgroup ":mail:")) :which-key "")
+ "5" `(,(ilam (eab/wg-switch-to-workgroup ":ahmed-examples:")) :which-key "")
+ "i" `(,(ilam (eab/wg-switch-to-workgroup ":lit:")) :which-key "")
+ "p" 'eab/wg-switch-to-previous-workgroup
+ "o" 'eab/wg-rotate-base
+ "P" 'eab/wg-switch-to-previous-workgroup-1
+ "s" 'eab/wg-switch-to-workgroup-history ;; +
+ "S" 'wg-switch-to-workgroup ;; +
+ "x" 'wg-kill-ring-save-working-config ;; wg-kill-ring-save-working-wconfig
+ "v" 'wg-yank-config ;; wg-yank-wconfig
+ "r" 'eab/wg-revert-workgroup
+ "R" 'wg-revert-workgroup ;; +
+ "u" 'eab/wg-update-workgroup ;; eab/wg-update-workgroup
+ "U" 'wg-save-session ;; wg-update-workgroup
+ ;;  "S" 'eab/eab-wg-save
+ ;;  "L" 'eab/eab-wg-load
+ ;; TODO wg-make-workgroups-mode-map
+ "z" 'wg-undo-wconfig-change
+ "C-z" 'wg-undo-wconfig-change
+ "Z" 'wg-redo-wconfig-change
+ "n" 'eab/wg-create-workgroup-xxx ;; +
+ "N" 'wg-create-workgroup ;; +
+ "k" 'wg-kill-workgroup ;; +
+ "c" `(,(ilam (eab/wg-kill-tmp) (wg-clone-workgroup (wg-current-workgroup) ":tmp:")) :which-key "") ;; +
+ "SPC" 'eab/wg-revert-and-update
+ "w" 'twit
+ ;;  "e" `(,(ilam (eab/twit-search "emacs")) :which-key "")
+ "[" `(,(ilam (eab/twit-search "хазин")) :which-key "")
+ "]" `(,(ilam (eab/twit-search "фурсов")) :which-key "")
+ ;;  "s" 'bmkp-cycle ;; TODO сделать обертку, выбирающую navlist в соответствии с группой
+ ;;  "t" `(,(ilam (bmkp-choose-navlist-of-type "any")) :which-key "")
+ ;; DONE по имени буфера: нарушение SPOT!
+ "h" `(,(ilam (switch-to-buffer eab/agenda-H-command)) :which-key "")
+ "1" `(,(ilam (switch-to-buffer eab/agenda-a-command)) :which-key "")
+ "W" `(,(ilam (switch-to-buffer eab/agenda-W-command)) :which-key "")
+ "M" `(,(ilam (switch-to-buffer eab/agenda-M-command)) :which-key "")
+ "C-s" `(,(ilam (switch-to-buffer "*Sauron*")) :which-key ""))
+(setq eab/wg-map (lookup-key global-map (kbd "C-a")))
