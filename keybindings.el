@@ -376,7 +376,7 @@
  "M-h" 'eab/send-csum-all-remote
  "v" 'eab/org-insert-link-fast
  "." (kbd "C-c . RET")
- "M-." (kbd "C-c . RET C-l RET C-l l")
+ "M-." `(,(ilam (execute-kbd-macro (read-kbd-macro "C-c . RET C-l RET C-l l"))) :which-key "")
  "O" 'esc-toggle-window-selectability
  "D" 'toggle-window-dedicated
  "<tab>" (ilam (progn (show-all) (run-hook-with-args 'org-cycle-hook 'all)))
