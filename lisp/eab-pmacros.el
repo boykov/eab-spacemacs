@@ -27,6 +27,19 @@
 
 
 (;--------------------------- power-macros ---------------------------
+ ;---------------C-l n g - specific for emacs-lisp-mode---------------
+ ;--------------------------------------------------------------------
+	pm-def-macro
+	'define2general
+	'emacs-lisp-mode "ng"
+	""
+	"general- ESC m RET :keymaps SPC ' ESC m RET ESC f ESC f ESC f ESC f
+ ESC f ESC m ESC f ESC ; define RET ESC n"
+ ;--------------------------------------------------------------------
+)
+
+
+(;--------------------------- power-macros ---------------------------
  ;------------------s - specific for org-agenda-mode------------------
  ;--------------------------------------------------------------------
 	pm-def-macro
@@ -135,3 +148,4 @@
 	"ESC : :end RET ESC SPC ESC ; :cloc RET ESC k ESC h ESC X"
  ;--------------------------------------------------------------------
 )
+
