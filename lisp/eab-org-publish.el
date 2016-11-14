@@ -124,9 +124,9 @@
 	 :recursive t
 	 :publishing-function org-publish-attachment
 	 )
-	("modem"
+	("manual"
 	 :base-directory "/home/eab/git/eab-auto/org"
-	 :publishing-directory "/home/eab/git/cc/boykov.github.io/modem"
+	 :publishing-directory "/home/eab/git/cc/boykov.github.io/manual"
 	 :online-suffix ".html"
 	 :working-suffix ".org"
 	 :section_numbers nil
