@@ -59,8 +59,9 @@
 
 (defun eab/switch-grep-prev (arg)
   (interactive "P")
-  (if arg (kill-buffer))
-  (switch-to-buffer (grep-a-lot-prev-buffer) nil 't)
+  (let ((buf (grep-a-lot-prev-buffer)))
+    (if arg (kill-buffer))
+    (switch-to-buffer buf nil 't))
   (grep-a-lot-set-current-buffer))
 
 (defun eab/switch-eepitch-target ()
