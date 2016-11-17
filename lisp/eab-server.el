@@ -16,25 +16,25 @@
 (defun eab/org-publish-current-file-remote ()
   (interactive)
   (let* ((name (buffer-file-name))
-	 (body `(progn
+	 (body `(lambda ()
 		  (require 'server)
 		  (server-eval-at "serverN" '(progn
 					       (auto-revert-buffers)
 					       (org-publish-file ,name)))
 		  )))
-    (eval `(async-eval
-	       (lambda (result) (message "async result: <%s>" result))
-	     ,body))))
+    (eval `(async-start
+	       ,body
+	     (lambda (result) (message "async result: <%s>" result))))))
 
 (defun eab/org-publish-html ()
   (interactive)
   (org-publish-remove-all-timestamps)
-  (async-eval
-      (lambda (result) (sauron-add-event 'eab 3 (concat "async result: <" result ">")))
-    (progn
+  (async-start
+    (lambda ()
       (require 'server)
       (server-eval-at "serverN" '(progn
 				   (org-publish-project "html" 't)
-				   (org-publish-project "html-clock" 't))))))
+				   (org-publish-project "html-clock" 't))))
+    (lambda (result) (sauron-add-event 'eab 3 (concat "async result: <" result ">")))))
 
 (provide 'eab-server)

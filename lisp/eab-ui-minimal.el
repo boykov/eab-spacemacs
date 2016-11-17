@@ -4,7 +4,7 @@
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 
-;; Requirements: ansi-color, moz, autorevert, async-eval
+;; Requirements: ansi-color, moz, autorevert, async
 ;; Status: not intended to be distributed yet
 
 (eab/bind-path custom-file)
@@ -19,7 +19,7 @@
 ;; TODO with notify my workflow breaks
 (setq auto-revert-use-notify nil)
 
-(require 'async-eval)
+(require 'async)
 
 (require 'ansi-color)
 (setq ansi-color-names-vector [zenburn-bg zenburn-red zenburn-green zenburn-yellow zenburn-blue zenburn-magenta zenburn-cyan zenburn-fg])

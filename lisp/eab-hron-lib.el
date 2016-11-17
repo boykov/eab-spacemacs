@@ -32,16 +32,16 @@
 ;; DONE get-buffer по имени буфера: нарушение SPOT!
 (defun eab/update-agenda ()
   (interactive)
-  (async-eval
-    (lambda (result) (message "async result: <%s>" result))
-  (progn
-    (require 'server)
-    (server-eval-at
-     "server"
-     '(progn
-	(auto-revert-buffers)
-	(eab/renew-agenda)
-	)))))
+  (async-start
+      (lambda ()
+	(require 'server)
+	(server-eval-at
+	 "server"
+	 '(progn
+	    (auto-revert-buffers)
+	    (eab/renew-agenda)
+	    )))
+    (lambda (result) (message "async result: <%s>" result))))
 
 (defun eab/org-sort-time-func ()
   (ignore-errors
@@ -506,9 +506,8 @@
   ;; (eab/shell-command "wmctrl -a \"emacs@\"")
   (let ((fname (if arg 'eab/check-csum-all 'eab/check-csum-all-GREP)))
     (funcall
-     `(lambda () (async-eval
-		     (lambda (result) (message "async result: <%s>" result))
-		   (progn
+     `(lambda () (async-start
+		   (lambda ()
 		     (require 'server)
 		     (sleep-for 1)
 		     (server-eval-at "serverN" '(progn
@@ -516,7 +515,8 @@
 						  (,fname)
 						  (eab/send-csum-all)
 						  ))
-		     (kill-emacs)))))))
+		     (kill-emacs))
+		   (lambda (result) (message "async result: <%s>" result)))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

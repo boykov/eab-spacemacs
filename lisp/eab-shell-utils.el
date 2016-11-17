@@ -4,7 +4,7 @@
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 
-;; Requirements: async-eval abbrev
+;; Requirements: async abbrev
 ;; Status: not intended to be distributed yet
 
 ;; (shell-command "xmodmap -e 'keycode 135 = Hyper_R'")
@@ -122,12 +122,12 @@
 (defun eab/shell-translate-remote (phrase)
   (interactive)
   (funcall `(lambda ()
-	      (async-eval
-		  (lambda (result)
-		    (message "async result: <%s>" result)
-		    (define-abbrev eab-abbrev-table ,phrase result))
-		(progn
+	      (async-start
+		(lambda ()
 		  (require 'server)
-		  (server-eval-at "serverN" '(eab/shell-translate ,phrase 't)))))))
+		  (server-eval-at "serverN" '(eab/shell-translate ,phrase 't)))
+		(lambda (result)
+		    (message "async result: <%s>" result)
+		    (define-abbrev eab-abbrev-table ,phrase result))))))
 
 (provide 'eab-shell-utils)
