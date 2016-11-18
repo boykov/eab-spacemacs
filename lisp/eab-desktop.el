@@ -17,18 +17,6 @@
 				   )))
 ;; see also eab-appt.el
 
-(defun reload-dot-emacs ()
-  "Save the .emacs buffer if needed, then reload .emacs."
-  (interactive)
-  (desktop-save (concat (eab/desktop-dir) ""))
-  (let ((dot-emacs (concat user-emacs-directory "init.el")))
-    (and (get-file-buffer dot-emacs)
-         (save-buffer (get-file-buffer dot-emacs)))
-    (load-file dot-emacs))
-  (message "Re-initialized!"))
-;; (desktop-read (concat (eab/desktop-dir) "")) ;; можно управлять историей между сеансами
-;; (eab/wg-load (concat (eab/desktop-dir) ".emacs_workgroups"))
-
 (defun eab/desktop-ignore-workgroups-mode (desktop-buffer-file-name)
        "Function to ignore workgroups-mode minor modes during restore of buffers"
        nil)
