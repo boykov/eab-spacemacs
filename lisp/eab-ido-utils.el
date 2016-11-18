@@ -19,11 +19,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; (lambda ()
-;;   (interactive)
-;;   (bookmark-jump
-;;    (ido-completing-read "Jump to bookmark: " (bookmark-all-names))))
-
 (defun eab/ido-at-point-1 (word)
   (insert (ido-completing-read "Ido at point: " (ac-symbol-candidates) nil nil word)))
 
