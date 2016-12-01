@@ -1310,6 +1310,7 @@
      "s"	(ilam (eab/or-self-insert 'gnugol-search-selection))
      "ы"	(ilam (eab/or-self-insert 'gnugol-search-selection))
      "e"	'mc/edit-lines
+     "у"	'mc/edit-lines
      "x"	(ilam (eab/or-self-insert 'kill-rectangle))
      "ч"	(ilam (eab/or-self-insert 'kill-rectangle)) ;; TODO возможные проблемы с раскладками
      "A"	(ilam
