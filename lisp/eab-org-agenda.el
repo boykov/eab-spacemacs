@@ -15,7 +15,8 @@
   (remove-if
    (lambda (s) (or (string= s (concat org-directory "archive/archive.org"))
 		   (string= s (concat org-directory "clock/level-0.org"))
-		   (member s (file-expand-wildcards (concat org-directory "clock/*arch.org")))))
+		   ;; (member s (file-expand-wildcards (concat org-directory "clock/*arch.org")))
+		   ))
    (append
     (file-expand-wildcards (concat org-directory "archive/*.org"))
     (file-expand-wildcards (concat org-directory "clock/*.org")))))
