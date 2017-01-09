@@ -5,12 +5,18 @@
 (eab/patch-this-code
  'dired-async-create-files
  "(require 'cl-lib) (require 'dired-aux) (require 'dired-x)"
- (concat "(require 'cl-lib) (require 'dired-aux) (require 'dired-x)
- (add-to-list 'load-path \""
-	 (file-name-directory
+ (let ((print-quoted 't))
+   (prin1-to-string
+    `(progn
+       (require 'cl-lib)
+       (require 'dired-aux)
+       (require 'dired-x)
+       (add-to-list
+	'load-path
+	,(file-name-directory
 	  (buffer-file-name
-	   (car (find-function-noselect 'docker-tramp-add-method)))) "\")
- (require 'docker-tramp)") 't)
+	   (car (find-function-noselect 'docker-tramp-add-method)))))
+       (require 'docker-tramp)))) 't)
 
 (dired-async-mode)
 (setq dired-dwim-target 't)
