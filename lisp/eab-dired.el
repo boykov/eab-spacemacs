@@ -16,6 +16,8 @@
 	,(file-name-directory
 	  (buffer-file-name
 	   (car (find-function-noselect 'docker-tramp-add-method)))))
+       (require 'tramp)
+       (add-to-list 'tramp-methods ',eab/sussh)
        (require 'docker-tramp)))) 't)
 
 (dired-async-mode)

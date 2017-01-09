@@ -95,19 +95,7 @@
 (eab/bind-path tramp-persistency-file-name)
 (setq tramp-default-method "ssh")
 (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
-
-(add-to-list 'tramp-methods
-  '("sussh"
-    (tramp-login-program        "sudo ssh")
-    (tramp-login-args           (("-l" "%u") ("-p" "%p") ("%c")
-				 ("-e" "none") ("-t" "-t") ("%h") ("/bin/sh")))
-    (tramp-async-args           (("-q")))
-    (tramp-remote-shell         "/bin/sh")
-    (tramp-remote-shell-args    ("-c"))
-    (tramp-gw-args              (("-o" "GlobalKnownHostsFile=/dev/null")
-				 ("-o" "UserKnownHostsFile=/dev/null")
-				 ("-o" "StrictHostKeyChecking=no")))
-    (tramp-default-port         22)))
+(add-to-list 'tramp-methods eab/sussh)
 
 (defun eab/tramp-docker-cleanup ()
   (interactive)

@@ -10,6 +10,19 @@
 (require 'log-edit)
 ;; (require 'ergoemacs-mode)
 
+(setq eab/sussh
+      '("sussh"
+	(tramp-login-program        "sudo ssh")
+	(tramp-login-args           (("-l" "%u") ("-p" "%p") ("%c")
+				     ("-e" "none") ("-t" "-t") ("%h") ("/bin/sh")))
+	(tramp-async-args           (("-q")))
+	(tramp-remote-shell         "/bin/sh")
+	(tramp-remote-shell-args    ("-c"))
+	(tramp-gw-args              (("-o" "GlobalKnownHostsFile=/dev/null")
+				     ("-o" "UserKnownHostsFile=/dev/null")
+				     ("-o" "StrictHostKeyChecking=no")))
+	(tramp-default-port         22)))
+
 (require 'undo-tree)
 (global-undo-tree-mode)
 
