@@ -128,7 +128,7 @@
  "M-u"		'backward-word
  "M-v"		'yank
  "M-x"		'kill-region
- "M-y"		'god-mode-all
+ ;; "M-y"		'god-mode-all
  "s-,"		'kmacro-end-or-call-macro-repeat
  "s-."		nil
  "s-m"		'kmacro-keymap
