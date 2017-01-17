@@ -43,7 +43,7 @@
 	      ("Q" "all" tags "+CLOCKSUM<=\"0:25\"+CLOCKSUM>\"0:05\"-ARCHIVE-noagenda" nil)
 	      ("O" "eab/very-old" tags "-ARCHIVE-noagenda" ((org-agenda-skip-function 'eab/very-old)))
 	      ("H" "Chrono" tags "-ARCHIVE-noagenda" ((org-agenda-skip-function 'eab/skip-old)))
-	      ("W" "Work" tags "+w1c-ARCHIVE-noagenda" ((org-agenda-skip-function 'eab/skip-old)))
+	      ("W" "Work" tags-todo "+w1c")
 	      ("M" "Work" tags "+media" ((org-agenda-skip-function 'eab/skip-old)))
 	      ("D" "Day" tags "+CLOCK>=\"<-2d>\"+CLOCK<=\"<-1d>\"-ARCHIVE-noagenda" nil)
 	      ("J" "Chrono" tags "LEVEL<5+CLOCK>=\"<-5d>\"-ARCHIVE-noagenda" nil)
