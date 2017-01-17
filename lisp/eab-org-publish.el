@@ -136,6 +136,18 @@
 	 :style-include-default t
 	 :author-info nil
 	 :creator-info nil)
+	("mercury"
+	 :base-directory "/ssh:boykov@mercury.febras.net:/home/boykov/install/mercury-ldap"
+	 :publishing-directory "/ssh:eab@localhost#19999:/home/eab/share/writehere"
+	 :online-suffix ".html"
+	 :working-suffix ".org"
+	 :section_numbers nil
+	 :table-of-contents nil
+	 :base-extension "org"
+	 :publishing-function org-html-publish-to-html
+	 :style-include-default t
+	 :author-info nil
+	 :creator-info nil)
 	("html-ldap-base"
 	 :base-directory "/home/eab/git/cc/cc-ldap-centos/docs"
 	 :publishing-directory "/home/eab/git/cc/boykov.github.io/ldap"
