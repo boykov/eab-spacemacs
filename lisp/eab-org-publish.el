@@ -170,4 +170,7 @@
 </style>
 ")
 
+(if (eab/ondaemon "server")
+    (setq org-html-htmlize-output-type 'css))
+
 (provide 'eab-org-publish)
