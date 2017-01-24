@@ -12,6 +12,7 @@
 
 (defvar eab-spacemacs-packages
   '(
+  el-patch
   projectile
   ldap-mode
   general
@@ -190,6 +191,7 @@ which require an initialization must be listed explicitly in the list.")
   (require 'ergoemacs-functions)
   )
 
+(defun eab-spacemacs/init-el-patch nil)
 (defun eab-spacemacs/init-projectile nil)
 (defun eab-spacemacs/init-ldap-mode nil)
 
