@@ -12,6 +12,9 @@
 
 (defvar eab-spacemacs-packages
   '(
+  vagrant
+  vagrant-tramp
+  csv-mode
   el-patch
   projectile
   ldap-mode
@@ -191,6 +194,9 @@ which require an initialization must be listed explicitly in the list.")
   (require 'ergoemacs-functions)
   )
 
+(defun eab-spacemacs/init-vagrant nil)
+(defun eab-spacemacs/init-vagrant-tramp nil)
+(defun eab-spacemacs/init-csv-mode nil)
 (defun eab-spacemacs/init-el-patch nil)
 (defun eab-spacemacs/init-projectile nil)
 (defun eab-spacemacs/init-ldap-mode nil)
