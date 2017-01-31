@@ -44,7 +44,7 @@
   dictionary
   sauron
   magit
-  magit-filenotify ;; needs emacs 24.4 with file-notify-support
+;;  magit-filenotify ;; needs emacs 24.4 with file-notify-support
   git-commit
   ;;	git-rebase ;; see in magit
   magit-annex
@@ -243,7 +243,7 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-magit nil)
 (defun eab-spacemacs/init-git-commit nil)
 (defun eab-spacemacs/init-magit-annex nil)
-(defun eab-spacemacs/init-magit-filenotify nil)
+;; (defun eab-spacemacs/init-magit-filenotify nil)
 
 (defun eab-spacemacs/init-orgit nil
   ;; TODO cancel rev-export disabling
