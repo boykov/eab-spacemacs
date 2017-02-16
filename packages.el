@@ -12,6 +12,7 @@
 
 (defvar eab-spacemacs-packages
   '(
+  tramp-term
   vagrant
   vagrant-tramp
   csv-mode
@@ -194,6 +195,8 @@ which require an initialization must be listed explicitly in the list.")
   (require 'ergoemacs-functions)
   )
 
+(defun eab-spacemacs/init-tramp-term ()
+    (require 'tramp-term))
 (defun eab-spacemacs/init-vagrant nil)
 (defun eab-spacemacs/init-vagrant-tramp nil)
 (defun eab-spacemacs/init-csv-mode nil)
