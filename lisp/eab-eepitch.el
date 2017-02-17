@@ -9,7 +9,8 @@
 (eab/bind-path eab/ipython-path)
 
 (defun eab/run-ansi (prog buf)
-  (let ((buffer (get-buffer (concat "*" buf "*"))))
+  (let ((buffer (get-buffer (concat "*" buf "*")))
+	(default-directory "~/"))
     (if buffer
         (switch-to-buffer-other-window buffer)
       (ansi-term prog buf))))
