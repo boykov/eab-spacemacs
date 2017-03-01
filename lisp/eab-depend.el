@@ -231,6 +231,7 @@
 ;;		       	       	       	      
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(add-to-list 'auto-mode-alist '("\\.tmpl$" . conf-mode))
 (add-to-list 'auto-mode-alist '("\\.m$" . octave-mode))
 (add-to-list 'auto-mode-alist '("AUTOEXEC\\." . 'bat-mode))
 (add-to-list 'auto-mode-alist '("CONFIG\\." . 'bat-mode))
