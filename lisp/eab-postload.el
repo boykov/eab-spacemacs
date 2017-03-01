@@ -30,6 +30,7 @@
   (sauron-org-start)
   (sauron-twittering-stop)
   (wg-change-modeline)
+  (key-chord-mode 1) ; DONE заедает, если не в конце dotemacs, не включается по-умолчанию (или выключается из-за чего-то)
   )
 
 (if (and (eab/ondaemon "server") (not noninteractive))
@@ -39,7 +40,6 @@
 ;; check inet connection first
 (eab/bind-path eab/check-inet-path)
 
-(key-chord-mode 1) ; TODO заедает, если не в конце dotemacs, не включается по-умолчанию (или выключается из-за чего-то)
 (yas-reload-all)
 
 
