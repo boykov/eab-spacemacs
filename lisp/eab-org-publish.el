@@ -138,7 +138,19 @@
 	 :creator-info nil)
 	("mercury"
 	 :base-directory "/ssh:boykov@mercury.febras.net:/home/boykov/install/mercury-ldap"
-	 :publishing-directory "/ssh:eab@localhost#19999:/home/eab/share/writehere"
+	 :publishing-directory "/ssh:eab@microkairos:/home/eab/share/writehere"
+	 :online-suffix ".html"
+	 :working-suffix ".org"
+	 :section_numbers nil
+	 :table-of-contents nil
+	 :base-extension "org"
+	 :publishing-function org-html-publish-to-html
+	 :style-include-default t
+	 :author-info nil
+	 :creator-info nil)
+	("p8.cluster-base"
+	 :base-directory "/ssh:eab@p8.cluster:/home/eab/xcat-conf/docs"
+	 :publishing-directory "/ssh:eab@microkairos:/home/eab/share/writehere"
 	 :online-suffix ".html"
 	 :working-suffix ".org"
 	 :section_numbers nil
@@ -160,7 +172,8 @@
 	 :style-include-default t
 	 :author-info nil
 	 :creator-info nil)
-	("html-ldap" :components ("html-ldap-base" "html-ldap-static"))))
+	("html-ldap" :components ("html-ldap-base" "html-ldap-static"))
+	("p8.cluster" :components ("p8.cluster-base"))))
 
 (setq org-html-head-extra "
 <style type=\"text/css\">
