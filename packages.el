@@ -12,6 +12,10 @@
 
 (defvar eab-spacemacs-packages
   '(
+  yaml-mode
+  ansible
+  ansible-doc
+  ansible-vault
   tramp-term
   vagrant
   vagrant-tramp
@@ -195,8 +199,14 @@ which require an initialization must be listed explicitly in the list.")
   (require 'ergoemacs-functions)
   )
 
+(defun eab-spacemacs/init-yaml-mode ()
+  (use-package yaml-mode))
+(defun eab-spacemacs/init-ansible ())
+(defun eab-spacemacs/init-ansible-doc ())
+(defun eab-spacemacs/init-ansible-vault ())
+
 (defun eab-spacemacs/init-tramp-term ()
-    (require 'tramp-term))
+    (use-package tramp-term))
 (defun eab-spacemacs/init-vagrant nil)
 (defun eab-spacemacs/init-vagrant-tramp nil)
 (defun eab-spacemacs/init-csv-mode nil)
@@ -205,7 +215,7 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-ldap-mode nil)
 
 (defun eab-spacemacs/init-general ()
-  (require 'general))
+  (use-package general))
 
 (defun eab-spacemacs/init-php-mode nil)
 (defun eab-spacemacs/init-sql-indent nil)
@@ -278,7 +288,7 @@ which require an initialization must be listed explicitly in the list.")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun eab-spacemacs/init-docker ()
-  (require 'docker))
+  (use-package docker))
 
 (defun eab-spacemacs/init-dired+ nil)
 (defun eab-spacemacs/init-dired-details nil)

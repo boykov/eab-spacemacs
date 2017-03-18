@@ -231,6 +231,7 @@
 ;;		       	       	       	      
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
 (add-to-list 'auto-mode-alist '("\\.dired$" . dired-virtual-mode))
 (add-to-list 'auto-mode-alist '("\\.tmpl$" . conf-mode))
 (add-to-list 'auto-mode-alist '("\\.m$" . octave-mode))

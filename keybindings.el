@@ -491,7 +491,7 @@
  ;;  "b"	`(,(ilam (switch-to-buffer "&bitlbee")) :which-key "")
  "g"		`(,(ilam (eab/wg-switch-to-workgroup ":gsie:")) :which-key "")
  "f"		`(,(ilam (eab/wg-switch-to-workgroup ":ccfebras:")) :which-key "")
- "b"		`(,(ilam (eab/wg-switch-to-workgroup ":abiem:")) :which-key "")
+ "b"		`(,(ilam (eab/wg-switch-to-workgroup ":baikal:")) :which-key "")
  "j"		`(,(ilam (eab/wg-switch-to-workgroup ":jac:")) :which-key "")
  "t"		`(,(ilam (eab/wg-switch-to-workgroup ":testbed:")) :which-key "")
  "m"		`(,(ilam (eab/wg-switch-to-workgroup ":dbsym:")) :which-key "")
