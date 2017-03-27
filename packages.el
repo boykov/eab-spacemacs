@@ -12,6 +12,7 @@
 
 (defvar eab-spacemacs-packages
   '(
+  puppet-mode
   yaml-mode
   ansible
   ansible-doc
@@ -199,6 +200,8 @@ which require an initialization must be listed explicitly in the list.")
   (require 'ergoemacs-functions)
   )
 
+(defun eab-spacemacs/init-puppet-mode ()
+  (use-package puppet-mode))
 (defun eab-spacemacs/init-yaml-mode ()
   (use-package yaml-mode))
 (defun eab-spacemacs/init-ansible ())
