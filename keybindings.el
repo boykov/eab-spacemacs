@@ -549,6 +549,14 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; add-hook
 
+(eab/add-hook git-rebase-mode-hook eab/git-rebase-hook
+  (general-define-key
+   :keymaps 'git-rebase-mode-map
+   "d"  	'git-rebase-kill-line
+   "p"  	'git-rebase-pick
+   "M-n"	'git-rebase-move-line-down
+   "M-p"	'git-rebase-move-line-up))
+
 (eab/add-hook docker-containers-mode-hook eab/docker-containers-hook
   (general-define-key
    :keymaps 'docker-containers-mode-map
