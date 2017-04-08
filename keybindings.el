@@ -1091,7 +1091,7 @@
    "C-c C-w"	'dired-do-rename
    "C-w"	'wdired-change-to-wdired-mode
    "b"		'browse-url-of-dired-file
-   "o"		'eab/dired-find-file-other-window
+   "o"		'dired-find-file-other-window
    "C-|"	'eab/dired-see-file
    "s-SPC"	'eab/dired-see-file
    "E"		'ediff-files
