@@ -236,6 +236,11 @@
 	    (wg-switch-to-workgroup name)
 	  (message "No extra workgroups"))))))
 
+(defun eab/wg-rotate-twice ()
+  (interactive)
+  (eab/wg-rotate-base)
+  (eab/wg-rotate-base))
+
 (defun eab/wg-base? (name)
   (if (string= name (eab/wg-base-name name)) 't nil))
 

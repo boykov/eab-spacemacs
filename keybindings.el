@@ -505,6 +505,7 @@
  "i"		`(,(ilam (eab/wg-switch-to-workgroup ":lit:")) :which-key "")
  "p"		'eab/wg-switch-to-previous-workgroup
  "o"		'eab/wg-rotate-base
+ "O"		'eab/wg-rotate-twice
  "P"		'eab/wg-switch-to-previous-workgroup-1
  "s"		'eab/wg-switch-to-workgroup-history ;; +
  "S"		'wg-switch-to-workgroup ;; +
