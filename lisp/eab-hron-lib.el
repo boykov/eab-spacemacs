@@ -26,7 +26,8 @@
     ;; (org-mobile-push)
     (eab/shell-command "git stash save batch")
     (sleep-for 1)
-    (eab/update-agenda)))
+    ;; (eab/update-agenda)
+    ))
     ;; (delete-frame nil 'force)))
 
 ;; DONE get-buffer по имени буфера: нарушение SPOT!
