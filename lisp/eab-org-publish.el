@@ -148,8 +148,8 @@
 	 :style-include-default t
 	 :author-info nil
 	 :creator-info nil)
-	("p8.cluster-base"
-	 :base-directory "/ssh:eab@p8.cluster:/home/eab/xcat-conf/docs"
+	("jupiter-base"
+	 :base-directory "/ssh:eab@jupiter:/home/eab/xcat-conf/docs"
 	 :publishing-directory "/ssh:eab@microkairos:/home/eab/share/writehere"
 	 :online-suffix ".html"
 	 :working-suffix ".org"
@@ -173,7 +173,7 @@
 	 :author-info nil
 	 :creator-info nil)
 	("html-ldap" :components ("html-ldap-base" "html-ldap-static"))
-	("p8.cluster" :components ("p8.cluster-base"))))
+	("jupiter" :components ("jupiter-base"))))
 
 (setq org-html-head-extra "
 <style type=\"text/css\">
