@@ -231,6 +231,10 @@
 ;;		       	       	       	      
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(add-to-list 'auto-mode-alist '("/\\.ssh/config\\'"     . ssh-config-mode))
+(add-to-list 'auto-mode-alist '("/sshd?_config\\'"      . ssh-config-mode))
+(add-to-list 'auto-mode-alist '("/known_hosts\\'"       . ssh-known-hosts-mode))
+(add-to-list 'auto-mode-alist '("/authorized_keys2?\\'" . ssh-authorized-keys-mode))
 (add-to-list 'auto-mode-alist '("\\.textile\\'" . textile-mode))
 (add-to-list 'auto-mode-alist '("\\.redmine\\'" . restclient-mode))
 (add-to-list 'auto-mode-alist '("\\.pp\\'" . puppet-mode))

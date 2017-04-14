@@ -12,6 +12,7 @@
 
 (defvar eab-spacemacs-packages
   '(
+  ssh-config-mode
   textile-mode
   puppet-mode
   yaml-mode
@@ -201,6 +202,9 @@ which require an initialization must be listed explicitly in the list.")
   (require 'ergoemacs-functions)
   )
 
+(defun eab-spacemacs/init-ssh-config-mode ()
+  ;; TODO copy ssh-config-keywords.txt
+  (use-package ssh-config-mode))
 (defun eab-spacemacs/init-textile-mode ()
   (use-package textile-mode)
   (set-face-foreground 'textile-link-face "sky blue")
