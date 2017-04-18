@@ -75,6 +75,7 @@
   edit-list
 
   docker
+  docker-tramp
   dired+
   dired-details
   dired-details+
@@ -301,6 +302,9 @@ which require an initialization must be listed explicitly in the list.")
 
 (defun eab-spacemacs/init-docker ()
   (use-package docker))
+
+(defun eab-spacemacs/init-docker-tramp ()
+  (use-package docker-tramp))
 
 (defun eab-spacemacs/init-dired+ nil)
 (defun eab-spacemacs/init-dired-details nil)
