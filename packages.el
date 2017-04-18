@@ -207,9 +207,10 @@ which require an initialization must be listed explicitly in the list.")
   ;; TODO copy ssh-config-keywords.txt
   (use-package ssh-config-mode))
 (defun eab-spacemacs/init-textile-mode ()
-  (use-package textile-mode)
-  (set-face-foreground 'textile-link-face "sky blue")
-  (set-face-foreground 'textile-ul-bullet-face "sky blue"))
+  (use-package textile-mode
+    :config
+    (set-face-foreground 'textile-link-face "sky blue")
+    (set-face-foreground 'textile-ul-bullet-face "sky blue")))
 (defun eab-spacemacs/init-puppet-mode ()
   (use-package puppet-mode))
 (defun eab-spacemacs/init-yaml-mode ()
