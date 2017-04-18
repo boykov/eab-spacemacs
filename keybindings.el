@@ -108,6 +108,7 @@
  "C-S-SPC"	'mark-defun
  "M-S-SPC"	'mark-paragraph
  "M-SPC"	'set-mark-command
+ "C-M-@"	'set-rectangular-region-anchor
  "M-U"		'backward-paragraph
  "M-X"		'delete-region
  "M-b"		'kill-sexp
