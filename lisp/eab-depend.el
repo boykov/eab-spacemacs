@@ -231,6 +231,7 @@
 ;;		       	       	       	      
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(add-to-list 'auto-mode-alist '("/keys.yml"             . ansible-vault-mode))
 (add-to-list 'auto-mode-alist '("/\\.ssh/config\\'"     . ssh-config-mode))
 (add-to-list 'auto-mode-alist '("/sshd?_config\\'"      . ssh-config-mode))
 (add-to-list 'auto-mode-alist '("/known_hosts\\'"       . ssh-known-hosts-mode))
