@@ -171,9 +171,6 @@
 (setq-put keyfreq-file (concat (eab/history-dir) ".emacs.keyfreq"))
 
 (setq-put eab/check-cc-path "~/git/auto/check-cc.sh") ;; see eab-private/eab-secrets.el.gpg
-(setq-put eab/maple-path "~/data/maple16/bin/maple")
-(setq-put eab/maxima-path "maxima")
-(setq-put eab/ipython-path "/usr/local/bin/ipython")
 (setq-put eab/check-inet-path "~/git/auto/check-inet.sh")
 (setq-put eab/musicdb-path "~/data/dbs/media/music.db")
 (setq-put eab/downloads-path "~/downloads/")

@@ -456,16 +456,9 @@
  "h"	'eab/switch-help
  "z"	'undo-tree-visualize
  "s"	'eab/switch-async
- "p"	'eepitch-python
- "P"	'eepitch-php
- "i"	'eepitch-ipython
  "m"	'eab/switch-message
  "k"	`(,(ilam (eepitch-kill)) :which-key "")
- "M"	'eepitch-maxima
- "@"	'eepitch-maple
- "f"	'eepitch-shell-cluster
  "o"	'proced
- "-"	'eepitch-sage-python
  "g"	'eab/switch-grep
  "G"	'eab/kill-last-grep
  "l"	'helm-locate
@@ -983,7 +976,6 @@
    "C-h"	'nil
    "M-1"	'nil
    "C-r"	'term-send-raw
-   "M-r"	'eab/append-this-line
    "C-l"	eab/temacs-map
    "M-h"	'term-send-home
    "M-p"	'term-send-end
