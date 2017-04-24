@@ -10,14 +10,18 @@
 
 (defun eab/run-ansi (prog buf)
   (let ((buffer (get-buffer (concat "*" buf "*")))
-	(default-directory "~/"))
+	(default-directory
+	  (if (file-remote-p default-directory)
+	      "~/"
+	    default-directory)))
     (if buffer
         (switch-to-buffer-other-window buffer)
       (ansi-term prog buf))))
 
 (defun eepitch-ansi-term (sym)
   (interactive)
-  (shell-command (concat "echo \"" eab/eegchannel-path " " sym " /bin/bash\" > " eab/eeansi-path))
+  (let ((default-directory "~/"))
+      (shell-command (concat "echo \"" eab/eegchannel-path " " sym " /bin/bash\" > " eab/eeansi-path)))
   (eechannel sym)
   (save-window-excursion
     (eepitch `(eab/run-ansi eab/eeansi-path (concat "ansi-term" ,sym))))
