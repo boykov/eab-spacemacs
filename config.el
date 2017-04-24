@@ -198,6 +198,7 @@
 (setq-put nnmail-message-id-cache-file (concat (eab/history-dir) ".nnmail-cache"))
 (setq-put tramp-persistency-file-name (concat (eab/history-dir) "tramp"))
 (setq-put url-configuration-directory (concat (eab/history-dir) "url/"))
+(setq-put ansible-vault-pass-file "/home/eab/.ansible/passwd")
 
 (setq-put eab/yasnippets-path (concat user-emacs-directory "private/eab-spacemacs/local/yasnippet-snippets"))
 (setq-put eab/eab-snippets-path (concat user-emacs-directory "private/eab-spacemacs/snippets"))
