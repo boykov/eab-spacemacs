@@ -1,6 +1,6 @@
 ;;; eab-kbd-ext.el --- 
 
-;; Copyright (C) 2010-2015 Evgeny Boykov
+;; Copyright (C) 2010-2017 Evgeny Boykov
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 

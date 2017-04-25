@@ -1,197 +1,194 @@
 ;;; packages.el --- eab Layer packages File for Spacemacs
 ;;
-;; Copyright (c) 2012-2014 Sylvain Benner
-;; Copyright (c) 2014-2015 Sylvain Benner & Contributors
+;; Copyright (C) 2010-2017 Evgeny Boykov
 ;;
-;; Author: Sylvain Benner <sylvain.benner@gmail.com>
-;; URL: https://github.com/syl20bnr/spacemacs
-;;
-;; This file is not part of GNU Emacs.
-;;
-;;; License: GPLv3
+;; Author: artscan@list.ru
+;; Keywords:
+;; Requirements:
+;; Status: not intended to be distributed yet
 
 (defvar eab-spacemacs-packages
   '(
-  ssh-config-mode
-  textile-mode
-  puppet-mode
-  yaml-mode
-  ansible
-  ansible-doc
-  ansible-vault
-  tramp-term
-  vagrant
-  vagrant-tramp
-  csv-mode
-  el-patch
-  projectile
-  ldap-mode
-  general
-  php-mode
-  sql-indent
-  gnuplot
-  htmlize
-  spacemacs-theme
-  ergoemacs-mode
-  key-chord
-  auto-dictionary ;; switcher for flyspell
-  ;; auto-complete-emacs-lisp ;; no melpa depend auto-complete
-  howdoi
-  ac-dabbrev
-  etags-table
-  etags-select
-  helm
-  helm-descbinds
-  smart-compile
-  popwin
-  moz
-  expand-region
-  multiple-cursors
-  flx-isearch
-  workgroups2
-  dictionary
-  sauron
-  magit
-;;  magit-filenotify ;; needs emacs 24.4 with file-notify-support
-  git-commit
-  ;;	git-rebase ;; see in magit
-  magit-annex
-  orgit ;; org-magit obsolete
-  auctex
-  org-agenda-property
-  region-bindings-mode
-  smex
-  smartparens
-  auto-install
-  flx-ido
-  ido-at-point
-  paredit
-  grep-a-lot
-  wgrep
-  ag
-  wgrep-ag
-  undo-tree
-  ;; workgroups
-  edit-list
+    ssh-config-mode
+    textile-mode
+    puppet-mode
+    yaml-mode
+    ansible
+    ansible-doc
+    ansible-vault
+    tramp-term
+    vagrant
+    vagrant-tramp
+    csv-mode
+    el-patch
+    projectile
+    ldap-mode
+    general
+    php-mode
+    sql-indent
+    gnuplot
+    htmlize
+    spacemacs-theme
+    ergoemacs-mode
+    key-chord
+    auto-dictionary ;; switcher for flyspell
+    ;; auto-complete-emacs-lisp ;; no melpa depend auto-complete
+    howdoi
+    ac-dabbrev
+    etags-table
+    etags-select
+    helm
+    helm-descbinds
+    smart-compile
+    popwin
+    moz
+    expand-region
+    multiple-cursors
+    flx-isearch
+    workgroups2
+    dictionary
+    sauron
+    magit
+    ;;  magit-filenotify ;; needs emacs 24.4 with file-notify-support
+    git-commit
+    ;;	git-rebase ;; see in magit
+    magit-annex
+    orgit ;; org-magit obsolete
+    auctex
+    org-agenda-property
+    region-bindings-mode
+    smex
+    smartparens
+    auto-install
+    flx-ido
+    ido-at-point
+    paredit
+    grep-a-lot
+    wgrep
+    ag
+    wgrep-ag
+    undo-tree
+    ;; workgroups
+    edit-list
 
-  docker
-  docker-tramp
-  dired+
-  dired-details
-  dired-details+
-  elpa-mirror
-  ace-window
-  ace-jump-buffer
-  ace-link
-  twittering-mode
-  request
-  python-mode
-  pydoc-info
-  popup
-  idle-highlight-mode ;; + no melpa
-  help+
-  help-fns+
-  help-mode+
-  fuzzy
-  el-mock
-  anchored-transpose
-  bookmark+
-  buffer-move
-  crontab-mode
-  shut-up
-  parsebib
-  package-build
-  jedi-core
-  ebib
-  helm-helm-commands
-  dockerfile-mode
-  deft
-  ewmctrl
-  anaphora
-  connection
-  ido-vertical-mode
-  link
-  oneonone
-  emacsc
-  deferred ;; depend
-  web-server
-  take-off
-  restclient
-  god-mode
-  fancy-narrow
-  outshine
-  outorg
-  goto-chg
-  epc
-  ctable
-  concurrent
-  python-environment
-  jedi
-  ;; ipython
-  bibretrieve
-  git-annex
-  websocket
-  org-jekyll
-  org-redmine
-  pkg-info
-  epl
-  s
-  achievements
-  org-grep
-  org
-  f
-  keyfreq
-  cask ;; shut-up
-  pallet ;; shut-up
-  purty-mode
-  flx
-  guide-key
-  xml-rpc
-  web
-  string-edit
-  redo+
-  pcache
-  org-plus-contrib
-  org-ehtml
-  noflet
-  minimap
-  markdown-mode
-  auto-complete
-  yasnippet
-  logito
-  kv
-  jira
-  ignoramus
-  ibuffer-vc
-  highlight
-  graphviz-dot-mode
-  gist  ;; tabulated-list
-  gh
-  fuzzy-match
-  feature-mode
-  fakir ;; kv
-  elnode ;; kv
-  el-x
-  ;; descbinds-anything
-  db
-  creole ;; kv
-  clojure-mode
-  browse-kill-ring
-  bm
-  ;; anything-obsolete
-  ;; anything-ipython
-  ;; anything-extension
-  ;; anything-complete
-  (eab-misc :location local)
-  (eab-ace-jump-mode :location local)
-  (eab-avy :location local)
-  (eab-org-mode/lisp :location local)
-  (eab-org-mode/contrib/lisp :location local) ;; for htmlize.el
-  (eev-current :location local)
-  (bbdb/lisp :location local)
-  (org-link-minor-mode :location local)
-  (pymacs :location local)
-  )
+    docker
+    docker-tramp
+    dired+
+    dired-details
+    dired-details+
+    elpa-mirror
+    ace-window
+    ace-jump-buffer
+    ace-link
+    twittering-mode
+    request
+    python-mode
+    pydoc-info
+    popup
+    idle-highlight-mode ;; + no melpa
+    help+
+    help-fns+
+    help-mode+
+    fuzzy
+    el-mock
+    anchored-transpose
+    bookmark+
+    buffer-move
+    crontab-mode
+    shut-up
+    parsebib
+    package-build
+    jedi-core
+    ebib
+    helm-helm-commands
+    dockerfile-mode
+    deft
+    ewmctrl
+    anaphora
+    connection
+    ido-vertical-mode
+    link
+    oneonone
+    emacsc
+    deferred ;; depend
+    web-server
+    take-off
+    restclient
+    god-mode
+    fancy-narrow
+    outshine
+    outorg
+    goto-chg
+    epc
+    ctable
+    concurrent
+    python-environment
+    jedi
+    ;; ipython
+    bibretrieve
+    git-annex
+    websocket
+    org-jekyll
+    org-redmine
+    pkg-info
+    epl
+    s
+    achievements
+    org-grep
+    org
+    f
+    keyfreq
+    cask ;; shut-up
+    pallet ;; shut-up
+    purty-mode
+    flx
+    guide-key
+    xml-rpc
+    web
+    string-edit
+    redo+
+    pcache
+    org-plus-contrib
+    org-ehtml
+    noflet
+    minimap
+    markdown-mode
+    auto-complete
+    yasnippet
+    logito
+    kv
+    jira
+    ignoramus
+    ibuffer-vc
+    highlight
+    graphviz-dot-mode
+    gist  ;; tabulated-list
+    gh
+    fuzzy-match
+    feature-mode
+    fakir ;; kv
+    elnode ;; kv
+    el-x
+    ;; descbinds-anything
+    db
+    creole ;; kv
+    clojure-mode
+    browse-kill-ring
+    bm
+    ;; anything-obsolete
+    ;; anything-ipython
+    ;; anything-extension
+    ;; anything-complete
+    (eab-misc :location local)
+    (eab-ace-jump-mode :location local)
+    (eab-avy :location local)
+    (eab-org-mode/lisp :location local)
+    (eab-org-mode/contrib/lisp :location local) ;; for htmlize.el
+    (eev-current :location local)
+    (bbdb/lisp :location local)
+    (org-link-minor-mode :location local)
+    (pymacs :location local)
+    )
   "List of all packages to install and/or initialize. Built-in packages
 which require an initialization must be listed explicitly in the list.")
 
@@ -204,7 +201,6 @@ which require an initialization must be listed explicitly in the list.")
   )
 
 (defun eab-spacemacs/init-ssh-config-mode ()
-  ;; TODO copy ssh-config-keywords.txt
   (use-package ssh-config-mode))
 (defun eab-spacemacs/init-textile-mode ()
   (use-package textile-mode
