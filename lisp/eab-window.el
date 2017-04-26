@@ -39,6 +39,7 @@
   (switch-to-buffer-other-window name))
 
 (defun eab/switch-async () (interactive) (eab/switch-window "*Async Shell Command*"))
+(defun eab/switch-shell () (interactive) (eab/switch-window "*Shell Command Output*"))
 (defun eab/switch-message () (interactive) (eab/switch-window "*Messages*"))
 (defun eab/switch-compile () (interactive) (eab/switch-window (concat "*compilation: " (projectile-project-name) "*")))
 (defun eab/switch-help () (interactive) (eab/switch-window "*Help*"))

@@ -456,6 +456,7 @@
  "h"	'eab/switch-help
  "z"	'undo-tree-visualize
  "s"	'eab/switch-async
+ "S"	'eab/switch-shell
  "m"	'eab/switch-message
  "k"	`(,(ilam (eepitch-kill)) :which-key "")
  "o"	'proced
