@@ -64,7 +64,7 @@
   (let* ((prepare (eab/this-line (buffer-substring (ee-bol) (ee-eol))))
          (line (car prepare)))
     (if (cadr prepare)
-	(eab/wrap-eepitch-this line)
-      (ee-next-line 1))))
+	(eab/wrap-eepitch-this line))
+      (ee-next-line 1)))
 
 (provide 'eab-eepitch)
