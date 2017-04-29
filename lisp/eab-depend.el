@@ -30,7 +30,9 @@
 
 
 (setq ibuffer-formats '((mark modified read-only " "
-			      (name 18 18 :left :elide))))
+			      (name 18 18 :left :elide))
+			(mark modified read-only " " (name 18 18 :left :elide) " "
+			      (size 9 -1 :right) " " (mode 16 16 :left :elide) " " filename-and-process)))
 
 ;; (require 'el-expectations) ;; DONE devel minimalist unit testing framework
 ;; (setq exps-last-testcase nil)
