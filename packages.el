@@ -254,7 +254,8 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-moz nil)
 (defun eab-spacemacs/init-expand-region nil)
 (defun eab-spacemacs/init-multiple-cursors nil)
-(defun eab-spacemacs/init-flx-isearch nil)
+(defun eab-spacemacs/init-flx-isearch ()
+  (flx-isearch-mode 0))
 
 (defun eab-spacemacs/init-workgroups2 ()
   (use-package workgroups2
