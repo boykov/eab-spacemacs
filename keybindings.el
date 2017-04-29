@@ -176,6 +176,7 @@
  "C-h C-v"	'eab/find-variable-at-point
  "C-s-j"	'eab/insert-greek
  "C-x b"	'switch-to-buffer
+ "C-x C-b"	'ibuffer
  "C-x g"	'eab/grep
  "C-x C-g"	(kbd "C-u C-x g")
  "M-."		'eab/etags-find-or-pop
