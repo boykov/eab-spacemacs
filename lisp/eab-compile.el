@@ -1,4 +1,5 @@
 (require 'smart-compile)
+(setq-default smart-compile-check-makefile nil)
 
 (setq compile-command "make ")
 (setq compilation-buffer-name-function (lambda (mode) (concat "*" (downcase mode) ": " (projectile-project-name) "*")))
@@ -47,6 +48,7 @@
 
 (add-to-list 'smart-compile-alist '(graphviz-dot-mode . "xdot.py %F"))
 (add-to-list 'smart-compile-alist '(python-mode . "python %F"))
+(add-to-list 'smart-compile-alist '(textile-mode . "make put id=%f"))
 
 ;; Helper for compilation. Close the compilation window if
 ;; there was no error at all.
