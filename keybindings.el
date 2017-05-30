@@ -1066,6 +1066,7 @@
   (general-define-key
    :keymaps 'dired-mode-map
    "C-M-b"	'nil
+   "M-a"	'nil
    "M-i"	'nil
    "M-j"	'nil
    "C-n"	'nil
