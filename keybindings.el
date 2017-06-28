@@ -423,7 +423,7 @@
  "q"	'eab/nocommand
  "a"	'eab/compile-helm
  "d"	'projectile-compile-project
- "s"	'smart-compile
+ "s"	(ilam (smart-compile 4))
  "l"	`(,(ilam (TeX-command "LaTeX"	'TeX-master-file)) :which-key "")
  "b"	`(,(ilam (TeX-command "BibTeX"	'TeX-master-file)) :which-key "")
  "L"	`(,(ilam (TeX-command "LaTeX"	'TeX-master-file)) :which-key "")
