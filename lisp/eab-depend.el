@@ -233,7 +233,6 @@
 ;;		       	       	       	      
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(add-to-list 'auto-mode-alist '("/keys.yml"             . ansible-vault-mode))
 (add-to-list 'auto-mode-alist '("/\\.ssh/config\\'"     . ssh-config-mode))
 (add-to-list 'auto-mode-alist '("/sshd?_config\\'"      . ssh-config-mode))
 (add-to-list 'auto-mode-alist '("/known_hosts\\'"       . ssh-known-hosts-mode))
@@ -243,6 +242,7 @@
 (add-to-list 'auto-mode-alist '("\\.pp\\'" . puppet-mode))
 (add-to-list 'auto-mode-alist '("\\.cu\\'" . c-mode))
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+(add-to-list 'auto-mode-alist '("/keys.yml"             . ansible-vault-mode))
 (add-to-list 'auto-mode-alist '("\\.dired$" . dired-virtual-mode))
 (add-to-list 'auto-mode-alist '("\\.tmpl$" . conf-mode))
 (add-to-list 'auto-mode-alist '("\\.m$" . octave-mode))
