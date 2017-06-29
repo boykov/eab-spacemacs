@@ -24,4 +24,4 @@
 	url = https://github.com/boykov/eev-current.git
 [submodule "extensions/eab-org-mode"]
 	path = local/eab-org-mode
-	url = git@github.com:boykov/org-mode.git
+	url = https://github.com/boykov/org-mode.git

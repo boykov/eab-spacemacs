@@ -20,7 +20,7 @@
     vagrant
     vagrant-tramp
     csv-mode
-    el-patch
+    ;; el-patch ;; emacs-25
     projectile
     ldap-mode
     general
