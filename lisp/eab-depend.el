@@ -233,6 +233,7 @@
 ;;		       	       	       	      
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
 (add-to-list 'auto-mode-alist '("/\\.ssh/config\\'"     . ssh-config-mode))
 (add-to-list 'auto-mode-alist '("/sshd?_config\\'"      . ssh-config-mode))
 (add-to-list 'auto-mode-alist '("/known_hosts\\'"       . ssh-known-hosts-mode))

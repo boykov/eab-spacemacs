@@ -9,6 +9,7 @@
 
 (defvar eab-spacemacs-packages
   '(
+    go-mode
     ssh-config-mode
     textile-mode
     puppet-mode
