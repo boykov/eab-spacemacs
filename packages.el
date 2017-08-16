@@ -201,6 +201,8 @@ which require an initialization must be listed explicitly in the list.")
   (require 'ergoemacs-functions)
   )
 
+(defun eab-spacemacs/init-go-mode ()
+  )
 (defun eab-spacemacs/init-ssh-config-mode ()
   (use-package ssh-config-mode))
 (defun eab-spacemacs/init-textile-mode ()
