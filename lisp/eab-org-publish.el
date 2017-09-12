@@ -124,7 +124,7 @@
 	 :recursive t
 	 :publishing-function org-publish-attachment
 	 )
-	("manual"
+	("manual-base"
 	 :base-directory "/home/eab/git/eab-auto/org"
 	 :publishing-directory "/home/eab/git/cc/boykov.github.io/manual"
 	 :online-suffix ".html"
@@ -136,6 +136,13 @@
 	 :style-include-default t
 	 :author-info nil
 	 :creator-info nil)
+	("manual-static"
+	 :base-directory "/home/eab/git/eab-auto/org/"
+	 :base-extension "png"
+	 :publishing-directory "/home/eab/git/cc/boykov.github.io/manual/"
+	 :publishing-function org-publish-attachment
+	 )
+	("manual" :components ("manual-base" "manual-static"))
 	("mercury"
 	 :base-directory "/ssh:boykov@mercury.febras.net:/home/boykov/install/mercury-ldap"
 	 :publishing-directory "/ssh:eab@microkairos:/home/eab/share/writehere"
