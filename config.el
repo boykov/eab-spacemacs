@@ -193,3 +193,7 @@
 
 (setq-put eab/yasnippets-path (concat user-emacs-directory "private/eab-spacemacs/local/yasnippet-snippets"))
 (setq-put eab/eab-snippets-path (concat user-emacs-directory "private/eab-spacemacs/snippets"))
+
+(eval-after-load "enriched"
+  '(defun enriched-decode-display-prop (start end &optional param)
+     (list start end)))
