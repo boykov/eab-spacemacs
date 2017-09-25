@@ -1006,6 +1006,7 @@
   (general-define-key
    :keymaps 'compilation-mode-map
    "g"		'eab/recompile
+   "B"		'compilation-a-lot-goto-next
    "\C-d"	eab/compile-map
    "\C-o"	'nil
    "M-k"	'nil

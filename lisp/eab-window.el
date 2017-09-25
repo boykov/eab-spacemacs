@@ -41,8 +41,12 @@
 (defun eab/switch-async () (interactive) (eab/switch-window "*Async Shell Command*"))
 (defun eab/switch-shell () (interactive) (eab/switch-window "*Shell Command Output*"))
 (defun eab/switch-message () (interactive) (eab/switch-window "*Messages*"))
-(defun eab/switch-compile () (interactive) (eab/switch-window (concat "*compilation: " (projectile-project-name) "*")))
 (defun eab/switch-help () (interactive) (eab/switch-window "*Help*"))
+(defun eab/switch-compile ()
+  (interactive)
+  (eab/switch-window (concat "*compilation: " (projectile-project-name) "*"))
+  (if (not (eq major-mode 'compilation-mode))
+      (compilation-mode)))
 
 (defun eab/switch-grep ()
   (interactive)
@@ -68,5 +72,56 @@
 (defun eab/switch-eepitch-target ()
   (interactive)
   (switch-to-buffer-other-window eepitch-target-buffer))
+
+(defconst compilation-a-lot-buffer-name-regexp "^\\*compilation: \\(.+\\)*$"
+  "Buffer name regular expression for extracting `projectile-project-name' name.")
+
+(defun compilation-a-lot-buffer-p (&optional buffer)
+  "Return non-nil if BUFFER is a compilation-a-lot search result buffer.
+The buffer name must match `compilation-a-lot-buffer-name-regexp'.
+With no argument or nil as argument, check current buffer."
+  (let ((name (buffer-name buffer)))
+    (if (string-match compilation-a-lot-buffer-name-regexp name)
+        (get-buffer name)
+      nil)))
+
+(defun compilation-a-lot-buffers ()
+  "Return a sorted list of compilation-a-lot search result buffers.
+With REVERSE non-nil the sort order is reversed."
+  (let* ((buffers nil)
+         (all-buffers (buffer-list)))
+    ;; filter out non compilation-a-lot buffers
+    (while all-buffers
+      (let ((buffer (car all-buffers)))
+        (if (compilation-a-lot-buffer-p buffer)
+            (setq buffers (append buffers (list buffer))))
+        (setq all-buffers (cdr all-buffers))))
+    (sort buffers (lambda (a b)
+		    (let ((pos-a (buffer-name a))
+			  (pos-b (buffer-name b)))
+		      (string< pos-a pos-b))))))
+
+(defun compilation-a-lot-next-buffer ()
+  "Return next compilation-a-lot buffer.
+When REVERSE is non-nil, return previous buffer.
+If current buffer is last then return first buffer.
+Returns nil if there is no compilation-a-lot buffer to select."
+  (let* ((buffers (compilation-a-lot-buffers))
+         (current (current-buffer))
+         (head (car buffers))
+         (next (car (cdr (member current buffers)))))
+    (and current (or next head))))
+
+(defun compilation-a-lot-next-buffer ()
+  "Return next compilation-a-lot buffer.
+Actually calls `compilation-a-lot-next-buffer'."
+  (compilation-a-lot-next-buffer))
+
+(defun compilation-a-lot-goto-next (arg)
+  "Goto previous search results buffer."
+  (interactive "P")
+  (let ((buf (compilation-a-lot-next-buffer)))
+    (if arg (kill-buffer))
+    (switch-to-buffer buf nil 't)))
 
 (provide 'eab-window)
