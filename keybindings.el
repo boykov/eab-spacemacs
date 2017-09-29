@@ -153,6 +153,7 @@
 (general-define-key
  "<f12>"	'eab/make-list-paths
  "<f6>"		'eab/revert-buffer
+ "<f7>"		'eab/fix-windows-coding
  "<print>"	'eab/make-list-paths
  "<kp-end>"	(ilam (switch-to-buffer eab/agenda-H-command))
  "C-,"		'eab/eepitch-this-line

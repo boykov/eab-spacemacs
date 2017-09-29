@@ -69,6 +69,11 @@
 		      (revert-buffer-with-coding-system 'cp866))
                     (setq eab/revert-buffer "u"))))))
 
+(defun eab/fix-windows-coding ()
+  (interactive)
+  (shell-command (concat "sed -i 's/\r$//g' " (buffer-file-name)))
+  (revert-buffer 't 't))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defadvice winner-undo (before eab-winner-undo-before activate)
