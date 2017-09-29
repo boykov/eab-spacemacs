@@ -15,11 +15,4 @@
 
 (require 'git-wip)
 
-;; TODO see magit-commit-amend, похоже там нет только опции reuse-message
-(defun eab/magit-just-amend ()
-  (interactive)
-  (save-window-excursion
-    (shell-command "git --no-pager commit --amend --reuse-message=HEAD")
-    (magit-refresh)))
-
 (provide 'eab-git)
