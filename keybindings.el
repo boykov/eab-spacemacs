@@ -485,21 +485,20 @@
 (global-set-key (kbd "C-a") nil)
 (general-define-key
  :prefix "C-a"
- ;;  "b"	`(,(ilam (switch-to-buffer "&bitlbee")) :which-key "")
- "g"		`(,(ilam (eab/wg-switch-to-workgroup ":gsie:")) :which-key "")
- "f"		`(,(ilam (eab/wg-switch-to-workgroup ":ccfebras:")) :which-key "")
- "b"		`(,(ilam (eab/wg-switch-to-workgroup ":baikal:")) :which-key "")
- "j"		`(,(ilam (eab/wg-switch-to-workgroup ":jac:")) :which-key "")
- "t"		`(,(ilam (eab/wg-switch-to-workgroup ":testbed:")) :which-key "")
- "m"		`(,(ilam (eab/wg-switch-to-workgroup ":dbsym:")) :which-key "")
- "C-e"		`(,(ilam (eab/wg-switch-to-workgroup ":dotspace:")) :which-key "")
- "e"		`(,(ilam (eab/wg-switch-to-workgroup ":eab-spacemacs:")) :which-key "")
- "d"		`(,(ilam (eab/wg-switch-to-workgroup ":spacemacs:")) :which-key "")
- "l"		`(,(ilam (eab/wg-switch-to-workgroup ":cc:")) :which-key "")
- "a"		`(,(ilam (eab/wg-switch-to-workgroup ":clock:")) :which-key ":clock:")
- "4"		`(,(ilam (eab/wg-switch-to-workgroup ":mail:")) :which-key "")
- "5"		`(,(ilam (eab/wg-switch-to-workgroup ":ahmed-examples:")) :which-key "")
- "i"		`(,(ilam (eab/wg-switch-to-workgroup ":lit:")) :which-key "")
+ "a"		`(,(ilam (eab/wg-switch-to-workgroup ":clock:")) :which-key "apple :clock:")
+ "f"		`(,(ilam (eab/wg-switch-to-workgroup ":sphinx_rtd_theme:")) :which-key "fish :sphinx_rtd_theme:")
+ "t"		`(,(ilam (eab/wg-switch-to-workgroup ":tmp:")) :which-key "tree :tmp:")
+ "e"		`(,(ilam (eab/wg-switch-to-workgroup ":eab-spacemacs:")) :which-key "eagle :eab-spacemacs:")
+ "l"		`(,(ilam (eab/wg-switch-to-workgroup ":cc:")) :which-key "lamp :cc:")
+ "4"		`(,(ilam (eab/wg-switch-to-workgroup ":mail:")) :which-key "4 :mail:")
+ "g"		`(,(ilam (eab/wg-switch-to-workgroup ":gsie:")) :which-key ":gsie:")
+ "b"		`(,(ilam (eab/wg-switch-to-workgroup ":baikal:")) :which-key ":baikal:")
+ "j"		`(,(ilam (eab/wg-switch-to-workgroup ":jac:")) :which-key ":jac:")
+ "m"		`(,(ilam (eab/wg-switch-to-workgroup ":dbsym:")) :which-key ":dbsym:")
+ "C-e"		`(,(ilam (eab/wg-switch-to-workgroup ":dotspace:")) :which-key ":dotspace:")
+ "d"		`(,(ilam (eab/wg-switch-to-workgroup ":spacemacs:")) :which-key ":spacemacs:")
+ "5"		`(,(ilam (eab/wg-switch-to-workgroup ":ahmed-examples:")) :which-key ":ahmed-examples:")
+ "i"		`(,(ilam (eab/wg-switch-to-workgroup ":lit:")) :which-key ":lit:")
  "p"		'eab/wg-switch-to-previous-workgroup
  "o"		'eab/wg-rotate-base
  "O"		'eab/wg-rotate-twice
@@ -524,9 +523,6 @@
  "c"		`(,(ilam (eab/wg-kill-tmp) (wg-clone-workgroup (wg-current-workgroup) ":tmp:")) :which-key "") ;; +
  "SPC"		'eab/wg-revert-and-update
  "w"		'twit
- ;;  "e"	`(,(ilam (eab/twit-search "emacs")) :which-key "")
- "["		`(,(ilam (eab/twit-search "хазин")) :which-key "")
- "]"		`(,(ilam (eab/twit-search "фурсов")) :which-key "")
  ;;  "s"	'bmkp-cycle ;; TODO сделать обертку, выбирающую navlist в соответствии с группой
  ;;  "t"	`(,(ilam (bmkp-choose-navlist-of-type "any")) :which-key "")
  ;; DONE по имени буфера: нарушение SPOT!
