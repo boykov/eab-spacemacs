@@ -9,6 +9,7 @@
 
 (defvar eab-spacemacs-packages
   '(
+    xterm-color
     go-mode
     ssh-config-mode
     textile-mode
@@ -202,6 +203,9 @@ which require an initialization must be listed explicitly in the list.")
   )
 
 (defun eab-spacemacs/init-go-mode ()
+  )
+(defun eab-spacemacs/init-xterm-color ()
+  (require 'xterm-color)
   )
 (defun eab-spacemacs/init-ssh-config-mode ()
   (use-package ssh-config-mode))
