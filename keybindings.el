@@ -10,6 +10,20 @@
 (use-package eab-minimal)
 (use-package eab-kbd-ext)
 
+(mapc (lambda (x) (add-to-list 'extended-command-history x))
+	'(
+	 "tramp-cleanup-this-connection"
+	 "eab/create-workgroups"
+	 "eab/clear-extended-history"
+	 "eab/load-personal"
+	 ))
+
+(mapc (lambda (x) (add-to-list 'read-expression-history x))
+      '(
+	"(setq input-method-function 'key-chord-input-method)"
+	"(tramp-term--initialize \"jupiter\")"
+	))
+
 (defvar eab/layer0 (make-sparse-keymap)
   "Keymap for minimal configuration")
 (general-define-key
