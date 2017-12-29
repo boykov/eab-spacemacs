@@ -165,6 +165,7 @@
  "M-8"	'ergoemacs-extend-selection)
 
 (general-define-key
+ "<f9>"         'eab/ansible-copy
  "<f12>"	'eab/make-list-paths
  "<f6>"		'eab/revert-buffer
  "<f7>"		'eab/fix-windows-coding
