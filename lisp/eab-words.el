@@ -25,6 +25,8 @@
 (eab/search-word eab/google-translate "google translate" eab/shell-translate-remote (word))
 (eab/search-word eab/ido-at-point "Ido at point" eab/ido-at-point-1 (word))
 
+;; TODO (ffap-guesser) curl --remote-name for sync-redmine link inside json
+
 ;; TODO see eab/paper-link
 (defun eab/abbrev-link (abbrev name)
   (if (not (string= name ""))

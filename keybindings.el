@@ -681,7 +681,7 @@
   (general-define-key
    :keymaps 'magit-mode-map
    "J"		'magit-commit-amend
-   "W"		(kbd "l a")
+   "W"		'magit-patch-popup
    "Q"		(kbd "l = a E v g e n y SPC B o y k o v RET b")
    "M-n"	'nil
    "M-p"	'nil
@@ -1251,7 +1251,7 @@
   (general-define-key
    :keymaps 'LaTeX-mode-map
    "M-m"	'forward-sexp
-   "C-d"	'TeX-command-master
+   "C-d"	'nil
    "C-S-d"	eab/compile-map))
 
 (eab/add-hook graphviz-dot-mode-hook eab/graphviz-hook

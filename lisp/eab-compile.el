@@ -48,7 +48,7 @@
 
 (add-to-list 'smart-compile-alist '(graphviz-dot-mode . "xdot.py %F"))
 (add-to-list 'smart-compile-alist '(python-mode . "python %F"))
-(add-to-list 'smart-compile-alist '(textile-mode . "make put id=%f"))
+(add-to-list 'smart-compile-alist '(textile-mode . "make push id=%f"))
 
 ;; Helper for compilation. Close the compilation window if
 ;; there was no error at all.
