@@ -4,6 +4,16 @@
 (setq compile-command "make ")
 (setq compilation-buffer-name-function (lambda (mode) (concat "*" (downcase mode) ": " (projectile-project-name) "*")))
 
+(defun eab/projectile-compile-project (CMD)
+  "Run project compilation command CMD."
+  (interactive "P")
+  (let* ((project-root (projectile-project-root)))
+    (save-some-buffers (not compilation-ask-about-save)
+                       (lambda ()
+                         (projectile-project-buffer-p (current-buffer)
+                                                      project-root)))
+    (projectile-run-compilation CMD)))
+
 ;; TODO This variable may be risky if used as a file-local variable.
 (defun eab/toggle-recompile-on-save ()
   (interactive)
