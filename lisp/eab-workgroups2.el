@@ -19,7 +19,7 @@
 	 (name (concat ":" nondir ":")))
     (wg-create-workgroup name)
     (dired true-path)
-    (eab/wg-update-workgroup)))
+    (eab/wg-update-workgroup "dflt")))
 
 ;; TODO можно использовать `gr list` вместо wg/*: все-равно вручную
 ;; пополняю оба эти списка хотя, симлинки требуют меньше зависимостей
@@ -118,12 +118,17 @@
        (wg-workgroup-get-saved-wconfig "dflt")
        workgroup)))
 
-(defun eab/wg-update-workgroup ()
-  "Save \"dflt\" wconfig for current workgroup"
+(defun eab/wg-update-workgroup (wg-config)
+  "Save wg-config for current workgroup"
   (interactive)
-  (execute-kbd-macro
-   (read-kbd-macro
-    "M-a wg-save-wconfig RET dflt RET")))
+  (let* ((workgroup (wg-current-workgroup))
+         (name wg-config)
+         (wconfig (wg-current-wconfig)))
+    (setf (wg-wconfig-name wconfig) name)
+    (wg-workgroup-save-wconfig wconfig workgroup)
+    (wg-fontified-message
+      (:cmd "Saved: ")
+      (:cur name))))
 
 ;; (eab/bind-path eab/eab-workgroups)
 

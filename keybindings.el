@@ -524,7 +524,7 @@
  "v"		'wg-yank-config ;; wg-yank-wconfig
  "r"		'eab/wg-revert-workgroup
  "R"		'wg-revert-workgroup ;; +
- "u"		'eab/wg-update-workgroup ;; eab/wg-update-workgroup
+ "u"		`(,(ilam (eab/wg-update-workgroup "dflt")) :which-key "") ;; eab/wg-update-workgroup
  "U"		'wg-save-session ;; wg-update-workgroup
  ;;  "S"	'eab/eab-wg-save
  ;;  "L"	'eab/eab-wg-load
