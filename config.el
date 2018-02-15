@@ -27,7 +27,7 @@
 (setq eab/homedir (getenv "HOME"))
 (setq eab/newemacs-path "/home/eab/newemacs")
 (setq eab/daemon-name (daemonp))
-(setq eab/ansible-path "/home/eab/git/eabmisc/jupiter/jupitermgmt/templates")
+(setq eab/ansible-path "/home/eab/git/eabmisc/jupiter/jupitermgmt/")
 
 (if (not (stringp eab/daemon-name))
     (setq eab/daemon-name "server"))

@@ -52,15 +52,18 @@
     (copy-region-as-kill (mark) (point))
     (kill-buffer buf-name)))
 
-(defun eab/ansible-copy ()
+(defun eab/ansible-copy (&optional arg)
   "Copy remote file, e.g. /sudo:root@jupiter:/etc/pbstools.conf to
    respective place in jupiter ansible role"
-  (interactive)
-  (let* ((file (dired-file-name-at-point))
+  (interactive "p")
+  (let* ((df (dired-file-name-at-point))
+	 (file (if df df (buffer-file-name)))
 	 (local (file-remote-p file 'localname))
 	 (dir (file-name-directory local))
-	 (ansdir (concat eab/ansible-path dir)))
+	 (ansdir (if arg
+		     (concat eab/ansible-path "files" dir)
+		   (concat eab/ansible-path "templates" dir))))
     (make-directory ansdir 't)
-    (copy-file file (concat ansdir (file-name-nondirectory local)))))
+    (copy-file file (concat ansdir (file-name-nondirectory local)) 't)))
 
 (provide 'eab-dired)
