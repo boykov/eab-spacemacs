@@ -33,6 +33,13 @@
 				     ("-o" "StrictHostKeyChecking=no")))
 	(tramp-default-port         22)))
 
+(setq eab/singularity
+      '("singularity"
+	(tramp-login-program      "sudo singularity shell ")
+	(tramp-login-args         (("--writable") (`pwd`"%h")))
+	(tramp-remote-shell       "/bin/sh")
+	(tramp-remote-shell-args  ("-i" "-c"))))
+
 (require 'undo-tree)
 (global-undo-tree-mode)
 
