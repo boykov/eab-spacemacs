@@ -66,4 +66,23 @@
     (make-directory ansdir 't)
     (copy-file file (concat ansdir (file-name-nondirectory local)) 't)))
 
+(defun eab/dired-singularity ()
+  "Dired singularity.img at point"
+  (interactive)
+  (let* ((path (dired-file-name-at-point))
+	 (local (file-remote-p path 'localname))
+	 (method (file-remote-p path 'method))
+	 (host (file-remote-p path 'host))
+	 (file (file-name-nondirectory local))
+	 (dir (file-name-directory local))
+	 (tramp-methods (append
+			 (list
+			  `("singularity"
+			    (tramp-login-program      "sudo singularity shell ")
+			    (tramp-login-args         (("--writable") (,(concat dir "%h"))))
+			    (tramp-remote-shell       "/bin/sh")
+			    (tramp-remote-shell-args  ("-i" "-c"))))
+			 tramp-methods)))
+    (find-file (concat "/" method ":" host "|singularity:" file ":/"))))
+
 (provide 'eab-dired)

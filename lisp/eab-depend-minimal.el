@@ -10,6 +10,16 @@
 (require 'log-edit)
 ;; (require 'ergoemacs-mode)
 
+(setq eab/sudo
+      '("sudo"
+	(tramp-login-program        "sudo")
+	(tramp-login-args           (("-u" "%u") ("-i") ("-H") ("-p" "Password:")))
+	;; Local $SHELL could be a nasty one, like zsh or fish.  Let's override it.
+	(tramp-login-env            (("SHELL") ("/bin/sh")))
+	(tramp-remote-shell         "/bin/sh")
+	(tramp-remote-shell-args    ("-c"))
+	(tramp-connection-timeout   10)))
+
 (setq eab/sussh
       '("sussh"
 	(tramp-login-program        "sudo ssh")

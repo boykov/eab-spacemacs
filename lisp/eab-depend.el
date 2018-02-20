@@ -98,6 +98,7 @@
 (setq tramp-default-method "ssh")
 (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
 (add-to-list 'tramp-methods eab/sussh)
+(add-to-list 'tramp-methods eab/sudo)
 
 (defun eab/tramp-docker-cleanup ()
   (interactive)
