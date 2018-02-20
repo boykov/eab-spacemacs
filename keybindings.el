@@ -241,7 +241,7 @@
  "C-s-l"	'helm-locate
  "C-x C-k d"	'pm-define
  "C-x C-k e"	'pm-switch-buf
- "C-x G"	'moccur-grep
+ "C-x G"	'eab/find-grep
  "C-x t"	'dictionary-search
  "M-V"		'helm-show-kill-ring
  "M-Z"		'undo-tree-redo

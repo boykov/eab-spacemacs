@@ -242,6 +242,7 @@
 (add-to-list 'auto-mode-alist '("\\.redmine\\'" . restclient-mode))
 (add-to-list 'auto-mode-alist '("\\.pp\\'" . puppet-mode))
 (add-to-list 'auto-mode-alist '("\\.cu\\'" . c-mode))
+(add-to-list 'auto-mode-alist '("cron\\(tab\\)?\\."    . crontab-mode))
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
 (add-to-list 'auto-mode-alist '("/keys.yml"             . ansible-vault-mode))
 (add-to-list 'auto-mode-alist '("\\.dired$" . dired-virtual-mode))
@@ -263,7 +264,6 @@
 (add-to-list 'auto-mode-alist '("\\.tex\\'" . latex-mode))
 (add-to-list 'auto-mode-alist '("\\.wiki\\'" . wikipedia-mode))
 (add-to-list 'auto-mode-alist '("\\.wikipedia\\.org.*\\.txt\\'" . wikipedia-mode))
-(add-to-list 'auto-mode-alist '("cron\\(tab\\)?\\."    . crontab-mode))
 (add-to-list 'auto-mode-alist '("en\\.wikipedia\\.org" . wikipedia-mode))
 (add-to-list 'auto-mode-alist '("stack\\(exchange\\|overflow\\)\\.com\\.[a-z0-9]+\\.txt" . markdown-mode))
 
