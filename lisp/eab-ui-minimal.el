@@ -86,6 +86,8 @@
 (setq x-select-enable-clipboard t)
 (column-number-mode 1)
 
+(setq system-time-locale "ru_RU.UTF-8")
+
 (if (not window-system);; Only use in tty-sessions.
     (progn
       (defvar arrow-keys-map (make-sparse-keymap) "Keymap for arrow keys")
