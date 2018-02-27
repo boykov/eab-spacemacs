@@ -74,14 +74,10 @@
 	 (method (file-remote-p path 'method))
 	 (host (file-remote-p path 'host))
 	 (file (file-name-nondirectory local))
-	 (dir (file-name-directory local))
+	 (eab/singularity-dir (file-name-directory local))
 	 (tramp-methods (append
 			 (list
-			  `("singularity"
-			    (tramp-login-program      "sudo singularity shell ")
-			    (tramp-login-args         (("--writable") (,(concat dir "%h"))))
-			    (tramp-remote-shell       "/bin/sh")
-			    (tramp-remote-shell-args  ("-i" "-c"))))
+			  (eab/singularity))
 			 tramp-methods)))
     (find-file (concat "/" method ":" host "|singularity:" file ":/"))))
 

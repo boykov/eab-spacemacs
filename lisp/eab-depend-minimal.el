@@ -33,10 +33,10 @@
 				     ("-o" "StrictHostKeyChecking=no")))
 	(tramp-default-port         22)))
 
-(setq eab/singularity
-      '("singularity"
-	(tramp-login-program      "sudo singularity shell ")
-	(tramp-login-args         (("--writable") (`pwd`"%h")))
+(defun eab/singularity ()
+      `("singularity"
+	(tramp-login-program      "sudo /opt/soft/singularity/2.4/bin/singularity shell ")
+	(tramp-login-args         (("--writable") (,(concat eab/singularity-dir "%h"))))
 	(tramp-remote-shell       "/bin/sh")
 	(tramp-remote-shell-args  ("-i" "-c"))))
 
