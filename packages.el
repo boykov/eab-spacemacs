@@ -212,8 +212,10 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-textile-mode ()
   (use-package textile-mode
     :config
-    (set-face-foreground 'textile-link-face "sky blue")
-    (set-face-foreground 'textile-ul-bullet-face "sky blue")))
+    (set-face-foreground 'textile-link-face "deep sky blue")
+    (set-face-foreground 'textile-code-face "ivory4")
+    (set-face-foreground 'textile-style-face "orange red")
+    (set-face-foreground 'textile-ul-bullet-face "deep sky blue")))
 (defun eab-spacemacs/init-puppet-mode ()
   (use-package puppet-mode))
 (defun eab-spacemacs/init-yaml-mode ()

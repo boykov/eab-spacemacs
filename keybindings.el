@@ -445,7 +445,7 @@
  "L"	`(,(ilam (TeX-command "LaTeX"	'TeX-master-file)) :which-key "")
  "v"	`(,(ilam (eab/switch-wmctrl-window "main.pdf")) :which-key "")
  ;; "b" `(,(ilam (eab/switch-wmctrl-window "BoykovEA_5.pdf")) :which-key "")
- "p"	'eab/ido-wmctrl-pdf
+ "p"	`(,(ilam (eab/projectile-compile-project "make push_all")) :which-key "")
  "c"	`(,(ilam (eab/projectile-compile-project "make clear")) :which-key "")
  "t"	`(,(ilam (eab/projectile-compile-project "make test")) :which-key "")
  "2"	`(,(ilam (eab/projectile-compile-project "make test2")) :which-key ""))
