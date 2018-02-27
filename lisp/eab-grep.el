@@ -47,6 +47,31 @@
 ;; grep-command isn't parsed correctly
 ;; (setq grep-history '("grep -i -nH -e test  `git ls-files \\`git rev-parse --show-toplevel\\``"))
 
+(setq eab/grep-ls " `git ls-files \\`git rev-parse --show-toplevel\\``")
+(setq eab/grep-ls-recurse " `git ls-files --recurse-submodules \\`git rev-parse --show-toplevel\\``")
+
+(defun eab/grep-gitmodules ()
+  (let* ((gitmodules-1 (concat
+			(substring
+			 (shell-command-to-string "git rev-parse --show-toplevel") 0 -1)
+			"/.gitmodules"))
+	 (gitmodules (if (file-remote-p default-directory)
+			 (concat "/"
+				 (file-remote-p default-directory 'method)
+				 ":"
+				 (file-remote-p default-directory 'host)
+				 ":" gitmodules-1)
+		       gitmodules-1)))
+    (if (file-exists-p gitmodules)
+	(if (<
+	     (string-to-number
+	      (substring
+	       (shell-command-to-string
+		(concat "cat " gitmodules " | wc -l")) 0 -1)) 12)
+	    eab/grep-ls-recurse
+	  eab/grep-ls)
+      eab/grep-ls)))
+
 (defun eab/grep (arg)
   (interactive "P")
   (let* ((grep-host-defaults-alist nil)
@@ -56,7 +81,7 @@
 	 (grep-command-no-list
 	  (if (or (file-exists-p ".gitignore")
 		  (string= (shell-command-to-string "git clean -xn `pwd` | wc -l") "0\n"))
-	      `,(concat str " `git ls-files \\`git rev-parse --show-toplevel\\``")
+	      `,(concat str (eab/grep-gitmodules))
 	    `,(concat str " *."
 		      extension)))
 	 (len-str (1+ (length str)))
