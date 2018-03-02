@@ -54,15 +54,15 @@
 
 (defun eab/ansible-copy (&optional arg)
   "Copy remote file, e.g. /sudo:root@jupiter:/etc/pbstools.conf to
-   respective place in jupiter ansible role"
+   respective place (templates/) in jupiter ansible role. C-u for files/"
   (interactive "p")
   (let* ((df (dired-file-name-at-point))
 	 (file (if df df (buffer-file-name)))
 	 (local (file-remote-p file 'localname))
 	 (dir (file-name-directory local))
-	 (ansdir (if arg
-		     (concat eab/ansible-path "files" dir)
-		   (concat eab/ansible-path "templates" dir))))
+	 (ansdir (if (eq arg 1)
+		     (concat eab/ansible-path "templates" dir)
+		   (concat eab/ansible-path "files" dir))))
     (make-directory ansdir 't)
     (copy-file file (concat ansdir (file-name-nondirectory local)) 't)))
 
