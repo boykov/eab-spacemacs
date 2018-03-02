@@ -7,7 +7,10 @@
 
 (setq grep-use-null-device nil)
 
-(setcar (car grep-regexp-alist) "^\\(.+?\\)\\(:[ \t]*\\)\\([1-9][0-9]*\\)[ \t]*\\2")
+;; TODO test wgrep mode
+;; (setcar (car grep-regexp-alist) "^\\(.+?\\)\\(:[ \t]*\\)\\([1-9][0-9]*\\)[ \t]*\\2")
+;; (setcar (car grep-regexp-alist)   "^\\(.*?[^/\n]\\):[   ]*\\([1-9][0-9]*\\)[    ]*:")
+(setcar (car grep-regexp-alist) "^\\(.+?\\):[ \t]*\\([1-9][0-9]*\\)[ \t]*:")
 
 (defun eab/grep-align ()
   (interactive)
