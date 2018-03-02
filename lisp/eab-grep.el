@@ -55,34 +55,61 @@
 
 (defun eab/grep-gitmodules ()
   (let* ((gitmodules-1 (concat
-			(substring
-			 (shell-command-to-string "git rev-parse --show-toplevel") 0 -1)
+			top-level
 			"/.gitmodules"))
-	 (gitmodules (if (file-remote-p default-directory)
-			 (concat "/"
-				 (file-remote-p default-directory 'method)
-				 ":"
-				 (file-remote-p default-directory 'host)
-				 ":" gitmodules-1)
-		       gitmodules-1)))
+	 (gitmodules (concat
+		      remote-prefix
+		      gitmodules-1))
+	 (grepmoduleignore-1 (concat
+			      top-level
+			      "/.grepmoduleignore"))
+	 (grepmoduleignore (concat
+			    remote-prefix
+			    grepmoduleignore-1)))
     (if (file-exists-p gitmodules)
 	(if (<
 	     (string-to-number
 	      (substring
 	       (shell-command-to-string
 		(concat "cat " gitmodules " | wc -l")) 0 -1)) 12)
-	    eab/grep-ls-recurse
+	    (if (file-exists-p grepmoduleignore)
+		eab/grep-ls
+	      eab/grep-ls-recurse)
 	  eab/grep-ls)
       eab/grep-ls)))
 
 (defun eab/grep (arg)
   (interactive "P")
   (let* ((grep-host-defaults-alist nil)
+	 (remote-prefix
+	  (if (file-remote-p default-directory)
+	      (concat "/"
+		      (file-remote-p default-directory 'method)
+		      ":"
+		      (file-remote-p default-directory 'host)
+		      ":" )
+	    ""))
+	 (try (shell-command-to-string "git rev-parse --show-superproject-working-tree"))
+	 (fatal (if (and (> (length try) 10) (string= (substring try 0 5) "fatal"))
+		    't
+		  nil))
+	 (top-level-1 (if fatal
+			  ""
+			try))
+	 (top-level (if fatal
+			default-directory
+		       (substring
+			(if (string= top-level-1 "")
+			    (shell-command-to-string "git rev-parse --show-toplevel")
+			  top-level-1) 0 -1)))
+	 (default-directory (concat
+			     remote-prefix
+			     top-level))
 	 (extension (ignore-errors
 		      (file-name-extension buffer-file-name)))
 	 (str (concat (eab/gz-grep extension) " --color=auto -i -nH -e  "))
 	 (grep-command-no-list
-	  (if (or (file-exists-p ".gitignore")
+	  (if (or (file-exists-p (concat default-directory "/.gitignore"))
 		  (string= (shell-command-to-string "git clean -xn `pwd` | wc -l") "0\n"))
 	      `,(concat str (eab/grep-gitmodules))
 	    `,(concat str " *."
