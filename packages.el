@@ -9,6 +9,8 @@
 
 (defvar eab-spacemacs-packages
   '(
+    git-timemachine
+    git-wip-timemachine
     xterm-color
     go-mode
     ssh-config-mode
@@ -202,6 +204,8 @@ which require an initialization must be listed explicitly in the list.")
   (require 'ergoemacs-functions)
   )
 
+(defun eab-spacemacs/init-git-timemachine ())
+(defun eab-spacemacs/init-git-wip-timemachine ())
 (defun eab-spacemacs/init-go-mode ()
   )
 (defun eab-spacemacs/init-xterm-color ()
