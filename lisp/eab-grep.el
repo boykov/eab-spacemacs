@@ -71,7 +71,7 @@
 	     (string-to-number
 	      (substring
 	       (shell-command-to-string
-		(concat "cat " gitmodules " | wc -l")) 0 -1)) 12)
+		(concat "cat " gitmodules-1 " | wc -l")) 0 -1)) 12)
 	    (if (file-exists-p grepmoduleignore)
 		eab/grep-ls
 	      eab/grep-ls-recurse)
@@ -80,31 +80,9 @@
 
 (defun eab/grep (arg)
   (interactive "P")
+  ;; TODO disable toplevel if a simple directory
+  (eab/with-git-toplevel
   (let* ((grep-host-defaults-alist nil)
-	 (remote-prefix
-	  (if (file-remote-p default-directory)
-	      (concat "/"
-		      (file-remote-p default-directory 'method)
-		      ":"
-		      (file-remote-p default-directory 'host)
-		      ":" )
-	    ""))
-	 (try (shell-command-to-string "git rev-parse --show-superproject-working-tree"))
-	 (fatal (if (and (> (length try) 10) (string= (substring try 0 5) "fatal"))
-		    't
-		  nil))
-	 (top-level-1 (if fatal
-			  ""
-			try))
-	 (top-level (if fatal
-			default-directory
-		       (substring
-			(if (string= top-level-1 "")
-			    (shell-command-to-string "git rev-parse --show-toplevel")
-			  top-level-1) 0 -1)))
-	 (default-directory (concat
-			     remote-prefix
-			     top-level))
 	 (extension (ignore-errors
 		      (file-name-extension buffer-file-name)))
 	 (str (concat (eab/gz-grep extension) " --color=auto -i -nH -e  "))
@@ -130,13 +108,13 @@
        (if (and grep-use-null-device null-device)
 	   (concat  grep-command-complete " " null-device)
 	 grep-command-complete)
-       'grep-mode))))
+       'grep-mode)))))
 
 (defun eab/find-grep ()
   (interactive)
   (let ((grep-host-defaults-alist nil)
         (grep-find-command
-         `(,"find . -iname '**' -type f -print0 | xargs -0 -e grep -i -nH -e \"\"" . 17)))
+         `(,"find . -iname '**' -type f -print0 | xargs -0 -e grep -i -nH -e \"\"" . 66)))
     (call-interactively 'find-grep)))
 
 (grep-a-lot-advise eab/grep)

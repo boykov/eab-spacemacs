@@ -6,7 +6,8 @@
 
 (defun eab/projectile-compile-project ()
   (interactive)
-    (call-interactively 'projectile-compile-project))
+  (eab/with-git-toplevel
+    (call-interactively 'projectile-compile-project)))
 
 (defun eab/projectile-compile-project-custom (CMD)
   "Run project compilation command CMD."

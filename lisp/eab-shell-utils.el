@@ -130,4 +130,29 @@
 		    (message "async result: <%s>" result)
 		    (define-abbrev eab-abbrev-table ,phrase result))))))
 
+(defmacro eab/with-git-toplevel (&rest body)
+  "Set default-directory as git superproject or toplevel."
+  `(let* ((remote-prefix
+	   (if (file-remote-p default-directory)
+	       (file-remote-p default-directory)
+	     ""))
+	  (try (shell-command-to-string "git rev-parse --show-superproject-working-tree"))
+	  (fatal (if (and (> (length try) 10) (string= (substring try 0 5) "fatal"))
+		     't
+		   nil))
+	  (top-level-1 (if fatal
+			   ""
+			 try))
+	  (top-level (if fatal
+			 (if (file-remote-p default-directory)
+			     (file-remote-p default-directory 'localname)
+			   default-directory)
+		       (substring
+			(if (string= top-level-1 "")
+			    (shell-command-to-string "git rev-parse --show-toplevel")
+			  top-level-1) 0 -1)))
+	  (default-directory
+	    (concat remote-prefix top-level)))
+	  ,@body))
+
 (provide 'eab-shell-utils)
