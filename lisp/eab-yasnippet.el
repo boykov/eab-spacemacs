@@ -8,7 +8,8 @@
 (setq yas-key-syntaxes '("w_" "w_." "w_.()" "^ "))
 
 (defun yas-org-very-safe-expand ()
-  (let ((yas-fallback-behavior 'return-nil))
+  (let ((yas-fallback-behavior 'return-nil)
+	(yas-minor-mode 't))
     (yas-expand)))
 
 (add-hook 'org-mode-hook
