@@ -293,6 +293,9 @@
 (autoload 'wikipedia-mode "wikipedia-mode.el" "Major mode for editing documents in Wikipedia markup." t)
 
 (defalias 'perl-mode 'cperl-mode)
+(setq cperl-extra-newline-before-brace t
+      cperl-brace-offset              -2
+      cperl-merge-trailing-else        nil)
 
 (add-hook 'textile-mode-hook (lambda () (toggle-truncate-lines -1)))
 (add-hook 'ielm-mode-hook (lambda () (setq comint-process-echoes nil)))
