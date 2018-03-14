@@ -4,7 +4,11 @@
 (setq compile-command "make ")
 (setq compilation-buffer-name-function (lambda (mode) (concat "*" (downcase mode) ": " (projectile-project-name) "*")))
 
-(defun eab/projectile-compile-project (CMD)
+(defun eab/projectile-compile-project ()
+  (interactive)
+    (call-interactively 'projectile-compile-project))
+
+(defun eab/projectile-compile-project-custom (CMD)
   "Run project compilation command CMD."
   (interactive "P")
   (let* ((project-root (projectile-project-root)))

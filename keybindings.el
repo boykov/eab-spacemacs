@@ -438,17 +438,17 @@
  :prefix "C-d"
  "q"	'eab/nocommand
  "a"	'eab/compile-helm
- "d"	'projectile-compile-project
+ "d"	'eab/projectile-compile-project
  "s"	(ilam (smart-compile 4))
  "l"	`(,(ilam (TeX-command "LaTeX"	'TeX-master-file)) :which-key "")
  "b"	`(,(ilam (TeX-command "BibTeX"	'TeX-master-file)) :which-key "")
  "L"	`(,(ilam (TeX-command "LaTeX"	'TeX-master-file)) :which-key "")
  "v"	`(,(ilam (eab/switch-wmctrl-window "main.pdf")) :which-key "")
  ;; "b" `(,(ilam (eab/switch-wmctrl-window "BoykovEA_5.pdf")) :which-key "")
- "p"	`(,(ilam (eab/projectile-compile-project "make push_all")) :which-key "")
- "c"	`(,(ilam (eab/projectile-compile-project "make clear")) :which-key "")
- "t"	`(,(ilam (eab/projectile-compile-project "make test")) :which-key "")
- "2"	`(,(ilam (eab/projectile-compile-project "make test2")) :which-key ""))
+ "p"	`(,(ilam (eab/projectile-compile-project-custom "make push_all")) :which-key "")
+ "c"	`(,(ilam (eab/projectile-compile-project-custom "make clear")) :which-key "")
+ "t"	`(,(ilam (eab/projectile-compile-project-custom "make test")) :which-key "")
+ "2"	`(,(ilam (eab/projectile-compile-project-custom "make test2")) :which-key ""))
 (setq eab/compile-map (lookup-key global-map (kbd "C-d")))
 
 (defvar eab/one-key-map (make-sparse-keymap)
