@@ -67,4 +67,39 @@
 	(eab/wrap-eepitch-this line))
       (ee-next-line 1)))
 
+(defun eab/shell-execute-region (start end)
+  (interactive "r")
+  (save-excursion
+    (goto-char start)
+    (beginning-of-line)
+    ;; Пропустить пустую строку.
+    (while (and (looking-at "\\s *$")
+                (< (point) end))
+      (forward-line 1))
+    (setq start (point))
+    (or (< start end)
+        (error "Region is empty"))
+    (let ((cur (current-buffer)))
+      (save-window-excursion
+	(switch-to-buffer eepitch-target-buffer)
+	(let* ((name-1 (concat default-directory "my.region"))
+	       (name (if (file-remote-p name-1)
+			 (file-remote-p name-1 'localname)
+		       name-1)))
+	  (switch-to-buffer name-1)
+	  (insert-buffer-substring cur start end)
+	  (insert (concat "\nrm " name))
+	  (write-file name-1)
+	  (kill-buffer)
+	  (let ((line (concat "bash " name))) ; contents of this line
+	    (eab/wrap-eepitch-this line)))))))
+
+(defun eab/eepitch-paragraph ()
+  (interactive)
+  (backward-paragraph)
+  (let ((st (point)))
+    (forward-paragraph)
+    (let ((en (point)))
+      (eab/shell-execute-region st en))))
+
 (provide 'eab-eepitch)

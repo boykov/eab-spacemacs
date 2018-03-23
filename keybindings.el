@@ -166,6 +166,7 @@
 
 (general-define-key
  "<f9>"         'eab/ansible-copy
+ "<f10>"        'eab/flyspell-buffer
  "<f12>"	'eab/make-list-paths
  "<f6>"		'eab/revert-buffer
  "<f7>"		'eab/fix-windows-coding
@@ -173,6 +174,7 @@
  "<kp-end>"	(ilam (switch-to-buffer eab/agenda-H-command))
  "C-,"		'eab/eepitch-this-line
  "C-r"		'eab/eepitch-this-line
+ "C-M-r"	'eab/eepitch-paragraph
  "M-DEL"	'eab/completion-at-point
  "C-j"		'eab/completion-at-point
  "C-M-g"	'eab/insert-greek

@@ -18,6 +18,7 @@
 (global-auto-revert-mode)
 ;; TODO with notify my workflow breaks
 (setq auto-revert-use-notify nil)
+;; (setq auto-revert-remote-files 't) it breaks magit-status buffer
 
 (require 'async)
 

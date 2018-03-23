@@ -196,6 +196,10 @@
 (setq ispell-dictionary "english")
 (setq ispell-local-dictionary "english")
 (setq flyspell-default-dictionary "english")
+(defun eab/flyspell-buffer (arg)
+  (interactive "P")
+  (let ((ispell-local-dictionary (if arg "en" "ru")))
+    (flyspell-buffer)))
 
 (require 'gnugol)
 
