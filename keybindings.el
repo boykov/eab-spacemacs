@@ -560,6 +560,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; add-hook
 
+(eab/add-hook textile-mode-hook eab/textile-hook
+  (general-define-key
+   :keymaps 'textile-mode-map
+   "C-i"	'eab/outline-toggle-children
+   "<backtab>"	'eab/outline-toggle-all))
+
 (eab/add-hook git-rebase-mode-hook eab/git-rebase-hook
   (general-define-key
    :keymaps 'git-rebase-mode-map

@@ -510,6 +510,7 @@ which require an initialization must be listed explicitly in the list.")
   (use-package eab-hron-lib)
   (use-package eab-org-latex)
   (use-package eab-org-reftex)
+  (use-package eab-outline)
   (global-set-key (kbd "C-h c") 'describe-key-briefly)
   (global-set-key (kbd "M-O") 'forward-paragraph)
   (general-define-key
