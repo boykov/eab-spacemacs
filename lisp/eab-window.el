@@ -44,7 +44,8 @@
 (defun eab/switch-help () (interactive) (eab/switch-window "*Help*"))
 (defun eab/switch-compile ()
   (interactive)
-  (eab/switch-window (concat "*compilation: " (projectile-project-name) "*"))
+  (eab/with-git-toplevel
+   (eab/switch-window (concat "*compilation: " (projectile-project-name) "*")))
   (if (not (eq major-mode 'compilation-mode))
       (compilation-mode)))
 
