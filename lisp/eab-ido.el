@@ -66,7 +66,7 @@
 
 (eab/patch-this-code
  'projectile-project-root
- "(file-truename default-directory)" "(expand-file-name default-directory)")
+ "(file-truename dir)" "(expand-file-name dir)")
 
 ;; TODO добавить в список буферов "projectile-switch-project",
 ;; аналогично wg-switch-to-workgroup?  Или, может быть, лучше делать
