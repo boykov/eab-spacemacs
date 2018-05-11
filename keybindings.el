@@ -442,6 +442,7 @@
  "a"	'eab/compile-helm
  "d"	'eab/projectile-compile-project
  "s"	(ilam (smart-compile 4))
+ "S"	`(,(ilam (eab/projectile-compile-project-custom "make push_unstaged")) :which-key "")
  "l"	`(,(ilam (TeX-command "LaTeX"	'TeX-master-file)) :which-key "")
  "b"	`(,(ilam (TeX-command "BibTeX"	'TeX-master-file)) :which-key "")
  "L"	`(,(ilam (TeX-command "LaTeX"	'TeX-master-file)) :which-key "")
@@ -503,8 +504,8 @@
 (general-define-key
  :prefix "C-a"
  "a"		`(,(ilam (eab/wg-switch-to-workgroup ":clock:")) :which-key "apple :clock:")
- "f"		`(,(ilam (eab/wg-switch-to-workgroup ":sphinx_rtd_theme:")) :which-key "fish :sphinx_rtd_theme:")
- "t"		`(,(ilam (eab/wg-switch-to-workgroup ":tmp:")) :which-key "tree :tmp:")
+ "f"		`(,(ilam (eab/wg-switch-to-workgroup ":sync-redmine:")) :which-key "fish :sync-redmine:")
+ "t"		`(,(ilam (eab/wg-switch-to-workgroup ":jup:")) :which-key "tree :jup:")
  "e"		`(,(ilam (eab/wg-switch-to-workgroup ":eab-spacemacs:")) :which-key "eagle :eab-spacemacs:")
  "l"		`(,(ilam (eab/wg-switch-to-workgroup ":cc:")) :which-key "lamp :cc:")
  "4"		`(,(ilam (eab/wg-switch-to-workgroup ":mail:")) :which-key "4 :mail:")
@@ -689,7 +690,7 @@
   (general-define-key
    :keymaps 'magit-mode-map
    "J"		'magit-commit-amend
-   "W"		'magit-patch-popup
+   "N"		(kbd "P o m a s t e r 2*RET")
    "Q"		(kbd "l = a E v g e n y SPC B o y k o v RET b")
    "M-n"	'nil
    "M-p"	'nil
@@ -973,6 +974,7 @@
    "M-s"	'nil
    "M-n"	'nil
    "M-p"	'nil
+   "C-r"	(ilam (term-send-raw-string "\C-r"))
    "<tab>"	'eab/wrap-tab
    "C-p"	'term-previous-input
    "C-n"	'term-next-input)

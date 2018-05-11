@@ -239,6 +239,7 @@
 ;;		       	       	       	      
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(add-to-list 'auto-mode-alist '("\\.spec\\|\\.spec\\.in" . rpm-spec-mode))
 (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
 (add-to-list 'auto-mode-alist '("/\\.ssh/config\\'"     . ssh-config-mode))
 (add-to-list 'auto-mode-alist '("/sshd?_config\\'"      . ssh-config-mode))
@@ -256,6 +257,7 @@
 (add-to-list 'auto-mode-alist '("\\.m$" . octave-mode))
 (add-to-list 'auto-mode-alist '("AUTOEXEC\\." . 'bat-mode))
 (add-to-list 'auto-mode-alist '("CONFIG\\." . 'bat-mode))
+(add-to-list 'auto-mode-alist '("\\.cuf\\'" . f90-mode))
 (add-to-list 'auto-mode-alist '("\\.F90\\'" . f90-mode))
 (add-to-list 'auto-mode-alist '("\\.[bB][aA][tT]$" . 'bat-mode))
 (add-to-list 'auto-mode-alist '("\\.\\(frm\\|bas\\|cls\\|vbs\\)$" . visual-basic-mode))
