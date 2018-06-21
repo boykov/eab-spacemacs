@@ -178,6 +178,7 @@
  "M-DEL"	'eab/completion-at-point
  "C-j"		'eab/completion-at-point
  "C-M-g"	'eab/insert-greek
+ "C-c RET"	'org-return
  "C-c c"	'eab/add-eab-abbrev
  "C-c d"	'eab/tracker-search
  "C-c g"	'eab/gnugol-search
