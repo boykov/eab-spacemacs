@@ -152,7 +152,8 @@
 			    (shell-command-to-string "git rev-parse --show-toplevel")
 			  top-level-1) 0 -1)))
 	  (default-directory
-	    (concat remote-prefix top-level)))
-	  ,@body))
+	    (concat remote-prefix top-level))
+	  (projectile-cached-buffer-file-name nil))
+     ,@body))
 
 (provide 'eab-shell-utils)
