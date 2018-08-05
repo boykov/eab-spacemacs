@@ -798,6 +798,11 @@
    "M-m"	'nil
    "M-d"	'nil))
 
+(eab/add-hook orgtbl-mode-hook eab/orgtbl-mode-hook
+  (general-define-key
+   :keymaps 'orgtbl-mode-map
+   "M-a"	'nil))
+
 (eab/add-hook org-mode-hook eab/org-hook
   (general-define-key
    :keymaps 'org-mode-map
@@ -1077,6 +1082,7 @@
    "M-n"	'nil
    "\C-c\C-w"	'gnus-summary-move-article
    "m"		'gnus-summary-mark-as-processable
+   "x"		'gnus-summary-delete-article
    "u"		'gnus-summary-unmark-as-processable))
 
 (eab/add-hook gnus-started-hook eab/gnus-group-hook
