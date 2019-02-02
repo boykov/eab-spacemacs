@@ -2,6 +2,14 @@
   (setq-local outline-regexp "^\\(h[0-9]+\\)")
   (setq-local outline-heading-alist '(("h1" . 2) ("h2" . 3) ("h3" . 4) ("h4" . 5) ("h5" . 6))))
 
+(eab/add-hook ssh-config-mode-hook eab/ssh-config-outline-hook
+  (setq-local outline-regexp "##+")
+  (setq-local outline-heading-alist '(("##" . 2) ("###" . 3))))
+
+(eab/add-hook groovy-mode-hook eab/groovy-outline-hook
+  (setq-local outline-regexp "///+")
+  (setq-local outline-heading-alist '(("///" . 2) ("////" . 3))))
+
 (defun eab/outline-toggle-children ()
   "Show or hide the current subtree depending on its current state."
   (interactive)
