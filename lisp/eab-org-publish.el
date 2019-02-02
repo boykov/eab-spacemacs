@@ -179,7 +179,20 @@
 	 :style-include-default t
 	 :author-info nil
 	 :creator-info nil)
+	("html-fz-base"
+	 :base-directory "/home/eab/git/fz/tasks/sync-jira/fz-wiki/org"
+	 :publishing-directory "/home/eab/git/cc/boykov.github.io/public/fz-infra"
+	 :online-suffix ".html"
+	 :working-suffix ".org"
+	 :section_numbers nil
+	 :table-of-contents nil
+	 :base-extension "org"
+	 :publishing-function org-html-publish-to-html
+	 :style-include-default t
+	 :author-info nil
+	 :creator-info nil)
 	("html-ldap" :components ("html-ldap-base" "html-ldap-static"))
+	("html-fz" :components ("html-fz-base"))
 	("jupiter" :components ("jupiter-base"))))
 
 (setq org-html-head-extra "
