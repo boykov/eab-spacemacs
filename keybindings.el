@@ -511,7 +511,7 @@
  "l"		`(,(ilam (eab/wg-switch-to-workgroup ":cc:")) :which-key "lamp :cc:")
  "4"		`(,(ilam (eab/wg-switch-to-workgroup ":mail:")) :which-key "4 :mail:")
  "g"		`(,(ilam (eab/wg-switch-to-workgroup ":gsie:")) :which-key ":gsie:")
- "b"		`(,(ilam (eab/wg-switch-to-workgroup ":baikal:")) :which-key ":baikal:")
+ "b"		`(,(ilam (eab/wg-switch-to-workgroup ":fz:")) :which-key ":fz:")
  "j"		`(,(ilam (eab/wg-switch-to-workgroup ":jac:")) :which-key ":jac:")
  "m"		`(,(ilam (eab/wg-switch-to-workgroup ":dbsym:")) :which-key ":dbsym:")
  "C-e"		`(,(ilam (eab/wg-switch-to-workgroup ":dotspace:")) :which-key ":dotspace:")
@@ -565,6 +565,18 @@
 (eab/add-hook textile-mode-hook eab/textile-hook
   (general-define-key
    :keymaps 'textile-mode-map
+   "C-i"	'eab/outline-toggle-children
+   "<backtab>"	'eab/outline-toggle-all))
+
+(eab/add-hook ssh-config-mode-hook eab/ssh-config-hook
+  (general-define-key
+   :keymaps 'ssh-config-mode-map
+   "C-i"	'eab/outline-toggle-children
+   "<backtab>"	'eab/outline-toggle-all))
+
+(eab/add-hook groovy-mode-hook eab/groovy-hook
+  (general-define-key
+   :keymaps 'groovy-mode-map
    "C-i"	'eab/outline-toggle-children
    "<backtab>"	'eab/outline-toggle-all))
 
@@ -691,6 +703,7 @@
   (general-define-key
    :keymaps 'magit-mode-map
    "J"		'magit-commit-amend
+   "R"		(kbd "r - A e o r i g i n / m a s t e r RET")
    "N"		(kbd "P o m a s t e r 2*RET")
    "Q"		(kbd "l = a E v g e n y SPC B o y k o v RET b")
    "M-n"	'nil

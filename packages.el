@@ -9,6 +9,9 @@
 
 (defvar eab-spacemacs-packages
   '(
+    s
+    groovy-mode
+    terraform-mode
     rpm-spec-mode
     git-timemachine
     git-wip-timemachine
@@ -199,6 +202,17 @@ which require an initialization must be listed explicitly in the list.")
 
 (defvar eab-spacemacs-excluded-packages '()
   "List of packages to exclude.")
+
+(defun eab-spacemacs/init-s ()
+  (use-package s))
+
+(defun eab-spacemacs/init-groovy-mode ()
+  (use-package groovy-mode)
+  (add-hook 'groovy-mode-hook (lambda () (setq indent-tabs-mode nil)))
+  )
+
+(defun eab-spacemacs/init-terraform-mode ()
+  (use-package terraform-mode))
 
 (defun eab-spacemacs/init-ergoemacs-mode ()
   (require 'ergoemacs-translate)

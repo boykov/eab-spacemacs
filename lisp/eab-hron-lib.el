@@ -218,6 +218,8 @@
 		"all2015.org"
 		"all2016.org"
 		"all2017.org"
+		"all2018.org"
+		"all2019.org"
 		)))
 
 (defun eab/nightly-scope () eab/nightly-scope)
