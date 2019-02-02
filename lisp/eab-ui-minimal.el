@@ -83,6 +83,9 @@
 (setq enable-recursive-minibuffers t)
 (setq-default truncate-lines 't)
 (setq truncate-partial-width-windows nil)
+(setq require-final-newline nil)
+(setq mode-require-final-newline nil)
+(setq indent-tabs-mode nil)
 
 (setq x-select-enable-clipboard t)
 (column-number-mode 1)
