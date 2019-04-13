@@ -705,7 +705,7 @@
    "J"		'magit-commit-amend
    "R"		(kbd "r - A e o r i g i n / m a s t e r RET")
    "N"		(kbd "P o m a s t e r 2*RET")
-   "Q"		(kbd "l = a E v g e n y SPC B o y k o v RET b")
+   "Q"		(ilam (shell-command "git add SUP* CS-* QB* CHR3-* PRSL-* PLTF-* LIME-* AVD-* CHRR-* PEAR-*"))
    "M-n"	'nil
    "M-p"	'nil
    "M-s"	'nil
