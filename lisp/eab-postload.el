@@ -11,6 +11,7 @@
   (eab/load-personal-minimal)
   (require 'keyfreq)
   (eab/bind-path keyfreq-file)
+  (eab/bind-path keyfreq-file-lock)
   (keyfreq-mode 1)
   (keyfreq-autosave-mode 1)
   (if (= (shell-command "ps -A | grep Xorg") 0)

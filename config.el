@@ -143,6 +143,7 @@
 (cond ((eab/onhost "jonesbook") (setq-put source-directory "~/emacs/src/emacs/")) ;; DONE old path
       ((eab/onhost "victory")   (setq-put source-directory "~/src/emacs/"))
       ((eab/onhost "kairos")   (setq-put source-directory "~/data/gitno/github/emacs/src"))
+      ((eab/onhost "chronos")   (setq-put source-directory "~/data/gitno/github/emacs/src"))
       ((eab/onhost "cyclos")   (setq-put source-directory "~/data/gitno/github/emacs/src")))
 
 
@@ -163,7 +164,8 @@
 (setq-put backup-directory-alist `((".*" . ,emacs-tmp-dir)))
 (setq-put auto-save-file-name-transforms `((".*" ,emacs-tmp-dir t)))
 
-(setq-put keyfreq-file (concat (eab/history-dir) ".emacs.keyfreq"))
+(setq-put keyfreq-file (concat (eab/history-dir) ".emacs.keyfreq." system-name))
+(setq-put keyfreq-file-lock (concat (eab/history-dir) ".emacs.keyfreq.lock." system-name))
 
 (setq-put eab/check-cc-path "~/git/auto/check-cc.sh") ;; see eab-private/eab-secrets.el.gpg
 (setq-put eab/check-inet-path "~/git/auto/check-inet.sh")
@@ -190,7 +192,8 @@
 (setq-put nnmail-message-id-cache-file (concat (eab/history-dir) ".nnmail-cache"))
 (setq-put tramp-persistency-file-name (concat (eab/history-dir) "tramp"))
 (setq-put url-configuration-directory (concat (eab/history-dir) "url/"))
-(setq-put ansible-vault-pass-file "/home/eab/.ansible/passwd")
+(setq-put ansible-vault-pass-file "/home/eab/.ansible/passwd_cc")
+(setq-put ansible-vault-pass-file "/home/eab/.ansible/passwd_fz")
 
 (setq-put eab/yasnippets-path (concat user-emacs-directory "private/eab-spacemacs/local/yasnippet-snippets"))
 (setq-put eab/eab-snippets-path (concat user-emacs-directory "private/eab-spacemacs/snippets"))
