@@ -53,7 +53,7 @@
 (setq eab/grep-ls " `git ls-files \\`git rev-parse --show-toplevel\\``")
 (setq eab/grep-ls-recurse " `git ls-files --recurse-submodules \\`git rev-parse --show-toplevel\\``")
 
-(defun eab/grep-gitmodules ()
+(defun eab/grep-gitmodules (arg)
   (let* ((gitmodules-1 (concat
 			top-level
 			"/.gitmodules"))
@@ -67,11 +67,7 @@
 			    remote-prefix
 			    grepmoduleignore-1)))
     (if (file-exists-p gitmodules)
-	(if (<
-	     (string-to-number
-	      (substring
-	       (shell-command-to-string
-		(concat "cat " gitmodules-1 " | wc -l")) 0 -1)) 12)
+	(if (equal arg 2)
 	    (if (file-exists-p grepmoduleignore)
 		eab/grep-ls
 	      eab/grep-ls-recurse)
@@ -89,7 +85,7 @@
 	 (grep-command-no-list
 	  (if (or (file-exists-p (concat default-directory "/.gitignore"))
 		  (string= (shell-command-to-string "git clean -xn `pwd` | wc -l") "0\n"))
-	      `,(concat str (eab/grep-gitmodules))
+	      `,(concat str (eab/grep-gitmodules arg))
 	    `,(concat str " *."
 		      extension)))
 	 (len-str (1+ (length str)))
@@ -102,8 +98,9 @@
 	   (substring grep-command-no-list 0 len-str)
 	   (symbol-name (symbol-at-point)) " "
 	   (substring grep-command-no-list len-str))))
-    (if (not arg)
-	(call-interactively 'grep)
+    (if (or (not arg) (equal arg 2))
+	(let ((current-prefix-arg nil))
+	  (call-interactively 'grep))
       (compilation-start
        (if (and grep-use-null-device null-device)
 	   (concat  grep-command-complete " " null-device)
