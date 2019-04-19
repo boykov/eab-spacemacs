@@ -143,7 +143,7 @@
 	  (top-level-1 (if fatal
 			   ""
 			 try))
-	  (top-level (if fatal
+	  (top-level (if (or fatal (not arg))
 			 (if (file-remote-p default-directory)
 			     (file-remote-p default-directory 'localname)
 			   default-directory)

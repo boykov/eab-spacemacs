@@ -93,6 +93,7 @@
  "C-x e"	'eval-last-sexp
  "C-x j"	'comment-region
  "C-x o"	'other-window
+ "C-x Q"	'eab/kbd-macro-query
  "C-z"		'repeat
  "M-!"		'delete-window
  "s-0"		'delete-window
@@ -1217,6 +1218,7 @@
    "M-v"	'yank)
   (general-define-key
    :keymaps 'ido-file-completion-map
+   "C-n"	(eab/do-action (ilam (execute-kbd-macro (read-kbd-macro "C-x C-f / 2*s h : k a i r o s - h o s t | s u d o : k a i r o s - h o s t : / C-x Q"))))
    "C-d"	'eab/ace-ibuffer
    "C-|"	'eab/ido-see-file
    "s-SPC"	'eab/ido-see-file)
