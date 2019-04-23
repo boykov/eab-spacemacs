@@ -123,12 +123,12 @@
   (interactive)
   (funcall `(lambda ()
 	      (async-start
-		(lambda ()
-		  (require 'server)
-		  (server-eval-at "serverN" '(eab/shell-translate ,phrase 't)))
-		(lambda (result)
-		    (message "async result: <%s>" result)
-		    (define-abbrev eab-abbrev-table ,phrase result))))))
+	       (lambda ()
+		 (require 'server)
+		 (server-eval-at "serverN" '(eab/shell-translate ,phrase 't)))
+	       (lambda (result)
+		 (message "async result: <%s>" result)
+		 (define-abbrev eab-abbrev-table ,phrase result))))))
 
 (defmacro eab/with-git-toplevel (&rest body)
   "Set default-directory as git superproject or toplevel."

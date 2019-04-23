@@ -33,10 +33,10 @@
 (defun eab/grep-utf ()
   (interactive)
   (let* ((ss (split-string (car compilation-arguments) "LANG=C "))
-	(compilation-arguments
-	 (append
-	  (if (> (length ss) 1) (list (cadr ss)) (list (car compilation-arguments)))
-	  (cdr compilation-arguments))))
+	 (compilation-arguments
+	  (append
+	   (if (> (length ss) 1) (list (cadr ss)) (list (car compilation-arguments)))
+	   (cdr compilation-arguments))))
     (eab/recompile)))
 
 (defun eab/gz-grep (extension)
@@ -78,34 +78,34 @@
   (interactive "P")
   ;; TODO disable toplevel if a simple directory
   (eab/with-git-toplevel
-  (let* ((grep-host-defaults-alist nil)
-	 (extension (ignore-errors
-		      (file-name-extension buffer-file-name)))
-	 (str (concat (eab/gz-grep extension) " --color=auto -i -nH -e  "))
-	 (grep-command-no-list
-	  (if (or (file-exists-p (concat default-directory "/.gitignore"))
-		  (string= (shell-command-to-string "git clean -xn `pwd` | wc -l") "0\n"))
-	      `,(concat str (eab/grep-gitmodules arg))
-	    `,(concat str " *."
-		      extension)))
-	 (len-str (1+ (length str)))
-	 (grep-command
-	  (if grep-history
-	      (cons grep-command-no-list len-str)
-	    grep-command-no-list))
-	 (grep-command-complete
-	  (concat
-	   (substring grep-command-no-list 0 len-str)
-	   (symbol-name (symbol-at-point)) " "
-	   (substring grep-command-no-list len-str))))
-    (if (or (not arg) (equal arg 2))
-	(let ((current-prefix-arg nil))
-	  (call-interactively 'grep))
-      (compilation-start
-       (if (and grep-use-null-device null-device)
-	   (concat  grep-command-complete " " null-device)
-	 grep-command-complete)
-       'grep-mode)))))
+   (let* ((grep-host-defaults-alist nil)
+	  (extension (ignore-errors
+		       (file-name-extension buffer-file-name)))
+	  (str (concat (eab/gz-grep extension) " --color=auto -i -nH -e  "))
+	  (grep-command-no-list
+	   (if (or (file-exists-p (concat default-directory "/.gitignore"))
+		   (string= (shell-command-to-string "git clean -xn `pwd` | wc -l") "0\n"))
+	       `,(concat str (eab/grep-gitmodules arg))
+	     `,(concat str " *."
+		       extension)))
+	  (len-str (1+ (length str)))
+	  (grep-command
+	   (if grep-history
+	       (cons grep-command-no-list len-str)
+	     grep-command-no-list))
+	  (grep-command-complete
+	   (concat
+	    (substring grep-command-no-list 0 len-str)
+	    (symbol-name (symbol-at-point)) " "
+	    (substring grep-command-no-list len-str))))
+     (if (or (not arg) (equal arg 2))
+	 (let ((current-prefix-arg nil))
+	   (call-interactively 'grep))
+       (compilation-start
+	(if (and grep-use-null-device null-device)
+	    (concat  grep-command-complete " " null-device)
+	  grep-command-complete)
+	'grep-mode)))))
 
 (defun eab/find-grep ()
   (interactive)
