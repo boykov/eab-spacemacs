@@ -42,7 +42,7 @@
 (defun eab/switch-shell () (interactive) (eab/switch-window "*Shell Command Output*"))
 (defun eab/switch-message () (interactive) (eab/switch-window "*Messages*"))
 (defun eab/switch-help () (interactive) (eab/switch-window "*Help*"))
-(defun eab/switch-compile ()
+(defun eab/switch-compile (&optional arg)
   (interactive)
   (eab/with-git-toplevel
    (eab/switch-window (concat "*compilation: " (projectile-project-name) "*")))

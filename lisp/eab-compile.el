@@ -4,7 +4,7 @@
 (setq compile-command "make ")
 (setq compilation-buffer-name-function (lambda (mode) (concat "*" (downcase mode) ": " (projectile-project-name) "*")))
 
-(defun eab/projectile-compile-project ()
+(defun eab/projectile-compile-project (&optional arg)
   (interactive)
   (eab/with-git-toplevel
     (call-interactively 'projectile-compile-project)))
