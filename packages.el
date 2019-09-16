@@ -544,6 +544,8 @@ which require an initialization must be listed explicitly in the list.")
    "p" `(,(ilam (dired eab/downloads-path)) :which-key ,eab/downloads-path)
    "t" `(,(ilam (dired "~/tmp")) :which-key "~/tmp"))
   (setq eab/dired-map (lookup-key global-map (kbd "C-x d")))
+  (when (require 'so-long nil :noerror)
+   (global-so-long-mode 1))
   )
 
 (defun eab-spacemacs/init-eab-ace-jump-mode ()
