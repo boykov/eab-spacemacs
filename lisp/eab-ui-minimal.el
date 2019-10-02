@@ -87,6 +87,10 @@
 (setq mode-require-final-newline nil)
 (setq indent-tabs-mode nil)
 (add-hook 'sh-mode-hook (lambda () (setq indent-tabs-mode nil)))
+(add-hook 'go-mode-hook (lambda ()
+			  (setq indent-tabs-mode nil)
+			  (setq-local tab-width 2)
+			  ))
 
 (setq x-select-enable-clipboard t)
 (column-number-mode 1)

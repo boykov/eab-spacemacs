@@ -421,7 +421,7 @@
  "ns"		'split-clock
  "nc"		'insert-clock
  "Y"		'auto-complete-mode
- "g"		'helm-google-suggest
+ "g"		'eab/kill-last-grep
  "y"		'yas-minor-mode
  "P"		'smartparens-global-mode
  ";"		'isearch-moccur
@@ -575,6 +575,12 @@
    "C-i"	'eab/outline-toggle-children
    "<backtab>"	'eab/outline-toggle-all))
 
+(eab/add-hook yaml-mode-hook eab/yaml-hook
+  (general-define-key
+   :keymaps 'yaml-mode-map
+   "C-i"	'eab/outline-toggle-children
+   "<backtab>"	'eab/outline-toggle-all))
+
 (eab/add-hook groovy-mode-hook eab/groovy-hook
   (general-define-key
    :keymaps 'groovy-mode-map
@@ -706,7 +712,7 @@
    "J"		'magit-commit-amend
    "R"		(kbd "r - A e o r i g i n / m a s t e r RET")
    "N"		(kbd "P o m a s t e r 2*RET")
-   "Q"		(ilam (shell-command "git add LMCR-* GA-* GRP-* CRKO-* SUP* CS-* QB* CHR3-* PRSL-* PLTF-* LIME-* AVD-* CHRR-* PEAR-*"))
+   "Q"		(ilam (shell-command "git add CHR250-* LMCR-* GA-* GRP-* CRKO-* SUP* CS-* QB* CHR3-* PRSL-* PLTF-* LIME-* AVD-* CHRR-* PEAR-*"))
    "{"		(ilam (execute-kbd-macro (read-kbd-macro "S ESC A g i t SPC c o 2*m i t SPC - m SPC u p d a t e RET g")))
    "M-n"	'nil
    "M-p"	'nil
@@ -1065,6 +1071,8 @@
    "F"		'eab/switch-grep-next
    "C-o"	'nil
    "M-p"	'nil
+   "C-l b"      'eab/kill-last-grep
+   "b"          (ilam (eab/switch-grep-prev 't))
    "M-RET"	'eab/compile-goto-error-same-window
    "C-M-j"	'eab/compile-goto-error-same-window
    "RET"	'eab/compile-goto-error

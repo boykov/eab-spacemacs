@@ -6,6 +6,10 @@
   (setq-local outline-regexp "##+")
   (setq-local outline-heading-alist '(("##" . 2) ("###" . 3))))
 
+(eab/add-hook yaml-mode-hook eab/yaml-outline-hook
+  (setq-local outline-regexp "##+")
+  (setq-local outline-heading-alist '(("##" . 2) ("###" . 3))))
+
 (eab/add-hook groovy-mode-hook eab/groovy-outline-hook
   (setq-local outline-regexp "///+")
   (setq-local outline-heading-alist '(("///" . 2) ("////" . 3))))

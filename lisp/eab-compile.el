@@ -64,7 +64,7 @@
 (add-to-list 'smart-compile-alist '(graphviz-dot-mode . "xdot.py %F"))
 (add-to-list 'smart-compile-alist '(python-mode . "python %F"))
 (add-to-list 'smart-compile-alist '(textile-mode . "make push id=%f"))
-(add-to-list 'smart-compile-alist '("\\.xml\\'" . "cd ../.. && make push id=%F"))
+(add-to-list 'smart-compile-alist '("\\.xml\\'" . "cd ../../.. && make push id=%F"))
 (add-to-list 'smart-compile-alist '("\\.jira\\'" . "make push id=%n"))
 (add-to-list 'smart-compile-alist '("\\.html\\'" . "make push id=%n"))
 
