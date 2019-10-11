@@ -199,6 +199,7 @@
  "C-x C-b"	'ibuffer
  "C-x g"	'eab/grep
  "C-x C-g"	(kbd "C-u C-x g")
+ "C-x M-g"	(ilam (eab/grep 2))
  "M-."		'eab/etags-find-or-pop
  "M-A"		'eab/call-shell-command
  "s-v"		'eab/org-insert-link-fast

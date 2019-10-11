@@ -136,21 +136,24 @@
 	   (if (file-remote-p default-directory)
 	       (file-remote-p default-directory)
 	     ""))
-	  (try (shell-command-to-string "git rev-parse --show-superproject-working-tree"))
+	  (try (shell-command-to-string "git rev-parse --show-superproject-working-tree --show-toplevel | head -1"))
 	  (fatal (if (and (> (length try) 10) (string= (substring try 0 5) "fatal"))
 		     't
 		   nil))
-	  (top-level-1 (if fatal
-			   ""
+	  (git-toplevel (shell-command-to-string "git rev-parse --show-toplevel"))
+	  (git-superproject (if fatal
+			   git-toplevel
 			 try))
-	  (top-level (if (or fatal (not arg) (equal arg '(4)))
-			 (if (file-remote-p default-directory)
+	  (git-nothing (if (file-remote-p default-directory)
 			     (file-remote-p default-directory 'localname)
-			   default-directory)
-		       (substring
-			(if (string= top-level-1 "")
-			    (shell-command-to-string "git rev-parse --show-toplevel")
-			  top-level-1) 0 -1)))
+			   default-directory))
+	  (top-level (cond
+		      ((equal arg 2)
+		       (substring git-superproject 0 -1))
+		      ((not arg)
+		       (substring git-toplevel 0 -1))
+		      ((equal arg '(4))
+		       git-nothing)))
 	  (default-directory
 	    (concat remote-prefix top-level))
 	  (projectile-cached-buffer-file-name nil))
