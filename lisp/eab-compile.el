@@ -112,6 +112,12 @@
 				       (toggle-truncate-lines ,istc?)
 				       (pop-to-buffer cb)))))))
 
+;; - TODO это clousre, let over lambda? зачем здесь funcall? похоже, чтобы сразу выполнить lambda
+;; - а почему тогда не использовать просто defun? ясно, отложенные вычисления
+;; - оператор compile-goto-error разрывает контекст: cwc нужен в одном
+;;   окне, а после мы ухе находимся в другом
+;; - как обойтись без глоабльной функции ? можно compile-goto-error внутри let?
+
 (defun eab/compile-goto-error-same-window ()
   (interactive)
   (let ((cwc (current-window-configuration)))

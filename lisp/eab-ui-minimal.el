@@ -91,6 +91,8 @@
 			  (setq indent-tabs-mode nil)
 			  (setq-local tab-width 2)
 			  ))
+(add-hook 'markdown-mode-hook (lambda () (setq indent-tabs-mode nil)))
+(add-hook 'ansible-vault-mode-hook (lambda () (setq indent-tabs-mode nil)))
 
 (setq x-select-enable-clipboard t)
 (column-number-mode 1)
