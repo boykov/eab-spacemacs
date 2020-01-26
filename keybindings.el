@@ -406,6 +406,7 @@
  "/"		'ergoemacs-toggle-letter-case
  "C-f"		'eab/gr-status
  "h"		'eab/hron-todo
+ "C-h"		'eab/hron-todo
  "M-h"		'eab/send-csum-all-remote
  "v"		'eab/org-insert-link-fast
  "."		(kbd "C-c . RET")
