@@ -81,7 +81,7 @@
    (let* ((grep-host-defaults-alist nil)
 	  (extension (ignore-errors
 		       (file-name-extension buffer-file-name)))
-	  (str (concat (eab/gz-grep extension) " --color=auto -i -nH -e  "))
+	  (str (concat (eab/gz-grep extension) " --color=never -i -nH -e  "))
 	  (grep-command-no-list
 	   (if (or (file-exists-p (concat default-directory "/.gitignore"))
 		   (string= (shell-command-to-string "git clean -xn `pwd` | wc -l") "0\n"))
@@ -113,6 +113,13 @@
         (grep-find-command
          `(,"find . -iname '**' -type f -print0 | xargs -0 -e grep -i -nH -e \"\"" . 66)))
     (call-interactively 'find-grep)))
+
+(defun eab/spec-grep ()
+  (interactive)
+  (let ((grep-host-defaults-alist nil)
+        (grep-command
+         `(,"rg --color never --no-heading --pcre2 -U -nH -e \"^- <20(\\n[^\*-]|.)*?(.*|\\n)(\\n|.)*?((?=\\n- <)|(?=\\n\\*)|(?=\\Z))\" `git ls-files \\`git rev-parse --show-toplevel\\``" . 76)))
+    (call-interactively 'grep)))
 
 (grep-a-lot-advise eab/grep)
 
