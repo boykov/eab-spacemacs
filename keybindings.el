@@ -715,7 +715,7 @@
    "R"		(kbd "r - A e o r i g i n / m a s t e r RET")
    "N"		(kbd "P o m a s t e r 2*RET")
    "Q"		(ilam (shell-command "git add CHR250-* LMCR-* GA-* GRP-* CRKO-* SUP* CS-* QB* CHR3-* PRSL-* PLTF-* LIME-* AVD-* CHRR-* PEAR-*"))
-   "{"		(ilam (execute-kbd-macro (read-kbd-macro "S ESC A g i t SPC c o 2*m i t SPC - m SPC u p d a t e RET g")))
+   "{"		(ilam (execute-kbd-macro (read-kbd-macro "C-u S ESC A g i t SPC c o 2*m i t SPC - m SPC u p d a t e RET g")))
    "M-n"	'nil
    "M-p"	'nil
    "M-s"	'nil
