@@ -1,4 +1,7 @@
 (require 'magit)
+(require 'forge)
+(setq forge-post-mode-hook '(visual-line-mode))
+
 ;; TODO emacs 24: autorevert.el doesn't contain auto-revert-buffer-list-filter
 ;; (require 'magit-autorevert)
 ;; (setq auto-revert-buffer-list-filter 'magit-auto-revert-repository-buffer-p)

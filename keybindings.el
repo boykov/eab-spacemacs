@@ -693,6 +693,12 @@
    "M-p"	'nil
    "M-s"	'nil))
 
+(eab/add-hook magit-file-mode-hook eab/magit-file-mode-hook
+  (general-define-key
+   :keymaps 'magit-file-mode-map
+   "C-x g"	'nil
+   ))
+
 (eab/add-hook magit-mode-hook eab/magit-hook
   (general-define-key
    :keymaps 'magit-log-mode-map
