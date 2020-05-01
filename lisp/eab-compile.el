@@ -39,12 +39,12 @@
     (if (not arg)
 	(recompile)
       (recompile arg))
-    (run-with-idle-timer 0.2 nil
-			 `(lambda ()
-			    ;; (while (< (point-max) ,point)
-			    ;; 	(sleep-for 0.2))
-			    (goto-line ,pos)
-			    (goto-char ,point)))))
+    (setq-local compilation-finish-functions
+		`((lambda
+		    (buffer msg)
+		    (switch-to-buffer buffer)
+		    (goto-line ,pos)
+		    (goto-char ,point))))))
 
 (defun eab/compile (&optional cmd)
   (interactive)
