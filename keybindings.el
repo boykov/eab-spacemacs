@@ -246,7 +246,6 @@
  "C-s-l"	'helm-locate
  "C-x C-k d"	'pm-define
  "C-x C-k e"	'pm-switch-buf
- "C-x G"	'eab/find-grep
  "C-x t"	'dictionary-search
  "M-V"		'helm-show-kill-ring
  "M-Z"		'undo-tree-redo
@@ -457,6 +456,17 @@
  "t"	`(,(ilam (eab/projectile-compile-project-custom "make test")) :which-key "")
  "2"	`(,(ilam (eab/projectile-compile-project-custom "make test2")) :which-key ""))
 (setq eab/compile-map (lookup-key global-map (kbd "C-d")))
+
+(defvar eab/grep-map (make-sparse-keymap)
+  "Grep keymap.")
+(global-set-key (kbd "C-x G") nil)
+(general-define-key
+ :prefix "C-x G"
+ "f"	'eab/find-grep
+ "g"	'eab/find-grep
+ "c"    'eab/clock-grep
+ "G"    'eab/clock-grep)
+(setq eab/grep-map (lookup-key global-map (kbd "C-x G")))
 
 (defvar eab/one-key-map (make-sparse-keymap)
   "One-key keymap.")
@@ -1086,6 +1096,7 @@
    "RET"	'eab/compile-goto-error
    "g"		'eab/recompile
    "u"		'eab/grep-utf
+   "s"		'eab/grep-switch
    "M-n"	'nil
    "C-w"	'eab/wgrep-change-to-wgrep-mode))
 

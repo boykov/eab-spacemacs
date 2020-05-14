@@ -86,7 +86,7 @@
 
 (defun eab/skip-old ()
     (let ((next-headline (save-excursion (or (outline-next-heading) (point-max)))))
-      (if (eab/is-newer "2015-04-01")
+      (if (eab/is-newer "2018-04-01")
 	  nil
 	next-headline)))
 
