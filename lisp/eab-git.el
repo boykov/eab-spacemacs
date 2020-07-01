@@ -1,4 +1,7 @@
 (require 'magit)
+;;    ("-S" "Submodule diff"                 ("-S" "--submodule=diff"))
+;; (put 'magit-status-mode 'magit-diff-default-arguments
+;;     '("--submodule=diff"))
 (require 'forge)
 (setq forge-post-mode-hook '(visual-line-mode))
 
