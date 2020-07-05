@@ -47,13 +47,13 @@
 ;; может быть это связано с нововведением dbus-launch?
 ;; Наоборот, пришлось убрать dbus-launch, т.к. из-за него
 ;; накапливались лишние процессы, а все по-прежнему
-(when (and
-       (eq window-system 'x)
-       (fboundp 'dbus-register-signal))
-  (dbus-register-signal
-   :session nil "/org/gnome/evince/Window/0"
-   "org.gnome.evince.Window" "SyncSource"
-   'th-evince-sync))
+;; (when (and
+;;        (eq window-system 'x)
+;;        (fboundp 'dbus-register-signal))
+;;   (dbus-register-signal
+;;    :session nil "/org/gnome/evince/Window/0"
+;;    "org.gnome.evince.Window" "SyncSource"
+;;    'th-evince-sync))
 
 (setq default-input-method "russian-computer")
 
