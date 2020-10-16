@@ -9,6 +9,7 @@
 
 (defvar eab-spacemacs-packages
   '(
+    emamux
     nginx-mode
     logstash-conf
     forge
@@ -301,6 +302,7 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-forge nil)
 (defun eab-spacemacs/init-logstash-conf nil)
 (defun eab-spacemacs/init-nginx-mode nil)
+(defun eab-spacemacs/init-emamux nil)
 (defun eab-spacemacs/init-git-commit nil)
 (defun eab-spacemacs/init-magit-annex nil)
 ;; (defun eab-spacemacs/init-magit-filenotify nil)
