@@ -85,9 +85,6 @@
 
     docker
     docker-tramp
-    dired+
-    dired-details
-    dired-details+
     elpa-mirror
     ace-window
     ace-jump-buffer
@@ -342,9 +339,6 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-docker-tramp ()
   (use-package docker-tramp))
 
-(defun eab-spacemacs/init-dired+ nil)
-(defun eab-spacemacs/init-dired-details nil)
-(defun eab-spacemacs/init-dired-details+ nil)
 (defun eab-spacemacs/init-elpa-mirror nil)
 (defun eab-spacemacs/init-ace-window nil)
 (defun eab-spacemacs/init-ace-jump-buffer nil)

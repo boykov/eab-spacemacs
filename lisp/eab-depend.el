@@ -120,6 +120,7 @@
 (require 'dired-x)
 (setq diredp-hide-details-initially-flag nil)
 (require 'dired+)
+(require 'dired-details)
 ;; TODO почему приходится делать unload?
 ;; (unload-feature 'dired-details+ 't)
 ;; (require 'ede) ; error with dired
