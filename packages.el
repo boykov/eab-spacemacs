@@ -9,6 +9,9 @@
 
 (defvar eab-spacemacs-packages
   '(
+    libgit
+    vterm
+    magit-libgit
     emamux
     nginx-mode
     logstash-conf
@@ -300,6 +303,10 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-logstash-conf nil)
 (defun eab-spacemacs/init-nginx-mode nil)
 (defun eab-spacemacs/init-emamux nil)
+(defun eab-spacemacs/init-libgit nil)
+(defun eab-spacemacs/init-vterm nil
+    (setq vterm-keymap-exceptions '("C-c" "C-x" "C-u" "C-g" "C-h" "C-l" "M-x" "M-o" "C-v" "M-v" "C-y" "M-y" "M-s" "M-a" "M-i" "M-k" "M-j" "M-l" "C-a" "M-c" "M-p")))
+(defun eab-spacemacs/init-magit-libgit nil)
 (defun eab-spacemacs/init-git-commit nil)
 (defun eab-spacemacs/init-magit-annex nil)
 ;; (defun eab-spacemacs/init-magit-filenotify nil)

@@ -5,6 +5,10 @@
 (eab/bind-path eab/eeansi-path)
 (eab/bind-path eab/eegchannel-path)
 
+(defun eab/run-tmux (sym)
+  (let ((default-directory "/ssh:kairos-host:/home/eab/"))
+    (shell-command (concat "tmux select-window -t 13:" sym))))
+
 (defun eab/run-ansi (prog buf)
   (let ((buffer (get-buffer (concat "*" buf "*")))
 	(default-directory
@@ -15,6 +19,17 @@
         (switch-to-buffer-other-window buffer)
       (ansi-term prog buf))))
 
+(setq vterm-shell "/home/eab/.eev/eeansi.sh")
+(defun eab/run-vterm (prog buf)
+  (let ((buffer (get-buffer (concat "*" buf "*")))
+	(default-directory
+	  (if (file-remote-p default-directory)
+	      "~/"
+	    default-directory)))
+    (if buffer
+        (switch-to-buffer-other-window buffer)
+      (vterm (concat "*" buf "*")))))
+
 (defun eepitch-ansi-term (sym)
   (interactive)
   (let ((default-directory "~/"))
@@ -22,6 +37,15 @@
   (eechannel sym)
   (save-window-excursion
     (eepitch `(eab/run-ansi eab/eeansi-path (concat "ansi-term" ,sym))))
+  (switch-to-buffer-other-window (concat "*ansi-term" sym "*")))
+
+(defun eepitch-vterm-term (sym)
+  (interactive)
+  (let ((default-directory "~/"))
+    (shell-command (concat "echo \"" eab/eegchannel-path " " sym " /bin/bash\" > " eab/eeansi-path)))
+  (eechannel sym)
+  (save-window-excursion
+    (eepitch `(eab/run-vterm eab/eeansi-path (concat "ansi-term" ,sym))))
   (switch-to-buffer-other-window (concat "*ansi-term" sym "*")))
 
 (defun eab/in-target-buffer? (str)

@@ -46,7 +46,7 @@
 	 (compilation-arguments
 	  (append (list (concat "rg --color never --no-heading --pcre2 -U -i -nH -e \"^- <20(\\n[^\*-]|.)*?(.*|\\n)"
 			  ss
-			  "(\\n|.)*?((?=\\n- <)|(?=\\n\\*)|(?=\\Z))\" `git ls-files \\`git rev-parse --show-toplevel\\`` | sort"))
+			  "(\\n|.)*?((?=\\n- <)|(?=\\n\\*)|(?=\\Z))\" `git ls-files \\`git rev-parse --show-toplevel\\`` | sort -t$':' -k1,1 -k2n"))
 	  (cdr compilation-arguments))))
     (eab/recompile)))
 
@@ -99,7 +99,7 @@
 		    (string= (shell-command-to-string "git clean -xn `pwd` | wc -l") "0\n"))
 		`,(concat str (eab/grep-gitmodules arg))
 	      `,(concat str " *."
-			extension)) " | sort"))
+			extension)) " | sort -t$':' -k1,1 -k2n"))
 	  (len-str (1+ (length str)))
 	  (grep-command
 	   (if grep-history
@@ -123,14 +123,14 @@
   (interactive)
   (let ((grep-host-defaults-alist nil)
         (grep-find-command
-         `(,"find . -iname '**' -type f -print0 | xargs -0 -e rg --color never --no-heading --pcre2 -U -i -nH -e \"\" | sort" . 102)))
+         `(,"find . -iname '**' -type f -print0 | xargs -0 -e rg --color never --no-heading --pcre2 -U -i -nH -e \"\" | sort -t$':' -k1,1 -k2n" . 102)))
     (call-interactively 'find-grep)))
 
 (defun eab/clock-grep ()
   (interactive)
   (let ((grep-host-defaults-alist nil)
         (grep-command
-         `(,"rg --color never --no-heading --pcre2 -U -i -nH -e \"^- <20(\\n[^\*-]|.)*?(.*|\\n)(\\n|.)*?((?=\\n- <)|(?=\\n\\*)|(?=\\Z))\" `git ls-files \\`git rev-parse --show-toplevel\\`` | sort" . 79)))
+         `(,"rg --color never --no-heading --pcre2 -U -i -nH -e \"^- <20(\\n[^\*-]|.)*?(.*|\\n)(\\n|.)*?((?=\\n- <)|(?=\\n\\*)|(?=\\Z))\" `git ls-files \\`git rev-parse --show-toplevel\\`` | sort -t$':' -k1,1 -k2n" . 79)))
     (call-interactively 'grep)))
 
 (grep-a-lot-advise eab/grep)
