@@ -220,6 +220,8 @@
 		"all2017.org"
 		"all2018.org"
 		"all2019.org"
+		"all2020.org"
+		"all2021.org"
 		)))
 
 (defun eab/nightly-scope () eab/nightly-scope)
@@ -379,7 +381,7 @@
    (format-time-string
     (car org-time-stamp-formats)
     (apply 'encode-time  (org-parse-time-string (eab/hron-add-current 0 0)))))
-  (insert (concat "\" :maxlevel 1 :narrow 80! :link t :scope (\"" org-directory "clock/timeline.org\") \n"))
+  (insert (concat "\" :maxlevel 1 :narrow 80! :link t :scope (\"" org-directory "clock/timeline-time-mining.org\") \n"))
   (insert "#+END:")
   (previous-line)
   (org-ctrl-c-ctrl-c)
@@ -413,7 +415,7 @@
     (switch-to-buffer buf))
   (org-mode)
   (insert "* контрольная сумма\n")
-  (insert (concat "#+BEGIN: clocktable :maxlevel 1 :narrow 80! :scope (\"" org-directory "clock/timeline.org\") \n"))
+  (insert (concat "#+BEGIN: clocktable :maxlevel 1 :narrow 80! :scope (\"" org-directory "clock/timeline-time-mining.org\") \n"))
   (insert "#+END:")
   (previous-line)
   (org-ctrl-c-ctrl-c)
