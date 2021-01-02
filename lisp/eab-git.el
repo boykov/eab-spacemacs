@@ -2,8 +2,9 @@
 ;;    ("-S" "Submodule diff"                 ("-S" "--submodule=diff"))
 ;; (put 'magit-status-mode 'magit-diff-default-arguments
 ;;     '("--submodule=diff"))
-(require 'forge)
-(setq forge-post-mode-hook '(visual-line-mode))
+;; emacs 28 bad
+;; (require 'forge)
+;; (setq forge-post-mode-hook '(visual-line-mode))
 
 ;; TODO emacs 24: autorevert.el doesn't contain auto-revert-buffer-list-filter
 ;; (require 'magit-autorevert)

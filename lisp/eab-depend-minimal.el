@@ -79,7 +79,8 @@
 (require 'region-bindings-mode)
 (region-bindings-mode-enable)
 ;; TODO fix the hack: why call it second time?
-(define-minor-mode region-bindings-mode :lighter " rk" :group 'convenience)
+;; emacs 28 bad
+;; (define-minor-mode region-bindings-mode :lighter " rk" :group 'convenience)
 
 (if (boundp 'mc--default-cmds-to-run-for-all) (setq mc--cmds mc--default-cmds-to-run-for-all))
 ;; TODO mc/cmds-to-run-for-all переназначается (sp-backward-sexp sp-forward-sexp)

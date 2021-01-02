@@ -138,11 +138,11 @@
   (interactive)
   (load eab/org-file nil 't)
   (let* ((prompt (eab/hron-current-time-stamp))
-	 (hour (string-to-int
+	 (hour (string-to-number
 		(read-from-minibuffer
 		 (concat prompt " hour ") nil nil nil
 		 'eab/hron-todo-history)))
-	 (minute (string-to-int
+	 (minute (string-to-number
 		  (read-from-minibuffer
 		   (concat prompt " minute ") nil nil nil
 		   'eab/hron-todo-history))))

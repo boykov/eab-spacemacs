@@ -84,6 +84,7 @@
 	    ("serverN" . (concat user-emacs-directory "historyN/"))
 	    ("serverM" . (concat user-emacs-directory "historyM/"))
 	    ("serverP" . (concat user-emacs-directory "historyP/"))
+	    ("serverC" . (concat user-emacs-directory "historyC/"))
 	    ))
 
 

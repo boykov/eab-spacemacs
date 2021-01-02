@@ -23,7 +23,7 @@
 (if (and (eab/ondaemon "serverP") (not noninteractive))
     (progn
       (eab/load-personal-minimal)
-      (load-theme 'tsdh-dark)))
+      (load-theme 'spacemacs-dark 't)))
 
 (setq desktop-load-locked-desktop 't)
 (if (and (not noninteractive))
