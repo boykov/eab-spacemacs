@@ -28,7 +28,7 @@
   ;; (erc :server "localhost")
   (sauron-start)
   (sauron-notifications-start)
-  (sauron-org-start)
+  ;; (sauron-org-start)
   (sauron-twittering-stop)
   (wg-change-modeline)
   (key-chord-mode 1) ; DONE заедает, если не в конце dotemacs, не включается по-умолчанию (или выключается из-за чего-то)

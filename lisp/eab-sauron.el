@@ -7,9 +7,11 @@
 ;; Requirements: sauron sauron-org sauron-notifications
 ;; Status: not intended to be distributed yet
 
-
+;; exclude sauron-org
+(setq sauron-modules '(sauron-erc sauron-notifications sauron-twittering
+				  sauron-mu4e sauron-jabber sauron-identica sauron-elfeed))
 (require 'sauron)
-(require 'sauron-org)
+;; (require 'sauron-org)
 (require 'sauron-notifications)
 
 (setq sauron-separate-frame nil)
