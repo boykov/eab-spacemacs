@@ -8,7 +8,7 @@
 ;; Status: not intended to be distributed yet
 
 (defvar eab-spacemacs-packages
-  '(
+  `(
     libgit
     vterm
     magit-libgit
@@ -160,7 +160,7 @@
     string-edit
     redo+
     pcache
-    org-plus-contrib
+    ,(if (string= (daemonp) "serverN") '(org-plus-contrib :location local) 'org-plus-contrib)
     org-ehtml
     noflet
     minimap
@@ -194,8 +194,8 @@
     (eab-misc :location local)
     (eab-ace-jump-mode :location local)
     (eab-avy :location local)
-    (eab-org-mode/lisp :location local)
-    (eab-org-mode/contrib/lisp :location local) ;; for htmlize.el
+    ,(if (string= (daemonp) "serverN") '(eab-org-mode/lisp :location local))
+    ,(if (string= (daemonp) "serverN") '(eab-org-mode/contrib/lisp :location local)) ;; for htmlize.el
     (eev-current :location local)
     (bbdb/lisp :location local)
     (org-link-minor-mode :location local)

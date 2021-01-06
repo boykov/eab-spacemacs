@@ -370,7 +370,7 @@
  "k"		'org-metadown
  "j"		'org-metaleft
  "l"		'org-metaright
- "<backtab>"	'org-content
+ "<backtab>"	(ilam (org-content 6))
  "M-k"		'org-shiftdown
  "M-i"		'org-shiftup
  "M-j"		'org-shiftleft
