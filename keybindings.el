@@ -409,7 +409,7 @@
  "M-h"		'eab/send-csum-all-remote
  "v"		'eab/org-insert-link-fast
  "."		(kbd "C-c . RET")
- "M-."		`(,(ilam (execute-kbd-macro (read-kbd-macro "C-c . RET C-l RET C-l l"))) :which-key "")
+ "M-."		`(,(ilam (execute-kbd-macro (read-kbd-macro "C-c . RET C-l RET C-l l"))) :which-key " ")
  "O"		'esc-toggle-window-selectability
  "D"		'toggle-window-dedicated
  "<tab>"	(ilam (progn (show-all) (run-hook-with-args 'org-cycle-hook 'all)))
@@ -445,16 +445,16 @@
  "a"	'eab/compile-helm
  "d"	'eab/projectile-compile-project
  "s"	(ilam (smart-compile 4))
- "S"	`(,(ilam (eab/projectile-compile-project-custom "make push_unstaged")) :which-key "")
- "l"	`(,(ilam (TeX-command "LaTeX"	'TeX-master-file)) :which-key "")
- "b"	`(,(ilam (TeX-command "BibTeX"	'TeX-master-file)) :which-key "")
- "L"	`(,(ilam (TeX-command "LaTeX"	'TeX-master-file)) :which-key "")
- "v"	`(,(ilam (eab/switch-wmctrl-window "main.pdf")) :which-key "")
- ;; "b" `(,(ilam (eab/switch-wmctrl-window "BoykovEA_5.pdf")) :which-key "")
- "p"	`(,(ilam (eab/projectile-compile-project-custom "make push_all")) :which-key "")
- "c"	`(,(ilam (eab/projectile-compile-project-custom "make clear")) :which-key "")
- "t"	`(,(ilam (eab/projectile-compile-project-custom "make test")) :which-key "")
- "2"	`(,(ilam (eab/projectile-compile-project-custom "make test2")) :which-key ""))
+ "S"	`(,(ilam (eab/projectile-compile-project-custom "make push_unstaged")) :which-key " ")
+ "l"	`(,(ilam (TeX-command "LaTeX"	'TeX-master-file)) :which-key " ")
+ "b"	`(,(ilam (TeX-command "BibTeX"	'TeX-master-file)) :which-key " ")
+ "L"	`(,(ilam (TeX-command "LaTeX"	'TeX-master-file)) :which-key " ")
+ "v"	`(,(ilam (eab/switch-wmctrl-window "main.pdf")) :which-key " ")
+ ;; "b" `(,(ilam (eab/switch-wmctrl-window "BoykovEA_5.pdf")) :which-key " ")
+ "p"	`(,(ilam (eab/projectile-compile-project-custom "make push_all")) :which-key " ")
+ "c"	`(,(ilam (eab/projectile-compile-project-custom "make clear")) :which-key " ")
+ "t"	`(,(ilam (eab/projectile-compile-project-custom "make test")) :which-key " ")
+ "2"	`(,(ilam (eab/projectile-compile-project-custom "make test2")) :which-key " "))
 (setq eab/compile-map (lookup-key global-map (kbd "C-d")))
 
 (defvar eab/grep-map (make-sparse-keymap)
@@ -475,16 +475,16 @@
  :prefix "C-e"
  "b"	'maplev-cmaple-send-buffer
  "t"	'eab/switch-eepitch-target
- "a"	`(,(ilam (eepitch-ansi-term "1")) :which-key "")
- "1"	`(,(ilam (eepitch-ansi-term "1")) :which-key "")
- "2"	`(,(ilam (eepitch-ansi-term "2")) :which-key "")
- "3"	`(,(ilam (eepitch-ansi-term "3")) :which-key "")
- "4"	`(,(ilam (eepitch-ansi-term "4")) :which-key "")
- "5"	`(,(ilam (eepitch-ansi-term "5")) :which-key "")
- "6"	`(,(ilam (eepitch-ansi-term "6")) :which-key "")
- "7"	`(,(ilam (eepitch-ansi-term "7")) :which-key "")
- "8"	`(,(ilam (eepitch-ansi-term "8")) :which-key "")
- "9"	`(,(ilam (eepitch-ansi-term "9")) :which-key "")
+ "a"	`(,(ilam (eepitch-ansi-term "1")) :which-key " ")
+ "1"	`(,(ilam (eepitch-ansi-term "1")) :which-key " ")
+ "2"	`(,(ilam (eepitch-ansi-term "2")) :which-key " ")
+ "3"	`(,(ilam (eepitch-ansi-term "3")) :which-key " ")
+ "4"	`(,(ilam (eepitch-ansi-term "4")) :which-key " ")
+ "5"	`(,(ilam (eepitch-ansi-term "5")) :which-key " ")
+ "6"	`(,(ilam (eepitch-ansi-term "6")) :which-key " ")
+ "7"	`(,(ilam (eepitch-ansi-term "7")) :which-key " ")
+ "8"	`(,(ilam (eepitch-ansi-term "8")) :which-key " ")
+ "9"	`(,(ilam (eepitch-ansi-term "9")) :which-key " ")
  "c"	'eab/switch-compile
  "x"	'nil
  "h"	'eab/switch-help
@@ -492,7 +492,7 @@
  "s"	'eab/switch-async
  "S"	'eab/switch-shell
  "m"	'eab/switch-message
- "k"	`(,(ilam (eepitch-kill)) :which-key "")
+ "k"	`(,(ilam (eepitch-kill)) :which-key " ")
  "o"	'proced
  "g"	'eab/switch-grep
  "G"	'eab/kill-last-grep
@@ -541,7 +541,7 @@
  "v"		'wg-yank-config ;; wg-yank-wconfig
  "r"		'eab/wg-revert-workgroup
  "R"		'wg-revert-workgroup ;; +
- "u"		`(,(ilam (eab/wg-update-workgroup "dflt")) :which-key "") ;; eab/wg-update-workgroup
+ "u"		`(,(ilam (eab/wg-update-workgroup "dflt")) :which-key " ") ;; eab/wg-update-workgroup
  "U"		'wg-save-session ;; wg-update-workgroup
  ;;  "S"	'eab/eab-wg-save
  ;;  "L"	'eab/eab-wg-load
@@ -552,17 +552,17 @@
  "n"		'eab/wg-create-workgroup-xxx ;; +
  "N"		'wg-create-workgroup ;; +
  "k"		'wg-kill-workgroup ;; +
- "c"		`(,(ilam (eab/wg-kill-tmp) (wg-clone-workgroup (wg-current-workgroup) ":tmp:")) :which-key "") ;; +
+ "c"		`(,(ilam (eab/wg-kill-tmp) (wg-clone-workgroup (wg-current-workgroup) ":tmp:")) :which-key " ") ;; +
  "SPC"		'eab/wg-revert-and-update
  "w"		'twit
  ;;  "s"	'bmkp-cycle ;; TODO сделать обертку, выбирающую navlist в соответствии с группой
- ;;  "t"	`(,(ilam (bmkp-choose-navlist-of-type "any")) :which-key "")
+ ;;  "t"	`(,(ilam (bmkp-choose-navlist-of-type "any")) :which-key " ")
  ;; DONE по имени буфера: нарушение SPOT!
- "h"		`(,(ilam (switch-to-buffer eab/agenda-H-command)) :which-key "")
- "1"		`(,(ilam (switch-to-buffer eab/agenda-a-command)) :which-key "")
- "W"		`(,(ilam (switch-to-buffer eab/agenda-W-command)) :which-key "")
- "M"		`(,(ilam (switch-to-buffer eab/agenda-M-command)) :which-key "")
- "C-s"		`(,(ilam (switch-to-buffer "*Sauron*")) :which-key ""))
+ "h"		`(,(ilam (switch-to-buffer eab/agenda-H-command)) :which-key " ")
+ "1"		`(,(ilam (switch-to-buffer eab/agenda-a-command)) :which-key " ")
+ "W"		`(,(ilam (switch-to-buffer eab/agenda-W-command)) :which-key " ")
+ "M"		`(,(ilam (switch-to-buffer eab/agenda-M-command)) :which-key " ")
+ "C-s"		`(,(ilam (switch-to-buffer "*Sauron*")) :which-key " "))
 (setq eab/wg-map (lookup-key global-map (kbd "C-a")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
