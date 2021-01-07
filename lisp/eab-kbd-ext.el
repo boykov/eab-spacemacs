@@ -180,4 +180,15 @@
 	     (format-kbd-macro) "\")\n"))
     (write-region (point-min) (point-max) power-macros-file t)))
 
+(defun eab/pm-set-last-kbd-macro ()
+  (interactive)
+  (setq last-kbd-macro
+	(copy-sequence
+	 (symbol-function
+	  (intern
+	   (ido-completing-read "Macro: "
+				(mapcar
+				 (lambda (x) (symbol-name x))
+				 (pm-get-available-macros))))))))
+
 (provide 'eab-kbd-ext)

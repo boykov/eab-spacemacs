@@ -149,3 +149,8 @@
  ;--------------------------------------------------------------------
 )
 
+(pm-def-macro
+ 'org-note-align
+ 'global "na"
+ "align org - <..> note"
+ "C-l RET C-l L ESC ; > SPC")
