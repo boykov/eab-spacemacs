@@ -73,6 +73,20 @@
 
 (require 'expand-region)
 ;; (require 'mark-more-like-this)
+(defun er/add-org-mode-expansions ()
+  "Adds org-specific expansions for buffers in org-mode"
+  (set (make-local-variable 'er/try-expand-list)
+       (append
+        (remove #'mark-paragraph (remove #'er/mark-defun er/try-expand-list))
+        '(org-mark-subtree
+          er/mark-org-element
+          er/mark-org-element-parent
+          er/mark-org-code-block
+          er/mark-sentence
+          er/mark-org-parent)))
+  (set (make-local-variable 'er/save-mode-excursion)
+       #'er/save-org-mode-excursion))
+
 (require 'multiple-cursors) ;; fix mc/keymap
 (eab/bind-path mc/list-file)
 

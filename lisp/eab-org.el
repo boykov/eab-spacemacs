@@ -144,4 +144,6 @@
   "Make VAR local in current buffer and set it to VALUE."
   (set (make-local-variable var) value))
 
+(setq org-startup-folded 'content)
+
 (provide 'eab-org)
