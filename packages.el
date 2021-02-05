@@ -9,6 +9,7 @@
 
 (defvar eab-spacemacs-packages
   `(
+    solarized-theme
     libgit
     vterm
     magit-libgit
@@ -207,6 +208,7 @@ which require an initialization must be listed explicitly in the list.")
 (defvar eab-spacemacs-excluded-packages '()
   "List of packages to exclude.")
 
+(defun eab-spacemacs/init-solarized-theme nil)
 (defun eab-spacemacs/init-s ()
   (use-package s))
 

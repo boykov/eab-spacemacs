@@ -130,6 +130,15 @@
 		 (message "async result: <%s>" result)
 		 (define-abbrev eab-abbrev-table ,phrase result))))))
 
+(defun eab/batch-publish-remote ()
+  (interactive)
+  (async-start
+   (lambda ()
+     (require 'server)
+     (server-eval-at "serverC" '(progn
+				  (eab/batch-publish)
+				  )))))
+
 (defmacro eab/with-git-toplevel (&rest body)
   "Set default-directory as git superproject or toplevel."
   `(let* ((remote-prefix

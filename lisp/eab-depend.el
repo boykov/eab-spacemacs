@@ -17,6 +17,13 @@
 (require 'color-moccur)
 (require 'moccur-edit)
 
+(defun multi-occur-in-all-buffers ()
+  "Show all lines matching REGEXP in all buffers."
+  (interactive)
+  (multi-occur
+   (buffer-list)
+   (car (occur-read-primary-args))))
+
 (eval-after-load "replace" '(progn (require 'replace+)))
 
 (require 'bookmark+) ;; конфликтует с pymacs-load ropemacs

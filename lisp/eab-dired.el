@@ -21,6 +21,7 @@
        (require 'docker-tramp)))) 't)
 
 (dired-async-mode)
+(dired-async--modeline-mode 0)
 (setq dired-dwim-target 't)
 
 (setq dired-listing-switches "-al -h")
