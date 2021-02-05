@@ -232,6 +232,8 @@
 (defun eab/create-nightly ()
   (interactive)
   (shell-command (concat org-directory "misc/create-" "nightly" ".sh"))
+  (if (eab/ondaemon "serverC")
+      (shell-command (concat org-directory "misc/fix-" "nightly" ".sh")))
   )
 
 (defun eab/create-template (name)
@@ -341,7 +343,8 @@
 (defun eab/renew-agenda-files ()
   (interactive)
   (eab/renew-agenda-files-1)
-  (server-eval-at "serverN" '(eab/renew-agenda-files-1)))
+  (server-eval-at "serverC" '(eab/renew-agenda-files-1))
+  )
 
 (defun eab/check-csum-day (&optional date)
   (interactive)
@@ -360,7 +363,9 @@
    (format-time-string
     (car org-time-stamp-formats)
     (apply 'encode-time  (org-parse-time-string (eab/hron-add-current 0 0)))))
-  (insert "\" :maxlevel 1 :narrow 80! :link t :scope (eab/clocktable-scope)\n")
+  (if (eab/ondaemon "serverC")
+      (insert "\" :maxlevel 1 :narrow 80! :link t :scope eab/clocktable-scope\n")
+    (insert "\" :maxlevel 1 :narrow 80! :link t :scope (eab/clocktable-scope)\n"))
   (insert "#+END:")
   (previous-line)
   (org-ctrl-c-ctrl-c)
@@ -404,7 +409,9 @@
     (switch-to-buffer buf))
   (org-mode)
   (insert "* контрольная сумма\n")
-  (insert "#+BEGIN: clocktable :maxlevel 1 :narrow 80! :scope (eab/clocktable-scope)\n")
+  (if (eab/ondaemon "serverC")
+      (insert "#+BEGIN: clocktable :maxlevel 1 :narrow 80! :scope eab/clocktable-scope\n")
+    (insert "#+BEGIN: clocktable :maxlevel 1 :narrow 80! :scope (eab/clocktable-scope)\n"))
   (insert "#+END:")
   (previous-line)
   (org-ctrl-c-ctrl-c)
@@ -517,7 +524,7 @@
 		   (lambda ()
 		     (require 'server)
 		     (sleep-for 1)
-		     (server-eval-at "serverN" '(progn
+		     (server-eval-at "serverC" '(progn
 						  (auto-revert-buffers)
 						  (,fname)
 						  (eab/send-csum-all)

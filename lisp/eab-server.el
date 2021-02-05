@@ -1,5 +1,5 @@
 (defun eab/eval-last-sexp-serverM ()
-  "Evaluate sexp before point on serverN; print value in minibuffer."
+  "Evaluate sexp before point on serverM; print value in minibuffer."
   (interactive)
   (let ((sexp (call-interactively (lambda () (interactive) (preceding-sexp)))))
     (server-eval-at "serverM"
@@ -18,7 +18,7 @@
   (let* ((name (buffer-file-name))
 	 (body `(lambda ()
 		  (require 'server)
-		  (server-eval-at "serverN" '(progn
+		  (server-eval-at "serverC" '(progn
 					       (auto-revert-buffers)
 					       (org-publish-file ,name)))
 		  )))
@@ -32,7 +32,7 @@
   (async-start
     (lambda ()
       (require 'server)
-      (server-eval-at "serverN" '(progn
+      (server-eval-at "serverC" '(progn
 				   (org-publish-project "html" 't)
 				   (org-publish-project "html-clock" 't))))
     (lambda (result) (sauron-add-event 'eab 3 (concat "async result: <" result ">")))))
