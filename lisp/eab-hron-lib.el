@@ -438,7 +438,8 @@
 
 ;; DONE kairos заменить на hostname
 (defun eab/send-mail (message)
-  (shell-command (concat "echo " message " | mail -s \"" message "\" eab@" system-name)))
+  )
+  ;; (shell-command (concat "echo " message " | mail -s \"" message "\" eab@" system-name)))
 
 (defun eab/send-csum ()
   (eab/check-csum-day)
