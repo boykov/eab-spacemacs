@@ -1,17 +1,31 @@
-;;; eab-workgroups2.el --- 
+;;; eab-workgroups2.el --- eab workgroup2 extension
 
 ;; Copyright (C) 2010-2021 Evgeny Boykov
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 
 ;; Requirements: workgroups2
-;; Status:
+;; Status: ready
 
 (require 'workgroups2)
 
-(eab/bind-path eab/wg-path)
+(defvar eab/wg-path nil "")
+(defvar eab/workgroups-save nil "")
+(defvar eab/wg-update-list nil "")
+(defvar eab/wg-workgroups-history nil "")
+(defvar eab/wg-update-hash
+  (make-hash-table :test 'equal)
+  "Directory : workgroup")
 
 ;; (eab/print-0 (wg-workgroup-names))
+(defun eab/wg-init ()
+  (if (not (boundp 'eab/workgroups-save))
+      (setq eab/workgroups-save wg-session-file))
+  (if (boundp 'eab/wg-update-list)
+      (mapcar
+       (lambda (lst)
+	 (puthash (car lst) (cadr lst) eab/wg-update-hash))
+       eab/wg-update-list)))
 
 (defun eab/wg-create-workgroup (path)
   (let* ((true-path (file-truename path))
@@ -28,8 +42,6 @@
   (interactive)
   (mapcar 'eab/wg-create-workgroup
 	  (file-expand-wildcards eab/wg-path)))
-
-(setq eab/wg-workgroups-history ())
 
 (defun eab/wg-add-workgroup-to-history (id)
   (interactive)
@@ -55,32 +67,6 @@
 
 ;; (ad-remove-advice 'wg-switch-to-workgroup 'before 'eab-wg-set-previous-workgroup)
 ;; (ad-deactivate 'wg-switch-to-workgroup)
-
-
-(eab/bind-path eab/workgroups-save)
-(eab/bind-path wg-session-file)
-
-(if (not (boundp 'eab/workgroups-save))
-    (setq eab/workgroups-save wg-session-file))
-
-(setq wg-use-default-session-file 't)
-(setq wg-control-frames 'nil)
-(setq wg-session-load-on-start nil)
-(ignore-errors (workgroups-mode 1))
-
-(setq wg-mode-line-decor-divider "")
-
-(defvar eab/wg-update-hash nil "Directory : workgroup")
-
-(setq eab/wg-update-hash (make-hash-table :test 'equal))
-
-(eab/bind-path eab/wg-update-list)
-
-(if (boundp 'eab/wg-update-list)
-    (mapcar
-     (lambda (lst)
-       (puthash (car lst) (cadr lst) eab/wg-update-hash))
-     eab/wg-update-list))
 
 (defun eab/wg-update (bufsw)
   "Update current workgroup by current directory"

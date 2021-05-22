@@ -485,7 +485,20 @@ which require an initialization must be listed explicitly in the list.")
   )
 
 (defun eab-spacemacs/user-config ()
-  (use-package eab-workgroups2)
+  (use-package eab-workgroups2
+    :init
+    (eab/bind-path eab/wg-path)
+    (eab/bind-path eab/workgroups-save)
+    (eab/bind-path wg-session-file)
+    (eab/bind-path eab/wg-update-list)
+    (setq wg-use-default-session-file 't)
+    (setq wg-control-frames 'nil)
+    (setq wg-session-load-on-start nil)
+    (setq wg-mode-line-decor-divider "")
+    :config
+    (ignore-errors (workgroups-mode 1))
+    (eab/wg-init)
+    )
   (use-package eab-ui-minimal)
   (use-package eab-shell)
   (use-package eab-shell-utils)
