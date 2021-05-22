@@ -41,7 +41,7 @@
 	      ;; ("H" "Chrono" tags "LEVEL<4+repeat-norepeat+CLOCK>=\"<-1y>\"|LEVEL<3+repeat" nil)
 	      ("F" "frequency" tags "+CLOCKSUM={[3-9]d.*}+CLOCK>=\"<-1m>\"-ARCHIVE-noagenda" nil)
 	      ("Q" "all" tags "+CLOCKSUM<=\"0:25\"+CLOCKSUM>\"0:05\"-ARCHIVE-noagenda" nil)
-	      ("O" "eab/very-old" tags "-ARCHIVE-noagenda" ((org-agenda-skip-function 'eab/very-old)))
+	      ("O" "eab/very-old" tags "-ARCHIVE-noagenda-noexport" ((org-agenda-skip-function 'eab/very-old)))
 	      ("H" "Chrono" tags "-ARCHIVE-noagenda" ((org-agenda-skip-function 'eab/skip-old)))
 	      ("W" "Work" tags-todo "+w1c")
 	      ("M" "Work" tags "+media" ((org-agenda-skip-function 'eab/skip-old)))

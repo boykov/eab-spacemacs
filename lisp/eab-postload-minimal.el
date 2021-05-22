@@ -37,10 +37,10 @@
 (defun eab/test-dotemacs ()
   (if (not configuration-layer-error-count)
       (progn
-	(server-eval-at "server" '(sauron-add-event 'eab 3 "OK Dotemacs is loaded! Expectations OK!"))
+	(server-eval-at "serverP" '(sauron-add-event 'eab 3 "OK Dotemacs is loaded! Expectations OK!"))
 	(kill-emacs))
     (progn
-	(server-eval-at "server" '(sauron-add-event 'eab 3 "Dotemacs is failed!"))
+	(server-eval-at "serverP" '(sauron-add-event 'eab 3 "Dotemacs is failed!"))
 	(kill-emacs))))
 
 ;; TODO приходится вручную еще раз запускать, почему?

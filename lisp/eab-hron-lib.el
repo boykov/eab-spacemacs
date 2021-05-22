@@ -12,7 +12,7 @@
 ;; TODO предварительно закрыть все *.org буферы в server?
 (defun eab/batch-publish ()
   (progn
-    (server-eval-at "server" '(sauron-add-event 'eab 3 "Come in to eab/batch-publish"))
+    (server-eval-at "serverP" '(sauron-add-event 'eab 3 "Come in to eab/batch-publish"))
     (eab/update-all-dblocks) ;; DONE why doesn't work?
     ;; DONE it seems to hangs up `eab/update-reports-nightly'
     (eab/create-template "plot")
@@ -37,7 +37,7 @@
       (lambda ()
 	(require 'server)
 	(server-eval-at
-	 "server"
+	 "serverP"
 	 '(progn
 	    (auto-revert-buffers)
 	    (eab/renew-agenda)
@@ -501,12 +501,12 @@
 	  (eab/get-all-csum)
 	  ", csum "
 	  eab/hron-csum-day))
-	(server-eval-at "server" '(add-to-list 'mode-line-modes '(t " [!] ")))
+	(server-eval-at "serverP" '(add-to-list 'mode-line-modes '(t " [!] ")))
 	(sauron-fx-mplayer "/usr/share/sounds/ubuntu/stereo/phone-incoming-call.ogg"))
     (progn
       (setq eab/total-csum eab/hron-csum-day)
       (eab/send-mail "All time Совпадает!")
-      (server-eval-at "server" `(progn
+      (server-eval-at "serverP" `(progn
 				  (setq eab/total-csum ,eab/total-csum)
 				  (sauron-add-event 'eab 3 "All time Совпадает!")
 				  (setq mode-line-modes (remove '(t " [!] ") mode-line-modes))))

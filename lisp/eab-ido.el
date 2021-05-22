@@ -60,9 +60,9 @@
  'projectile-project-buffer-p
  "(file-truename default-directory)" "(expand-file-name default-directory)")
 
-(eab/patch-this-code
- 'projectile-file-truename
- "(file-truename file-name)" "(expand-file-name file-name)")
+;; (eab/patch-this-code
+;;  'projectile-file-truename
+;;  "(file-truename file-name)" "(expand-file-name file-name)")
 
 (eab/patch-this-code
  'projectile-project-root
