@@ -1,10 +1,15 @@
+;;; eab-words.el ---  eab shell extension
+
+;; Copyright (C) 2010-2021 Evgeny Boykov
+;;
+;; Author: artscan@list.ru
+;; Keywords: 
+;; Requirements: edit-list abbrev dictionay
+;; Status: ready
+
 (require 'edit-list)
 (require 'abbrev)
 (require 'dictionary)
-(setq dictionary-server "localhost")
-(eab/bind-path abbrev-file-name)
-(if (file-exists-p abbrev-file-name)
-    (quietly-read-abbrev-file abbrev-file-name))
 
 (defun eab/edit-list-1 (word)
   (edit-list (intern word)))

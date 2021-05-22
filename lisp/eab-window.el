@@ -1,3 +1,12 @@
+;;; eab-window.el ---  eab window extension
+
+;; Copyright (C) 2010-2021 Evgeny Boykov
+;;
+;; Author: artscan@list.ru
+;; Keywords: 
+;; Requirements: none
+;; Status: ready
+
 (defun window-search ()
   "Interactive search, limited to the visible portion of the buffer."
   (interactive)

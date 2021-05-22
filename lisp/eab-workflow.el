@@ -1,15 +1,15 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;	     __	       __      	  _    	__ _
-;;	     \ \      /	/__  _ __| | __/ _| | _____    	 __
-;;	      \	\ /\ / / _ \| '__| |/ /	|_| |/ _ \ \ /\	/ /
-;;	       \ V  V /	(_) | |	 |   <|	 _| | (_) \ V  V /
-;;	       	\_/\_/ \___/|_|	 |_|\_\_| |_|\___/ \_/\_/
+;;; eab-workflow.el ---  eab workflow extension
+
+;; Copyright (C) 2010-2021 Evgeny Boykov
 ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Workflow
+;; Author: artscan@list.ru
+;; Keywords: 
+;; Requirements: key-chrod
+;; Status: ready
 
 (require 'key-chord)
-(setq key-chord-two-keys-delay 0.05)
+
+(defvar eab/revert-buffer "u")
 
 (defun er/add-text-mode-expansions ()
   (make-variable-buffer-local 'er/try-expand-list)
@@ -48,9 +48,6 @@
     (fmakunbound sym)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-(defvar eab/revert-buffer "u")
 
 (defun eab/revert-buffer ()
   (interactive)

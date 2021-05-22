@@ -195,6 +195,8 @@
 (setq-put eab/yasnippets-path (concat user-emacs-directory "private/eab-spacemacs/local/yasnippet-snippets"))
 (setq-put eab/eab-snippets-path (concat user-emacs-directory "private/eab-spacemacs/snippets"))
 
+(setq-put eab/sauron-sound-path "/usr/share/sounds/ubuntu/stereo/service-login.ogg")
+ 
 (eval-after-load "enriched"
   '(defun enriched-decode-display-prop (start end &optional param)
      (list start end)))

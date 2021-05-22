@@ -1,3 +1,12 @@
+;;; eab-server.el ---  eab server extension
+
+;; Copyright (C) 2010-2021 Evgeny Boykov
+;;
+;; Author: artscan@list.ru
+;; Keywords: 
+;; Requirements: none
+;; Status: not intended to be distributed yet
+
 (defun eab/eval-last-sexp-serverM ()
   "Evaluate sexp before point on serverM; print value in minibuffer."
   (interactive)

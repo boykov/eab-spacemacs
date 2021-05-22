@@ -1,3 +1,11 @@
+;;; eab-find-func.el ---  eab find-function extension
+
+;; Copyright (C) 2010-2021 Evgeny Boykov
+;;
+;; Author: artscan@list.ru
+;; Keywords: 
+;; Requirements: none
+;; Status: ready
 
 (defun eab/find-function-at-point ()
   (interactive)

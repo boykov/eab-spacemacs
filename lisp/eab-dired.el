@@ -1,4 +1,11 @@
-;; require dired
+;;; eab-dired.el --- eab dired extension
+
+;; Copyright (C) 2010-2021 Evgeny Boykov
+;;
+;; Author: artscan@list.ru
+;; Keywords: 
+;; Requirements: dired dired-async eab-find-func
+;; Status: not intended to be distributed yet
 
 (require 'dired-async)
 

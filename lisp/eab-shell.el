@@ -1,11 +1,11 @@
-;;; eab-shell.el --- 
+;;; eab-shell.el ---  eab shell extension
 
 ;; Copyright (C) 2010-2021 Evgeny Boykov
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 
-;; Requirements: 
-;; Status: not intended to be distributed yet
+;; Requirements: none
+;; Status: ready
 
 (defun eab/over-bash (comhead comstr)
   "Run comhead with comstr over bash -i -c."

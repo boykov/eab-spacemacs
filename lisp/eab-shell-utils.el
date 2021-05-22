@@ -1,14 +1,13 @@
-;;; eab-shell-utils.el --- 
+;;; eab-shell-utils.el --- eab shell utilities
 
 ;; Copyright (C) 2010-2021 Evgeny Boykov
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 
 ;; Requirements: async abbrev
-;; Status: not intended to be distributed yet
+;; Status: ready
 
-;; (shell-command "xmodmap -e 'keycode 135 = Hyper_R'")
-;; (shell-command "xmodmap -e 'keycode 95 = Hyper_R'")
+(defvar eab/translate-path nil)
 
 (defun eab/xmodmap-set-hyper ()
   (interactive)
@@ -101,8 +100,6 @@
     ;;   )
     (eab/ido-firefox)
     ))
-
-(eab/bind-path eab/translate-path)
 
 ;; TODO баг: зацикливание (много bash процессов) trying with detected language
 ;; пример со словом hunchentoot
