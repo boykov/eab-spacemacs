@@ -53,6 +53,8 @@
     (copy-region-as-kill (mark) (point))
     (kill-buffer buf-name)))
 
+;; DISABLED ARCHIVE
+;; (setq eab/ansible-path ...)
 (defun eab/ansible-copy (&optional arg)
   "Copy remote file, e.g. /sudo:root@jupiter:/etc/pbstools.conf to
    respective place (templates/) in jupiter ansible role. C-u for files/"

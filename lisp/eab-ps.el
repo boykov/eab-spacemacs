@@ -1,3 +1,7 @@
+;; DISABLED ARCHIVE
+
+;; define eab/print-dir
+;; define eab/tmp-ps
 (eab/bind-path eab/print-dir)
 (eab/bind-path eab/tmp-ps)
 

@@ -25,12 +25,10 @@
   (message "Spacemacs is ready."))
 
 (setq eab/homedir (getenv "HOME"))
-(setq eab/newemacs-path "/home/eab/newemacs")
 (setq eab/daemon-name (daemonp))
-(setq eab/ansible-path "/home/eab/git/eabmisc/jupiter/jupitermgmt/")
 
 (if (not (stringp eab/daemon-name))
-    (setq eab/daemon-name "server"))
+    (setq eab/daemon-name "serverP"))
 
 (defun eab/onhomedir (def)
   (if (string= eab/homedir def) 't))
@@ -124,8 +122,6 @@
 (setq-put smex-save-file (concat (eab/history-dir) ".smex-items"))
 (setq-put eab/trans-path "~/git/python/trans.py")
 (setq-put eab/translate-path "~/bin/translate")
-(setq-put eab/print-dir "~/pub/print/")
-(setq-put eab/tmp-ps "/tmp/tmp.ps")
 
 (setq-put eab/eeansi-path (expand-file-name "~/.eev/eeansi.sh"))
 (setq-put eab/eegchannel-path (expand-file-name (concat user-emacs-directory "private/eab-spacemacs/local/eev-current/eegchannel")))
