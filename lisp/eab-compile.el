@@ -1,8 +1,11 @@
-(require 'smart-compile)
-(setq-default smart-compile-check-makefile nil)
+;;; eab-compile.el --- eab compile extension
 
-(setq compile-command "make ")
-(setq compilation-buffer-name-function (lambda (mode) (concat "*" (downcase mode) ": " (projectile-project-name) "*")))
+;; Copyright (C) 2010-2021 Evgeny Boykov
+;;
+;; Author: artscan@list.ru
+;; Keywords: 
+;; Requirements: projectile
+;; Status: ready
 
 (defun eab/projectile-compile-project (&optional arg)
   (interactive)
@@ -61,13 +64,6 @@
     (if (not (string= cmd ""))
 	(compile cmd))))
 
-(add-to-list 'smart-compile-alist '(graphviz-dot-mode . "xdot.py %F"))
-(add-to-list 'smart-compile-alist '(python-mode . "python %F"))
-(add-to-list 'smart-compile-alist '(textile-mode . "make push id=%f"))
-(add-to-list 'smart-compile-alist '("\\.xml\\'" . "cd ../../.. && make push id=%F"))
-(add-to-list 'smart-compile-alist '("\\.jira\\'" . "make push id=%n"))
-(add-to-list 'smart-compile-alist '("\\.html\\'" . "make push id=%n"))
-
 ;; Helper for compilation. Close the compilation window if
 ;; there was no error at all.
 (defun compilation-exit-autoclose (status code msg)
@@ -82,9 +78,6 @@
   (cons msg code))
 
 ;; Specify my function (maybe I should have done a lambda function)
-(setq compilation-exit-message-function 'compilation-exit-autoclose)
-(setq compilation-exit-message-function nil)
-(setq compilation-scroll-output 't)
 
 (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
 ;; (add-hook 'compilation-mode-hook 'rename-uniquely)

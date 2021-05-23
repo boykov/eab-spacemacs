@@ -1,9 +1,15 @@
+;;; eab-eepitch.el ---  eab eev extension
+
+;; Copyright (C) 2010-2021 Evgeny Boykov
+;;
+;; Author: artscan@list.ru
+;; Keywords: 
+;; Requirements: eev
+;; Status: not intended to be distributed yet
+
 (require 'eev-all)
 (require 'eev-browse-url)
 (require 'eev-mini-steps)
-
-(eab/bind-path eab/eeansi-path)
-(eab/bind-path eab/eegchannel-path)
 
 (defun eab/run-tmux (sym)
   (let ((default-directory "/ssh:kairos-host:/home/eab/"))
@@ -19,7 +25,6 @@
         (switch-to-buffer-other-window buffer)
       (ansi-term prog buf))))
 
-(setq vterm-shell "/home/eab/.eev/eeansi.sh")
 (defun eab/run-vterm (prog buf)
   (let ((buffer (get-buffer (concat "*" buf "*")))
 	(default-directory

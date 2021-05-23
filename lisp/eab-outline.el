@@ -1,3 +1,14 @@
+;;; eab-outline.el --- eab outline extension
+
+;; Copyright (C) 2010-2021 Evgeny Boykov
+;;
+;; Author: artscan@list.ru
+;; Keywords: 
+;; Requirements: eab/add-hook
+;; Status: ready
+
+(defvar eab/outline-state 'all)
+
 (eab/add-hook textile-mode-hook eab/textile-outline-hook
   (setq-local outline-regexp "^\\(h[0-9]+\\)")
   (setq-local outline-heading-alist '(("h1" . 2) ("h2" . 3) ("h3" . 4) ("h4" . 5) ("h5" . 6))))
@@ -21,8 +32,6 @@
    ((yas--templates-for-key-at-point) (call-interactively 'yas-expand))
    ((outline-on-heading-p)
     (call-interactively 'outline-toggle-children))))
-
-(defvar eab/outline-state 'all)
 
 (defun eab/outline-toggle-all ()
   "Show or hide the whole buffer depending on its current state."
