@@ -1,3 +1,12 @@
+;;; eab-grep.el --- eab grep extension
+
+;; Copyright (C) 2010-2021 Evgeny Boykov
+;;
+;; Author: artscan@list.ru
+;; Keywords: 
+;; Requirements: grep-a-lot wgrep
+;; Status: not intended to be distributed yet
+
 ;; require grep-a-lot
 
 (require 'grep-a-lot)
@@ -41,10 +50,10 @@
 
 (defun eab/grep-switch ()
   (interactive)
-  (let* ((ss-0 (cadr (split-string (car compilation-arguments) "rg --color never --no-heading --pcre2 -U -i -nH -e ")))
+  (let* ((ss-0 (cadr (split-string (car compilation-arguments) eab/grep-command)))
 	 (ss (car (split-string ss-0 " `git ls-files \\\\`git rev-parse --show-toplevel\\\\``")))
 	 (compilation-arguments
-	  (append (list (concat "rg --color never --no-heading --pcre2 -U -i -nH -e \"^- <20(\\n[^\*-]|.)*?(.*|\\n)"
+	  (append (list (concat eab/grep-command "\"^- <20(\\n[^\*-]|.)*?(.*|\\n)"
 			  ss
 			  "(\\n|.)*?((?=\\n- <)|(?=\\n\\*)|(?=\\Z))\" `git ls-files \\`git rev-parse --show-toplevel\\`` | sort -t$':' -k1,1 -k2n"))
 	  (cdr compilation-arguments))))
@@ -61,6 +70,8 @@
 ;; grep-command isn't parsed correctly
 ;; (setq grep-history '("grep -i -nH -e test  `git ls-files \\`git rev-parse --show-toplevel\\``"))
 
+(setq eab/grep-command-args " --color never --no-heading --pcre2 -U -i -nH -e ")
+(setq eab/grep-command (concat "rg" eab/grep-command-args))
 (setq eab/grep-ls " `git ls-files \\`git rev-parse --show-toplevel\\``")
 (setq eab/grep-ls-recurse " `git ls-files --recurse-submodules \\`git rev-parse --show-toplevel\\``")
 
@@ -92,11 +103,11 @@
    (let* ((grep-host-defaults-alist nil)
 	  (extension (ignore-errors
 		       (file-name-extension buffer-file-name)))
-	  (str (concat (eab/gz-grep extension) " --color never --no-heading --pcre2 -U -i -nH -e "))
+	  (str (concat (eab/gz-grep extension) eab/grep-command-args))
 	  (grep-command-no-list
 	   (concat 
 	    (if (or (file-exists-p (concat default-directory "/.gitignore"))
-		    (string= (shell-command-to-string "git clean -xn `pwd` | wc -l") "0\n"))
+		    (string= (shell-command-to-string "git clean -n `pwd` | wc -l") "0\n"))
 		`,(concat str (eab/grep-gitmodules arg))
 	      `,(concat str " *."
 			extension)) " | sort -t$':' -k1,1 -k2n"))
@@ -123,14 +134,14 @@
   (interactive)
   (let ((grep-host-defaults-alist nil)
         (grep-find-command
-         `(,"find . -iname '**' -type f -print0 | xargs -0 -e rg --color never --no-heading --pcre2 -U -i -nH -e \"\" | sort -t$':' -k1,1 -k2n" . 102)))
+         `(, (concat "find . -iname '**' -type f -print0 | xargs -0 -e " eab/grep-command "\"\" | sort -t$':' -k1,1 -k2n") . 102)))
     (call-interactively 'find-grep)))
 
 (defun eab/clock-grep ()
   (interactive)
   (let ((grep-host-defaults-alist nil)
         (grep-command
-         `(,"rg --color never --no-heading --pcre2 -U -i -nH -e \"^- <20(\\n[^\*-]|.)*?(.*|\\n)(\\n|.)*?((?=\\n- <)|(?=\\n\\*)|(?=\\Z))\" `git ls-files \\`git rev-parse --show-toplevel\\`` | sort -t$':' -k1,1 -k2n" . 79)))
+         `(, (concat eab/grep-command "\"^- <20(\\n[^\*-]|.)*?(.*|\\n)(\\n|.)*?((?=\\n- <)|(?=\\n\\*)|(?=\\Z))\" `git ls-files \\`git rev-parse --show-toplevel\\`` | sort -t$':' -k1,1 -k2n") . 79)))
     (call-interactively 'grep)))
 
 (grep-a-lot-advise eab/grep)

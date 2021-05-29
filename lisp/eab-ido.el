@@ -1,4 +1,11 @@
-;; require ido, projectile, workgroups
+;;; eab-ido.el --- eab ido extension
+
+;; Copyright (C) 2010-2021 Evgeny Boykov
+;;
+;; Author: artscan@list.ru
+;; Keywords: 
+;; Requirements: ido ido-at-point flx-ido projectile workgroups2
+;; Status: not intended to be distributed yet
 
 ;; (require 'flx-isearch)
 (require 'ido) ;; fix boundp ido-file-dir-completion-map, ido-file-completion-map,
