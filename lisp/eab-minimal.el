@@ -48,20 +48,6 @@
 	 ,@body
      (call-interactively 'self-insert-command)))
 
-;; TODO сделать eab-kbd независимым от моих символов
-;; использовать какой-то вид переназначения?
-
-(setq eab/replace-command (make-hash-table :test 'equal))
-
-;; TODO опять таки плохо, некоторые системы учитывают предыдущую
-;; команду, а в данном случае это будет (ilam (rcmd 'some-name))
-(defun rcmd (cmd)
-  (interactive)
-  (let ((new-cmd (gethash cmd eab/replace-command)))
-    (if (fboundp new-cmd)
-	(call-interactively new-cmd)
-      (call-interactively cmd))))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (provide 'eab-minimal)

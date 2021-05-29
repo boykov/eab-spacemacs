@@ -227,7 +227,6 @@
  "<M-kp-equal>" (ilam (shell-command "suspend_until.sh 4:00 &"))
  "<kp-delete>"	(ilam (kill-buffer-and-window)))
 
-;; former rcmd
 (general-define-key
  "M-z"		'undo-tree-undo
  "C-b"		'eab/cxb
