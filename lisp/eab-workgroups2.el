@@ -84,7 +84,8 @@
   "Revert current workgroup and update selected workgroup by current config"
   (interactive)
   (let ((wg-target (wg-read-workgroup-name)))
-    (wg-kill-ring-save-working-wconfig (wg-current-workgroup))
+    (wg-add-to-wconfig-kill-ring
+     (wg-workgroup-working-wconfig (wg-current-workgroup)))
     (call-interactively 'eab/wg-revert-workgroup)
     (wg-switch-to-workgroup wg-target)
     (with-output-to-string (wg-yank-wconfig)))
