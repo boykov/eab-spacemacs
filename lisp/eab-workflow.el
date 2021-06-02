@@ -4,28 +4,10 @@
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 
-;; Requirements: key-chord expand-region region-bindings-mode
+;; Requirements:
 ;; Status: ready
 
-(require 'key-chord)
-
 (defvar eab/revert-buffer "u")
-
-(defun er/add-text-mode-expansions ()
-  (make-variable-buffer-local 'er/try-expand-list)
-  (setq er/try-expand-list (append
-                            er/try-expand-list
-                            '(mark-paragraph
-                              mark-page))))
-
-(add-hook 'text-mode-hook 'er/add-text-mode-expansions)
-
-;; prevent annoying switching on rk in region-bindings-mode on set-mark-command
-;; DONE возможно, из-за этой настройки что-то начнет работать "странно"
-(add-hook 'window-configuration-change-hook (lambda ()
-					      (if (and mark-active (not (use-region-p)))
-						  (deactivate-mark))))
-
 
 (defun eab/insert-greek ()
   (interactive)
@@ -70,20 +52,6 @@
   (interactive)
   (shell-command (concat "sed -i 's/\r$//g' " (buffer-file-name)))
   (revert-buffer 't 't))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defadvice winner-undo (before eab-winner-undo-before activate)
-  (region-bindings-mode-disable))
-
-(defadvice winner-undo (after eab-winner-undo-after activate)
-  (region-bindings-mode-enable))
-
-(defadvice winner-redo (before eab-winner-redo-before activate)
-  (region-bindings-mode-disable))
-
-(defadvice winner-redo (after eab-winner-redo-after activate)
-  (region-bindings-mode-enable))
 
 
 (provide 'eab-workflow)

@@ -223,8 +223,6 @@
 	     '(rfc2104
 	       (require 'keepass)))
 
-(require 'diminish)
-(diminish 'undo-tree-mode "UT")
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

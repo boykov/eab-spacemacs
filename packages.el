@@ -18,35 +18,20 @@
     logstash-conf
     forge
     s
-    groovy-mode
-    terraform-mode
     rpm-spec-mode
     git-timemachine
     git-wip-timemachine
-    xterm-color
     go-mode
-    ssh-config-mode
-    textile-mode
-    puppet-mode
-    yaml-mode
-    ansible
-    ansible-doc
-    ansible-vault
-    tramp-term
     vagrant
     vagrant-tramp
     csv-mode
     ;; el-patch ;; emacs-25
-    projectile
     ldap-mode
-    general
     php-mode
     sql-indent
     gnuplot
     htmlize
     spacemacs-theme
-    ergoemacs-mode
-    key-chord
     auto-dictionary ;; switcher for flyspell
     ;; auto-complete-emacs-lisp ;; no melpa depend auto-complete
     howdoi
@@ -55,36 +40,23 @@
     etags-select
     helm
     helm-descbinds
-    smart-compile
     popwin
-    expand-region
-    multiple-cursors
     flx-isearch
-    workgroups2
     dictionary
-    sauron
     magit
     ;;  magit-filenotify ;; needs emacs 24.4 with file-notify-support
     git-commit
     ;;	git-rebase ;; see in magit
     magit-annex
-    orgit ;; org-magit obsolete
     auctex
     org-agenda-property
-    region-bindings-mode
     smex
-    smartparens
-    auto-install
     flx-ido
     ido-at-point
-    paredit
     grep-a-lot
     wgrep
     ag
     wgrep-ag
-    undo-tree
-    ;; workgroups
-    edit-list
 
     docker
     docker-tramp
@@ -166,7 +138,6 @@
     minimap
     markdown-mode
     auto-complete
-    yasnippet
     logito
     kv
     jira
@@ -186,6 +157,35 @@
     clojure-mode
     browse-kill-ring
     bm
+
+    orgit ;; org-magit obsolete
+    sauron
+    smart-compile
+    general
+    tramp-term
+    ansible
+    ansible-doc
+    ansible-vault
+    puppet-mode
+    yaml-mode
+    textile-mode
+    ssh-config-mode
+    xterm-color
+    ergoemacs-mode
+    groovy-mode
+    terraform-mode
+    smartparens
+    projectile
+    key-chord
+    region-bindings-mode
+    multiple-cursors
+    expand-region
+    auto-install
+    paredit
+    undo-tree
+    edit-list
+    yasnippet
+    workgroups2
     (eab-misc :location local)
     (eab-ace-jump-mode :location local)
     (eab-avy :location local)
@@ -251,7 +251,16 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-csv-mode nil)
 (defun eab-spacemacs/init-el-patch nil)
 (defun eab-spacemacs/init-projectile nil
-  ;; many requirements in eab extensions
+  (require 'projectile)
+  (setq projectile-require-project-root t)
+  (setq projectile-project-root-files-bottom-up
+	'(".git"        ; Git VCS root dir
+	  ".projectile" ; projectile project marker
+	  ".hg"         ; Mercurial VCS root dir
+	  ".fslckout"   ; Fossil VCS root dir
+	  ".bzr"        ; Bazaar VCS root dir
+	  "_darcs"      ; Darcs VCS root dir
+	  ))
   )
 (defun eab-spacemacs/init-ldap-mode nil)
 
@@ -290,8 +299,40 @@ which require an initialization must be listed explicitly in the list.")
   (add-to-list 'smart-compile-alist '("\\.html\\'" . "make push id=%n"))
   )
 (defun eab-spacemacs/init-popwin nil)
-(defun eab-spacemacs/init-expand-region nil)
-(defun eab-spacemacs/init-multiple-cursors nil)
+(defun eab-spacemacs/init-expand-region nil
+  (require 'expand-region)
+  ;; (require 'mark-more-like-this)
+  (defun er/add-org-mode-expansions ()
+    "Adds org-specific expansions for buffers in org-mode"
+    (set (make-local-variable 'er/try-expand-list)
+	 (append
+          (remove #'mark-paragraph (remove #'er/mark-defun er/try-expand-list))
+          '(org-mark-subtree
+            er/mark-org-element
+            er/mark-org-element-parent
+            er/mark-org-code-block
+            er/mark-sentence
+            er/mark-org-parent)))
+    (set (make-local-variable 'er/save-mode-excursion)
+	 #'er/save-org-mode-excursion))
+  (defun er/add-text-mode-expansions ()
+    (make-variable-buffer-local 'er/try-expand-list)
+    (setq er/try-expand-list (append
+                              er/try-expand-list
+                              '(mark-paragraph
+				mark-page))))
+  (add-hook 'text-mode-hook 'er/add-text-mode-expansions)
+  )
+(defun eab-spacemacs/init-multiple-cursors nil
+  (require 'multiple-cursors) ;; fix mc/keymap
+  (eab/bind-path mc/list-file)
+  (if (boundp 'mc--default-cmds-to-run-for-all)
+      (setq mc--cmds mc--default-cmds-to-run-for-all))
+  ;; TODO mc/cmds-to-run-for-all переназначается (sp-backward-sexp sp-forward-sexp)
+  (setq mc/cmds-to-run-for-all (append mc/cmds-to-run-for-all
+				       '(org-delete-char
+					 org-self-insert-command)))
+  )
 (defun eab-spacemacs/init-flx-isearch ()
   (flx-isearch-mode 0))
 
@@ -337,18 +378,54 @@ which require an initialization must be listed explicitly in the list.")
 
 (defun eab-spacemacs/init-auctex nil)
 (defun eab-spacemacs/init-org-agenda-property nil)
-(defun eab-spacemacs/init-region-bindings-mode nil)
+(defun eab-spacemacs/init-region-bindings-mode nil
+  (require 'region-bindings-mode)
+  (region-bindings-mode-enable)
+  ;; prevent annoying switching on rk in region-bindings-mode on set-mark-command
+  ;; DONE возможно, из-за этой настройки что-то начнет работать "странно"
+  (add-hook 'window-configuration-change-hook
+	    (lambda ()
+	      (if (and mark-active (not (use-region-p)))
+		  (deactivate-mark))))
+  (defadvice winner-undo (before eab-winner-undo-before activate)
+    (region-bindings-mode-disable))
+  (defadvice winner-undo (after eab-winner-undo-after activate)
+    (region-bindings-mode-enable))
+  (defadvice winner-redo (before eab-winner-redo-before activate)
+    (region-bindings-mode-disable))
+  (defadvice winner-redo (after eab-winner-redo-after activate)
+    (region-bindings-mode-enable))
+  ;; TODO fix the hack: why call it second time?
+  ;; emacs 28 bad
+  ;; (define-minor-mode region-bindings-mode :lighter " rk" :group 'convenience)
+  )
 (defun eab-spacemacs/init-smex nil)
-(defun eab-spacemacs/init-smartparens nil)
-(defun eab-spacemacs/init-auto-install nil)
+(defun eab-spacemacs/init-smartparens nil
+  (require 'smartparens) ;; fix boundp sp-keymap
+  (require 'smartparens-latex)
+  ;; (smartparens-global-mode)
+  (setq sp-ignore-modes-list nil)
+  )
+(defun eab-spacemacs/init-auto-install nil
+  (require 'auto-install)
+  (eab/bind-path auto-install-directory)
+  )
 (defun eab-spacemacs/init-flx-ido nil)
 (defun eab-spacemacs/init-ido-at-point nil)
-(defun eab-spacemacs/init-paredit nil)
+(defun eab-spacemacs/init-paredit nil
+  (require 'paredit)
+  (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
+  )
 (defun eab-spacemacs/init-grep-a-lot nil)
 (defun eab-spacemacs/init-wgrep nil)
 (defun eab-spacemacs/init-ag nil)
 (defun eab-spacemacs/init-wgrep-ag nil)
-(defun eab-spacemacs/init-undo-tree nil)
+(defun eab-spacemacs/init-undo-tree nil
+  (require 'undo-tree)
+  (global-undo-tree-mode)
+  (require 'diminish)
+  (diminish 'undo-tree-mode "UT")
+  )
 
 (defun eab-spacemacs/init-edit-list ()
   (use-package edit-list
@@ -446,7 +523,28 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-minimap nil)
 (defun eab-spacemacs/init-markdown-mode nil)
 (defun eab-spacemacs/init-auto-complete nil)
-(defun eab-spacemacs/init-yasnippet nil)
+(defun eab-spacemacs/init-yasnippet nil
+  (require 'yasnippet)
+
+  (setq yas-snippet-dirs '())
+  ;; cd el-get && git clone https://github.com/AndreaCrotti/yasnippet-snippets
+  (add-to-list 'yas-snippet-dirs (eab/bind-path eab/yasnippets-path))
+  (add-to-list 'yas-snippet-dirs (eab/bind-path eab/eab-snippets-path))
+
+  (setq yas-key-syntaxes '("w_" "w_." "w_.()" "^ "))
+
+  (defun yas-org-very-safe-expand ()
+    (let ((yas-fallback-behavior 'return-nil)
+	  (yas-minor-mode 't))
+      (yas-expand)))
+
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (make-variable-buffer-local 'yas-trigger-key)
+              (setq yas-trigger-key [tab])
+              (add-to-list 'org-tab-first-hook 'yas-org-very-safe-expand)
+              (define-key yas-keymap [tab] 'yas-next-field)))
+  )
 (defun eab-spacemacs/init-logito nil)
 (defun eab-spacemacs/init-kv nil)
 (defun eab-spacemacs/init-jira nil)
@@ -516,41 +614,8 @@ which require an initialization must be listed explicitly in the list.")
     )
   (use-package eab-window)
   (use-package eab-find-func)
-  
-  (use-package eab-ui-minimal)
-  (use-package eab-shell)
-  (use-package eab-shell-utils
-    :init
-    ;; (shell-command "xmodmap -e 'keycode 135 = Hyper_R'")
-    ;; (shell-command "xmodmap -e 'keycode 95 = Hyper_R'")
-    (eab/bind-path eab/translate-path)
-    )
-  (use-package eab-yasnippet)
-  (use-package eab-auctex)
-  (use-package eab-postload-minimal)
-  (use-package eab-depend-minimal)
-  (use-package eab-workflow
-    :config
-    (setq key-chord-two-keys-delay 0.05))
-  (use-package eab-appt)
   (use-package eab-desktop)
-  (use-package eab-words
-    :init
-    (setq dictionary-server "localhost")
-    (eab/bind-path abbrev-file-name)
-    (if (file-exists-p abbrev-file-name)
-	(quietly-read-abbrev-file abbrev-file-name))
-    )
-  (use-package eab-server)
-  (use-package eab-git)
-  (use-package eab-grep)
-  (use-package eab-dired)
-  (use-package eab-smex)
-  (use-package eab-ido)
-  (use-package eab-ido-utils)
-  (use-package eab-packages)
-  (use-package eab-popwin)
-  (use-package eab-miniframe)
+  (use-package eab-workflow)
   (use-package eab-compile
     :init
     (setq compile-command "make ")
@@ -561,6 +626,37 @@ which require an initialization must be listed explicitly in the list.")
     (setq compilation-exit-message-function nil)
     (setq compilation-scroll-output 't)
     )
+  (use-package eab-server)
+  (use-package eab-outline)
+
+  (use-package eab-ui-minimal)
+  (use-package eab-shell)
+  (use-package eab-shell-utils
+    :init
+    ;; (shell-command "xmodmap -e 'keycode 135 = Hyper_R'")
+    ;; (shell-command "xmodmap -e 'keycode 95 = Hyper_R'")
+    (eab/bind-path eab/translate-path)
+    )
+  (use-package eab-auctex)
+  (use-package eab-postload-minimal)
+  (use-package eab-depend-minimal)
+  (use-package eab-appt)
+  (use-package eab-words
+    :init
+    (setq dictionary-server "localhost")
+    (eab/bind-path abbrev-file-name)
+    (if (file-exists-p abbrev-file-name)
+	(quietly-read-abbrev-file abbrev-file-name))
+    )
+  (use-package eab-git)
+  (use-package eab-grep)
+  (use-package eab-dired)
+  (use-package eab-smex)
+  (use-package eab-ido)
+  (use-package eab-ido-utils)
+  (use-package eab-packages)
+  (use-package eab-popwin)
+  (use-package eab-miniframe)
   (use-package eab-browse)
   (use-package eab-sudo)
   (use-package eab-helm)
@@ -592,7 +688,6 @@ which require an initialization must be listed explicitly in the list.")
   (use-package eab-org-reftex)
   (if (string= (daemonp) "serverC")
       (use-package eab-org-extension))
-  (use-package eab-outline)
   (global-set-key (kbd "C-h c") 'describe-key-briefly)
   (global-set-key (kbd "M-O") 'forward-paragraph)
   (general-define-key

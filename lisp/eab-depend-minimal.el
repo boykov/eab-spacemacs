@@ -40,67 +40,10 @@
 	(tramp-remote-shell       "/bin/sh")
 	(tramp-remote-shell-args  ("-i" "-c"))))
 
-(require 'undo-tree)
-(global-undo-tree-mode)
-
-(require 'paredit)
-(autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
-
-(require 'projectile)
-(setq projectile-require-project-root t)
-(setq projectile-project-root-files-bottom-up
-      '(".git"        ; Git VCS root dir
-	".projectile" ; projectile project marker
-	".hg"         ; Mercurial VCS root dir
-	".fslckout"   ; Fossil VCS root dir
-	".bzr"        ; Bazaar VCS root dir
-	"_darcs"      ; Darcs VCS root dir
-	))
-
-(require 'auto-install)
-(eab/bind-path auto-install-directory)
-
-(require 'smartparens) ;; fix boundp sp-keymap
-(require 'smartparens-latex)
-;; (smartparens-global-mode)
-
-(setq sp-ignore-modes-list nil)
-
 (eab/bind-path savehist-file)
 (savehist-mode 1)
 
 (require 'top-mode)
-
-(require 'expand-region)
-;; (require 'mark-more-like-this)
-(defun er/add-org-mode-expansions ()
-  "Adds org-specific expansions for buffers in org-mode"
-  (set (make-local-variable 'er/try-expand-list)
-       (append
-        (remove #'mark-paragraph (remove #'er/mark-defun er/try-expand-list))
-        '(org-mark-subtree
-          er/mark-org-element
-          er/mark-org-element-parent
-          er/mark-org-code-block
-          er/mark-sentence
-          er/mark-org-parent)))
-  (set (make-local-variable 'er/save-mode-excursion)
-       #'er/save-org-mode-excursion))
-
-(require 'multiple-cursors) ;; fix mc/keymap
-(eab/bind-path mc/list-file)
-
-(require 'region-bindings-mode)
-(region-bindings-mode-enable)
-;; TODO fix the hack: why call it second time?
-;; emacs 28 bad
-;; (define-minor-mode region-bindings-mode :lighter " rk" :group 'convenience)
-
-(if (boundp 'mc--default-cmds-to-run-for-all) (setq mc--cmds mc--default-cmds-to-run-for-all))
-;; TODO mc/cmds-to-run-for-all переназначается (sp-backward-sexp sp-forward-sexp)
-(setq mc/cmds-to-run-for-all (append mc/cmds-to-run-for-all
-				     '(org-delete-char
-				       org-self-insert-command)))
 
 (which-key-mode)
 
