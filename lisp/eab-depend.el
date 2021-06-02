@@ -26,7 +26,7 @@
 
 (eval-after-load "replace" '(progn (require 'replace+)))
 
-(require 'bookmark+) ;; конфликтует с pymacs-load ropemacs
+(require 'bookmark+)
 (eab/bind-path bmkp-last-as-first-bookmark-file)
 (eab/bind-path bookmark-default-file)
 
@@ -78,7 +78,6 @@
 
 (require 'python-mode)
 ;; (require 'ipython)
-;; (require 'pymacs)
 (require 'pydoc-info)
 
 (setq py-python-command "ipython")

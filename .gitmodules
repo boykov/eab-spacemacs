@@ -13,9 +13,6 @@
 [submodule "extensions/bbdb"]
 	path = local/bbdb
 	url = http://github.com/boykov/bbdb.git
-[submodule "extensions/pymacs"]
-	path = local/pymacs
-	url = http://github.com/pinard/Pymacs.git
 [submodule "extensions/yasnippet-snippets"]
 	path = local/yasnippet-snippets
 	url = https://github.com/AndreaCrotti/yasnippet-snippets
