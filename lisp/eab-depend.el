@@ -186,16 +186,6 @@
 
 
 
-;; anything yasnippet auto-config etags
-;; (require 'anything-complete) ;; problem with anything-match-plugin version
-;; (require 'anything-extension)
-;; (require 'anything-grep)
-;; (require 'anything-c-shell-history)
-;; (require 'anything-dabbrev-expand)
-;; (require 'descbinds-anything)
-;; (require 'anything-show-completion)
-;; (require 'anything-ipython)
-;; (require 'anything-c-moccur)
 
 ;; (require 'dictem)
 ;; (setq dictem-server "localhost")

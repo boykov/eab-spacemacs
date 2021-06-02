@@ -17,9 +17,7 @@
 	("eab-save-abbrev"
          :protocol "save-abbrev"
          :function eab-protocol-save-abbrev)
-	("eab-send-string"
-         :protocol "send-string"
-         :function eab-protocol-send-string)))
+	))
 
 (defun eab-protocol-open-link (link)
   (ignore-errors (eab/wg-switch-to-workgroup ":ag:"))
@@ -29,36 +27,6 @@
   (let ((unhex-word (org-link-unescape word)))
     (define-abbrev eab-abbrev-table unhex-word unhex-word))
   nil)
-
-(defun eab-protocol-send-string (string)
-  (setq eab-send-string (org-link-unescape string))
-  (shell-command "wmctrl -a \"minibuffer\"")
-  (save-window-excursion
-    (select-frame eab-minibuffer-frame)
-    (call-interactively 'eab/ido-firefox-urls))
-  (eab/ido-firefox)
-  nil)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defun eab/firefox-get-urls (arg)
-  (split-string (if arg
-      (car (split-string eab-send-string "8a3444a"))
-      (cadr (split-string eab-send-string "8a3444a"))) "7e2197b," t))
-
-(defun eab/ido-firefox-urls ()
-  (interactive)
-  (let* ((cand
-	  (ido-completing-read "Firefox Urls: " (cdr (eab/firefox-get-urls 't))))
-	 (num
-	  (cl-position-if
-	   (lambda (x) (if (string= cand x) 't nil))
-	   (eab/firefox-get-urls nil))))
-    (with-temp-buffer
-      (insert
-       (concat
-	"gBrowser.mTabContainer.selectedIndex = " (number-to-string num) ";"))
-	(moz-send-region (point-min) (point-max)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

@@ -1,6 +1,5 @@
 (require 'auto-complete)
 (require 'auto-complete-config)
-;; (require 'ac-anything)
 (require 'ac-dabbrev)
 ;; (require 'auto-complete-emacs-lisp)
 (require 'mode-local)

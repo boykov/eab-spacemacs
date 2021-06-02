@@ -1,1 +1,3 @@
-My emacs config is used as a spacemacs private layer with the [spacemacs-bootstrap layer](https://github.com/syl20bnr/spacemacs/tree/master/layers/%2Bdistributions/spacemacs-bootstrap) (see the [discussion](https://github.com/syl20bnr/spacemacs/issues/1298)).
+# eab spacemacs layer
+
+See [changes history](Changelog)

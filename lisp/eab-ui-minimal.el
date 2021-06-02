@@ -47,10 +47,6 @@
          (with-current-buffer buf
            (ansi-color-apply-on-region (point-min) (point-max))))))
 
-(require 'moz)
-;; TODO :general: если нет javascript-mode-hook, то можно так
-(defadvice javascript-mode (after eab-javascript-mode-after activate)
-  (moz-minor-mode 1))
 
 (setq disabled-command-function nil)
 (fset 'yes-or-no-p 'y-or-n-p)

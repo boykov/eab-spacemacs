@@ -516,8 +516,6 @@
   (interactive "P")
   ;; (let ((shell-command-switch "-ic")) (eab/shell-command "nemacs"))
   ;; (sleep-for 1)
-  ;; (eab/shell-command "wmctrl -r \"emacsserverN\" -b add,below") ;; TODO влияет и на обычный nemacs?
-  ;; (eab/shell-command "wmctrl -a \"emacs@\"")
   (let ((fname (if arg 'eab/check-csum-all 'eab/check-csum-all-GREP)))
     (funcall
      `(lambda () (async-start

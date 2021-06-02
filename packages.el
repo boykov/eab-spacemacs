@@ -57,7 +57,6 @@
     helm-descbinds
     smart-compile
     popwin
-    moz
     expand-region
     multiple-cursors
     flx-isearch
@@ -182,16 +181,11 @@
     fakir ;; kv
     elnode ;; kv
     el-x
-    ;; descbinds-anything
     db
     creole ;; kv
     clojure-mode
     browse-kill-ring
     bm
-    ;; anything-obsolete
-    ;; anything-ipython
-    ;; anything-extension
-    ;; anything-complete
     (eab-misc :location local)
     (eab-ace-jump-mode :location local)
     (eab-avy :location local)
@@ -296,7 +290,6 @@ which require an initialization must be listed explicitly in the list.")
   (add-to-list 'smart-compile-alist '("\\.html\\'" . "make push id=%n"))
   )
 (defun eab-spacemacs/init-popwin nil)
-(defun eab-spacemacs/init-moz nil)
 (defun eab-spacemacs/init-expand-region nil)
 (defun eab-spacemacs/init-multiple-cursors nil)
 (defun eab-spacemacs/init-flx-isearch ()
@@ -554,7 +547,6 @@ which require an initialization must be listed explicitly in the list.")
   (use-package eab-dired)
   (use-package eab-smex)
   (use-package eab-ido)
-  (use-package eab-wmctrl)
   (use-package eab-ido-utils)
   (use-package eab-packages)
   (use-package eab-popwin)
@@ -571,7 +563,7 @@ which require an initialization must be listed explicitly in the list.")
     )
   (use-package eab-browse)
   (use-package eab-sudo)
-  (use-package eab-helm-anything)
+  (use-package eab-helm)
   (use-package eab-greek-to-latex)
   (use-package eab-tags)
   (use-package eab-auto-complete)

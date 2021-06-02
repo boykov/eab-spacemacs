@@ -183,7 +183,6 @@
  "C-c c"	'eab/add-eab-abbrev
  "C-c d"	'eab/tracker-search
  "C-c g"	'eab/gnugol-search
- "C-c o"	'eab/open-heading-browser
  "C-c O"	'eab/open-corresponding-html
  "C-c s"	'eab/org-agenda-search
  "C-c u"	'eab/unbound-var
@@ -209,7 +208,6 @@
 (general-define-key
  "C-c T"	'eab/google-translate
  "C-x T"	'eab/google-translate
- "M-C-b"	'eab/mcb
  "s-f"		'eab/see-file
  "C-S-f"	'eab/gr-status)
 
@@ -332,8 +330,6 @@
 (general-define-key
  :keymaps 'minibuffer-inactive-mode-map
  "o"	'eab/screen-off
- "e"	'eab/ido-emacs
- "s"	'eab/ido-wmctrl
  "t"	(ilam (eab/gnome-terminal) (suspend-frame))
  "q"	'suspend-frame)
 
@@ -448,8 +444,6 @@
  "l"	`(,(ilam (TeX-command "LaTeX"	'TeX-master-file)) :which-key " ")
  "b"	`(,(ilam (TeX-command "BibTeX"	'TeX-master-file)) :which-key " ")
  "L"	`(,(ilam (TeX-command "LaTeX"	'TeX-master-file)) :which-key " ")
- "v"	`(,(ilam (eab/switch-wmctrl-window "main.pdf")) :which-key " ")
- ;; "b" `(,(ilam (eab/switch-wmctrl-window "BoykovEA_5.pdf")) :which-key " ")
  "p"	`(,(ilam (eab/projectile-compile-project-custom "make push_all")) :which-key " ")
  "c"	`(,(ilam (eab/projectile-compile-project-custom "make clear")) :which-key " ")
  "t"	`(,(ilam (eab/projectile-compile-project-custom "make test")) :which-key " ")
@@ -1253,7 +1247,7 @@
    :keymaps 'ido-common-completion-map
    "C-v"	'eab/toggle-cxb-ido-item
    "C-d"	'eab/ace-ibuffer
-   "C-b"	'eab/ido-wmctrl)
+   )
   (general-define-key
    :keymaps 'ido-buffer-completion-map
    "C-k"	'nil
@@ -1261,7 +1255,7 @@
    "C-d"	'ido-buffer-helm
    "M-RET"	'eab/ido-main
    "C-M-j"	'eab/ido-main
-   "C-b"	'eab/ido-wmctrl))
+   ))
 
 (eab/add-hook emacs-lisp-mode-hook eab/emacs-lisp-hook
   (general-define-key

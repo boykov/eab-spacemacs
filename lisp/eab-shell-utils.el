@@ -61,46 +61,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun eab/maximize-window ()
-  "Maximize active window"
-  (interactive)
-  (eab/shell-command "wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz"))
-
-(defun eab/ido-firefox ()
-  "Switch to firefox"
-  (interactive)
-  (eab/shell-command "wmctrl -a \"Firefox\""))
-
-(defun eab/ido-servern ()
-  "Switch to emacsserverN@"
-  (interactive)
-  (eab/shell-command "wmctrl -a \"emacsserverN\""))
-
-(defun eab/ido-serverp ()
-  "Switch to emacsserverP@"
-  (interactive)
-  (eab/shell-command "wmctrl -a \"emacsserverP\""))
-
-(defun eab/ido-emacs ()
-  "Switch to emacs@"
-  (interactive)
-  (eab/shell-command "wmctrl -a \"emacs@\""))
-
-(defun eab/mcb (arg)
-  (interactive "P")
-  (if (and (fboundp 'eab/ondaemon) (eab/ondaemon "server"))
-      (if (eq (call-process-shell-command "wmctrl -l | grep emacsserverP") 0)
-	  (eab/ido-serverp)))
-  (if arg
-      (if (eq (call-process-shell-command "wmctrl -l | grep emacsserverN") 0)
-	  (eab/ido-servern)
-	(eab/ido-firefox))
-    ;; (if (stringp (daemonp))
-    ;; 	(eab/ido-firefox)
-    ;;   )
-    (eab/ido-firefox)
-    ))
-
 ;; TODO баг: зацикливание (много bash процессов) trying with detected language
 ;; пример со словом hunchentoot
 ;; убить можно pkill -f bash

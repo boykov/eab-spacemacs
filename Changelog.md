@@ -2,4 +2,11 @@
 
 ### 0.0.1
 
-Удалена зависимость pymacs.
+Удалены зависимости:
+	
+* pymacs
+* anything
+* wmctrl
+* eab-send-string
+* eab/ido-firefox-urls
+* moz
