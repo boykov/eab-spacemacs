@@ -1,3 +1,12 @@
+;;; eab-auctex.el --- eab tex extension
+
+;; Copyright (C) 2010-2021 Evgeny Boykov
+;;
+;; Author: artscan@list.ru
+;; Keywords: 
+;; Requirements: 
+;; Status: not intended to be distributed yet
+
 (defun th-evince-sync (file linecol &rest ignored)
   (let* ((file-name (file-name-nondirectory file))
 	 (buf (get-buffer file-name))

@@ -4,7 +4,7 @@
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 
-;; Requirements: none
+;; Requirements: projectile
 ;; Status: ready
 
 (defun window-search ()

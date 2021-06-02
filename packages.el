@@ -257,7 +257,9 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-vagrant-tramp nil)
 (defun eab-spacemacs/init-csv-mode nil)
 (defun eab-spacemacs/init-el-patch nil)
-(defun eab-spacemacs/init-projectile nil)
+(defun eab-spacemacs/init-projectile nil
+  ;; many requirements in eab extensions
+  )
 (defun eab-spacemacs/init-ldap-mode nil)
 
 (defun eab-spacemacs/init-general ()
@@ -521,6 +523,9 @@ which require an initialization must be listed explicitly in the list.")
     (ignore-errors (workgroups-mode 1))
     (eab/wg-init)
     )
+  (use-package eab-window)
+  (use-package eab-find-func)
+  
   (use-package eab-ui-minimal)
   (use-package eab-shell)
   (use-package eab-shell-utils
@@ -533,8 +538,6 @@ which require an initialization must be listed explicitly in the list.")
   (use-package eab-auctex)
   (use-package eab-postload-minimal)
   (use-package eab-depend-minimal)
-  (use-package eab-window)
-  (use-package eab-find-func)
   (use-package eab-workflow
     :config
     (setq key-chord-two-keys-delay 0.05))

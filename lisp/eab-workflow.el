@@ -4,7 +4,7 @@
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 
-;; Requirements: key-chrod
+;; Requirements: key-chord expand-region region-bindings-mode
 ;; Status: ready
 
 (require 'key-chord)
