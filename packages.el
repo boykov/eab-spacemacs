@@ -10,17 +10,12 @@
 (defvar eab-spacemacs-packages
   `(
     solarized-theme
-    libgit
     vterm
-    magit-libgit
     emamux
     nginx-mode
     logstash-conf
-    forge
     s
     rpm-spec-mode
-    git-timemachine
-    git-wip-timemachine
     go-mode
     vagrant
     vagrant-tramp
@@ -43,11 +38,6 @@
     popwin
     flx-isearch
     dictionary
-    magit
-    ;;  magit-filenotify ;; needs emacs 24.4 with file-notify-support
-    git-commit
-    ;;	git-rebase ;; see in magit
-    magit-annex
     auctex
     org-agenda-property
     smex
@@ -110,13 +100,11 @@
     jedi
     ;; ipython
     bibretrieve
-    git-annex
     websocket
     org-jekyll
     org-redmine
     pkg-info
     epl
-    s
     achievements
     org-grep
     org
@@ -136,9 +124,7 @@
     org-ehtml
     noflet
     minimap
-    markdown-mode
     auto-complete
-    logito
     kv
     jira
     ignoramus
@@ -158,7 +144,19 @@
     browse-kill-ring
     bm
 
-    orgit ;; org-magit obsolete
+    ;;  magit-filenotify ;; needs emacs 24.4 with file-notify-support
+    git-commit
+    git-timemachine
+    git-wip-timemachine
+    libgit
+    magit-libgit
+    magit-annex
+    git-annex
+    magit
+    forge
+    orgit
+
+    markdown-mode
     sauron
     smart-compile
     general
@@ -357,24 +355,47 @@ which require an initialization must be listed explicitly in the list.")
 	    ;;(notifications-notify :title "Sauron" :body msg)))
 	    ))
   )
-(defun eab-spacemacs/init-magit nil)
-(defun eab-spacemacs/init-forge nil)
+(defun eab-spacemacs/init-magit nil
+  (require 'magit)
+  (require 'magit-wip)
+  (require 'git-wip) ;; TODO can remove it and use magit-wip-mode?
+;; (setq auto-revert-buffer-list-filter 'magit-auto-revert-repository-buffer-p)
+;;    ("-S" "Submodule diff"                 ("-S" "--submodule=diff"))
+;; (put 'magit-status-mode 'magit-diff-default-arguments
+;;     '("--submodule=diff"))
+  )
+(defun eab-spacemacs/init-magit-annex nil
+  (require 'magit-annex)
+  )
+(defun eab-spacemacs/init-git-annex nil)
+(defun eab-spacemacs/init-magit-libgit nil)
+(defun eab-spacemacs/init-git-commit nil)
+(defun eab-spacemacs/init-forge nil
+  ;; emacs 28 bad
+  ;; (require 'forge)
+  ;; (setq forge-post-mode-hook '(visual-line-mode))
+  )
+;; (defun eab-spacemacs/init-magit-filenotify nil
+;;   (add-hook 'magit-status-mode-hook 'magit-filenotify-mode) ;; TODO too slow
+;; )
+(defun eab-spacemacs/init-orgit nil
+  ;; TODO cancel rev-export disabling
+  (require 'orgit)
+  (defun orgit-rev-export (path desc format))
+  ;; org-magit obsolete
+  ;; org-magit workaround
+  ;; (defvar magit-currently-shown-commit nil)
+  ;; (defadvice magit-show-commit (after eab-magit-show-commit activate)
+  ;;   (setq magit-currently-shown-commit (ad-get-arg 0)))
+  )
+
 (defun eab-spacemacs/init-logstash-conf nil)
 (defun eab-spacemacs/init-nginx-mode nil)
 (defun eab-spacemacs/init-emamux nil)
 (defun eab-spacemacs/init-libgit nil)
 (defun eab-spacemacs/init-vterm nil
     (setq vterm-keymap-exceptions '("C-c" "C-x" "C-u" "C-g" "C-h" "C-l" "M-x" "M-o" "C-v" "M-v" "C-y" "M-y" "M-s" "M-a" "M-i" "M-k" "M-j" "M-l" "C-a" "M-c" "M-p")))
-(defun eab-spacemacs/init-magit-libgit nil)
-(defun eab-spacemacs/init-git-commit nil)
-(defun eab-spacemacs/init-magit-annex nil)
-;; (defun eab-spacemacs/init-magit-filenotify nil)
 
-(defun eab-spacemacs/init-orgit nil
-  ;; TODO cancel rev-export disabling
-  (require 'orgit)
-  (defun orgit-rev-export (path desc format))
-  )
 
 (defun eab-spacemacs/init-auctex nil)
 (defun eab-spacemacs/init-org-agenda-property nil)
@@ -491,7 +512,6 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-python-environment nil)
 (defun eab-spacemacs/init-jedi nil)
 (defun eab-spacemacs/init-bibretrieve nil)
-(defun eab-spacemacs/init-git-annex nil)
 (defun eab-spacemacs/init-websocket nil)
 (defun eab-spacemacs/init-org-jekyll nil)
 
@@ -500,7 +520,6 @@ which require an initialization must be listed explicitly in the list.")
 
 (defun eab-spacemacs/init-pkg-info nil)
 (defun eab-spacemacs/init-epl nil)
-(defun eab-spacemacs/init-s nil)
 (defun eab-spacemacs/init-python-info nil)
 (defun eab-spacemacs/init-achievements nil)
 (defun eab-spacemacs/init-org-grep nil)
@@ -545,7 +564,6 @@ which require an initialization must be listed explicitly in the list.")
               (add-to-list 'org-tab-first-hook 'yas-org-very-safe-expand)
               (define-key yas-keymap [tab] 'yas-next-field)))
   )
-(defun eab-spacemacs/init-logito nil)
 (defun eab-spacemacs/init-kv nil)
 (defun eab-spacemacs/init-jira nil)
 (defun eab-spacemacs/init-ignoramus nil)
@@ -648,13 +666,11 @@ which require an initialization must be listed explicitly in the list.")
     (if (file-exists-p abbrev-file-name)
 	(quietly-read-abbrev-file abbrev-file-name))
     )
-  (use-package eab-git)
   (use-package eab-grep)
   (use-package eab-dired)
   (use-package eab-smex)
   (use-package eab-ido)
   (use-package eab-ido-utils)
-  (use-package eab-packages)
   (use-package eab-popwin)
   (use-package eab-miniframe)
   (use-package eab-browse)
