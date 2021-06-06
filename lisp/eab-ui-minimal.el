@@ -4,7 +4,7 @@
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 
-;; Requirements: ansi-color, moz, autorevert, async
+;; Requirements: ansi-color, autorevert, async
 ;; Status: not intended to be distributed yet
 
 (eab/bind-path custom-file)

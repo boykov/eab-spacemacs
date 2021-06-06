@@ -9,18 +9,14 @@
 
 (defvar eab-spacemacs-packages
   `(
+    el-patch
     solarized-theme
     vterm
     emamux
-    nginx-mode
     logstash-conf
-    s
-    rpm-spec-mode
-    go-mode
     vagrant
     vagrant-tramp
     csv-mode
-    ;; el-patch ;; emacs-25
     ldap-mode
     php-mode
     sql-indent
@@ -28,123 +24,55 @@
     htmlize
     spacemacs-theme
     auto-dictionary ;; switcher for flyspell
-    ;; auto-complete-emacs-lisp ;; no melpa depend auto-complete
     howdoi
-    ac-dabbrev
     etags-table
     etags-select
     helm
     helm-descbinds
-    popwin
+    helm-helm-commands
     flx-isearch
     dictionary
     auctex
-    org-agenda-property
     smex
     flx-ido
     ido-at-point
+    ido-vertical-mode
     grep-a-lot
     wgrep
     ag
     wgrep-ag
+    ace-window
+    ace-jump-buffer
+    ace-link
 
     docker
     docker-tramp
     elpa-mirror
-    ace-window
-    ace-jump-buffer
-    ace-link
     twittering-mode
     request
     python-mode
     pydoc-info
-    popup
-    idle-highlight-mode ;; + no melpa
     help+
     help-fns+
     help-mode+
-    fuzzy
-    el-mock
-    anchored-transpose
     bookmark+
-    buffer-move
-    crontab-mode
-    shut-up
-    parsebib
-    package-build
-    jedi-core
-    ebib
-    helm-helm-commands
-    dockerfile-mode
     deft
-    ewmctrl
-    anaphora
-    connection
-    ido-vertical-mode
-    link
-    oneonone
-    emacsc
-    deferred ;; depend
-    web-server
-    take-off
-    restclient
-    god-mode
-    fancy-narrow
     outshine
     outorg
-    goto-chg
-    epc
-    ctable
-    concurrent
-    python-environment
-    jedi
-    ;; ipython
     bibretrieve
-    websocket
+    ebib
+    parsebib
+    org-agenda-property
     org-jekyll
     org-redmine
-    pkg-info
-    epl
-    achievements
     org-grep
     org
-    f
-    keyfreq
-    cask ;; shut-up
-    pallet ;; shut-up
-    purty-mode
-    flx
-    guide-key
-    xml-rpc
-    web
-    string-edit
-    redo+
-    pcache
     ,(if (string= (daemonp) "serverN") '(org-plus-contrib :location local) 'org-plus-contrib)
     org-ehtml
-    noflet
-    minimap
-    auto-complete
-    kv
-    jira
-    ignoramus
-    ibuffer-vc
-    highlight
-    graphviz-dot-mode
-    gist  ;; tabulated-list
-    gh
-    fuzzy-match
-    feature-mode
-    fakir ;; kv
-    elnode ;; kv
-    el-x
-    db
-    creole ;; kv
-    clojure-mode
-    browse-kill-ring
-    bm
 
     ;;  magit-filenotify ;; needs emacs 24.4 with file-notify-support
+    ;; gist  ;; tabulated-list
+    ;; gh
     git-commit
     git-timemachine
     git-wip-timemachine
@@ -156,7 +84,41 @@
     forge
     orgit
 
+    buffer-move
+    ewmctrl
+    oneonone
+    emacsc
+    restclient
+    pkg-info
+    epl
+    el-mock
+    anaphora
+    f
+    s
+    keyfreq
+    achievements
+    purty-mode
+    flx
+    god-mode
+    guide-key
+    goto-chg
+    redo+
+    auto-complete
+    ac-dabbrev
+    ;; auto-complete-emacs-lisp ;; no melpa depend auto-complete
+    idle-highlight-mode ;; + no melpa
+    highlight ;; dired+
+    graphviz-dot-mode
+    feature-mode
+    nginx-mode
+    rpm-spec-mode
+    go-mode
+    dockerfile-mode
+    clojure-mode
+    crontab-mode
     markdown-mode
+    popwin
+    string-edit
     sauron
     smart-compile
     general
@@ -176,6 +138,7 @@
     projectile
     key-chord
     region-bindings-mode
+    anchored-transpose
     multiple-cursors
     expand-region
     auto-install
@@ -297,7 +260,33 @@ which require an initialization must be listed explicitly in the list.")
   (add-to-list 'smart-compile-alist '("\\.jira\\'" . "make push id=%n"))
   (add-to-list 'smart-compile-alist '("\\.html\\'" . "make push id=%n"))
   )
-(defun eab-spacemacs/init-popwin nil)
+(defun eab-spacemacs/init-popwin nil
+  (require 'popwin)
+  (popwin-mode 1)
+
+  (generate-new-buffer "special-buffer")
+
+  (setq eab/special-buffer-displaedp nil)
+  (setq eab/special-buffer "special-buffer")
+
+  (setq popwin:special-display-config nil)
+  (add-to-list 'popwin:special-display-config
+	       `(,eab/special-buffer :width 20 :position left :stick t))
+
+  ;; see also toggle-window-dedicated
+  (defun eab/special-buffer-toggle ()
+    (interactive)
+    (if eab/special-buffer-displaedp
+	(progn
+	  ;; (ignore-errors (delete-window (get-buffer-window eab/special-buffer)))
+	  (popwin:close-popup-window)
+	  (setq eab/special-buffer-displaedp nil))
+      (progn
+	(ignore-errors (popwin:display-buffer eab/special-buffer))
+	(setq eab/special-buffer-displaedp 't))))
+
+  (global-set-key (kbd "<f3>") 'eab/special-buffer-toggle)
+  )
 (defun eab-spacemacs/init-expand-region nil
   (require 'expand-region)
   ;; (require 'mark-more-like-this)
@@ -527,14 +516,22 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-org nil)
 (defun eab-spacemacs/init-f nil)
 (defun eab-spacemacs/init-keyfreq nil)
-(defun eab-spacemacs/init-cask nil)
-(defun eab-spacemacs/init-pallet nil)
+(defun eab-spacemacs/init-cask nil
+  (require 'cask)
+  (cask-initialize)
+  )
+(defun eab-spacemacs/init-pallet nil
+  (require 'pallet)
+  (pallet-init)
+  )
 (defun eab-spacemacs/init-purty-mode nil)
 (defun eab-spacemacs/init-flx nil)
 (defun eab-spacemacs/init-guide-key nil)
 (defun eab-spacemacs/init-xml-rpc nil)
 (defun eab-spacemacs/init-web nil)
-(defun eab-spacemacs/init-string-edit nil)
+(defun eab-spacemacs/init-string-edit nil
+  (require 'string-edit)
+  )
 (defun eab-spacemacs/init-redo+ nil)
 (defun eab-spacemacs/init-pcache nil)
 (defun eab-spacemacs/init-org-plus-contrib nil)
@@ -567,7 +564,10 @@ which require an initialization must be listed explicitly in the list.")
   )
 (defun eab-spacemacs/init-kv nil)
 (defun eab-spacemacs/init-jira nil)
-(defun eab-spacemacs/init-ignoramus nil)
+(defun eab-spacemacs/init-ignoramus nil
+  (require 'ignoramus)
+  (ignoramus-setup)
+  )
 (defun eab-spacemacs/init-ibuffer-vc nil)
 (defun eab-spacemacs/init-highlight nil)
 (defun eab-spacemacs/init-graphviz-dot-mode nil)
@@ -672,7 +672,6 @@ which require an initialization must be listed explicitly in the list.")
   (use-package eab-smex)
   (use-package eab-ido)
   (use-package eab-ido-utils)
-  (use-package eab-popwin)
   (use-package eab-miniframe)
   (use-package eab-browse)
   (use-package eab-sudo)

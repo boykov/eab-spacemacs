@@ -182,7 +182,6 @@
 (eval-after-load "erc"
     '(set-face-foreground 'erc-nick-default-face "magenta"))
 
-(require 'string-edit)
 
 
 
@@ -208,14 +207,6 @@
 (require 'purty-mode)
 (require 'org-link-minor-mode)
 (require 'idle-highlight-mode)
-
-;; (require 'cask)
-;; (require 'pallet)
-;; (pallet-init)
-;; (cask-initialize)
-
-;; (require 'ignoramus)
-;; (ignoramus-setup)
 
 (require 'emacsc)
 

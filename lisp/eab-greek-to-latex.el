@@ -60,4 +60,12 @@
 		 (eab/fast-replace-in-region (car x) (cadr x) beg end)))
 	    eab/greek-to-latex)))
 
+(defun eab/insert-greek ()
+  (interactive)
+  (let ((method current-input-method))
+    (set-input-method 'greek)
+    (insert-char (read-char "Insert greek: " 't))
+    (set-input-method 'russian-computer)
+    (set-input-method method)))
+
 (provide 'eab-greek-to-latex)

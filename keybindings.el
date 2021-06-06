@@ -178,7 +178,6 @@
  "C-M-r"	'eab/eepitch-paragraph
  "M-DEL"	'eab/completion-at-point
  "C-j"		'eab/completion-at-point
- "C-M-g"	'eab/insert-greek
  "C-c RET"	'org-return
  "C-c c"	'eab/add-eab-abbrev
  "C-c d"	'eab/tracker-search
@@ -193,7 +192,6 @@
  "C-h C-f"	'eab/find-function-at-point
  "C-h C-k"	'eab/describe-key-find
  "C-h C-v"	'eab/find-variable-at-point
- "C-s-j"	'eab/insert-greek
  "C-x b"	'switch-to-buffer
  "C-x C-b"	'ibuffer
  "C-x g"	'eab/grep
@@ -1325,8 +1323,7 @@
    "C-d"	eab/compile-map
    "C-j"	'nil
    "M-RET"	'newline
-   "RET"	'newline
-   "C-h C-f"	'jedi:goto-definition))
+   "RET"	'newline))
 
 (eab/add-hook maplev-mode-hook eab/maplev-hook
   (general-define-key
