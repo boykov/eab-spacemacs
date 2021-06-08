@@ -1390,6 +1390,8 @@
 		  (save-restriction
 		    (narrow-to-region (window-start) (window-end))
 		    (ignore-errors (mc/mark-all-like-this)))))
+     "D"	'ansible-vault-decrypt-region
+     "E"	'ansible-vault-encrypt-region
      "a"	'mc/mark-all-like-this
      "i"	'mc/mark-previous-like-this
      "ш"	'mc/mark-previous-like-this

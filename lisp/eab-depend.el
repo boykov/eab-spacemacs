@@ -234,6 +234,7 @@
 ;;		       	       	       	      
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(push '("\\.md\\'" . markdown-mode) auto-mode-alist)
 (add-to-list 'auto-mode-alist '("\\.spec\\|\\.spec\\.in" . rpm-spec-mode))
 (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
 (add-to-list 'auto-mode-alist '("/\\.ssh/config\\'"     . ssh-config-mode))
