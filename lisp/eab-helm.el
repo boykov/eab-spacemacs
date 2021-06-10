@@ -1,6 +1,13 @@
+;;; eab-helm.el --- eab helm configure
+
+;; Copyright (C) 2010-2021 Evgeny Boykov
+;;
+;; Author: artscan@list.ru
+;; Keywords: 
+;; Requirements: helm
+;; Status: not intended to be distributed yet
+
 (require 'helm) ;; fix boundp helm-map
-(require 'helm-descbinds)
-(helm-descbinds-mode)
 (require 'helm-elisp)
 (require 'helm-locate)
 (require 'helm-config)

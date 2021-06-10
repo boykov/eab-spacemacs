@@ -1,4 +1,5 @@
-;; TODO use sudoedit or tramp /sudo:?
+;; DISABLED ARCHIVE
+;; DONE use sudoedit or tramp /sudo:?
 
 (defvar eab/sudo-save-mode nil
   "")

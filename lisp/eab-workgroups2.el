@@ -4,7 +4,7 @@
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 
-;; Requirements: workgroups2 ido
+;; Requirements: workgroups2
 ;; Status: ready
 
 (require 'workgroups2)

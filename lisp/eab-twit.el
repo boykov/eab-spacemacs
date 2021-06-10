@@ -1,3 +1,12 @@
+;;; eab-twit.el --- eab twittering-mode extension
+
+;; Copyright (C) 2010-2021 Evgeny Boykov
+;;
+;; Author: artscan@list.ru
+;; Keywords: 
+;; Requirements: twittering-mode
+;; Status: not intended to be distributed yet
+
 (defvar eab/twittering-oauth-access-token-alist nil)
 (defvar eab/twittering-oauth-access-token-alistN nil)
 

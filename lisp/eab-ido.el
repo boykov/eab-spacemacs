@@ -4,7 +4,7 @@
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 
-;; Requirements: ido ido-at-point flx-ido projectile workgroups2
+;; Requirements: ido ido-at-point flx-ido projectile workgroups2 helm
 ;; Status: not intended to be distributed yet
 
 ;; (require 'flx-isearch)

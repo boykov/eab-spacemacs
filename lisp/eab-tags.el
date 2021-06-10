@@ -1,15 +1,19 @@
-(require 'etags-select)
-(require 'etags-table)
+;;; eab-tags.el --- eab tags extension
+
+;; Copyright (C) 2010-2021 Evgeny Boykov
+;;
+;; Author: artscan@list.ru
+;; Keywords: 
+;; Requirements: etags-select
+;; Status: not intended to be distributed yet
 
 (setq tags-table-list nil)
 (setq tags-file-name nil)
 
-(setq etags-table-alist 'nil) ;; попробуем использовать search up depth
 
 ;; см. также locate -r TAGS$ - полный список файлов TAGS в системе
 ;; пример целевого файла для конкретного проекта
 
-(setq etags-table-search-up-depth 10)
 
 (defun eab/etags-find-or-pop ()
   (interactive)

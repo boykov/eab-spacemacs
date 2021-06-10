@@ -158,16 +158,6 @@
 (add-hook 'gnus-startup-hook 'bbdb-insinuate-gnus)
 (setq bbdb-north-american-phone-numbers-p nil)
 
-(require 'twittering-mode)
-(setq twittering-use-native-retweet 't)
-(setq twittering-initial-timeline-spec-string ":home")
-(setq twittering-use-master-password t)
-(eab/bind-path eab/twittering-mode)
-(eab/bind-path eab/twittering-modeN)
-(if (eab/ondaemon "server")
-    (setq twittering-private-info-file eab/twittering-mode))
-(if (eab/ondaemon "serverN")
-    (setq twittering-private-info-file eab/twittering-modeN))
 
 (require 'erc-log)
 (eab/bind-path erc-log-channels-directory)

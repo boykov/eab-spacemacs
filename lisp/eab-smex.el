@@ -1,4 +1,11 @@
-;; require smex, helm
+;;; eab-smex.el --- eab smex extension
+
+;; Copyright (C) 2010-2021 Evgeny Boykov
+;;
+;; Author: artscan@list.ru
+;; Keywords: 
+;; Requirements: helm smex
+;; Status: not intended to be distributed yet
 
 (require 'smex)
 

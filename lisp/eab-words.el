@@ -4,7 +4,7 @@
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 
-;; Requirements: edit-list abbrev dictionay
+;; Requirements: edit-list abbrev dictionary
 ;; Status: ready
 
 (require 'edit-list)

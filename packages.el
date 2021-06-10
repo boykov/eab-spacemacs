@@ -246,10 +246,23 @@ which require an initialization must be listed explicitly in the list.")
     (setq spacemacs-theme-comment-bg nil))
 (defun eab-spacemacs/init-howdoi nil)
 (defun eab-spacemacs/init-ac-dabbrev nil)
-(defun eab-spacemacs/init-etags-table nil)
-(defun eab-spacemacs/init-etags-select nil)
-(defun eab-spacemacs/init-helm nil)
-(defun eab-spacemacs/init-helm-descbinds nil)
+(defun eab-spacemacs/init-etags-table nil
+  (require 'etags-table)
+  (setq etags-table-alist 'nil) ;; попробуем использовать search up depth
+  (setq etags-table-search-up-depth 10)
+  )
+(defun eab-spacemacs/init-etags-select nil
+  (require 'etags-select)
+  (use-package eab-tags)
+  )
+(defun eab-spacemacs/init-helm nil
+  (use-package eab-helm)
+  )
+(defun eab-spacemacs/init-helm-descbinds nil
+  (require 'helm-descbinds)
+  (helm-descbinds-mode)
+  )
+(defun eab-spacemacs/init-helm-helm-commands nil)
 (defun eab-spacemacs/init-smart-compile nil
   (require 'smart-compile)
   (setq-default smart-compile-check-makefile nil)
@@ -326,12 +339,28 @@ which require an initialization must be listed explicitly in the list.")
 
 (defun eab-spacemacs/init-workgroups2 ()
   (use-package workgroups2
-	       :config
-	       (progn
-		 )))
+    :config
+    (progn
+      ))
+  (use-package eab-workgroups2
+    :init
+    (eab/bind-path eab/wg-path)
+    (eab/bind-path eab/workgroups-save)
+    (eab/bind-path wg-session-file)
+    (eab/bind-path eab/wg-update-list)
+    (setq wg-use-default-session-file 't)
+    (setq wg-control-frames 'nil)
+    (setq wg-session-load-on-start nil)
+    (setq wg-mode-line-decor-divider "")
+    :config
+    (ignore-errors (workgroups-mode 1))
+    (eab/wg-init)
+    )
+  )
 
 (defun eab-spacemacs/init-dictionary nil)
 (defun eab-spacemacs/init-sauron nil
+  ;; Requirements: twittering-mode
   ;; exclude sauron-org
   (setq sauron-modules '(sauron-notifications sauron-twittering))
   (require 'sauron)
@@ -410,7 +439,9 @@ which require an initialization must be listed explicitly in the list.")
   ;; emacs 28 bad
   ;; (define-minor-mode region-bindings-mode :lighter " rk" :group 'convenience)
   )
-(defun eab-spacemacs/init-smex nil)
+(defun eab-spacemacs/init-smex nil
+  (use-package eab-smex)
+  )
 (defun eab-spacemacs/init-smartparens nil
   (require 'smartparens) ;; fix boundp sp-keymap
   (require 'smartparens-latex)
@@ -456,7 +487,19 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-ace-window nil)
 (defun eab-spacemacs/init-ace-jump-buffer nil)
 (defun eab-spacemacs/init-ace-link nil)
-(defun eab-spacemacs/init-twittering-mode nil)
+(defun eab-spacemacs/init-twittering-mode nil
+  (require 'twittering-mode)
+  (setq twittering-use-native-retweet 't)
+  (setq twittering-initial-timeline-spec-string ":home")
+  (setq twittering-use-master-password t)
+  (eab/bind-path eab/twittering-mode)
+  (eab/bind-path eab/twittering-modeN)
+  (if (eab/ondaemon "server")
+      (setq twittering-private-info-file eab/twittering-mode))
+  (if (eab/ondaemon "serverN")
+      (setq twittering-private-info-file eab/twittering-modeN))
+  (use-package eab-twit)
+  )
 (defun eab-spacemacs/init-request nil)
 (defun eab-spacemacs/init-python-mode nil)
 (defun eab-spacemacs/init-pydoc-info nil)
@@ -476,7 +519,6 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-package-build nil)
 (defun eab-spacemacs/init-jedi-core nil)
 (defun eab-spacemacs/init-ebib nil)
-(defun eab-spacemacs/init-helm-helm-commands nil)
 (defun eab-spacemacs/init-dockerfile-mode nil)
 (defun eab-spacemacs/init-deft nil)
 (defun eab-spacemacs/init-ewmctrl nil)
@@ -584,7 +626,14 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-browse-kill-ring nil)
 (defun eab-spacemacs/init-bm nil)
 (defun eab-spacemacs/init-org-link-minor-mode nil)
-(defun eab-spacemacs/init-eev-current nil)
+(defun eab-spacemacs/init-eev-current nil
+  (use-package eab-eepitch
+    :init
+    (eab/bind-path eab/eeansi-path)
+    (eab/bind-path eab/eegchannel-path)
+    (setq vterm-shell eab/eeansi-path)
+    )
+  )
 (defun eab-spacemacs/init-bbdb/lisp nil)
 (defun eab-spacemacs/init-eab-misc nil)
 
@@ -617,20 +666,6 @@ which require an initialization must be listed explicitly in the list.")
   )
 
 (defun eab-spacemacs/user-config ()
-  (use-package eab-workgroups2
-    :init
-    (eab/bind-path eab/wg-path)
-    (eab/bind-path eab/workgroups-save)
-    (eab/bind-path wg-session-file)
-    (eab/bind-path eab/wg-update-list)
-    (setq wg-use-default-session-file 't)
-    (setq wg-control-frames 'nil)
-    (setq wg-session-load-on-start nil)
-    (setq wg-mode-line-decor-divider "")
-    :config
-    (ignore-errors (workgroups-mode 1))
-    (eab/wg-init)
-    )
   (use-package eab-window)
   (use-package eab-find-func)
   (use-package eab-desktop)
@@ -669,28 +704,17 @@ which require an initialization must be listed explicitly in the list.")
     )
   (use-package eab-grep)
   (use-package eab-dired)
-  (use-package eab-smex)
   (use-package eab-ido)
   (use-package eab-ido-utils)
   (use-package eab-miniframe)
   (use-package eab-browse)
-  (use-package eab-sudo)
-  (use-package eab-helm)
   (use-package eab-greek-to-latex)
-  (use-package eab-tags)
   (use-package eab-auto-complete)
   (use-package eab-ui)
   (use-package eab-auto-dictionary)
   (use-package eab-ace)
-  (use-package eab-eepitch
-    :init
-    (eab/bind-path eab/eeansi-path)
-    (eab/bind-path eab/eegchannel-path)
-    (setq vterm-shell eab/eeansi-path)
-    )
   (use-package eab-depend)
   (use-package eab-gnus)
-  (use-package eab-twit)
   (use-package eab-postload)
 
   (use-package eab-org)

@@ -4,7 +4,7 @@
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 
-;; Requirements: projectile
+;; Requirements: projectile helm
 ;; Status: ready
 
 (defun eab/projectile-compile-project (&optional arg)

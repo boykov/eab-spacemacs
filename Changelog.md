@@ -1,8 +1,23 @@
 # Changelog
 
+### 0.0.4
+
+Reorder:
+
+* twittering-mode + eab-twit
+* workgroup2 + eab-workgroups2
+* etags-select, etags-table + eab-tags
+* eev-current + eab-eepitch
+* helm, helm-descbinds, helm-helm-commands + eab-helm
+* smex + eab-smex
+
+Disable:
+
+* eab-sudo
+
 ### 0.0.3
 
-Перегруппирован popwin, отменены неиспользуемые 
+Reorder, disable unused: 
 
 * eab/insert-greek
 * ignoramus
@@ -44,16 +59,16 @@
 
 ### 0.0.2
 
-Удалены:
+Delete:
 
 * eab-packages
 * el-get
 
-Перегруппированы пакеты связанные с git.
+Reorder git-related packages.
 
 ### 0.0.1
 
-Удалены зависимости:
+Delete dependencies:
 	
 * pymacs
 * anything
