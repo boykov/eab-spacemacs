@@ -29,20 +29,4 @@
    nil
    'switch-to-buffer))
 
-;; TODO для многих патчей требуется одновременно несколько замен
-;; значит, если продолжать в этом направлении, надо заменить пару
-;; (regexp rep) на список пар
-(defun eab/patch-this-code (func-name regexp rep &optional lex)
-  (eval
-   (read
-    (replace-regexp-in-string
-     regexp
-     rep
-     (save-window-excursion
-       (find-function-do-it func-name nil 'switch-to-buffer)
-       (let ((bgn (point)))
-	 (forward-sexp)
-	 (let ((end (point)))
-	   (buffer-substring-no-properties bgn end)))))) lex))
-
 (provide 'eab-find-func)

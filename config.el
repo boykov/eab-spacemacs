@@ -36,6 +36,23 @@
 (defun eab/ondaemon (def)
   (if (string= eab/daemon-name def) 't))
 
+;; TODO для многих патчей требуется одновременно несколько замен
+;; значит, если продолжать в этом направлении, надо заменить пару
+;; (regexp rep) на список пар
+;; лучше использовать el-patch
+(defun eab/patch-this-code (func-name regexp rep &optional lex)
+  (eval
+   (read
+    (replace-regexp-in-string
+     regexp
+     rep
+     (save-window-excursion
+       (find-function-do-it func-name nil 'switch-to-buffer)
+       (let ((bgn (point)))
+	 (forward-sexp)
+	 (let ((end (point)))
+	   (buffer-substring-no-properties bgn end)))))) lex))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defvar eab/paths-hash nil "symbol : value")

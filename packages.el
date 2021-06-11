@@ -17,7 +17,6 @@
     vagrant
     vagrant-tramp
     csv-mode
-    ldap-mode
     php-mode
     sql-indent
     gnuplot
