@@ -4,7 +4,7 @@
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 
-;; Requirements: eev
+;; Requirements: eev vterm
 ;; Status: not intended to be distributed yet
 
 (require 'eev-all)

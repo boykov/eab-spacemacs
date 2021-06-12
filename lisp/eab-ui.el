@@ -1,11 +1,11 @@
-(require 'howdoi)
+
 
 (eab/bind-path source-directory)
 (setq find-function-C-source-directory source-directory)
 
 (eab/bind-path achievements-file)
 
-;; TODO depend on auto-complete, eab/trans-path, howdoi
+;; TODO depend on auto-complete, eab/trans-path
 (eab/bind-path eab/trans-path)
 
 (setq god-mod-alist
@@ -34,9 +34,5 @@
   (let ((str (filter-buffer-substring start end)))
     (kill-region start end)
     (insert (eab/latinize str))))
-
-(defun eab/howdoi ()
-  (interactive)
-  (call-interactively 'howdoi-query-line-at-point-replace-by-code-snippet))
 
 (provide 'eab-ui)

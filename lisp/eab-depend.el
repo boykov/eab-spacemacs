@@ -76,17 +76,6 @@
 (setq slime-enable-evaluate-in-emacs t)
 ;; (setq slime-net-coding-system 'utf-8-unix)
 
-(require 'python-mode)
-;; (require 'ipython)
-(require 'pydoc-info)
-
-(setq py-python-command "ipython")
-(defvar py-mode-map python-mode-map)
-(setq py-start-run-py-shell nil)
-(setq py-force-py-shell-name-p 't) ;; DONE error with #!/usr/bin/python
-(setq ipython-completion-command-string "print(';'.join(get_ipython().Completer.all_completions('%s')))\n")
-
-
 (require 'redo+)
 (require 'smart-operator)
 (require 'alossage)
@@ -107,18 +96,8 @@
 (add-to-list 'tramp-methods eab/sudo)
 (add-to-list 'tramp-methods (let ((eab/singularity-dir "`pwd`/")) (eab/singularity)))
 
-(defun eab/tramp-docker-cleanup ()
-  (interactive)
-  (tramp-cleanup-connection
-   (tramp-dissect-file-name
-    (concat "/docker:"
-	    (car (progn
-		   (docker-utils-select-if-empty)
-		   (docker-utils-get-marked-items-ids))) ":"))))
-
 (require 'comint)
 
-(require 'gnuplot)
 
 (setq explicit-bash-args '("--noediting" "-i"))
 (if (file-exists-p "/bin/bash") (setq shell-file-name "/bin/bash"))
@@ -145,7 +124,6 @@
 (require 'ps-print)
 (require 'ps-mule)
 
-(require 'htmlize)
 ;; (require 'xbbcode-mode)
 
 ;; (require 'sudo-save)
@@ -194,7 +172,6 @@
 
 (require 'oneonone)
 
-(require 'purty-mode)
 (require 'org-link-minor-mode)
 (require 'idle-highlight-mode)
 

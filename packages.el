@@ -9,65 +9,37 @@
 
 (defvar eab-spacemacs-packages
   `(
-    el-patch
     solarized-theme
-    vterm
-    emamux
-    logstash-conf
-    vagrant
-    vagrant-tramp
-    csv-mode
-    php-mode
-    sql-indent
-    gnuplot
-    htmlize
     spacemacs-theme
-    auto-dictionary ;; switcher for flyspell
-    howdoi
     etags-table
     etags-select
-    helm
-    helm-descbinds
-    helm-helm-commands
-    flx-isearch
+    
     dictionary
-    auctex
-    smex
-    flx-ido
-    ido-at-point
-    ido-vertical-mode
-    grep-a-lot
-    wgrep
-    ag
-    wgrep-ag
-    ace-window
-    ace-jump-buffer
-    ace-link
-
-    docker
-    docker-tramp
-    elpa-mirror
+    auto-dictionary ;; switcher for flyspell
+    howdoi
     twittering-mode
-    request
-    python-mode
-    pydoc-info
-    help+
-    help-fns+
-    help-mode+
-    bookmark+
+
     deft
     outshine
     outorg
     bibretrieve
     ebib
     parsebib
+    gnuplot
+    htmlize
+    org-ehtml
+    purty-mode
+    auctex
     org-agenda-property
     org-jekyll
     org-redmine
     org-grep
     org
     ,(if (string= (daemonp) "serverN") '(org-plus-contrib :location local) 'org-plus-contrib)
-    org-ehtml
+    ,(if (string= (daemonp) "serverN") '(eab-org-mode/lisp :location local))
+    ,(if (string= (daemonp) "serverN") '(eab-org-mode/contrib/lisp :location local)) ;; for htmlize.el
+    (bbdb/lisp :location local)
+    (org-link-minor-mode :location local)
 
     ;;  magit-filenotify ;; needs emacs 24.4 with file-notify-support
     ;; gist  ;; tabulated-list
@@ -83,21 +55,12 @@
     forge
     orgit
 
-    buffer-move
-    ewmctrl
-    oneonone
-    emacsc
-    restclient
-    pkg-info
-    epl
-    el-mock
-    anaphora
-    f
-    s
+    help+
+    help-fns+
+    help-mode+
+    bookmark+
     keyfreq
     achievements
-    purty-mode
-    flx
     god-mode
     guide-key
     goto-chg
@@ -107,6 +70,23 @@
     ;; auto-complete-emacs-lisp ;; no melpa depend auto-complete
     idle-highlight-mode ;; + no melpa
     highlight ;; dired+
+    string-edit
+    sauron
+    smart-compile
+    general
+    xterm-color
+    ergoemacs-mode
+    smartparens
+    key-chord
+    region-bindings-mode
+    anchored-transpose
+    multiple-cursors
+    expand-region
+    paredit
+    undo-tree
+    edit-list
+    yasnippet
+
     graphviz-dot-mode
     feature-mode
     nginx-mode
@@ -116,44 +96,68 @@
     clojure-mode
     crontab-mode
     markdown-mode
-    popwin
-    string-edit
-    sauron
-    smart-compile
-    general
-    tramp-term
+    yaml-mode
+    textile-mode
+    ssh-config-mode
+    python-mode
+    pydoc-info
     ansible
     ansible-doc
     ansible-vault
     puppet-mode
-    yaml-mode
-    textile-mode
-    ssh-config-mode
-    xterm-color
-    ergoemacs-mode
     groovy-mode
     terraform-mode
-    smartparens
-    projectile
-    key-chord
-    region-bindings-mode
-    anchored-transpose
-    multiple-cursors
-    expand-region
+
+    restclient
+    request
+    pkg-info
+    epl
+    el-mock
+    el-patch
+    elpa-mirror
+    anaphora
+    f
+    s
     auto-install
-    paredit
-    undo-tree
-    edit-list
-    yasnippet
-    workgroups2
+
+    grep-a-lot
+    wgrep
+    ag
+    wgrep-ag
+
     (eab-misc :location local)
+    ace-window
+    ace-jump-buffer
+    ace-link
     (eab-ace-jump-mode :location local)
     (eab-avy :location local)
-    ,(if (string= (daemonp) "serverN") '(eab-org-mode/lisp :location local))
-    ,(if (string= (daemonp) "serverN") '(eab-org-mode/contrib/lisp :location local)) ;; for htmlize.el
     (eev-current :location local)
-    (bbdb/lisp :location local)
-    (org-link-minor-mode :location local)
+
+    helm
+    helm-descbinds
+    helm-helm-commands
+    smex ;; ido for M-x
+    ido-at-point
+    ido-vertical-mode
+    flx
+    flx-ido
+    flx-isearch
+    workgroups2
+    projectile
+
+    popwin
+    tramp-term
+    buffer-move
+    ewmctrl
+    oneonone
+    emacsc
+
+    vterm
+    emamux
+    vagrant
+    vagrant-tramp
+    docker
+    docker-tramp
     )
   "List of all packages to install and/or initialize. Built-in packages
 which require an initialization must be listed explicitly in the list.")
@@ -230,8 +234,12 @@ which require an initialization must be listed explicitly in the list.")
 
 (defun eab-spacemacs/init-php-mode nil)
 (defun eab-spacemacs/init-sql-indent nil)
-(defun eab-spacemacs/init-gnuplot nil)
-(defun eab-spacemacs/init-htmlize nil)
+(defun eab-spacemacs/init-gnuplot nil
+  (require 'gnuplot)
+  )
+(defun eab-spacemacs/init-htmlize nil
+  (require 'htmlize)
+  )
 
 (defun eab-spacemacs/init-key-chord ()
   (use-package key-chord
@@ -243,7 +251,12 @@ which require an initialization must be listed explicitly in the list.")
 
 (defun eab-spacemacs/init-spacemacs-theme ()
     (setq spacemacs-theme-comment-bg nil))
-(defun eab-spacemacs/init-howdoi nil)
+(defun eab-spacemacs/init-howdoi nil
+  (require 'howdoi)
+  (defun eab/howdoi ()
+    (interactive)
+    (call-interactively 'howdoi-query-line-at-point-replace-by-code-snippet))  
+  )
 (defun eab-spacemacs/init-ac-dabbrev nil)
 (defun eab-spacemacs/init-etags-table nil
   (require 'etags-table)
@@ -415,7 +428,10 @@ which require an initialization must be listed explicitly in the list.")
     (setq vterm-keymap-exceptions '("C-c" "C-x" "C-u" "C-g" "C-h" "C-l" "M-x" "M-o" "C-v" "M-v" "C-y" "M-y" "M-s" "M-a" "M-i" "M-k" "M-j" "M-l" "C-a" "M-c" "M-p")))
 
 
-(defun eab-spacemacs/init-auctex nil)
+(defun eab-spacemacs/init-auctex nil
+;; (load "auctex.el" nil t t)
+  (use-package eab-tex)
+  )
 (defun eab-spacemacs/init-org-agenda-property nil)
 (defun eab-spacemacs/init-region-bindings-mode nil
   (require 'region-bindings-mode)
@@ -477,7 +493,16 @@ which require an initialization must be listed explicitly in the list.")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun eab-spacemacs/init-docker ()
-  (use-package docker))
+  (use-package docker)
+  ;; Requirements: docker-utils
+  (defun eab/tramp-docker-cleanup ()
+    (interactive)
+    (tramp-cleanup-connection
+     (tramp-dissect-file-name
+      (concat "/docker:"
+	      (car (progn
+		     (docker-utils-select-if-empty)
+		     (docker-utils-get-marked-items-ids))) ":")))))
 
 (defun eab-spacemacs/init-docker-tramp ()
   (use-package docker-tramp))
@@ -500,8 +525,18 @@ which require an initialization must be listed explicitly in the list.")
   (use-package eab-twit)
   )
 (defun eab-spacemacs/init-request nil)
-(defun eab-spacemacs/init-python-mode nil)
-(defun eab-spacemacs/init-pydoc-info nil)
+(defun eab-spacemacs/init-python-mode nil
+  (require 'python-mode)
+  ;; (require 'ipython)
+  (setq py-python-command "ipython")
+  (defvar py-mode-map python-mode-map)
+  (setq py-start-run-py-shell nil)
+  (setq py-force-py-shell-name-p 't) ;; DONE error with #!/usr/bin/python
+  (setq ipython-completion-command-string "print(';'.join(get_ipython().Completer.all_completions('%s')))\n")
+  )
+(defun eab-spacemacs/init-pydoc-info nil
+  (require 'pydoc-info)
+  )
 (defun eab-spacemacs/init-popup nil)
 (defun eab-spacemacs/init-idle-highlight-mode nil)
 (defun eab-spacemacs/init-help+ nil)
@@ -565,7 +600,9 @@ which require an initialization must be listed explicitly in the list.")
   (require 'pallet)
   (pallet-init)
   )
-(defun eab-spacemacs/init-purty-mode nil)
+(defun eab-spacemacs/init-purty-mode nil
+  (require 'purty-mode)
+  )
 (defun eab-spacemacs/init-flx nil)
 (defun eab-spacemacs/init-guide-key nil)
 (defun eab-spacemacs/init-xml-rpc nil)
@@ -690,7 +727,6 @@ which require an initialization must be listed explicitly in the list.")
     ;; (shell-command "xmodmap -e 'keycode 95 = Hyper_R'")
     (eab/bind-path eab/translate-path)
     )
-  (use-package eab-auctex)
   (use-package eab-postload-minimal)
   (use-package eab-depend-minimal)
   (use-package eab-appt)

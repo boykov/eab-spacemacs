@@ -1,5 +1,16 @@
 # Changelog
 
+### 0.0.5
+
+Reorder. Disable:
+
+* logstash-conf
+* csv-mode
+* ldap-mode
+* php-mode
+
+Move `eab/patch-this-code` to beginning (config.el). 
+
 ### 0.0.4
 
 Reorder:

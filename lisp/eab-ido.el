@@ -7,7 +7,6 @@
 ;; Requirements: ido ido-at-point flx-ido projectile workgroups2 helm
 ;; Status: not intended to be distributed yet
 
-;; (require 'flx-isearch)
 (require 'ido) ;; fix boundp ido-file-dir-completion-map, ido-file-completion-map,
 (require 'ido-at-point)
 ;; (ido-at-point-mode) ;; conflicts with minibuffer completion

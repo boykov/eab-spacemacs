@@ -1,4 +1,4 @@
-;;; eab-auctex.el --- eab tex extension
+;;; eab-tex.el --- eab tex extension
 
 ;; Copyright (C) 2010-2021 Evgeny Boykov
 ;;
@@ -28,7 +28,6 @@
 (if (not (eab/ondaemon "server")) (setq-default TeX-master 't))
 (setq TeX-open-quote "<<")
 (setq TeX-close-quote ">>")
-;; (load "auctex.el" nil t t)
 ;; (load "preview-latex.el" nil t t)
 ;; (TeX-global-PDF-mode)
 
@@ -55,4 +54,4 @@
 
 (setq TeX-command-default "EAB")
 
-(provide 'eab-auctex)
+(provide 'eab-tex)
