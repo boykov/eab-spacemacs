@@ -28,7 +28,7 @@
 (setq eab/daemon-name (daemonp))
 
 (if (not (stringp eab/daemon-name))
-    (setq eab/daemon-name "serverP"))
+    (setq eab/daemon-name "server"))
 
 (defun eab/onhomedir (def)
   (if (string= eab/homedir def) 't))
@@ -53,6 +53,8 @@
 	 (let ((end (point)))
 	   (buffer-substring-no-properties bgn end)))))) lex))
 
+;; (if (eab/ondaemon "serverC")
+;;     (setq debug-on-error 't))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defvar eab/paths-hash nil "symbol : value")
@@ -93,10 +95,7 @@
 
 (setq-put eab/history-dir-alist
 	  '(
-	    ("ea2b" . (concat user-emacs-directory "history2/"))
-	    ("ghost" . (concat user-emacs-directory "history/"))
 	    ("server" . (concat user-emacs-directory "history/"))
-	    ("serverN" . (concat user-emacs-directory "historyN/"))
 	    ("serverM" . (concat user-emacs-directory "historyM/"))
 	    ("serverP" . (concat user-emacs-directory "historyP/"))
 	    ("serverC" . (concat user-emacs-directory "historyC/"))
@@ -106,6 +105,7 @@
 ;; TODO можно ли подобные настройки не считать "путями" и убрать из path?
 (setq-put org-clock-persist-file (concat (eab/history-dir) "org-clock-save.el"))
 (setq-put org-id-locations-file (concat (eab/history-dir) ".org-id-locations"))
+(setq-put projectile-known-projects-file (concat (eab/history-dir) "projectile-bookmarks.eld"))
 
 (setq-put org-directory "~/git/org/")
 (setq-put eab/org-publish-directory "~/pub/org/")
@@ -185,8 +185,8 @@
 (setq-put eab/check-inet-path "~/git/auto/check-inet.sh")
 (setq-put eab/musicdb-path "~/data/dbs/media/music.db")
 (setq-put eab/downloads-path "~/downloads/")
-(setq-put eab/twittering-mode (expand-file-name "~/.twittering-mode.gpg"))
-(setq-put eab/twittering-modeN (expand-file-name "~/.twittering-modeN.gpg"))
+(setq-put eab/twittering-modeP (expand-file-name "~/.twittering-modeP.gpg"))
+(setq-put eab/twittering-modeC (expand-file-name "~/.twittering-modeC.gpg"))
 
 (setq-put eab/american-english (eab/read-lines "/usr/share/dict/american-english"))
 

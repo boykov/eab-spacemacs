@@ -30,16 +30,16 @@
     org-ehtml
     purty-mode
     auctex
+    (org-link-minor-mode :location local)
     org-agenda-property
     org-jekyll
     org-redmine
     org-grep
-    org
-    ,(if (string= (daemonp) "serverN") '(org-plus-contrib :location local) 'org-plus-contrib)
-    ,(if (string= (daemonp) "serverN") '(eab-org-mode/lisp :location local))
-    ,(if (string= (daemonp) "serverN") '(eab-org-mode/contrib/lisp :location local)) ;; for htmlize.el
+    org-plus-contrib
+    ;; ,(if (string= (daemonp) "serverN") '(org-plus-contrib :location local) 'org-plus-contrib)
+    ;; ,(if (string= (daemonp) "serverN") '(eab-org-mode/lisp :location local))
+    ;; ,(if (string= (daemonp) "serverN") '(eab-org-mode/contrib/lisp :location local)) ;; for htmlize.el
     (bbdb/lisp :location local)
-    (org-link-minor-mode :location local)
 
     ;;  magit-filenotify ;; needs emacs 24.4 with file-notify-support
     ;; gist  ;; tabulated-list
@@ -218,6 +218,7 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-projectile nil
   (require 'projectile)
   (setq projectile-require-project-root t)
+  (eab/bind-path projectile-known-projects-file)
   (setq projectile-project-root-files-bottom-up
 	'(".git"        ; Git VCS root dir
 	  ".projectile" ; projectile project marker
@@ -516,12 +517,12 @@ which require an initialization must be listed explicitly in the list.")
   (setq twittering-use-native-retweet 't)
   (setq twittering-initial-timeline-spec-string ":home")
   (setq twittering-use-master-password t)
-  (eab/bind-path eab/twittering-mode)
-  (eab/bind-path eab/twittering-modeN)
-  (if (eab/ondaemon "server")
-      (setq twittering-private-info-file eab/twittering-mode))
-  (if (eab/ondaemon "serverN")
-      (setq twittering-private-info-file eab/twittering-modeN))
+  (eab/bind-path eab/twittering-modeP)
+  (eab/bind-path eab/twittering-modeC)
+  (if (eab/ondaemon "serverP")
+      (setq twittering-private-info-file eab/twittering-modeP))
+  (if (eab/ondaemon "serverC")
+      (setq twittering-private-info-file eab/twittering-modeC))
   (use-package eab-twit)
   )
 (defun eab-spacemacs/init-request nil)
@@ -538,15 +539,23 @@ which require an initialization must be listed explicitly in the list.")
   (require 'pydoc-info)
   )
 (defun eab-spacemacs/init-popup nil)
-(defun eab-spacemacs/init-idle-highlight-mode nil)
+(defun eab-spacemacs/init-idle-highlight-mode nil
+  (require 'idle-highlight-mode)
+  )
 (defun eab-spacemacs/init-help+ nil)
 (defun eab-spacemacs/init-help-fns+ nil)
 (defun eab-spacemacs/init-help-mode+ nil)
 (defun eab-spacemacs/init-fuzzy nil)
 (defun eab-spacemacs/init-el-mock nil)
 (defun eab-spacemacs/init-anchored-transpose nil)
-(defun eab-spacemacs/init-bookmark+ nil)
-(defun eab-spacemacs/init-buffer-move nil)
+(defun eab-spacemacs/init-bookmark+ nil
+  (require 'bookmark+)
+  (eab/bind-path bmkp-last-as-first-bookmark-file)
+  (eab/bind-path bookmark-default-file)
+  )
+(defun eab-spacemacs/init-buffer-move nil
+  (require 'buffer-move)
+  )
 (defun eab-spacemacs/init-crontab-mode nil)
 (defun eab-spacemacs/init-shut-up nil)
 (defun eab-spacemacs/init-parsebib nil)
@@ -560,12 +569,18 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-connection nil)
 (defun eab-spacemacs/init-ido-vertical-mode nil)
 (defun eab-spacemacs/init-link nil)
-(defun eab-spacemacs/init-oneonone nil)
-(defun eab-spacemacs/init-emacsc nil)
+(defun eab-spacemacs/init-oneonone nil
+  (require 'oneonone)
+  )
+(defun eab-spacemacs/init-emacsc nil
+  (require 'emacsc)
+  )
 (defun eab-spacemacs/init-deferred nil)
 (defun eab-spacemacs/init-web-server nil)
 (defun eab-spacemacs/init-take-off nil)
-(defun eab-spacemacs/init-restclient nil)
+(defun eab-spacemacs/init-restclient nil
+  (require 'restclient)
+  )
 (defun eab-spacemacs/init-wide-n nil)
 (defun eab-spacemacs/init-god-mode nil)
 (defun eab-spacemacs/init-fancy-narrow nil)
@@ -604,13 +619,19 @@ which require an initialization must be listed explicitly in the list.")
   (require 'purty-mode)
   )
 (defun eab-spacemacs/init-flx nil)
-(defun eab-spacemacs/init-guide-key nil)
+(defun eab-spacemacs/init-guide-key nil
+  (require 'guide-key)
+  ;; (setq guide-key/guide-key-sequence '("C-e"))
+  (guide-key-mode 1) ; Enable guide-key-mode
+  )
 (defun eab-spacemacs/init-xml-rpc nil)
 (defun eab-spacemacs/init-web nil)
 (defun eab-spacemacs/init-string-edit nil
   (require 'string-edit)
   )
-(defun eab-spacemacs/init-redo+ nil)
+(defun eab-spacemacs/init-redo+ nil
+  (require 'redo+)
+  )
 (defun eab-spacemacs/init-pcache nil)
 (defun eab-spacemacs/init-org-plus-contrib nil)
 (defun eab-spacemacs/init-org-ehtml nil)
@@ -670,7 +691,15 @@ which require an initialization must be listed explicitly in the list.")
     (setq vterm-shell eab/eeansi-path)
     )
   )
-(defun eab-spacemacs/init-bbdb/lisp nil)
+(defun eab-spacemacs/init-bbdb/lisp nil
+  (require 'bbdb-loaddefs)
+  (require 'bbdb)
+  (require 'bbdb-anniv)
+  (eab/bind-path bbdb-file)
+  (bbdb-initialize 'gnus 'message 'sc) ;; 'w3m)
+  (add-hook 'gnus-startup-hook 'bbdb-insinuate-gnus)
+  (setq bbdb-north-american-phone-numbers-p nil)
+  )
 (defun eab-spacemacs/init-eab-misc nil)
 
 (defun eab-spacemacs/init-eab-org-mode/lisp ()
@@ -782,6 +811,7 @@ which require an initialization must be listed explicitly in the list.")
   (setq eab/dired-map (lookup-key global-map (kbd "C-x d")))
   (when (require 'so-long nil :noerror)
    (global-so-long-mode 1))
+  (require 'org-link-minor-mode)
   )
 
 (defun eab-spacemacs/init-eab-ace-jump-mode ()

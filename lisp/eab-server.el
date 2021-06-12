@@ -14,11 +14,11 @@
     (server-eval-at "serverM"
 		    `(eval ',sexp))))
 
-(defun eab/eval-last-sexp-serverN ()
-  "Evaluate sexp before point on serverN; print value in minibuffer."
+(defun eab/eval-last-sexp-serverC ()
+  "Evaluate sexp before point on serverC; print value in minibuffer."
   (interactive)
   (let ((sexp (call-interactively (lambda () (interactive) (preceding-sexp)))))
-    (server-eval-at "serverN"
+    (server-eval-at "serverC"
 		    `(eval ',sexp))))
 
 ;; TODO обобщить формирование body и выполнение remote

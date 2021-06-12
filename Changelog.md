@@ -1,5 +1,16 @@
 # Changelog
 
+### 0.0.6
+
+Cleanup server list. Remove unused ea2b, ghost.
+Finally remove `serverN`, use `serverC` instead.
+Delete legacy `org` package (rename `org-bbdb` to `ol-bbdb`) and `org-clock-time%` function, its fixed in org-mode already.
+Activate `eab/wg-save` on `desktop-save-hook` and `save-some-buffers` 15 sec idle for `serverP`.
+Fix `projectile-known-projects-file`.
+Fix `org-link-minor-mode` order.
+Reorder bbdb, other packages, eab-misc.
+Delete legacy keepass, w3m.
+
 ### 0.0.5
 
 Reorder. Disable:

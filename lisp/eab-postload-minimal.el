@@ -19,7 +19,7 @@
   (winner-mode)
   )
 
-(if (and (eab/ondaemon "serverP") (not noninteractive))
+(if (and (or (eab/ondaemon "serverP") (eab/ondaemon "server")) (not noninteractive))
     (progn
       (eab/load-personal-minimal)
       (load-theme 'spacemacs-dark 't)))

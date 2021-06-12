@@ -7,32 +7,11 @@
 ;; Requirements: 
 ;; Status: not intended to be distributed yet
 
-(require 'rec-mode)
 
 (require 'view)
-
-(require 'restclient)
-(require 'json-pretty-print)
-
-(require 'color-moccur)
-(require 'moccur-edit)
-
-(defun multi-occur-in-all-buffers ()
-  "Show all lines matching REGEXP in all buffers."
-  (interactive)
-  (multi-occur
-   (buffer-list)
-   (car (occur-read-primary-args))))
-
-(eval-after-load "replace" '(progn (require 'replace+)))
-
-(require 'bookmark+)
-(eab/bind-path bmkp-last-as-first-bookmark-file)
-(eab/bind-path bookmark-default-file)
-
 (require 'dbus)
-
 (require 'uniquify)
+
 (setq uniquify-buffer-name-style 'forward)
 
 
@@ -44,15 +23,8 @@
 ;; (require 'el-expectations) ;; DONE devel minimalist unit testing framework
 ;; (setq exps-last-testcase nil)
 
-(require 'one-key)
-
-(require 'guide-key)
-;; (setq guide-key/guide-key-sequence '("C-e"))
-(guide-key-mode 1) ; Enable guide-key-mode
 
 
-(require 'shell-history)
-(require 'shell-command-queue)
 ;; (setq eshell-rc-script nil)
 
 (eab/bind-path eshell-history-file-name)
@@ -76,9 +48,6 @@
 (setq slime-enable-evaluate-in-emacs t)
 ;; (setq slime-net-coding-system 'utf-8-unix)
 
-(require 'redo+)
-(require 'smart-operator)
-(require 'alossage)
 
 (require 'epa)
 (require 'epg)
@@ -102,40 +71,14 @@
 (setq explicit-bash-args '("--noediting" "-i"))
 (if (file-exists-p "/bin/bash") (setq shell-file-name "/bin/bash"))
 
-(require 'dired-x)
-(setq diredp-hide-details-initially-flag nil)
-(require 'dired+)
-(require 'dired-details)
-;; TODO почему приходится делать unload?
-;; (unload-feature 'dired-details+ 't)
-;; (require 'ede) ; error with dired
-;; (require 'dired-sort-menu)  
-
-;; (require 'w3m)
 
 (require 'nnir)
 
 (require 'gnus-dired)
 (require 'smtpmail-async)
 
-(require 'buffer-move)
-
-
 (require 'ps-print)
 (require 'ps-mule)
-
-;; (require 'xbbcode-mode)
-
-;; (require 'sudo-save)
-
-(require 'bbdb-loaddefs)
-(require 'bbdb)
-(require 'bbdb-anniv)
-(eab/bind-path bbdb-file)
-(bbdb-initialize 'gnus 'message 'sc) ;; 'w3m)
-(add-hook 'gnus-startup-hook 'bbdb-insinuate-gnus)
-(setq bbdb-north-american-phone-numbers-p nil)
-
 
 (require 'erc-log)
 (eab/bind-path erc-log-channels-directory)
@@ -150,10 +93,6 @@
 (eval-after-load "erc"
     '(set-face-foreground 'erc-nick-default-face "magenta"))
 
-
-
-
-
 ;; (require 'dictem)
 ;; (setq dictem-server "localhost")
 
@@ -164,24 +103,6 @@
   (interactive "P")
   (let ((ispell-local-dictionary (if arg "en" "ru")))
     (flyspell-buffer)))
-
-(require 'gnugol)
-
-;; (require 'far-search) ;; работает ужасно
-;; (require 'grep-edit) ;; странно себя вел
-
-(require 'oneonone)
-
-(require 'org-link-minor-mode)
-(require 'idle-highlight-mode)
-
-(require 'emacsc)
-
-(add-to-list 'after-load-alist
-	     '(rfc2104
-	       (require 'keepass)))
-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;     	       	 __  __	       	  _    	      
@@ -268,11 +189,42 @@
 (add-hook 'gnus-summary-prepare-hook 'gnus-summary-sort-by-most-recent-date)
 
 ;; (add-hook 'text-mode-hook 'dictionary-tooltip-mode) ; activate for all text-based modes
-(add-hook 'cisco-mode-hook 'turn-on-font-lock)
+;; (add-hook 'cisco-mode-hook 'turn-on-font-lock)
 
+;; eab-misc
+
+(require 'gnugol)
+
+(require 'dired-x)
+(setq diredp-hide-details-initially-flag nil)
+(require 'dired+)
+(require 'dired-details)
+;; TODO почему приходится делать unload?
+;; (unload-feature 'dired-details+ 't)
+;; (require 'ede) ; error with dired
+;; (require 'dired-sort-menu)  
+
+(require 'alossage)
+(require 'shell-history)
+(require 'shell-command-queue)
+(require 'one-key)
+(require 'json-pretty-print)
+(require 'rec-mode)
+(require 'color-moccur)
+(require 'moccur-edit)
+(eval-after-load "replace" '(progn (require 'replace+)))
+
+(defun multi-occur-in-all-buffers ()
+  "Show all lines matching REGEXP in all buffers."
+  (interactive)
+  (multi-occur
+   (buffer-list)
+   (car (occur-read-primary-args))))
+
+(require 'smart-operator)
 (add-hook 'maplev-mode-hook
           (lambda ()
-;;            (smart-operator-mode-on)
+	    ;;            (smart-operator-mode-on)
             (setq maplev-mint-start-options (list "-q" "-P"))
             (setq maplev-executable-alist '(("11" "maple" nil "maple")
                                             ("10" "maple" nil "mint")

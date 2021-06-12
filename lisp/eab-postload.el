@@ -2,7 +2,7 @@
 (electric-indent-mode)
 (electric-pair-mode -1)
 
-;; DONE похоже, переменная server-name здесь еще не становится serverN
+;; DONE похоже, переменная server-name здесь еще не становится serverC
 
 (eab/bind-path eab/secrets-path)
 ; TODO create function and hook after first start frame
@@ -33,10 +33,6 @@
   (wg-change-modeline)
   (key-chord-mode 1) ; DONE заедает, если не в конце dotemacs, не включается по-умолчанию (или выключается из-за чего-то)
   )
-
-(if (and (eab/ondaemon "server") (not noninteractive))
-    (progn
-      (load-theme 'spacemacs-dark 't)))
 
 ;; check inet connection first
 (eab/bind-path eab/check-inet-path)

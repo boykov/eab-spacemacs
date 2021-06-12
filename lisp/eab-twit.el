@@ -12,21 +12,21 @@
 
 (defun eab/switch-twitter-account ()
   (interactive)
-  (if (string= twittering-private-info-file eab/twittering-modeN)
+  (if (string= twittering-private-info-file eab/twittering-modeC)
       (progn
 	(if (not eab/twittering-oauth-access-token-alist)
 	    (setq eab/twittering-oauth-access-token-alist
-		  (cdar (read (twittering-read-from-encrypted-file eab/twittering-mode)))))
+		  (cdar (read (twittering-read-from-encrypted-file eab/twittering-modeP)))))
 	(setq twittering-edit-buffer "*artscan: twittering-edit*")
 	(setq twittering-oauth-access-token-alist eab/twittering-oauth-access-token-alist)
-	(setq twittering-private-info-file eab/twittering-mode))
+	(setq twittering-private-info-file eab/twittering-modeP))
     (progn
       (if (not eab/twittering-oauth-access-token-alistN)
 	  (setq eab/twittering-oauth-access-token-alistN
-		(cdar (read (twittering-read-from-encrypted-file eab/twittering-modeN)))))
+		(cdar (read (twittering-read-from-encrypted-file eab/twittering-modeC)))))
       (setq twittering-edit-buffer "*ea2b: twittering-edit*")
       (setq twittering-oauth-access-token-alist eab/twittering-oauth-access-token-alistN)
-      (setq twittering-private-info-file eab/twittering-modeN))))
+      (setq twittering-private-info-file eab/twittering-modeC))))
 
 (defun eab/twittering-update-status-interactive (arg)
   (interactive "P")
@@ -39,28 +39,28 @@
       (define-key twittering-edit-mode-map (kbd "C-c C-c") 'eab/twittering-edit-post-status)
       (let ((twittering-edit-buffer "*ea2b: twittering-edit*")
 	    (twittering-oauth-access-token-alist eab/twittering-oauth-access-token-alistN)
-	    (twittering-private-info-file eab/twittering-modeN))
+	    (twittering-private-info-file eab/twittering-modeC))
 	(call-interactively 'twittering-update-status-interactive)))))
 
 (defun eab/twittering-edit-post-status ()
   (interactive)
   (let ((twittering-edit-buffer "*ea2b: twittering-edit*")
 	(twittering-oauth-access-token-alist eab/twittering-oauth-access-token-alistN)
-	(twittering-private-info-file eab/twittering-modeN))
+	(twittering-private-info-file eab/twittering-modeC))
     (call-interactively 'twittering-edit-post-status)))
 
 (defun eab/twittering-retweet ()
   (interactive)
   (let ((twittering-edit-buffer "*ea2b: twittering-edit*")
 	(twittering-oauth-access-token-alist eab/twittering-oauth-access-token-alistN)
-	(twittering-private-info-file eab/twittering-modeN))
+	(twittering-private-info-file eab/twittering-modeC))
     (call-interactively 'twittering-retweet)))
 
 (defun eab/twittering-follow ()
   (interactive)
   (let ((twittering-edit-buffer "*ea2b: twittering-edit*")
 	(twittering-oauth-access-token-alist eab/twittering-oauth-access-token-alistN)
-	(twittering-private-info-file eab/twittering-modeN))
+	(twittering-private-info-file eab/twittering-modeC))
     (call-interactively 'twittering-follow)))
 
 (defun eab/twit-filter ()

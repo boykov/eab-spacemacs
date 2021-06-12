@@ -2,7 +2,7 @@
 ;; 
 
 ;; Activate appointments so we get notifications
-(if (and (or (eab/ondaemon "server") (eab/ondaemon "serverP")) (not noninteractive))
+(if (and (eab/ondaemon "serverP") (not noninteractive))
     (progn
       (appt-activate t)
       (run-at-time nil nil (lambda () (message "%s" "hello")))

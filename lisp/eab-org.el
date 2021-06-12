@@ -16,7 +16,7 @@
 (require 'org-capture)
 (require 'org-id)
 (require 'org-archive)
-(require 'org-bbdb)
+(require 'ol-bbdb)
 (require 'ox-latex)
 (require 'ox-extra)
 

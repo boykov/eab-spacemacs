@@ -101,8 +101,6 @@
 		      term-mode-map
 		      twittering-mode-hook
 		      vc-annotate-mode-map
-		      w3m-minor-mode-map
-		      w3m-mode-map
 		      ))
 
 ;; DONE isearch-mode-map M-r

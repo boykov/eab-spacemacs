@@ -10,7 +10,7 @@
 
 (require 'desktop)
 
-(if (or (eab/ondaemon "server") (eab/ondaemon "serverN") (eab/ondaemon "serverM"))
+(if (or (eab/ondaemon "serverP") (eab/ondaemon "serverC") (eab/ondaemon "serverM"))
     (add-hook 'desktop-save-hook (lambda ()
 				   ;; (eab/wg-update-all-workgroups)
 				   (eab/wg-save eab/workgroups-save)

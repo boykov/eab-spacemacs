@@ -1196,17 +1196,6 @@
    "M-N"	'c-beginning-of-defun
    "M-e"	'nil))
 
-(eab/add-hook w3m-mode-hook eab/w3m-hook
-  (general-define-key
-   :keymaps 'w3m-mode-map
-   "M-d"	'nil
-   "M-k"	'nil
-   "M-l"	'nil
-   "M-i"	'nil
-   "M-a"	'nil
-   "M-s"	'nil
-   "M-g"	'nil))
-
 (eab/add-hook helm-before-initialize-hook eab/helm-hook
   (general-define-key
    :keymaps 'helm-map

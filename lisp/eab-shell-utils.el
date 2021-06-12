@@ -82,7 +82,7 @@
 	      (async-start
 	       (lambda ()
 		 (require 'server)
-		 (server-eval-at "serverN" '(eab/shell-translate ,phrase 't)))
+		 (server-eval-at "serverC" '(eab/shell-translate ,phrase 't)))
 	       (lambda (result)
 		 (message "async result: <%s>" result)
 		 (define-abbrev eab-abbrev-table ,phrase result))))))

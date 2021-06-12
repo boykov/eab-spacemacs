@@ -16,7 +16,7 @@
 (setq ring-bell-function 'ignore)
 
 ;; edit timer-idle-list
-(if (eab/ondaemon "server")
+(if (eab/ondaemon "serverP")
     (progn
       (run-with-idle-timer 15 't (lambda () (interactive) (save-some-buffers 't)))))
 

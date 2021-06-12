@@ -203,7 +203,7 @@
 </style>
 ")
 
-(if (eab/ondaemon "server")
+(if (eab/ondaemon "serverP")
     (setq org-html-htmlize-output-type 'css))
 
 (provide 'eab-org-publish)
