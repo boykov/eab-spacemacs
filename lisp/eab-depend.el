@@ -151,10 +151,7 @@
 (add-to-list 'auto-mode-alist '("stack\\(exchange\\|overflow\\)\\.com\\.[a-z0-9]+\\.txt" . markdown-mode))
 
 (add-to-list 'load-path (eab/bind-path eab/emaxima-path))
-(eab/bind-path ebib-file-search-dirs)
-(eab/bind-path ebib-preload-bib-files)
 
-(autoload 'org-grep "org-grep" nil t)
 (autoload 'rtf-mode "rtf-mode" "RTF" t)
 (autoload 'ahk-mode "ahk-mode")
 (autoload 'anchored-transpose "anchored-transpose" nil t)

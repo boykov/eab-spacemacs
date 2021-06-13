@@ -3,15 +3,9 @@
 (eab/bind-path source-directory)
 (setq find-function-C-source-directory source-directory)
 
-(eab/bind-path achievements-file)
 
 ;; TODO depend on auto-complete, eab/trans-path
 (eab/bind-path eab/trans-path)
-
-(setq god-mod-alist
-      '(("g" . "C-")
-	(nil . "M-")
-	("G" . "C-M-")))
 
 (setq ring-bell-function 'ignore)
 

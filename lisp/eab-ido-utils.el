@@ -21,10 +21,12 @@
   (execute-kbd-macro (read-kbd-macro "C-S-a (eab/wrap-ido-completing-read) RET RET"))
   ido-matches)
 
-;; (setq my-desired-list
-;;       (mapcar
-;;        (lambda (x)
-;; 	 (flx-propertize x nil))
-;;        (ido-completing-read-silent "prompt: " '("one" "two" "three" "four" "five") "t")))
+;; (require 'cl-macs)
+;; (cl-assert
+;;  (equal (mapcar
+;; 	 (lambda (x)
+;; 	   (flx-propertize x nil))
+;; 	 (ido-completing-read-silent "prompt: " '("one" "two" "three" "four" "five") "t"))
+;; 	'("three" "two")))
 
 (provide 'eab-ido-utils)

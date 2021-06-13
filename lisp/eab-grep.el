@@ -137,6 +137,7 @@
          `(, (concat "find . -iname '**' -type f -print0 | xargs -0 -e " eab/grep-command "\"\" | sort -t$':' -k1,1 -k2n") . 102)))
     (call-interactively 'find-grep)))
 
+;;  orgmode awared grep
 (defun eab/clock-grep ()
   (interactive)
   (let ((grep-host-defaults-alist nil)

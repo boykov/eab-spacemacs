@@ -34,16 +34,9 @@
     org-agenda-property
     org-jekyll
     org-redmine
-    org-grep
     org-plus-contrib
-    ;; ,(if (string= (daemonp) "serverN") '(org-plus-contrib :location local) 'org-plus-contrib)
-    ;; ,(if (string= (daemonp) "serverN") '(eab-org-mode/lisp :location local))
-    ;; ,(if (string= (daemonp) "serverN") '(eab-org-mode/contrib/lisp :location local)) ;; for htmlize.el
     (bbdb/lisp :location local)
 
-    ;;  magit-filenotify ;; needs emacs 24.4 with file-notify-support
-    ;; gist  ;; tabulated-list
-    ;; gh
     git-commit
     git-timemachine
     git-wip-timemachine
@@ -245,10 +238,15 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-key-chord ()
   (use-package key-chord
     :init
-    (setq key-chord-two-keys-delay 0.05)))
+    (setq key-chord-two-keys-delay 0.05))
+  ;; (key-chord-mode 1) ; DONE заедает, если не в конце dotemacs, не включается по-умолчанию (или выключается из-за чего-то)
+  (add-hook 'term-mode-hook (lambda () (setq input-method-function 'key-chord-input-method)))
+  )
 
 (defun eab-spacemacs/init-auto-dictionary ()
-  (use-package auto-dictionary))
+  (use-package auto-dictionary)
+  (use-package eab-auto-dictionary)
+  )
 
 (defun eab-spacemacs/init-spacemacs-theme ()
     (setq spacemacs-theme-comment-bg nil))
@@ -258,7 +256,9 @@ which require an initialization must be listed explicitly in the list.")
     (interactive)
     (call-interactively 'howdoi-query-line-at-point-replace-by-code-snippet))  
   )
-(defun eab-spacemacs/init-ac-dabbrev nil)
+(defun eab-spacemacs/init-ac-dabbrev nil
+  (use-package ac-dabbrev
+    :after (auto-complete)))
 (defun eab-spacemacs/init-etags-table nil
   (require 'etags-table)
   (setq etags-table-alist 'nil) ;; попробуем использовать search up depth
@@ -371,7 +371,15 @@ which require an initialization must be listed explicitly in the list.")
     )
   )
 
-(defun eab-spacemacs/init-dictionary nil)
+(defun eab-spacemacs/init-dictionary nil
+  (require 'dictionary)
+  (setq dictionary-server "localhost")
+  (defadvice dictionary-search (after eab-dictionary-abbrev activate)
+    "Put searched word for dictionary to eab-abbrev-table"
+    (let ((word (ad-get-arg 0)))
+      (if (not (string-equal word ""))
+          (define-abbrev eab-abbrev-table word word))))
+  )
 (defun eab-spacemacs/init-sauron nil
   ;; Requirements: twittering-mode
   ;; exclude sauron-org
@@ -433,7 +441,12 @@ which require an initialization must be listed explicitly in the list.")
 ;; (load "auctex.el" nil t t)
   (use-package eab-tex)
   )
-(defun eab-spacemacs/init-org-agenda-property nil)
+(defun eab-spacemacs/init-org-agenda-property nil
+  (use-package org-agenda-property
+    :after (org-agenda)
+    :config
+    (setq org-agenda-property-list '("Custom_ID")))
+  )
 (defun eab-spacemacs/init-region-bindings-mode nil
   (require 'region-bindings-mode)
   (region-bindings-mode-enable)
@@ -487,9 +500,13 @@ which require an initialization must be listed explicitly in the list.")
 
 (defun eab-spacemacs/init-edit-list ()
   (use-package edit-list
-	       :config
-	       (progn
-		 )))
+    :config
+    (progn
+      ))
+  (require 'edit-list)
+  (defun eab/edit-list-1 (word)
+    (edit-list (intern word)))
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -561,7 +578,10 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-parsebib nil)
 (defun eab-spacemacs/init-package-build nil)
 (defun eab-spacemacs/init-jedi-core nil)
-(defun eab-spacemacs/init-ebib nil)
+(defun eab-spacemacs/init-ebib nil
+  (eab/bind-path ebib-file-search-dirs)
+  (eab/bind-path ebib-preload-bib-files)
+  )
 (defun eab-spacemacs/init-dockerfile-mode nil)
 (defun eab-spacemacs/init-deft nil)
 (defun eab-spacemacs/init-ewmctrl nil)
@@ -582,7 +602,12 @@ which require an initialization must be listed explicitly in the list.")
   (require 'restclient)
   )
 (defun eab-spacemacs/init-wide-n nil)
-(defun eab-spacemacs/init-god-mode nil)
+(defun eab-spacemacs/init-god-mode nil
+  (setq god-mod-alist
+	'(("g" . "C-")
+	  (nil . "M-")
+	  ("G" . "C-M-")))
+  )
 (defun eab-spacemacs/init-fancy-narrow nil)
 (defun eab-spacemacs/init-outshine nil)
 (defun eab-spacemacs/init-outorg nil)
@@ -602,11 +627,19 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-pkg-info nil)
 (defun eab-spacemacs/init-epl nil)
 (defun eab-spacemacs/init-python-info nil)
-(defun eab-spacemacs/init-achievements nil)
+(defun eab-spacemacs/init-achievements nil
+  (eab/bind-path achievements-file)
+  )
 (defun eab-spacemacs/init-org-grep nil)
 (defun eab-spacemacs/init-org nil)
 (defun eab-spacemacs/init-f nil)
-(defun eab-spacemacs/init-keyfreq nil)
+(defun eab-spacemacs/init-keyfreq nil
+  (require 'keyfreq)
+  (eab/bind-path keyfreq-file)
+  (eab/bind-path keyfreq-file-lock)
+  (keyfreq-mode 1)
+  (keyfreq-autosave-mode 1)
+  )
 (defun eab-spacemacs/init-cask nil
   (require 'cask)
   (cask-initialize)
@@ -638,7 +671,9 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-noflet nil)
 (defun eab-spacemacs/init-minimap nil)
 (defun eab-spacemacs/init-markdown-mode nil)
-(defun eab-spacemacs/init-auto-complete nil)
+(defun eab-spacemacs/init-auto-complete nil
+  (use-package eab-auto-complete)
+  )
 (defun eab-spacemacs/init-yasnippet nil
   (require 'yasnippet)
 
@@ -682,7 +717,10 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-clojure-mode nil)
 (defun eab-spacemacs/init-browse-kill-ring nil)
 (defun eab-spacemacs/init-bm nil)
-(defun eab-spacemacs/init-org-link-minor-mode nil)
+(defun eab-spacemacs/init-org-link-minor-mode nil
+  (use-package org-link-minor-mode
+    :after (org))
+  )
 (defun eab-spacemacs/init-eev-current nil
   (use-package eab-eepitch
     :init
@@ -761,7 +799,6 @@ which require an initialization must be listed explicitly in the list.")
   (use-package eab-appt)
   (use-package eab-words
     :init
-    (setq dictionary-server "localhost")
     (eab/bind-path abbrev-file-name)
     (if (file-exists-p abbrev-file-name)
 	(quietly-read-abbrev-file abbrev-file-name))
@@ -773,9 +810,7 @@ which require an initialization must be listed explicitly in the list.")
   (use-package eab-miniframe)
   (use-package eab-browse)
   (use-package eab-greek-to-latex)
-  (use-package eab-auto-complete)
   (use-package eab-ui)
-  (use-package eab-auto-dictionary)
   (use-package eab-ace)
   (use-package eab-depend)
   (use-package eab-gnus)
@@ -811,7 +846,6 @@ which require an initialization must be listed explicitly in the list.")
   (setq eab/dired-map (lookup-key global-map (kbd "C-x d")))
   (when (require 'so-long nil :noerror)
    (global-so-long-mode 1))
-  (require 'org-link-minor-mode)
   )
 
 (defun eab-spacemacs/init-eab-ace-jump-mode ()

@@ -1,3 +1,12 @@
+;;; eab-auto-dictionary.el --- eab auto-dictionary extension
+
+;; Copyright (C) 2010-2021 Evgeny Boykov
+;;
+;; Author: artscan@list.ru
+;; Keywords: 
+;; Requirements: auto-dictionary
+;; Status: not intended to be distributed yet
+
 (require 'auto-dictionary)
 
 ;; (add-hook 'flyspell-mode-hook (lambda () (auto-dictionary-mode 1)))

@@ -8,7 +8,6 @@
 ;; Status: not intended to be distributed yet
 
 (require 'log-edit)
-;; (require 'ergoemacs-mode)
 
 (setq eab/sudo
       '("sudo"

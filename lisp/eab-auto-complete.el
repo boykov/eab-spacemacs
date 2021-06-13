@@ -1,6 +1,14 @@
+;;; eab-auto-complete.el --- eab auto-complete extension
+
+;; Copyright (C) 2010-2021 Evgeny Boykov
+;;
+;; Author: artscan@list.ru
+;; Keywords: 
+;; Requirements: auto-complete auto-complete-config ac-dabbrev mode-local
+;; Status: not intended to be distributed yet
+
 (require 'auto-complete)
 (require 'auto-complete-config)
-(require 'ac-dabbrev)
 ;; (require 'auto-complete-emacs-lisp)
 (require 'mode-local)
 

@@ -1021,6 +1021,16 @@
   (general-define-key
    :keymaps 'term-raw-map
    "M-a"	'nil
+   "M-r"        (ilam (let ((output (replace-regexp-in-string
+			"\n" ""
+			(let ((bol (save-excursion
+				     (re-search-backward "reverse-i-search")
+				     (re-search-forward ": "))))
+			  (buffer-substring bol (point-max))))))
+			(with-current-buffer (get-buffer-create "untitled")
+			  (progn
+			    (insert output)
+			    (insert "\n")))))
    "M-A"	'nil
    "M-q"	'nil
    "M-Q"	'nil

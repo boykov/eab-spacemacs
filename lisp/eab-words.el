@@ -1,4 +1,4 @@
-;;; eab-words.el ---  eab shell extension
+;;; eab-words.el ---  eab words extension
 
 ;; Copyright (C) 2010-2021 Evgeny Boykov
 ;;
@@ -7,12 +7,7 @@
 ;; Requirements: edit-list abbrev dictionary
 ;; Status: ready
 
-(require 'edit-list)
 (require 'abbrev)
-(require 'dictionary)
-
-(defun eab/edit-list-1 (word)
-  (edit-list (intern word)))
 
 (defmacro eab/search-word (funcname name function &optional funargs)
   "Wrapper for search word interface."
@@ -46,11 +41,5 @@
 	 (link (eab/abbrev-link "google" text)))
     (delete-region (region-beginning) (region-end))
     (insert link)))
-
-(defadvice dictionary-search (after eab-dictionary-abbrev activate)
-  "Put searched word for dictionary to eab-abbrev-table"
-  (let ((word (ad-get-arg 0)))
-    (if (not (string-equal word ""))
-	(define-abbrev eab-abbrev-table word word))))
 
 (provide 'eab-words)

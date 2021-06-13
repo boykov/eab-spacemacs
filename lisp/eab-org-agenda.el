@@ -1,7 +1,5 @@
 (require 'org-agenda)
-(require 'org-agenda-property)
 
-(setq org-agenda-property-list '("Custom_ID"))
 
 (setq org-sort-agenda-notime-is-late nil)
 

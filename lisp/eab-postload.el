@@ -9,11 +9,6 @@
 (defun eab/load-personal ()
   (interactive)
   (eab/load-personal-minimal)
-  (require 'keyfreq)
-  (eab/bind-path keyfreq-file)
-  (eab/bind-path keyfreq-file-lock)
-  (keyfreq-mode 1)
-  (keyfreq-autosave-mode 1)
   (if (= (shell-command "ps -A | grep Xorg") 0)
       (setq minibuffer-frame-alist
 	    `((top . ,(/ (x-display-pixel-height) 2))
@@ -31,7 +26,6 @@
   ;; (sauron-org-start)
   (sauron-twittering-stop)
   (wg-change-modeline)
-  (key-chord-mode 1) ; DONE заедает, если не в конце dotemacs, не включается по-умолчанию (или выключается из-за чего-то)
   )
 
 ;; check inet connection first

@@ -1,5 +1,32 @@
 # Changelog
 
+### 0.0.7
+
+Fix term-mode `input-method-function`.
+Add `M-r` term-raw-map backward pitch.
+Add `cl-assert` statement.
+Restore `org-clock-time%` function.
+
+Move:
+
+* god-mod
+* dictionary
+* auto-dictionary
+* auto-complete + ac-dabbrev with `:after`
+* org-agenda-property
+* ebib
+* keyfreq
+* achievements
+* key-chord
+* edit-list
+
+Do not load full ergoemacs-mode.
+Try `:after` for org-link-minor-mode.
+
+Disable:
+
+* org-grep (see eab/clock-grep)
+
 ### 0.0.6
 
 Cleanup server list. Remove unused ea2b, ghost.
