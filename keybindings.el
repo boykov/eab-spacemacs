@@ -1394,3 +1394,7 @@
      "k"	'mc/mark-next-like-this
      "л"	'mc/mark-next-like-this
      "m"	'mc/mark-more-like-this-extended)))
+
+(if (and (featurep 'power-macros) (string= (file-name-nondirectory power-macros-file) "eab-pmacros.el")) 
+    (if (file-exists-p power-macros-file)
+	(load power-macros-file)))

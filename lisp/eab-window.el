@@ -4,7 +4,7 @@
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 
-;; Requirements: projectile
+;; Requirements: projectile grep-a-lot
 ;; Status: ready
 
 (defun window-search ()

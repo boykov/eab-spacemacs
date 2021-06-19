@@ -1,12 +1,4 @@
 
-(require 'power-macros)
-(eab/bind-path pm-macro-files)
-(eab/bind-path power-macros-file)
-
-(if (string= (file-name-nondirectory power-macros-file) "eab-pmacros.el") 
-    (if (file-exists-p power-macros-file)
-	(load power-macros-file)))
-
 (defun eab/load-personal-minimal ()
   (interactive)
   ;; TODO don't setup defadvice wg-switch-to-workgroup before it

@@ -10,6 +10,15 @@
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 (add-to-list 'load-path (concat user-emacs-directory "private/eab-spacemacs/lisp"))
 
+(if (version< emacs-version "26.1")
+    (setq package-load-list '((forge nil)
+			      (magit-annex nil)
+			      (magit-libgit nil)
+			      (orgit nil)
+			      (magit nil)
+			      (libgit nil)
+			      (magit-section nil)
+			      all)))
 
 (defun eab/loaded-ok ()
   (if (not configuration-layer-error-count)

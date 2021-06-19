@@ -396,7 +396,8 @@ which require an initialization must be listed explicitly in the list.")
 	    ))
   )
 (defun eab-spacemacs/init-magit nil
-  (require 'magit)
+  (use-package magit
+    :after (libgit))
   (require 'magit-wip)
   (require 'git-wip) ;; TODO can remove it and use magit-wip-mode?
 ;; (setq auto-revert-buffer-list-filter 'magit-auto-revert-repository-buffer-p)
@@ -405,23 +406,31 @@ which require an initialization must be listed explicitly in the list.")
 ;;     '("--submodule=diff"))
   )
 (defun eab-spacemacs/init-magit-annex nil
-  (require 'magit-annex)
+  (use-package magit-annex
+    :after (magit))
   )
 (defun eab-spacemacs/init-git-annex nil)
 (defun eab-spacemacs/init-magit-libgit nil)
 (defun eab-spacemacs/init-git-commit nil)
 (defun eab-spacemacs/init-forge nil
-  ;; emacs 28 bad
   ;; (require 'forge)
   ;; (setq forge-post-mode-hook '(visual-line-mode))
+  (defun auth-source--obfuscate (string)
+    (mapcar #'1- string))
+
+  (defun auth-source--deobfuscate (data)
+    (apply #'string (mapcar #'1+ data)))
   )
 ;; (defun eab-spacemacs/init-magit-filenotify nil
 ;;   (add-hook 'magit-status-mode-hook 'magit-filenotify-mode) ;; TODO too slow
 ;; )
 (defun eab-spacemacs/init-orgit nil
   ;; TODO cancel rev-export disabling
-  (require 'orgit)
-  (defun orgit-rev-export (path desc format))
+  (use-package orgit
+    :after (magit)
+    :config
+    (defun orgit-rev-export (path desc format))
+    )
   ;; org-magit obsolete
   ;; org-magit workaround
   ;; (defvar magit-currently-shown-commit nil)
@@ -432,7 +441,9 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-logstash-conf nil)
 (defun eab-spacemacs/init-nginx-mode nil)
 (defun eab-spacemacs/init-emamux nil)
-(defun eab-spacemacs/init-libgit nil)
+(defun eab-spacemacs/init-libgit nil
+  (if (not (version< emacs-version "26.1"))
+      (require 'libgit)))
 (defun eab-spacemacs/init-vterm nil
     (setq vterm-keymap-exceptions '("C-c" "C-x" "C-u" "C-g" "C-h" "C-l" "M-x" "M-o" "C-v" "M-v" "C-y" "M-y" "M-s" "M-a" "M-i" "M-k" "M-j" "M-l" "C-a" "M-c" "M-p")))
 
@@ -738,7 +749,33 @@ which require an initialization must be listed explicitly in the list.")
   (add-hook 'gnus-startup-hook 'bbdb-insinuate-gnus)
   (setq bbdb-north-american-phone-numbers-p nil)
   )
-(defun eab-spacemacs/init-eab-misc nil)
+(defun eab-spacemacs/init-eab-misc nil
+  (require 'power-macros)
+  (eab/bind-path pm-macro-files)
+  (eab/bind-path power-macros-file)
+
+  (defun eab/pm-write-last-kbd-macro (name)
+    (interactive "MName of macro: ")
+    (with-temp-buffer
+      (insert "\n\n")
+      (insert
+       (concat "(pm-def-macro\n '"
+	       name
+	       "\n nil nil\n \"\"\n \""
+	       (format-kbd-macro) "\")\n"))
+      (write-region (point-min) (point-max) power-macros-file t)))
+
+  (defun eab/pm-set-last-kbd-macro ()
+    (interactive)
+    (setq last-kbd-macro
+	  (copy-sequence
+	   (symbol-function
+	    (intern
+	     (ido-completing-read "Macro: "
+				  (mapcar
+				   (lambda (x) (symbol-name x))
+				   (pm-get-available-macros))))))))
+  )
 
 (defun eab-spacemacs/init-eab-org-mode/lisp ()
   (require 'org)
@@ -770,7 +807,6 @@ which require an initialization must be listed explicitly in the list.")
 
 (defun eab-spacemacs/user-config ()
   (use-package eab-window)
-  (use-package eab-find-func)
   (use-package eab-desktop)
   (use-package eab-workflow)
   (use-package eab-compile

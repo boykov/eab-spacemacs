@@ -167,26 +167,4 @@
 
 ;; (eab/print-0 (eab/check-map dired-mode-map))
 
-(defun eab/pm-write-last-kbd-macro (name)
-  (interactive "MName of macro: ")
-  (with-temp-buffer
-    (insert "\n\n")
-    (insert
-     (concat "(pm-def-macro\n '"
-	     name
-	     "\n nil nil\n \"\"\n \""
-	     (format-kbd-macro) "\")\n"))
-    (write-region (point-min) (point-max) power-macros-file t)))
-
-(defun eab/pm-set-last-kbd-macro ()
-  (interactive)
-  (setq last-kbd-macro
-	(copy-sequence
-	 (symbol-function
-	  (intern
-	   (ido-completing-read "Macro: "
-				(mapcar
-				 (lambda (x) (symbol-name x))
-				 (pm-get-available-macros))))))))
-
 (provide 'eab-kbd-ext)

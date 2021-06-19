@@ -1,5 +1,21 @@
 # Changelog
 
+### 0.0.8
+
+Update:
+
+* magit
+* libgit
+* forge
+
+Fix ~Compiled in Emacs version 28.0.50~ magit for emacs 25.
+Merge `eab-find-func` into `eab-workflow`.
+
+Move:
+
+* power-macros
+
+
 ### 0.0.7
 
 Fix term-mode `input-method-function`.
