@@ -9,11 +9,6 @@
 
 (setq ring-bell-function 'ignore)
 
-;; edit timer-idle-list
-(if (eab/ondaemon "serverP")
-    (progn
-      (run-with-idle-timer 15 't (lambda () (interactive) (save-some-buffers 't)))))
-
 (defadvice kmacro-start-macro (before eab-kmacro-start activate)
   (if auto-complete-mode (call-interactively 'auto-complete-mode)))
 

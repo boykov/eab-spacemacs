@@ -775,6 +775,47 @@ which require an initialization must be listed explicitly in the list.")
 				  (mapcar
 				   (lambda (x) (symbol-name x))
 				   (pm-get-available-macros))))))))
+  (require 'gnugol)
+  (require 'dired-x)
+  (setq diredp-hide-details-initially-flag nil)
+  (require 'dired+)
+  (require 'dired-details)
+  ;; TODO почему приходится делать unload?
+  ;; (unload-feature 'dired-details+ 't)
+  ;; (require 'ede) ; error with dired
+  ;; (require 'dired-sort-menu)  
+
+  (require 'alossage)
+  (require 'shell-history)
+  (require 'shell-command-queue)
+  (require 'one-key)
+  (require 'json-pretty-print)
+  (require 'rec-mode)
+  (require 'color-moccur)
+  (require 'moccur-edit)
+  (eval-after-load "replace" '(progn (require 'replace+)))
+
+  (defun multi-occur-in-all-buffers ()
+    "Show all lines matching REGEXP in all buffers."
+    (interactive)
+    (multi-occur
+     (buffer-list)
+     (car (occur-read-primary-args))))
+
+  (require 'smart-operator)
+  (add-hook 'maplev-mode-hook
+            (lambda ()
+	      ;;            (smart-operator-mode-on)
+              (setq maplev-mint-start-options (list "-q" "-P"))
+              (setq maplev-executable-alist '(("11" "maple" nil "maple")
+                                              ("10" "maple" nil "mint")
+                                              ("9" "maple" nil "mint")
+                                              ("8" "maple" nil "mint")
+                                              ("7" "maple" nil "mint")
+                                              ("6" "maple" nil "mint")
+                                              ("5.1" "maple" nil "mint")
+                                              ("5" "maple" nil "mint")
+                                              ("4" "maple" nil "mint")))))
   )
 
 (defun eab-spacemacs/init-eab-org-mode/lisp ()
@@ -831,7 +872,7 @@ which require an initialization must be listed explicitly in the list.")
     (eab/bind-path eab/translate-path)
     )
   (use-package eab-postload-minimal)
-  (use-package eab-depend-minimal)
+  (use-package eab-tramp)
   (use-package eab-appt)
   (use-package eab-words
     :init

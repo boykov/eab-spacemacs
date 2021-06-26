@@ -7,10 +7,19 @@
 ;; Requirements: 
 ;; Status: not intended to be distributed yet
 
-
 (require 'view)
 (require 'dbus)
 (require 'uniquify)
+(require 'log-edit)
+(require 'top-mode)
+
+
+(eab/bind-path savehist-file)
+(savehist-mode 1)
+
+
+(setq which-key-idle-delay 2)
+(which-key-mode)
 
 (setq uniquify-buffer-name-style 'forward)
 
@@ -56,14 +65,6 @@
 (setq epa-file-select-keys 'silent) 
 (setenv "GPG_AGENT_INFO" nil) ; use gpg without gui window
 (setq epg-gpg-program "gpg")
-
-(require 'tramp)
-(eab/bind-path tramp-persistency-file-name)
-(setq tramp-default-method "ssh")
-(add-to-list 'tramp-remote-path 'tramp-own-remote-path)
-(add-to-list 'tramp-methods eab/sussh)
-(add-to-list 'tramp-methods eab/sudo)
-(add-to-list 'tramp-methods (let ((eab/singularity-dir "`pwd`/")) (eab/singularity)))
 
 (require 'comint)
 
@@ -187,51 +188,5 @@
 
 ;; (add-hook 'text-mode-hook 'dictionary-tooltip-mode) ; activate for all text-based modes
 ;; (add-hook 'cisco-mode-hook 'turn-on-font-lock)
-
-;; eab-misc
-
-(require 'gnugol)
-
-(require 'dired-x)
-(setq diredp-hide-details-initially-flag nil)
-(require 'dired+)
-(require 'dired-details)
-;; TODO почему приходится делать unload?
-;; (unload-feature 'dired-details+ 't)
-;; (require 'ede) ; error with dired
-;; (require 'dired-sort-menu)  
-
-(require 'alossage)
-(require 'shell-history)
-(require 'shell-command-queue)
-(require 'one-key)
-(require 'json-pretty-print)
-(require 'rec-mode)
-(require 'color-moccur)
-(require 'moccur-edit)
-(eval-after-load "replace" '(progn (require 'replace+)))
-
-(defun multi-occur-in-all-buffers ()
-  "Show all lines matching REGEXP in all buffers."
-  (interactive)
-  (multi-occur
-   (buffer-list)
-   (car (occur-read-primary-args))))
-
-(require 'smart-operator)
-(add-hook 'maplev-mode-hook
-          (lambda ()
-	    ;;            (smart-operator-mode-on)
-            (setq maplev-mint-start-options (list "-q" "-P"))
-            (setq maplev-executable-alist '(("11" "maple" nil "maple")
-                                            ("10" "maple" nil "mint")
-                                            ("9" "maple" nil "mint")
-                                            ("8" "maple" nil "mint")
-                                            ("7" "maple" nil "mint")
-                                            ("6" "maple" nil "mint")
-                                            ("5.1" "maple" nil "mint")
-                                            ("5" "maple" nil "mint")
-                                            ("4" "maple" nil "mint")))))
-
 
 (provide 'eab-depend)

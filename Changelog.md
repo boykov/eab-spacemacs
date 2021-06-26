@@ -1,5 +1,10 @@
 # Changelog
 
+### 0.0.9
+
+Move `eab-misc`. Extract `eab-tramp`. Delete `eab-depend-minimal`.
+Increase `which-key-idle-delay`.
+
 ### 0.0.8
 
 Update:
@@ -14,7 +19,6 @@ Merge `eab-find-func` into `eab-workflow`.
 Move:
 
 * power-macros
-
 
 ### 0.0.7
 

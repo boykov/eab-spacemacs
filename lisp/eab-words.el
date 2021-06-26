@@ -4,7 +4,7 @@
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 
-;; Requirements: edit-list abbrev dictionary
+;; Requirements: edit-list abbrev dictionary gnugol
 ;; Status: ready
 
 (require 'abbrev)

@@ -15,4 +15,9 @@
 (setq appt-message-warning-time 12)
 (setq appt-display-interval 12)
 
+;; edit timer-idle-list
+(if (eab/ondaemon "serverP")
+    (progn
+      (run-with-idle-timer 15 't (lambda () (interactive) (save-some-buffers 't)))))
+
 (provide 'eab-appt)

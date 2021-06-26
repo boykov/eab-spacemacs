@@ -1,4 +1,4 @@
-;;; eab-depend-minimal.el --- 
+;;; eab-tramp.el --- eab tramp extension
 
 ;; Copyright (C) 2010-2021 Evgeny Boykov
 ;;
@@ -7,7 +7,9 @@
 ;; Requirements: 
 ;; Status: not intended to be distributed yet
 
-(require 'log-edit)
+(require 'tramp)
+(eab/bind-path tramp-persistency-file-name)
+(setq tramp-default-method "ssh")
 
 (setq eab/sudo
       '("sudo"
@@ -39,11 +41,8 @@
 	(tramp-remote-shell       "/bin/sh")
 	(tramp-remote-shell-args  ("-i" "-c"))))
 
-(eab/bind-path savehist-file)
-(savehist-mode 1)
+(add-to-list 'tramp-remote-path 'tramp-own-remote-path)
+(add-to-list 'tramp-methods eab/sussh)
+(add-to-list 'tramp-methods eab/sudo)
+(add-to-list 'tramp-methods (let ((eab/singularity-dir "`pwd`/")) (eab/singularity)))
 
-(require 'top-mode)
-
-(which-key-mode)
-
-(provide 'eab-depend-minimal)
