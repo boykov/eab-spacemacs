@@ -7,11 +7,6 @@
 ;; Requirements: ido ido-at-point flx-ido projectile workgroups2 helm
 ;; Status: not intended to be distributed yet
 
-(require 'ido) ;; fix boundp ido-file-dir-completion-map, ido-file-completion-map,
-(require 'ido-at-point)
-;; (ido-at-point-mode) ;; conflicts with minibuffer completion
-(require 'flx-ido)
-
 (eab/bind-path ido-save-directory-list-file)
 
 (ido-mode t) ;; fix boundp ido-buffer-completion-map
@@ -141,5 +136,23 @@
   (interactive)
   (setq ido-exit 'eab-main)
   (exit-minibuffer))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun eab/ido-at-point-1 (word)
+  (insert (ido-completing-read "Ido at point: " (ac-symbol-candidates) nil nil word)))
+
+(defun eab/ido-complete ()
+  (interactive)
+  (let ((word (current-word)))
+    (set-mark-command nil)
+    (backward-word)
+    (call-interactively 'delete-region)
+    (eab/ido-at-point word)))
+
+(defun ido-completing-read-silent (prompt choices initial-input)
+  (run-with-timer 0.0001 nil 'exit-minibuffer)
+  (ido-completing-read prompt choices nil nil initial-input)
+  (mapcar (lambda (x) (flx-propertize x nil)) ido-matches))
 
 (provide 'eab-ido)

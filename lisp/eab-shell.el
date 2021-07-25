@@ -4,8 +4,10 @@
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 
-;; Requirements: none
+;; Requirements: async abbrev
 ;; Status: ready
+
+(defvar eab/translate-path nil)
 
 (defun eab/over-bash (comhead comstr)
   "Run comhead with comstr over bash -i -c."
@@ -50,5 +52,72 @@
 	     (call-interactively 'shell-command)))
 	(t
 	 (call-interactively 'shell-command))))
+
+(defun eab/xmodmap-set-hyper ()
+  (interactive)
+  (shell-command "xmodmap -e 'keycode 135 = Hyper_R'"))
+
+(defun eab/gconf-set-keyboard-rate ()
+  (interactive)
+  (shell-command "gconftool-2 --type int --set /desktop/gnome/peripherals/keyboard/rate 120"))
+
+(defun eab/gr-tag-default-directory ()
+  (interactive)
+  (shell-command (concat "gr +#emacs " default-directory)))
+
+;; CANCELLED: Add
+(defun eab/dired-see-file ()
+  "See file by external application with dired."
+  (interactive)
+  (eab/sh-over-bash "xdg-open"
+		    (replace-regexp-in-string "`" "\\\\`" (dired-get-filename)) 't))
+
+(defun eab/ido-see-file ()
+  "See file by external application with ido."
+  (interactive)
+  (progn
+    (eab/sh-over-bash "xdg-open" (concat ido-current-directory
+                                         (if ido-matches
+                                             (ido-name (car ido-matches))
+                                           ido-text)) 't)
+    (abort-recursive-edit)))
+
+(defun eab/see-file ()
+  "See current file by external application."
+  (interactive)
+  (progn
+    (eab/sh-over-bash "xdg-open" buffer-file-name 't)
+    (abort-recursive-edit)))
+
+(defun eab/minibuffer-see-file ()
+  "See current file in minibuffer by external application."
+  (interactive)
+  (progn
+    (eab/sh-over-bash
+     "xdg-open"
+     (concat eab/homedir
+	     (substring (minibuffer-contents)
+			1 (length (minibuffer-contents)))) 't)
+    (abort-recursive-edit)))
+
+(defun eab/add-drop (name)
+  (concat "http://dl.getdropbox.com/u/1897885/" name))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; TODO баг: зацикливание (много bash процессов) trying with detected language
+;; пример со словом hunchentoot
+;; убить можно pkill -f bash
+(defun eab/shell-translate (phrase &optional not-abbrevp)
+  (interactive)
+  (setq eab/tmp-str
+	(split-string
+	 (ansi-color-filter-apply
+	  (shell-command-to-string
+	   (concat "export TERM=eterm-color && " eab/translate-path " " phrase)))
+	 "\n"))
+  (if (not not-abbrevp)
+      (define-abbrev eab-abbrev-table phrase (car eab/tmp-str)))
+  (message "%s" (car eab/tmp-str)))
 
 (provide 'eab-shell)

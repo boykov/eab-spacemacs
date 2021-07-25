@@ -35,15 +35,35 @@
 	       ,body
 	     (lambda (result) (message "async result: <%s>" result))))))
 
+(defun eab/batch-publish-remote ()
+  (interactive)
+  (async-start
+   (lambda ()
+     (require 'server)
+     (server-eval-at "serverC" '(progn
+				  (eab/batch-publish)
+				  )))))
+
+(defun eab/shell-translate-remote (phrase)
+  (interactive)
+  (funcall `(lambda ()
+	      (async-start
+	       (lambda ()
+		 (require 'server)
+		 (server-eval-at "serverC" '(eab/shell-translate ,phrase 't)))
+	       (lambda (result)
+		 (message "async result: <%s>" result)
+		 (define-abbrev eab-abbrev-table ,phrase result))))))
+
 (defun eab/org-publish-html ()
   (interactive)
   (org-publish-remove-all-timestamps)
   (async-start
-    (lambda ()
-      (require 'server)
-      (server-eval-at "serverC" '(progn
-				   (org-publish-project "html" 't)
-				   (org-publish-project "html-clock" 't))))
-    (lambda (result) (sauron-add-event 'eab 3 (concat "async result: <" result ">")))))
+   (lambda ()
+     (require 'server)
+     (server-eval-at "serverC" '(progn
+				  (org-publish-project "html" 't)
+				  (org-publish-project "html-clock" 't))))
+   (lambda (result) (sauron-add-event 'eab 3 (concat "async result: <" result ">")))))
 
 (provide 'eab-server)

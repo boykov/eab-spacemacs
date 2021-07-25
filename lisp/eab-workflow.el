@@ -4,7 +4,7 @@
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 
-;; Requirements:
+;; Requirements: projectile
 ;; Status: ready
 
 (defvar eab/revert-buffer "u")
@@ -67,5 +67,33 @@
   (shell-command (concat "sed -i 's/\r$//g' " (buffer-file-name)))
   (revert-buffer 't 't))
 
+(defmacro eab/with-git-toplevel (&rest body)
+  "Set default-directory as git superproject or toplevel."
+  `(let* ((remote-prefix
+	   (if (file-remote-p default-directory)
+	       (file-remote-p default-directory)
+	     ""))
+	  (try (shell-command-to-string "git rev-parse --show-superproject-working-tree --show-toplevel | head -1"))
+	  (fatal (if (and (> (length try) 10) (string= (substring try 0 5) "fatal"))
+		     't
+		   nil))
+	  (git-toplevel (shell-command-to-string "git rev-parse --show-toplevel"))
+	  (git-superproject (if fatal
+			   git-toplevel
+			 try))
+	  (git-nothing (if (file-remote-p default-directory)
+			     (file-remote-p default-directory 'localname)
+			   default-directory))
+	  (top-level (cond
+		      ((equal arg 2)
+		       (substring git-superproject 0 -1))
+		      ((not arg)
+		       (substring git-toplevel 0 -1))
+		      ((equal arg '(4))
+		       git-nothing)))
+	  (default-directory
+	    (concat remote-prefix top-level))
+	  (projectile-cached-buffer-file-name nil))
+     ,@body))
 
 (provide 'eab-workflow)

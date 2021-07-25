@@ -151,6 +151,18 @@
     vagrant-tramp
     docker
     docker-tramp
+
+    ;; built-in
+    (gnus :location built-in)
+    (tramp :location built-in)
+    (outline :location built-in)
+    (compile :location built-in)
+    (window :location built-in)
+    (desktop :location built-in)
+    (server :location built-in)
+    (grep :location built-in)
+    (dired :location built-in)
+    (ido :location built-in)
     )
   "List of all packages to install and/or initialize. Built-in packages
 which require an initialization must be listed explicitly in the list.")
@@ -492,14 +504,20 @@ which require an initialization must be listed explicitly in the list.")
   (require 'auto-install)
   (eab/bind-path auto-install-directory)
   )
-(defun eab-spacemacs/init-flx-ido nil)
-(defun eab-spacemacs/init-ido-at-point nil)
+(defun eab-spacemacs/init-flx-ido nil
+  (use-package flx-ido))
+(defun eab-spacemacs/init-ido-at-point nil
+  (use-package ido-at-point)
+  ;; (ido-at-point-mode) ;; conflicts with minibuffer completion
+  )
 (defun eab-spacemacs/init-paredit nil
   (require 'paredit)
   (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
   )
-(defun eab-spacemacs/init-grep-a-lot nil)
-(defun eab-spacemacs/init-wgrep nil)
+(defun eab-spacemacs/init-grep-a-lot nil
+  (use-package grep-a-lot))
+(defun eab-spacemacs/init-wgrep nil
+  (use-package wgrep))
 (defun eab-spacemacs/init-ag nil)
 (defun eab-spacemacs/init-wgrep-ag nil)
 (defun eab-spacemacs/init-undo-tree nil
@@ -776,7 +794,6 @@ which require an initialization must be listed explicitly in the list.")
 				   (lambda (x) (symbol-name x))
 				   (pm-get-available-macros))))))))
   (require 'gnugol)
-  (require 'dired-x)
   (setq diredp-hide-details-initially-flag nil)
   (require 'dired+)
   (require 'dired-details)
@@ -846,10 +863,32 @@ which require an initialization must be listed explicitly in the list.")
   (require 'htmlize)
   )
 
-(defun eab-spacemacs/user-config ()
+(defun eab-spacemacs/init-gnus nil
+  (use-package eab-gnus)
+  )
+
+(defun eab-spacemacs/init-tramp nil
+  (use-package eab-tramp)
+  )
+
+(defun eab-spacemacs/init-outline nil
+  (use-package eab-outline
+    :after (eab-minimal))
+  )
+
+(defun eab-spacemacs/init-window nil
   (use-package eab-window)
+  )
+
+(defun eab-spacemacs/init-desktop nil
   (use-package eab-desktop)
-  (use-package eab-workflow)
+  )
+
+(defun eab-spacemacs/init-server nil
+  (use-package eab-server)
+  )
+
+(defun eab-spacemacs/init-compile nil
   (use-package eab-compile
     :init
     (setq compile-command "make ")
@@ -860,19 +899,33 @@ which require an initialization must be listed explicitly in the list.")
     (setq compilation-exit-message-function nil)
     (setq compilation-scroll-output 't)
     )
-  (use-package eab-server)
-  (use-package eab-outline)
+  )
 
+(defun eab-spacemacs/init-grep nil
+  (use-package eab-grep
+    :after (grep-a-lot wgrep))
+  )
+
+(defun eab-spacemacs/init-dired nil
+  (use-package eab-dired
+    :after (docker-tramp eab-tramp))
+  )
+
+(defun eab-spacemacs/init-ido nil
+  (use-package eab-ido
+    :after (flx-ido projectile))
+  )
+
+(defun eab-spacemacs/user-config ()
+  (use-package eab-workflow)
   (use-package eab-ui-minimal)
-  (use-package eab-shell)
-  (use-package eab-shell-utils
+  (use-package eab-shell
     :init
     ;; (shell-command "xmodmap -e 'keycode 135 = Hyper_R'")
     ;; (shell-command "xmodmap -e 'keycode 95 = Hyper_R'")
     (eab/bind-path eab/translate-path)
     )
   (use-package eab-postload-minimal)
-  (use-package eab-tramp)
   (use-package eab-appt)
   (use-package eab-words
     :init
@@ -880,17 +933,9 @@ which require an initialization must be listed explicitly in the list.")
     (if (file-exists-p abbrev-file-name)
 	(quietly-read-abbrev-file abbrev-file-name))
     )
-  (use-package eab-grep)
-  (use-package eab-dired)
-  (use-package eab-ido)
-  (use-package eab-ido-utils)
-  (use-package eab-miniframe)
-  (use-package eab-browse)
   (use-package eab-greek-to-latex)
   (use-package eab-ui)
-  (use-package eab-ace)
   (use-package eab-depend)
-  (use-package eab-gnus)
   (use-package eab-postload)
 
   (use-package eab-org)
@@ -922,12 +967,13 @@ which require an initialization must be listed explicitly in the list.")
    "t" `(,(ilam (dired "~/tmp")) :which-key "~/tmp"))
   (setq eab/dired-map (lookup-key global-map (kbd "C-x d")))
   (when (require 'so-long nil :noerror)
-   (global-so-long-mode 1))
+    (global-so-long-mode 1))
   )
 
 (defun eab-spacemacs/init-eab-ace-jump-mode ()
   (evil-mode -1)
   (use-package ace-jump-mode)
+  (use-package eab-ace)
   )
 
 (defun eab-spacemacs/init-eab-avy ()

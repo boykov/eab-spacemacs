@@ -46,3 +46,4 @@
 (add-to-list 'tramp-methods eab/sudo)
 (add-to-list 'tramp-methods (let ((eab/singularity-dir "`pwd`/")) (eab/singularity)))
 
+(provide 'eab-tramp)

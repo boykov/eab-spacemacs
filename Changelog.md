@@ -1,5 +1,25 @@
 # Changelog
 
+### 0.0.10
+
+Move `eab-miniframe`. Reorder.
+
+Built-in location:
+
+* gnus
+* tramp
+* outline
+* compile
+* window
+* desktop
+* server
+* grep
+* ido
+* dired
+* ace
+
+Fix `ido-completing-read-silent`, `cl-assert` test.
+
 ### 0.0.9
 
 Move `eab-misc`. Extract `eab-tramp`. Delete `eab-depend-minimal`.

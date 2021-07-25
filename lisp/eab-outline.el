@@ -4,7 +4,7 @@
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 
-;; Requirements: eab/add-hook
+;; Requirements: eab-minimal
 ;; Status: ready
 
 (defvar eab/outline-state 'all)

@@ -1,6 +1,19 @@
+;;; eab-gnus.el --- eab gnus extension
+
+;; Copyright (C) 2010-2021 Evgeny Boykov
+;;
+;; Author: artscan@list.ru
+;; Keywords: 
+;; Requirements: none
+;; Status: not intended to be distributed yet
+
+(require 'gnus-dired)
+
 (eab/bind-path gnus-init-file)
 (eab/bind-path gnus-startup-file)
 (eab/bind-path nnmail-message-id-cache-file)
+
+(add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
 
 (setq gnus-large-newsgroup 100)
 (setq gnus-always-read-dribble-file t)

@@ -75,7 +75,6 @@
 
 (require 'nnir)
 
-(require 'gnus-dired)
 (require 'smtpmail-async)
 
 (require 'ps-print)
@@ -179,7 +178,6 @@
 (add-hook 'textile-mode-hook (lambda () (toggle-truncate-lines -1)))
 (add-hook 'ielm-mode-hook (lambda () (setq comint-process-echoes nil)))
 (add-hook 'comint-mode-hook (lambda () (setq comint-process-echoes t)))
-(add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
 (add-hook 'gnus-summary-prepared-hook 'gnus-summary-hide-all-threads)
 ;; (add-hook 'gnus-summary-prepared-hook 'gnus-summary-insert-old-articles)
 ;; (add-hook 'gnus-summary-prepared-hook

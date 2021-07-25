@@ -26,6 +26,10 @@
   ;; (sauron-org-start)
   (sauron-twittering-stop)
   (wg-change-modeline)
+  (require 'cl-macs)
+  (cl-assert
+   (equal (ido-completing-read-silent "prompt: " '("one" "two" "three" "four" "five") "t")
+	  '("three" "two")))
   )
 
 ;; check inet connection first

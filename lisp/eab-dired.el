@@ -8,6 +8,7 @@
 ;; Status: not intended to be distributed yet
 
 (require 'dired-async)
+(require 'dired-x)
 
 (eab/patch-this-code
  'dired-async-create-files

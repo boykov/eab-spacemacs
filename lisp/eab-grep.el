@@ -9,8 +9,6 @@
 
 ;; require grep-a-lot
 
-(require 'grep-a-lot)
-(require 'wgrep)
 (setq wgrep-enable-key "r")
 (setq wgrep-default-line-header-regexp "^\\(.*?[^/\n]\\)\\([:-][ \t]*\\)\\([1-9][0-9]*\\)[ \t]*[-]:")
 
