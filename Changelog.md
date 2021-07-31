@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.0.11
+
+Reorder. Merge `eab-ui-minimal`, `eab-postload-minimal` into `eab-ui`, `eab-postload`.
+
 ### 0.0.10
 
 Move `eab-miniframe`. Reorder.

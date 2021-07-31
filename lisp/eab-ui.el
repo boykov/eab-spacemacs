@@ -1,42 +1,122 @@
+;;; eab-ui.el --- 
 
+;; Copyright (C) 2010-2021 Evgeny Boykov
+;;
+;; Author: artscan@list.ru
+;; Keywords: 
+;; Requirements: ansi-color, autorevert, async
+;; Status: not intended to be distributed yet
 
+(eab/bind-path custom-file)
+(eab/bind-path auto-save-list-file-prefix)
+(eab/bind-path backup-directory-alist)
+(eab/bind-path auto-save-file-name-transforms)
+(eab/bind-path save-place-file)
+(eab/bind-path url-configuration-directory)
 (eab/bind-path source-directory)
+
 (setq find-function-C-source-directory source-directory)
-(setq browse-url-browser-function (quote browse-url-firefox))
 
+(require 'autorevert)
+(global-auto-revert-mode)
+;; TODO with notify my workflow breaks
+(setq auto-revert-use-notify nil)
+;; (setq auto-revert-remote-files 't) it breaks magit-status buffer
 
-;; TODO depend on auto-complete, eab/trans-path
-(eab/bind-path eab/trans-path)
+(require 'async)
+
+(require 'ansi-color)
+(setq ansi-color-names-vector [zenburn-bg zenburn-red zenburn-green zenburn-yellow zenburn-blue zenburn-magenta zenburn-cyan zenburn-fg])
+
+(defvar eab/recently-saved-files-list '())
 
 (setq ring-bell-function 'ignore)
 
-(defadvice kmacro-start-macro (before eab-kmacro-start activate)
-  (if auto-complete-mode (call-interactively 'auto-complete-mode)))
+(add-hook 'after-save-hook
+	  (lambda ()
+	    (interactive)
+	    (add-to-list 'eab/recently-saved-files-list buffer-file-name)))
 
-(defadvice kmacro-end-macro (after eab-kmacro-end activate)
-  (if (not auto-complete-mode) (call-interactively 'auto-complete-mode)))
+;; see eab-compile.el
+(defun colorize-compilation-buffer ()
+  (toggle-read-only)
+  (ansi-color-apply-on-region (point-min) (point-max))
+  (toggle-read-only))
 
-(defun eab/latinize (str)
-  (substring (shell-command-to-string (concat "python " eab/trans-path " \"" str "\"")) 0 -1))
+;; TODO why concrete buffer-name only?
+(defadvice display-message-or-buffer (before ansi-color activate)
+  "Process ANSI color codes in shell output."
+  (let ((buf (ad-get-arg 0)))
+    (and (bufferp buf)
+         (string= (buffer-name buf) "*Shell Command Output*")
+         (with-current-buffer buf
+           (ansi-color-apply-on-region (point-min) (point-max))))))
 
-(defun eab/latinize-region (start end)
-  (interactive "r")
-  (let ((str (filter-buffer-substring start end)))
-    (kill-region start end)
-    (insert (eab/latinize str))))
 
-;; DONE
-;; xset dpms force off/on
-;; gnome-screensaver-command -a
+(setq disabled-command-function nil)
+(fset 'yes-or-no-p 'y-or-n-p)
+(setq make-backup-files nil)
 
-(defun eab/screen-off ()
-  (interactive)
-  (sleep-for 0.2)
-  (eab/shell-command "xset dpms force off" nil 0)
-  (suspend-frame))
+;; DONE теперь не работают TeX-master "main" в LaTeX-mode
+;; уже привык их задавать вручную
+(setq enable-local-variables nil)
 
-(defun eab/gnome-terminal ()
-  (eab/shell-command "gnome-terminal" nil 0))
+(setq ediff-window-setup-function 'ediff-setup-windows-plain)
+(setq ediff-diff-options "-w")
+(setq ediff-split-window-function 'split-window-horizontally)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(setq frame-title-format `("emacs"
+                           ,(if (stringp (daemonp)) (daemonp) "")
+                           "@"
+                           ,(system-name)
+			   " "
+                           ;; ": -<{" (:eval (ignore-errors (eab/wg-current-workgroup))) "}>- "
+                           (:eval (if (buffer-file-name)
+                                      (abbreviate-file-name (buffer-file-name))
+                                    "%b"))))
+
+;;(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+;;(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+
+(xterm-mouse-mode 0)
+
+(setq enable-recursive-minibuffers t)
+(setq-default truncate-lines 't)
+(setq truncate-partial-width-windows nil)
+(setq require-final-newline nil)
+(setq mode-require-final-newline nil)
+(setq indent-tabs-mode nil)
+(add-hook 'sh-mode-hook (lambda () (setq indent-tabs-mode nil)))
+(add-hook 'go-mode-hook (lambda ()
+			  (setq indent-tabs-mode nil)
+			  (setq-local tab-width 2)
+			  ))
+(add-hook 'nxml-mode-hook (lambda ()
+			    (setq indent-tabs-mode nil)
+			    (setq-local nxml-child-indent 4)
+			    ))
+(add-hook 'markdown-mode-hook (lambda () (setq indent-tabs-mode nil)))
+(add-hook 'ansible-vault-mode-hook (lambda () (setq indent-tabs-mode nil)))
+(add-hook 'js-mode-hook (lambda () (setq indent-tabs-mode nil)))
+
+(setq x-select-enable-clipboard t)
+(column-number-mode 1)
+
+(setq system-time-locale "ru_RU.UTF-8")
+
+(if (not window-system);; Only use in tty-sessions.
+    (progn
+      (defvar arrow-keys-map (make-sparse-keymap) "Keymap for arrow keys")
+      (define-key esc-map "O" arrow-keys-map)
+      (define-key arrow-keys-map "A" 'previous-line)
+      (define-key arrow-keys-map "B" 'next-line)
+      (define-key arrow-keys-map "C" 'forward-char)
+      (define-key arrow-keys-map "D" 'backward-char)))
+
+(setq browse-url-browser-function (quote browse-url-firefox))
 
 (defun google ()
   "Google the selected region if any, display a query prompt otherwise."

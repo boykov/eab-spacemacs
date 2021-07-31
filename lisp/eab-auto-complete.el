@@ -15,6 +15,13 @@
 (eab/bind-path ac-comphist-file)
 
 (global-auto-complete-mode t)
+
+(defadvice kmacro-start-macro (before eab-kmacro-start activate)
+  (if auto-complete-mode (call-interactively 'auto-complete-mode)))
+
+(defadvice kmacro-end-macro (after eab-kmacro-end activate)
+  (if (not auto-complete-mode) (call-interactively 'auto-complete-mode)))
+
 (setq ac-dwim t)
 ;; TODO auto-complete тормозит при малых значениях параметра
 (setq ac-auto-start 5)

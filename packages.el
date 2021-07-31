@@ -918,25 +918,23 @@ which require an initialization must be listed explicitly in the list.")
 
 (defun eab-spacemacs/user-config ()
   (use-package eab-workflow)
-  (use-package eab-ui-minimal)
-  (use-package eab-shell
-    :init
-    ;; (shell-command "xmodmap -e 'keycode 135 = Hyper_R'")
-    ;; (shell-command "xmodmap -e 'keycode 95 = Hyper_R'")
-    (eab/bind-path eab/translate-path)
-    )
-  (use-package eab-postload-minimal)
-  (use-package eab-appt)
   (use-package eab-words
     :init
     (eab/bind-path abbrev-file-name)
     (if (file-exists-p abbrev-file-name)
 	(quietly-read-abbrev-file abbrev-file-name))
     )
-  (use-package eab-greek-to-latex)
+  (use-package eab-appt)
   (use-package eab-ui)
-  (use-package eab-depend)
+  (use-package eab-shell
+    :init
+    ;; (shell-command "xmodmap -e 'keycode 135 = Hyper_R'")
+    ;; (shell-command "xmodmap -e 'keycode 95 = Hyper_R'")
+    (eab/bind-path eab/translate-path)
+    (eab/bind-path eab/trans-path)
+    )
   (use-package eab-postload)
+  (use-package eab-depend)
 
   (use-package eab-org)
   (use-package eab-org-publish)
@@ -946,6 +944,7 @@ which require an initialization must be listed explicitly in the list.")
   (use-package eab-org-todo)
   (use-package eab-hron-lib)
   (use-package eab-org-latex)
+  (use-package eab-greek-to-latex)
   (use-package eab-org-reftex)
   (if (string= (daemonp) "serverC")
       (use-package eab-org-extension))

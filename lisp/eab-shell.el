@@ -120,4 +120,26 @@
       (define-abbrev eab-abbrev-table phrase (car eab/tmp-str)))
   (message "%s" (car eab/tmp-str)))
 
+(defun eab/latinize (str)
+  (substring (shell-command-to-string (concat "python " eab/trans-path " \"" str "\"")) 0 -1))
+
+(defun eab/latinize-region (start end)
+  (interactive "r")
+  (let ((str (filter-buffer-substring start end)))
+    (kill-region start end)
+    (insert (eab/latinize str))))
+
+;; DONE
+;; xset dpms force off/on
+;; gnome-screensaver-command -a
+
+(defun eab/screen-off ()
+  (interactive)
+  (sleep-for 0.2)
+  (eab/shell-command "xset dpms force off" nil 0)
+  (suspend-frame))
+
+(defun eab/gnome-terminal ()
+  (eab/shell-command "gnome-terminal" nil 0))
+
 (provide 'eab-shell)
