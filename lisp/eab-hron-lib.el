@@ -94,7 +94,8 @@
   (let ((body
 	 `(setq eab/hron-current-time
 		',(apply 'encode-time (org-parse-time-string (eab/hron-add-current h m))))))
-    (with-temp-file eab/org-file (let ((standard-output (current-buffer))) (print body)))
+    (with-temp-file eab/org-file
+      (let ((standard-output (current-buffer))) (print body)))
     (funcall `(lambda () ,body))))
 
 (defun eab/hron-set-current (str)
@@ -102,7 +103,8 @@
   (let ((body
 	 `(setq eab/hron-current-time
 		',(apply 'encode-time (org-parse-time-string str)))))
-    (with-temp-file eab/org-file (let ((standard-output (current-buffer))) (print body)))
+    (with-temp-file eab/org-file
+      (let ((standard-output (current-buffer))) (print body)))
     (funcall `(lambda () ,body))))
 
 (defvar eab/hron-todo-history nil "`eab/hron-todo' history alist")

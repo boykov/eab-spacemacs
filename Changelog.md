@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.0.12
+
+Bypass `org-roam` for emacs25. Improve `vc-annotate`.
+
 ### 0.0.11
 
 Reorder. Merge `eab-ui-minimal`, `eab-postload-minimal` into `eab-ui`, `eab-postload`.

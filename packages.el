@@ -7,6 +7,9 @@
 ;; Requirements:
 ;; Status: not intended to be distributed yet
 
+(when (string-match-p "^25" emacs-version)
+  (setq dotspacemacs-install-packages 'used-but-keep-unused))
+
 (defvar eab-spacemacs-packages
   `(
     solarized-theme
@@ -19,6 +22,7 @@
     howdoi
     twittering-mode
 
+    ,(when (not (string-match-p "^25" emacs-version)) 'org-roam)
     deft
     outshine
     outorg
@@ -411,6 +415,9 @@ which require an initialization must be listed explicitly in the list.")
   (use-package magit
     :after (libgit))
   (require 'magit-wip)
+  (defadvice vc-annotate (before eab-vc-annotate activate)
+    (vc-refresh-state))
+
   (require 'git-wip) ;; TODO can remove it and use magit-wip-mode?
 ;; (setq auto-revert-buffer-list-filter 'magit-auto-revert-repository-buffer-p)
 ;;    ("-S" "Submodule diff"                 ("-S" "--submodule=diff"))
@@ -613,6 +620,10 @@ which require an initialization must be listed explicitly in the list.")
   )
 (defun eab-spacemacs/init-dockerfile-mode nil)
 (defun eab-spacemacs/init-deft nil)
+(defun eab-spacemacs/init-org-roam nil
+  (use-package org-roam)
+  (setq org-roam-directory "/home/eab/git/org/roam")
+  (org-roam-db-autosync-mode))
 (defun eab-spacemacs/init-ewmctrl nil)
 (defun eab-spacemacs/init-anaphora nil)
 (defun eab-spacemacs/init-connection nil)

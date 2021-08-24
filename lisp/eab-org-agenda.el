@@ -13,6 +13,7 @@
   (remove-if
    (lambda (s) (or (string= s (concat org-directory "archive/archive.org"))
 		   (string= s (concat org-directory "clock/level-0.org"))
+		   (string= s (concat org-directory "clock/common.org"))
 		   ;; (member s (file-expand-wildcards (concat org-directory "clock/*arch.org")))
 		   ))
    (append
