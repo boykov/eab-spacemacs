@@ -525,6 +525,7 @@
 		     (require 'server)
 		     (sleep-for 1)
 		     (server-eval-at "serverC" '(progn
+						  (eab/shell-command "git pull")
 						  (auto-revert-buffers)
 						  (,fname)
 						  (eab/send-csum-all)
