@@ -412,9 +412,11 @@ which require an initialization must be listed explicitly in the list.")
 	    ))
   )
 (defun eab-spacemacs/init-magit nil
-  (use-package magit
-    :after (libgit))
-  (require 'magit-wip)
+  (if (not (version< emacs-version "26.1"))
+      (progn
+	(use-package magit
+	  :after (libgit))
+	(require 'magit-wip)))
   (defadvice vc-annotate (before eab-vc-annotate activate)
     (vc-refresh-state))
 
