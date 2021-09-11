@@ -28,7 +28,7 @@
 	 (body `(lambda ()
 		  (require 'server)
 		  (server-eval-at "serverC" '(progn
-					       (eab/shell-command "cd /home/eab/git/org && git pull")
+					       (shell-command "cd /home/eab/git/org && git pull")
 					       (auto-revert-buffers)
 					       (org-publish-file ,name)))
 		  )))

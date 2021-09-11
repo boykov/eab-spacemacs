@@ -27,7 +27,8 @@
 	    (kill-buffer))))))
 
 (defun eab/shell-command (command &optional output-buffer error-buffer)
-  "Run command by `call-process-shell-command' in separate proces: e.g. nautilus or gnome-terminals"
+  "Run command by `call-process-shell-command' in separate
+process: e.g. nautilus or gnome-terminals"
   (interactive
    (list
     (read-shell-command "EAB Shell command: " nil nil

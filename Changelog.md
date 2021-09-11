@@ -1,5 +1,11 @@
 # Changelog
 
+### 0.0.13
+
+Add `git pull` before remote csum. Fix eab-emacs 25 for `magit`.
+Fix gpg (see .gnupg/gpg.conf).
+Start `lisp/eab-lexical.el`.
+
 ### 0.0.12
 
 Bypass `org-roam` for emacs25. Improve `vc-annotate`.

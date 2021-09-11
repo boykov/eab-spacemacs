@@ -65,6 +65,7 @@
 (setq epa-file-select-keys 'silent) 
 (setenv "GPG_AGENT_INFO" nil) ; use gpg without gui window
 (setq epg-gpg-program "gpg")
+(setq epa-pinentry-mode 'loopback)
 
 (require 'comint)
 
