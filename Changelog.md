@@ -1,5 +1,10 @@
 # Changelog
 
+### 0.0.14
+
+Replace `org-plus-contrib` by local `org-mode`. Delete `org-checklist`.
+Fix `ox-extra`.
+
 ### 0.0.13
 
 Add `git pull` before remote csum. Fix eab-emacs 25 for `magit`.

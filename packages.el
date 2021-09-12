@@ -22,6 +22,7 @@
     howdoi
     twittering-mode
 
+    (org-mode/lisp :location local)
     ,(when (not (string-match-p "^25" emacs-version)) 'org-roam)
     deft
     outshine
@@ -38,7 +39,7 @@
     org-agenda-property
     org-jekyll
     org-redmine
-    org-plus-contrib
+    ;; org-plus-contrib
     (bbdb/lisp :location local)
 
     git-commit
@@ -673,7 +674,7 @@ which require an initialization must be listed explicitly in the list.")
   (eab/bind-path achievements-file)
   )
 (defun eab-spacemacs/init-org-grep nil)
-(defun eab-spacemacs/init-org nil)
+(defun eab-spacemacs/init-org-mode/lisp nil)
 (defun eab-spacemacs/init-f nil)
 (defun eab-spacemacs/init-keyfreq nil
   (require 'keyfreq)

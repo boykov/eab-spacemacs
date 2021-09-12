@@ -22,3 +22,6 @@
 [submodule "extensions/eab-org-mode"]
 	path = local/eab-org-mode
 	url = https://github.com/boykov/org-mode.git
+[submodule "extensions/org-mode"]
+	path = local/org-mode
+	url = https://code.orgmode.org/bzg/org-mode.git

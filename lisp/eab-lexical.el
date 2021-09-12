@@ -1,5 +1,15 @@
 ;;; eab-lexical.el ---  -*- lexical-binding: t -*-
 
+;; It doesn't work. Tried to replace ox-extra
+(defun eab/ignore-headline (contents backend info)
+  "Ignore headlines with tag `ignore'."
+  (when (and (org-export-derived-backend-p backend 'latex 'html 'ascii)
+             (string-match "\\`.*ignore.*\n"
+			   (downcase contents)))
+    (replace-match "" nil nil contents)))
+
+;; (add-to-list 'org-export-filter-headline-functions 'eab/ignore-headline)
+
 (defun eab/org-agenda-to-appt ()
   ;; Dangerous!!!  This might remove entries added by `appt-add' manually.
   (org-agenda-to-appt t "TODO"))

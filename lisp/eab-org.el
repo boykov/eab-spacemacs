@@ -10,7 +10,7 @@
 ;; (unload-feature 'org 't)
 (require 'org)
 (require 'org-clock)
-(require 'org-checklist)
+;; (require 'org-checklist)
 (require 'org-crypt)
 (require 'remember)
 (require 'org-capture)
