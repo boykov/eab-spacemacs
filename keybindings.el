@@ -545,13 +545,15 @@
  "k"		'wg-kill-workgroup ;; +
  "c"		`(,(ilam (eab/wg-kill-tmp) (wg-clone-workgroup (wg-current-workgroup) ":tmp:")) :which-key " ") ;; +
  "SPC"		'eab/wg-revert-and-update
- "w"		'twit
  ;;  "s"	'bmkp-cycle ;; TODO сделать обертку, выбирающую navlist в соответствии с группой
  ;;  "t"	`(,(ilam (bmkp-choose-navlist-of-type "any")) :which-key " ")
  ;; DONE по имени буфера: нарушение SPOT!
- "h"		`(,(ilam (switch-to-buffer eab/agenda-H-command)) :which-key " ")
+ "h"		`(,(ilam (switch-to-buffer "*Org QL View: Chrono*")) :which-key " ")
+ "H"		`(,(ilam (org-ql-search org-agenda-files '(and (clocked 560) (or (not (tags "noagenda")) (tags "agenda"))) :super-groups '((:auto-dir-name)) :sort 'priority :buffer "*Org QL View: Chrono*")) :which-key " ")
  "1"		`(,(ilam (switch-to-buffer eab/agenda-a-command)) :which-key " ")
- "W"		`(,(ilam (switch-to-buffer eab/agenda-W-command)) :which-key " ")
+ "w"		`(,(ilam (switch-to-buffer "*Org QL View: Work*")) :which-key " ")
+ "W"		`(,(ilam (org-ql-search org-agenda-files '(and (clocked 560) (and (or (not (tags "noagenda")) (tags "agenda")) (or (tags "w1c") (tags "fz")))) :super-groups '((:auto-dir-name)) :sort 'priority :buffer "*Org QL View: Work*")) :which-key " ")
+ ;; "W"		`(,(ilam (switch-to-buffer eab/agenda-W-command)) :which-key " ")
  "M"		`(,(ilam (switch-to-buffer eab/agenda-M-command)) :which-key " ")
  "C-s"		`(,(ilam (switch-to-buffer "*Sauron*")) :which-key " "))
 (setq eab/wg-map (lookup-key global-map (kbd "C-a")))

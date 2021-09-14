@@ -42,6 +42,9 @@
 	      ("Q" "all" tags "+CLOCKSUM<=\"0:25\"+CLOCKSUM>\"0:05\"-ARCHIVE-noagenda" nil)
 	      ("O" "eab/very-old" tags "-ARCHIVE-noagenda-noexport" ((org-agenda-skip-function 'eab/very-old)))
 	      ("H" "Chrono" tags "-ARCHIVE-noagenda" ((org-agenda-skip-function 'eab/skip-old)))
+	      ;; ("H" "Chrono ql"
+	      ;;  ((org-ql-block '(and (clocked 560) (not (tags "noagenda")))
+	      ;; 		      ((org-ql-block-header "Chrono ql")))))
 	      ("W" "Work" tags-todo "+w1c")
 	      ("M" "Work" tags "+media" ((org-agenda-skip-function 'eab/skip-old)))
 	      ("D" "Day" tags "+CLOCK>=\"<-2d>\"+CLOCK<=\"<-1d>\"-ARCHIVE-noagenda" nil)

@@ -1,5 +1,10 @@
 # Changelog
 
+### 0.0.15
+
+Add `org-ql` and related. Fix `clock/timeline-time-arch.org`.
+Add `org-ql-search` keybinding.
+
 ### 0.0.14
 
 Replace `org-plus-contrib` by local `org-mode`. Delete `org-checklist`.

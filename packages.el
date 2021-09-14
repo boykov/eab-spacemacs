@@ -41,6 +41,10 @@
     org-redmine
     ;; org-plus-contrib
     (bbdb/lisp :location local)
+    ov
+    org-super-agenda
+    peg
+    (org-ql :location local)
 
     git-commit
     git-timemachine
@@ -674,6 +678,12 @@ which require an initialization must be listed explicitly in the list.")
   (eab/bind-path achievements-file)
   )
 (defun eab-spacemacs/init-org-grep nil)
+(defun eab-spacemacs/init-ov nil)
+(defun eab-spacemacs/init-peg nil)
+(defun eab-spacemacs/init-org-super-agenda nil)
+(defun eab-spacemacs/init-org-ql nil
+  (require 'org-ql)
+  (require 'org-ql-search))
 (defun eab-spacemacs/init-org-mode/lisp nil)
 (defun eab-spacemacs/init-f nil)
 (defun eab-spacemacs/init-keyfreq nil

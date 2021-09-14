@@ -388,7 +388,7 @@
    (format-time-string
     (car org-time-stamp-formats)
     (apply 'encode-time  (org-parse-time-string (eab/hron-add-current 0 0)))))
-  (insert (concat "\" :maxlevel 1 :narrow 80! :link t :scope (\"" org-directory "clock/timeline-time-mining.org\") \n"))
+  (insert (concat "\" :maxlevel 1 :narrow 80! :link t :scope (\"" org-directory "clock/timeline-time-mining.org\" \"" org-directory "clock/timeline-time-arch.org\") \n"))
   (insert "#+END:")
   (previous-line)
   (org-ctrl-c-ctrl-c)
@@ -424,7 +424,7 @@
     (switch-to-buffer buf))
   (org-mode)
   (insert "* контрольная сумма\n")
-  (insert (concat "#+BEGIN: clocktable :maxlevel 1 :narrow 80! :scope (\"" org-directory "clock/timeline-time-mining.org\") \n"))
+  (insert (concat "#+BEGIN: clocktable :maxlevel 1 :narrow 80! :scope (\"" org-directory "clock/timeline-time-mining.org\" \"" org-directory "clock/timeline-time-arch.org\") \n"))
   (insert "#+END:")
   (previous-line)
   (org-ctrl-c-ctrl-c)
