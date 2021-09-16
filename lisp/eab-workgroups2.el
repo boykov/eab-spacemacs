@@ -1,4 +1,4 @@
-;;; eab-workgroups2.el --- eab workgroup2 extension
+;;; eab-workgroups2.el --- eab workgroup2 extension   -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2010-2021 Evgeny Boykov
 ;;
@@ -151,7 +151,7 @@
   (let ((ido-current-directory nil)
 	(ido-directory-nonreadable nil)
 	(ido-directory-too-big nil)
-	(ido-context-switch-command 'ignore)
+	(ido-context-switch-command nil)
 	(ido-choice-list
 	 (if (eq eab/wg-ido-item 'list)
 	     (eab/show-wg-workgroups-history)

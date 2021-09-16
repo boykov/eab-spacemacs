@@ -14,7 +14,8 @@
   ;; Dangerous!!!  This might remove entries added by `appt-add' manually.
   (org-agenda-to-appt t "TODO"))
 
-(add-hook 'org-agenda-mode-hook 'eab/org-agenda-to-appt)
+;; It slows org-ql-search
+;; (add-hook 'org-agenda-mode-hook 'eab/org-agenda-to-appt)
 
 (defun eab/org-clock-get-last-clock-out-time ()
   "Get the last clock-out time for the current headline."

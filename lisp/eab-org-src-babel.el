@@ -1,4 +1,5 @@
 (require 'org-src)
+(require 'ob-tmux)
 
 (defun eab/detangle ()
   (interactive)
@@ -29,6 +30,7 @@
 
 (add-to-list 'org-babel-default-header-args:dot '(:cmdline . "-Tpng"))
 
+;; TODO it's danger
 (setq org-confirm-babel-evaluate nil)
 
 (setq org-edit-src-content-indentation 0)

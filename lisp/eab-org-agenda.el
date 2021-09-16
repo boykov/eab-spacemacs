@@ -1,5 +1,11 @@
 (require 'org-agenda)
 
+(defun eab/replace-in-string (what with in)
+  (replace-regexp-in-string (regexp-quote what) with in nil 'literal))
+
+(setq eab/org-ql-H-query '(and (or (not (tags "noagenda")) (tags "agenda")) (clocked 560) ))
+(setq eab/org-ql-W-query '(and (and (or (tags "w1c") (tags "fz")) (or (not (tags "noagenda")) (tags "agenda"))) (clocked 560)))
+
 
 (setq org-sort-agenda-notime-is-late nil)
 
@@ -145,11 +151,20 @@
 	  (setq-local default-directory (expand-file-name (file-name-as-directory org-directory)))
 	  ))))
 
+(defun eab/fix-agenda-buffer-name ()
+  (setq-local org-agenda-buffer-name (buffer-name)))
+
 ;; DONE для C-c s eab/org-agenda-search используется org-search-view
 ;; т.е. команда org-agenda не вызывается и advice не используется
 ;; также, если обновить буфер по "g" это не вызывается
 (defadvice org-agenda (after eab-advice-agenda activate)
   (eab/short-name-agenda))
+
+(defadvice org-ql-search (after eab-org-ql-search activate)
+  (eab/fix-agenda-buffer-name))
+;; (ad-remove-advice 'org-ql-search 'after 'eab-org-ql-search)
+;; (ad-deactivate 'org-ql-search)
+;; (ad-activate 'org-ql-search)
 
 (defadvice org-search-view (after eab-advice-search-view activate)
   (eab/short-name-agenda))

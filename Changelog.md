@@ -1,5 +1,14 @@
 # Changelog
 
+### 0.0.16
+
+Native comiple `workgroup2`, `eab-workgroups2` (add lexical).
+Disable `eab/org-agenda-to-appt`. Add `eab-test.el`.
+Improve `org-ql-search` keybindings.
+Disable `eab/org-agenda-to-appt`.
+Add `ob-tmux`. Update projectile and improve keybindings.
+Fix `eab/wg-switch-to-workgroup-history-1` (ido-context-switch-command).
+
 ### 0.0.15
 
 Add `org-ql` and related. Fix `clock/timeline-time-arch.org`.
@@ -95,8 +104,10 @@ Disable:
 
 Cleanup server list. Remove unused ea2b, ghost.
 Finally remove `serverN`, use `serverC` instead.
-Delete legacy `org` package (rename `org-bbdb` to `ol-bbdb`) and `org-clock-time%` function, its fixed in org-mode already.
-Activate `eab/wg-save` on `desktop-save-hook` and `save-some-buffers` 15 sec idle for `serverP`.
+Delete legacy `org` package (rename `org-bbdb` to `ol-bbdb`)
+and `org-clock-time%` function, its fixed in org-mode already.
+Activate `eab/wg-save` on `desktop-save-hook` 
+and `save-some-buffers` 15 sec idle for `serverP`.
 Fix `projectile-known-projects-file`.
 Fix `org-link-minor-mode` order.
 Reorder bbdb, other packages, eab-misc.

@@ -57,6 +57,7 @@
     (eab/cxb-1)
     (setq wg-dissociate-buffer-on-kill-buffer tmp)))
 
+;; Disable. Check speed
 (eab/patch-this-code
  'projectile-project-buffer-p
  "(file-truename default-directory)" "(expand-file-name default-directory)")
@@ -65,11 +66,13 @@
 ;;  'projectile-file-truename
 ;;  "(file-truename file-name)" "(expand-file-name file-name)")
 
+;; Disable. Check speed
 (eab/patch-this-code
  'projectile-project-root
  "(file-truename dir)" "(expand-file-name dir)")
 
 ;; TODO добавить в список буферов "projectile-switch-project",
+;; можно также использовать projectile-discover-projects-in-directory
 ;; аналогично wg-switch-to-workgroup?  Или, может быть, лучше делать
 ;; больше work groups, добавить для draft, например
 (defun eab/cxb-1 (&optional eab-ido-initial)

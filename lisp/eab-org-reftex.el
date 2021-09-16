@@ -16,6 +16,7 @@
   (define-key org-mode-map (kbd "C-c )") 'reftex-citation)
   (define-key org-mode-map (kbd "C-c (") 'org-mode-reftex-search))
 
+;; TODO it's slow down first org-base loading
 (add-hook 'org-mode-hook 'org-mode-reftex-setup)
 
 (defun org-mode-reftex-search ()

@@ -509,7 +509,9 @@
 (general-define-key
  :prefix "C-a"
  "a"		`(,(ilam (eab/wg-switch-to-workgroup ":clock:")) :which-key "apple :clock:")
- "f"		`(,(ilam (eab/wg-switch-to-workgroup ":sync-redmine:")) :which-key "fish :sync-redmine:")
+ "f"            'projectile-switch-project
+ "F"            'projectile-discover-projects-in-directory
+ ;; "f"		`(,(ilam (eab/wg-switch-to-workgroup ":sync-redmine:")) :which-key "fish :sync-redmine:")
  "t"		`(,(ilam (eab/wg-switch-to-workgroup ":jup:")) :which-key "tree :jup:")
  "e"		`(,(ilam (eab/wg-switch-to-workgroup ":eab-spacemacs:")) :which-key "eagle :eab-spacemacs:")
  "l"		`(,(ilam (eab/wg-switch-to-workgroup ":cc:")) :which-key "lamp :cc:")
@@ -548,11 +550,13 @@
  ;;  "s"	'bmkp-cycle ;; TODO сделать обертку, выбирающую navlist в соответствии с группой
  ;;  "t"	`(,(ilam (bmkp-choose-navlist-of-type "any")) :which-key " ")
  ;; DONE по имени буфера: нарушение SPOT!
- "h"		`(,(ilam (switch-to-buffer "*Org QL View: Chrono*")) :which-key " ")
- "H"		`(,(ilam (org-ql-search org-agenda-files '(and (clocked 560) (or (not (tags "noagenda")) (tags "agenda"))) :super-groups '((:auto-dir-name)) :sort 'priority :buffer "*Org QL View: Chrono*")) :which-key " ")
+ "h"		`(,(ilam (switch-to-buffer (concat "*Org QL View: " (eab/replace-in-string "\"" "" (prin1-to-string eab/org-ql-H-query)) "*"))) :which-key " ")
+ ;; edit org-link-parameters (remove org-ql-view block)
+ ;; (setq org-agenda-buffer-name (buffer-name))
+ "H"		`(,(ilam (org-ql-search org-agenda-files eab/org-ql-H-query :super-groups '((:auto-dir-name)) :sort 'priority )) :which-key " ")
  "1"		`(,(ilam (switch-to-buffer eab/agenda-a-command)) :which-key " ")
- "w"		`(,(ilam (switch-to-buffer "*Org QL View: Work*")) :which-key " ")
- "W"		`(,(ilam (org-ql-search org-agenda-files '(and (clocked 560) (and (or (not (tags "noagenda")) (tags "agenda")) (or (tags "w1c") (tags "fz")))) :super-groups '((:auto-dir-name)) :sort 'priority :buffer "*Org QL View: Work*")) :which-key " ")
+ "w"		`(,(ilam (switch-to-buffer (concat "*Org QL View: " (eab/replace-in-string "\"" "" (prin1-to-string eab/org-ql-W-query))  "*"))) :which-key " ")
+ "W"		`(,(ilam (org-ql-search org-agenda-files eab/org-ql-W-query :super-groups '((:auto-dir-name)) :sort 'priority )) :which-key " ")
  ;; "W"		`(,(ilam (switch-to-buffer eab/agenda-W-command)) :which-key " ")
  "M"		`(,(ilam (switch-to-buffer eab/agenda-M-command)) :which-key " ")
  "C-s"		`(,(ilam (switch-to-buffer "*Sauron*")) :which-key " "))

@@ -33,6 +33,7 @@
     gnuplot
     htmlize
     org-ehtml
+    ob-tmux
     purty-mode
     auctex
     (org-link-minor-mode :location local)
@@ -701,6 +702,7 @@ which require an initialization must be listed explicitly in the list.")
   (require 'pallet)
   (pallet-init)
   )
+(defun eab-spacemacs/init-ob-tmux nil)
 (defun eab-spacemacs/init-purty-mode nil
   (require 'purty-mode)
   )
