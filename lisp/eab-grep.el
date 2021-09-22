@@ -68,7 +68,7 @@
 ;; grep-command isn't parsed correctly
 ;; (setq grep-history '("grep -i -nH -e test  `git ls-files \\`git rev-parse --show-toplevel\\``"))
 
-(setq eab/grep-command-args " --color never --no-heading --pcre2 -U -i -nH -e ")
+(setq eab/grep-command-args " --max-depth 0 --color never --no-heading --pcre2 -U -i -nH -e ")
 (setq eab/grep-command (concat "rg" eab/grep-command-args))
 (setq eab/grep-ls " `git ls-files \\`git rev-parse --show-toplevel\\``")
 (setq eab/grep-ls-recurse " `git ls-files --recurse-submodules \\`git rev-parse --show-toplevel\\``")
@@ -132,7 +132,7 @@
   (interactive)
   (let ((grep-host-defaults-alist nil)
         (grep-find-command
-         `(, (concat "find . -iname '**' -type f -print0 | xargs -0 -e " eab/grep-command "\"\" | sort -t$':' -k1,1 -k2n") . 102)))
+         `(, (concat "find . -iname '**' -type f -print0 | xargs -0 -e " eab/grep-command "\"\" | sort -t$':' -k1,1 -k2n") . 116)))
     (call-interactively 'find-grep)))
 
 ;;  orgmode awared grep
@@ -140,7 +140,7 @@
   (interactive)
   (let ((grep-host-defaults-alist nil)
         (grep-command
-         `(, (concat eab/grep-command "\"^- <20(\\n[^\*-]|.)*?(.*|\\n)(\\n|.)*?((?=\\n- <)|(?=\\n\\*)|(?=\\Z))\" `git ls-files \\`git rev-parse --show-toplevel\\`` | sort -t$':' -k1,1 -k2n") . 79)))
+         `(, (concat eab/grep-command "\"^- <20(\\n[^\*-]|.)*?(.*|\\n)(\\n|.)*?((?=\\n- <)|(?=\\n\\*)|(?=\\Z))\" `git ls-files \\`git rev-parse --show-toplevel\\`` | sort -t$':' -k1,1 -k2n") . 93)))
     (call-interactively 'grep)))
 
 (grep-a-lot-advise eab/grep)

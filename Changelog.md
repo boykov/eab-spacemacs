@@ -1,5 +1,15 @@
 # Changelog
 
+### 0.0.17
+
+Fix `rg` + `git ls-files`: add `--max-depth 0`.
+Add `helm tramp .bash_history` examples.
+Commit eab org-ql.
+Add `pin` org snippet (`yas-reload-all`).
+Rm legacy `mercury`, `jupiter` org publish projects.
+Fix `eab/wg-switch-to-workgroup-history-1` (ido-context-switch-command) again:
+dynamical binding (`defvar`) for `ido-choice-list`.
+
 ### 0.0.16
 
 Native comiple `workgroup2`, `eab-workgroups2` (add lexical).

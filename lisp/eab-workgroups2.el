@@ -146,6 +146,8 @@
   (interactive)
   (eab/wg-switch-to-workgroup-history-1))
 
+(defvar ido-choice-list nil "")
+
 (defun eab/wg-switch-to-workgroup-history-1 ()
   (interactive)
   (let ((ido-current-directory nil)
@@ -164,7 +166,7 @@
     (if ido-matches
 	(progn
 	  (setq eab/wg-ido-item 'list)
-	(wg-switch-to-workgroup (ido-name (car ido-matches))))))))
+	  (wg-switch-to-workgroup (ido-name (car ido-matches))))))))
 
 (defun eab/wg-switch-to-previous-workgroup ()
   (interactive)

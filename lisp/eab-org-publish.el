@@ -143,30 +143,30 @@
 	 :publishing-function org-publish-attachment
 	 )
 	("manual" :components ("manual-base" "manual-static"))
-	("mercury"
-	 :base-directory "/ssh:boykov@mercury.febras.net:/home/boykov/install/mercury-ldap"
-	 :publishing-directory "/ssh:eab@microkairos:/home/eab/share/writehere"
-	 :online-suffix ".html"
-	 :working-suffix ".org"
-	 :section_numbers nil
-	 :table-of-contents nil
-	 :base-extension "org"
-	 :publishing-function org-html-publish-to-html
-	 :style-include-default t
-	 :author-info nil
-	 :creator-info nil)
-	("jupiter-base"
-	 :base-directory "/ssh:eab@jupiter:/home/eab/xcat-conf/docs"
-	 :publishing-directory "/ssh:eab@microkairos:/home/eab/share/writehere"
-	 :online-suffix ".html"
-	 :working-suffix ".org"
-	 :section_numbers nil
-	 :table-of-contents nil
-	 :base-extension "org"
-	 :publishing-function org-html-publish-to-html
-	 :style-include-default t
-	 :author-info nil
-	 :creator-info nil)
+	;; ("mercury"
+	;;  :base-directory "/ssh:boykov@mercury.febras.net:/home/boykov/install/mercury-ldap"
+	;;  :publishing-directory "/ssh:eab@microkairos:/home/eab/share/writehere"
+	;;  :online-suffix ".html"
+	;;  :working-suffix ".org"
+	;;  :section_numbers nil
+	;;  :table-of-contents nil
+	;;  :base-extension "org"
+	;;  :publishing-function org-html-publish-to-html
+	;;  :style-include-default t
+	;;  :author-info nil
+	;;  :creator-info nil)
+	;; ("jupiter-base"
+	;;  :base-directory "/ssh:eab@jupiter:/home/eab/xcat-conf/docs"
+	;;  :publishing-directory "/ssh:eab@microkairos:/home/eab/share/writehere"
+	;;  :online-suffix ".html"
+	;;  :working-suffix ".org"
+	;;  :section_numbers nil
+	;;  :table-of-contents nil
+	;;  :base-extension "org"
+	;;  :publishing-function org-html-publish-to-html
+	;;  :style-include-default t
+	;;  :author-info nil
+	;;  :creator-info nil)
 	("html-ldap-base"
 	 :base-directory "/home/eab/git/cc/cc-ldap-centos/docs"
 	 :publishing-directory "/home/eab/git/cc/boykov.github.io/ldap"
@@ -181,7 +181,7 @@
 	 :creator-info nil)
 	("html-fz-base"
 	 :base-directory "/home/eab/git/fz/tasks/sync-jira/fz-wiki/org"
-	 :publishing-directory "/home/eab/git/cc/boykov.github.io/public/fz-infra"
+	 :publishing-directory "/home/eab/git/cc/boykov.github.io/fz-infra"
 	 :online-suffix ".html"
 	 :working-suffix ".org"
 	 :section_numbers nil
