@@ -302,6 +302,12 @@
 
 ;; See `eab/clocktable-scope' in eab-path-org.el
 
+(defvar eab/total-minutes 8805600.0)
+
+(defun csum-percent ()
+  (format "%0.2f" (* (/ (org-clock-sum-current-item)
+     eab/total-minutes) 100)))
+
 (defun csum ()
   (org-minutes-to-clocksum-string (org-clock-sum-current-item)))
 

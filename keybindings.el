@@ -231,7 +231,8 @@
  "M-m"		'sp-forward-sexp
  "M-n"		'sp-backward-sexp
  "M-?"		(ilam (auto-complete))
- "C-S-k"	(ilam (set-input-method nil))
+ ;; Disabled, bug
+ ;; "C-S-k"	(ilam (set-input-method nil))
  "s-k"		(ilam (if (equal current-input-method "TeX") (set-input-method "russian-computer") (set-input-method "TeX")))
  "C-s"		(ilam (save-some-buffers 't))
  "C-:"		'isearch-moccur
@@ -247,7 +248,8 @@
  "M-d"		'avy-goto-word-1
  "s-Y"		'auto-complete-mode
  "s-g"		'helm-google-suggest
- "s-/"		'ac-start)
+ "s-/"		'ac-start
+ )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;	  _    	      _	_ _    	   _
@@ -551,9 +553,9 @@
  ;;  "t"	`(,(ilam (bmkp-choose-navlist-of-type "any")) :which-key " ")
  ;; DONE по имени буфера: нарушение SPOT!
  "h"		`(,(ilam (switch-to-buffer (concat "*Org QL View: " (eab/replace-in-string "\"" "" (prin1-to-string eab/org-ql-H-query)) "*"))) :which-key " ")
- ;; edit org-link-parameters (remove org-ql-view block)
- ;; (setq org-agenda-buffer-name (buffer-name))
- "H"		`(,(ilam (org-ql-search org-agenda-files eab/org-ql-H-query :super-groups '((:auto-dir-name)) :sort 'priority )) :which-key " ")
+ "H"		`(,(ilam (org-ql-search org-agenda-files eab/org-ql-H-query :super-groups '((:auto-dir-name)) :sort 'priority ) (setq org-agenda-buffer-name (buffer-name))) :which-key " ")
+ "0"		`(,(ilam (switch-to-buffer (concat "*Org QL View: " (eab/replace-in-string "\"" "" (prin1-to-string eab/org-ql-O-query)) "*"))) :which-key " ")
+ ")"		`(,(ilam (org-ql-search org-agenda-files eab/org-ql-O-query :super-groups '((:auto-dir-name)) :sort 'priority )) :which-key " ")
  "1"		`(,(ilam (switch-to-buffer eab/agenda-a-command)) :which-key " ")
  "w"		`(,(ilam (switch-to-buffer (concat "*Org QL View: " (eab/replace-in-string "\"" "" (prin1-to-string eab/org-ql-W-query))  "*"))) :which-key " ")
  "W"		`(,(ilam (org-ql-search org-agenda-files eab/org-ql-W-query :super-groups '((:auto-dir-name)) :sort 'priority )) :which-key " ")
@@ -1104,6 +1106,7 @@
    "g"		'eab/recompile
    "u"		'eab/grep-utf
    "s"		'eab/grep-switch
+   "l"		(ilam (so-long-minor-mode 1) (toggle-truncate-lines 1))
    "M-n"	'nil
    "C-w"	'eab/wgrep-change-to-wgrep-mode))
 

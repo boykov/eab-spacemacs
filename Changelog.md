@@ -1,5 +1,13 @@
 # Changelog
 
+### 0.0.18
+
+Fix `papers:`, `org-babel-temporary-directory`.
+Fix `forge`, `bug-reference-auto-setup-functions`.
+Fix `set-input-method` accidentally pressed hotkey.
+Fix `org-ql-search` `org-link-parameters`, `org-agenda-buffer-name`.
+Add `abs`, `csum-percent`, `eab/org-ql-O-query`. Use `so-long`.
+
 ### 0.0.17
 
 Fix `rg` + `git ls-files`: add `--max-depth 0`.
@@ -12,7 +20,7 @@ dynamical binding (`defvar`) for `ido-choice-list`.
 
 ### 0.0.16
 
-Native comiple `workgroup2`, `eab-workgroups2` (add lexical).
+Native compile `workgroup2`, `eab-workgroups2` (add lexical).
 Disable `eab/org-agenda-to-appt`. Add `eab-test.el`.
 Improve `org-ql-search` keybindings.
 Disable `eab/org-agenda-to-appt`.

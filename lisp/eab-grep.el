@@ -47,6 +47,7 @@
     (eab/recompile)))
 
 (defun eab/grep-switch ()
+  "Switch to org-mode aware grep."
   (interactive)
   (let* ((ss-0 (cadr (split-string (car compilation-arguments) eab/grep-command)))
 	 (ss (car (split-string ss-0 " `git ls-files \\\\`git rev-parse --show-toplevel\\\\``")))

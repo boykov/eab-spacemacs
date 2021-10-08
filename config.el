@@ -124,7 +124,7 @@
 
 (setq-put org-link-abbrev-alist
 	  '(("bib" . "~/git/lit/boykov.bib::%s")
-	    ("papers" . "~/pub/papers/%s.pdf")
+	    ("papers" . "https://share.homew.keenetic.pro/papers/%s.pdf")
 	    ("google" . "http://www.google.com/search?q=")
 	    ))
 ;; See also eab-header in ~/texmf/tex/latex/eab-styles/eab-header.sty

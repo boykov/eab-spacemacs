@@ -110,6 +110,7 @@
     puppet-mode
     groovy-mode
     terraform-mode
+    so-long
 
     restclient
     request
@@ -191,6 +192,11 @@ which require an initialization must be listed explicitly in the list.")
 
 (defun eab-spacemacs/init-terraform-mode ()
   (use-package terraform-mode))
+
+(defun eab-spacemacs/init-so-long ()
+  ;; + manual using so-long-minor-mode
+  (when (require 'so-long nil :noerror)
+    (global-so-long-mode 1)))
 
 (defun eab-spacemacs/init-ergoemacs-mode ()
   (require 'ergoemacs-translate)
@@ -442,6 +448,7 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-forge nil
   ;; (require 'forge)
   ;; (setq forge-post-mode-hook '(visual-line-mode))
+  (setq bug-reference-auto-setup-functions nil)
   (defun auth-source--obfuscate (string)
     (mapcar #'1- string))
 
@@ -684,8 +691,12 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-org-super-agenda nil)
 (defun eab-spacemacs/init-org-ql nil
   (require 'org-ql)
-  (require 'org-ql-search))
-(defun eab-spacemacs/init-org-mode/lisp nil)
+  (require 'org-ql-search)
+  (setq org-link-parameters (remove '("org-ql-search" :follow org-ql-view--link-follow :store org-ql-view--link-store) org-link-parameters))
+)
+(defun eab-spacemacs/init-org-mode/lisp nil
+  ;; fix 'file is already exist' bug
+  (setq org-babel-temporary-directory "/tmp/user/1000/babel-aa5I6G"))
 (defun eab-spacemacs/init-f nil)
 (defun eab-spacemacs/init-keyfreq nil
   (require 'keyfreq)
@@ -992,8 +1003,6 @@ which require an initialization must be listed explicitly in the list.")
    "p" `(,(ilam (dired eab/downloads-path)) :which-key ,eab/downloads-path)
    "t" `(,(ilam (dired "~/tmp")) :which-key "~/tmp"))
   (setq eab/dired-map (lookup-key global-map (kbd "C-x d")))
-  (when (require 'so-long nil :noerror)
-    (global-so-long-mode 1))
   )
 
 (defun eab-spacemacs/init-eab-ace-jump-mode ()
