@@ -1,6 +1,6 @@
 ;;; packages.el --- eab Layer packages File for Spacemacs
 ;;
-;; Copyright (C) 2010-2021 Evgeny Boykov
+;; Copyright (C) 2010-2022 Evgeny Boykov
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords:

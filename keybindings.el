@@ -1,6 +1,6 @@
 ;;; keybindings.el ---
 
-;; Copyright (C) 2010-2021 Evgeny Boykov
+;; Copyright (C) 2010-2022 Evgeny Boykov
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords:
@@ -553,9 +553,9 @@
  ;;  "t"	`(,(ilam (bmkp-choose-navlist-of-type "any")) :which-key " ")
  ;; DONE по имени буфера: нарушение SPOT!
  "h"		`(,(ilam (switch-to-buffer (concat "*Org QL View: " (eab/replace-in-string "\"" "" (prin1-to-string eab/org-ql-H-query)) "*"))) :which-key " ")
- "H"		`(,(ilam (org-ql-search org-agenda-files eab/org-ql-H-query :super-groups '((:auto-dir-name)) :sort 'priority ) (setq org-agenda-buffer-name (buffer-name))) :which-key " ")
+ "H"		`(,(ilam (org-ql-search org-agenda-files eab/org-ql-H-query :super-groups '((:auto-dir-name)) :sort 'priority ) (switch-to-buffer (concat "*Org QL View: " (eab/replace-in-string "\"" "" (prin1-to-string eab/org-ql-H-query)) "*")) (setq-local org-agenda-buffer-name (buffer-name))) :which-key " ")
  "0"		`(,(ilam (switch-to-buffer (concat "*Org QL View: " (eab/replace-in-string "\"" "" (prin1-to-string eab/org-ql-O-query)) "*"))) :which-key " ")
- ")"		`(,(ilam (org-ql-search org-agenda-files eab/org-ql-O-query :super-groups '((:auto-dir-name)) :sort 'priority )) :which-key " ")
+ ")"		`(,(ilam (org-ql-search org-agenda-files eab/org-ql-O-query :super-groups '((:auto-dir-name)) :sort 'priority ) (switch-to-buffer (concat "*Org QL View: " (eab/replace-in-string "\"" "" (prin1-to-string eab/org-ql-O-query)) "*")) (setq-local org-agenda-buffer-name (buffer-name))) :which-key " ")
  "1"		`(,(ilam (switch-to-buffer eab/agenda-a-command)) :which-key " ")
  "w"		`(,(ilam (switch-to-buffer (concat "*Org QL View: " (eab/replace-in-string "\"" "" (prin1-to-string eab/org-ql-W-query))  "*"))) :which-key " ")
  "W"		`(,(ilam (org-ql-search org-agenda-files eab/org-ql-W-query :super-groups '((:auto-dir-name)) :sort 'priority )) :which-key " ")

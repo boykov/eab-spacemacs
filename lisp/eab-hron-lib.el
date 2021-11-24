@@ -1,6 +1,6 @@
 ;;; eab-hron-lib.el --- 
 
-;; Copyright (C) 2010-2021 Evgeny Boykov
+;; Copyright (C) 2010-2022 Evgeny Boykov
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 
@@ -224,6 +224,7 @@
 		"all2019.org"
 		"all2020.org"
 		"all2021.org"
+		"all2022.org"
 		)))
 
 (defun eab/nightly-scope () eab/nightly-scope)
@@ -302,7 +303,7 @@
 
 ;; See `eab/clocktable-scope' in eab-path-org.el
 
-(defvar eab/total-minutes 8805600.0)
+(defvar eab/total-minutes 8921760.0)
 
 (defun csum-percent ()
   (format "%0.2f" (* (/ (org-clock-sum-current-item)

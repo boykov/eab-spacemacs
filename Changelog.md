@@ -1,5 +1,15 @@
 # Changelog
 
+### 0.0.19
+
+Fix `org-agenda-buffer-name` again (add switch-to-buffer).
+Disable extra `solarized-light` theme.
+Up to 2022 year. Add `browser-remote`.
+Fix `bbdb` define-obsolete functions and update `dired+` (and roll
+back `dired-buffers-for-dir` after) up to version `2021.10.03` for
+emacs 28.0.90.
+
+
 ### 0.0.18
 
 Fix `papers:`, `org-babel-temporary-directory`.

@@ -1,6 +1,6 @@
 ;;; eab-ui.el --- 
 
-;; Copyright (C) 2010-2021 Evgeny Boykov
+;; Copyright (C) 2010-2022 Evgeny Boykov
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 
@@ -117,6 +117,7 @@
       (define-key arrow-keys-map "D" 'backward-char)))
 
 (setq browse-url-browser-function (quote browse-url-firefox))
+(setq browse-url-firefox-program "/usr/local/bin/browser-remote")
 
 (defun google ()
   "Google the selected region if any, display a query prompt otherwise."

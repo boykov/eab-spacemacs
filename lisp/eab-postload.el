@@ -1,6 +1,6 @@
 ;;; eab-postload.el ---  eab postload
 
-;; Copyright (C) 2010-2021 Evgeny Boykov
+;; Copyright (C) 2010-2022 Evgeny Boykov
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 
@@ -38,6 +38,7 @@
 ; TODO create function and hook after first start frame
 (defun eab/load-personal ()
   (interactive)
+  (disable-theme 'solarized-light)
   ;; TODO don't setup defadvice wg-switch-to-workgroup before it
   (eab/workgroups-save-file-load)
   (if (fboundp 'grep-a-lot-clear-stack)
