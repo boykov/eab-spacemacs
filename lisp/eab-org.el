@@ -146,4 +146,13 @@
 
 (setq org-startup-folded 'content)
 
+
+(defun wvxvw/export-rel-url (path desc format)
+  (cl-case format
+    (html (format "<a href=\"%s\">%s</a>" path (or desc path)))
+    (latex (format "\\href{%s}{%s}" path (or desc path)))
+    (otherwise path)))
+
+(org-add-link-type "rel" 'browse-url 'wvxvw/export-rel-url)
+
 (provide 'eab-org)

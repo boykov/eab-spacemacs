@@ -1,5 +1,14 @@
 # Changelog
 
+### 0.0.20
+
+Add `wvxvw/export-rel-url` for `rel:` org link-type. Add `csum-file-percent`.
+Disable `gnus`, `eab/secrets-path` loading, `eab/check-smtp`.
+For `eab/batch-publish` add `git pull` before remote csum.
+Move `boykov.github.io`.
+Disable `org-static`, leave `html-base` only.
+Reimplement eab-org-protocol `eab/open-heading-browser` defun.
+
 ### 0.0.19
 
 Fix `org-agenda-buffer-name` again (add switch-to-buffer).
@@ -26,7 +35,7 @@ Commit eab org-ql.
 Add `pin` org snippet (`yas-reload-all`).
 Rm legacy `mercury`, `jupiter` org publish projects.
 Fix `eab/wg-switch-to-workgroup-history-1` (ido-context-switch-command) again:
-dynamical binding (`defvar`) for `ido-choice-list`.
+dynamic binding (`defvar`) for `ido-choice-list`.
 
 ### 0.0.16
 

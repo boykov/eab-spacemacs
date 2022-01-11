@@ -13,12 +13,14 @@
 (defun eab/batch-publish ()
   (progn
     (server-eval-at "serverP" '(sauron-add-event 'eab 3 "Come in to eab/batch-publish"))
+    (shell-command "cd /home/eab/git/org && git pull")
+    (auto-revert-buffers)
     (eab/update-all-dblocks) ;; DONE why doesn't work?
     ;; DONE it seems to hangs up `eab/update-reports-nightly'
     (eab/create-template "plot")
     (eab/update-reports-nightly)
     (org-publish-remove-all-timestamps)
-    (org-publish-project "html" t)
+    (org-publish-project "html-base" t)
     (org-publish-project "html-clock" t)
     (eab/send-csum)
     (eab/check-csum-all)
@@ -307,6 +309,10 @@
 
 (defun csum-percent ()
   (format "%0.2f" (* (/ (org-clock-sum-current-item)
+     eab/total-minutes) 100)))
+
+(defun csum-file-percent ()
+  (format "%0.2f" (* (/ (org-clock-sum)
      eab/total-minutes) 100)))
 
 (defun csum ()

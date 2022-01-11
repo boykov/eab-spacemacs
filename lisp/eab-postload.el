@@ -55,9 +55,9 @@
 			   (* 100 (frame-char-width 1on1-minibuffer-frame)) 2)) (height . 2))))
 
   ;; (make-frame (append 1on1-minibuffer-frame-alist minibuffer-frame-alist))
-  (load-file eab/secrets-path)
-  (eab/check-smtp)
-  (gnus)
+  ;; (load-file eab/secrets-path)
+  ;; (eab/check-smtp)
+  ;; (gnus)
   ;; (erc :server "localhost")
   (sauron-start)
   (sauron-notifications-start)

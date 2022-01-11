@@ -40,6 +40,13 @@
     (browse-url
      (concat "file://" (replace-regexp-in-string "\.org$" ".html" prefix) "#ID-" (cdr id)))))
 
+(defun eab/open-heading-browser ()
+  (interactive)
+  (let* ((fname (file-name-nondirectory (buffer-file-name)))
+	 (id (cl-find-if (lambda (x) (if (string= "ID" (car x)) 't nil)) (org-entry-properties nil 'standard))))
+    (browse-url
+     (concat "https://portal.homew.keenetic.pro/org/clock/" (replace-regexp-in-string "\.org$" ".html" fname) "#ID-" (cdr id)))))
+
 (defun eab/open-corresponding-html ()
   (interactive)
   (let ((path (replace-regexp-in-string "eab\/git\/org" "eab/pub/org" (buffer-file-name))))

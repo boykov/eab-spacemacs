@@ -63,7 +63,7 @@
    (lambda ()
      (require 'server)
      (server-eval-at "serverC" '(progn
-				  (org-publish-project "html" 't)
+				  (org-publish-project "html-base" 't)
 				  (org-publish-project "html-clock" 't))))
    (lambda (result) (sauron-add-event 'eab 3 (concat "async result: <" result ">")))))
 

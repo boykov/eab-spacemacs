@@ -97,13 +97,13 @@
 	;;  :style-include-default t
 	;;  :author-info nil
 	;;  :creator-info nil)
-	("org-static"
-	 :base-directory ,(concat org-directory "css/")
-	 :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
-	 :publishing-directory ,(concat eab/org-publish-directory "css")
-	 :recursive t
-	 :publishing-function org-publish-attachment
-	 )
+	;; ("org-static"
+	;;  :base-directory ,(concat org-directory "css/")
+	;;  :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+	;;  :publishing-directory ,(concat eab/org-publish-directory "css")
+	;;  :recursive t
+	;;  :publishing-function org-publish-attachment
+	;;  )
 ;; TODO path: org-directory vs archive
 	;; ("pdf"
 	;;  :base-directory ,org-directory
@@ -116,17 +116,16 @@
 	;;  :publishing-function org-latex-publish-to-pdf
 	;;  :author-info nil
 	;;  :creator-info nil)
-	("html" :components ("html-base" "org-static"))
 	("html-ldap-static"
 	 :base-directory "/home/eab/git/cc/cc-ldap-centos/docs/"
 	 :base-extension "png"
-	 :publishing-directory "/home/eab/git/cc/boykov.github.io/ldap"
+	 :publishing-directory "/home/eab/git/eabmisc/boykov.github.io/ldap"
 	 :recursive t
 	 :publishing-function org-publish-attachment
 	 )
 	("manual-base"
 	 :base-directory "/home/eab/git/eab-auto/org"
-	 :publishing-directory "/home/eab/git/cc/boykov.github.io/manual"
+	 :publishing-directory "/home/eab/git/eabmisc/boykov.github.io/manual"
 	 :online-suffix ".html"
 	 :working-suffix ".org"
 	 :section_numbers nil
@@ -139,7 +138,7 @@
 	("manual-static"
 	 :base-directory "/home/eab/git/eab-auto/org/"
 	 :base-extension "png"
-	 :publishing-directory "/home/eab/git/cc/boykov.github.io/manual/"
+	 :publishing-directory "/home/eab/git/eabmisc/boykov.github.io/manual/"
 	 :publishing-function org-publish-attachment
 	 )
 	("manual" :components ("manual-base" "manual-static"))
@@ -169,7 +168,7 @@
 	;;  :creator-info nil)
 	("html-ldap-base"
 	 :base-directory "/home/eab/git/cc/cc-ldap-centos/docs"
-	 :publishing-directory "/home/eab/git/cc/boykov.github.io/ldap"
+	 :publishing-directory "/home/eab/git/eabmisc/boykov.github.io/ldap"
 	 :online-suffix ".html"
 	 :working-suffix ".org"
 	 :section_numbers nil
@@ -181,7 +180,7 @@
 	 :creator-info nil)
 	("html-fz-base"
 	 :base-directory "/home/eab/git/fz/tasks/sync-jira/fz-wiki/org"
-	 :publishing-directory "/home/eab/git/cc/boykov.github.io/fz-infra"
+	 :publishing-directory "/home/eab/git/eabmisc/boykov.github.io/fz-infra"
 	 :online-suffix ".html"
 	 :working-suffix ".org"
 	 :section_numbers nil
