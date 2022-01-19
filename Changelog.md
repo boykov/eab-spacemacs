@@ -1,5 +1,12 @@
 # Changelog
 
+### 0.0.21
+
+Move `eab/update-agenda`.
+Rm `NOTCH`. Use `html` checkbox.
+Add `sho` yas, `org-special-block-extras`.
+Fix `M-g` keybind.
+
 ### 0.0.20
 
 Add `wvxvw/export-rel-url` for `rel:` org link-type. Add `csum-file-percent`.

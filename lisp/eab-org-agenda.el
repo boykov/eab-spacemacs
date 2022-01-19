@@ -141,6 +141,20 @@
   (execute-kbd-macro (read-kbd-macro "C-c a M"))
   (setq-local default-directory (expand-file-name (file-name-as-directory org-directory))))
 
+;; DONE get-buffer по имени буфера: нарушение SPOT!
+(defun eab/update-agenda ()
+  (interactive)
+  (async-start
+      (lambda ()
+	(require 'server)
+	(server-eval-at
+	 "serverP"
+	 '(progn
+	    (auto-revert-buffers)
+	    (eab/renew-agenda)
+	    )))
+    (lambda (result) (message "async result: <%s>" result))))
+
 (defun eab/short-name-agenda ()
   (let ((old-name (buffer-name)))
     (if (> (length old-name) 20)

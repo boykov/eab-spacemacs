@@ -7,7 +7,7 @@
 				(type "CLEANTODO" "|" "DONE")
 				(type "NF" "|" "DONE")
 				(type
-				 "NOTCH(N)" "PROBLEM(P)" "DIRECTION(D)" "AIM(A)"))))
+				 "PROBLEM(P)" "DIRECTION(D)" "AIM(A)"))))
 
 (setq org-todo-keyword-faces (quote (("TODO" :foreground "red" :weight bold)
 				     ("CLEANTODO" :foreground "red" :weight bold)
@@ -20,7 +20,6 @@
 				     ("DIRECTION" :foreground "forest green" :weight bold)
 				     ("AIM" :foreground "red" :weight bold)
 				     ("PROBLEM" :foreground "red" :weight bold)
-				     ("NOTCH" :foreground "orange" :weight bold)
 				     ("OPEN" :foreground "blue" :weight bold))))
 
 (setq org-todo-state-tags-triggers
@@ -35,5 +34,6 @@
 (setq org-icalendar-include-todo 'all)
 (setq org-enforce-todo-dependencies t)
 (setq org-enforce-todo-checkbox-dependencies t)
+(setq org-html-checkbox-type 'html)
 
 (provide 'eab-org-todo)

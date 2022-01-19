@@ -32,20 +32,6 @@
     ))
     ;; (delete-frame nil 'force)))
 
-;; DONE get-buffer по имени буфера: нарушение SPOT!
-(defun eab/update-agenda ()
-  (interactive)
-  (async-start
-      (lambda ()
-	(require 'server)
-	(server-eval-at
-	 "serverP"
-	 '(progn
-	    (auto-revert-buffers)
-	    (eab/renew-agenda)
-	    )))
-    (lambda (result) (message "async result: <%s>" result))))
-
 (defun eab/org-sort-time-func ()
   (ignore-errors
     (save-excursion
@@ -204,8 +190,6 @@
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Nightly
-
-;; See `eab/nightly-scope' in eab-path-org.el
 
 (setq eab/nightly-scope
       (mapcar (lambda (x)

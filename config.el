@@ -120,7 +120,7 @@
 (setq-put eab/org-publish-directory "~/pub/org/")
 (setq-put eab/org-publish-directory-file "file:///home/eab/pub/org/")
 (setq-put org-mobile-directory "~/Dropbox/MobileOrg")
-(setq-put org-ditaa-jar-path "~/bin/ditaa0_9.jar")
+(setq-put org-ditaa-jar-path "/usr/bin/ditaa")
 
 (setq-put org-link-abbrev-alist
 	  '(("bib" . "~/git/lit/boykov.bib::%s")

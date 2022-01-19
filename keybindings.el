@@ -183,6 +183,7 @@
  "C-c d"	'eab/tracker-search
  "C-c g"	'eab/gnugol-search
  "C-c O"	'eab/open-corresponding-html
+ "C-c b"	'eab/open-heading-browser
  "C-c s"	'eab/org-agenda-search
  "C-c u"	'eab/unbound-var
  "C-c U"	'eab/unbound-fun
@@ -281,7 +282,12 @@
  "M-5"	'isearch-query-replace)
 
 (general-define-key
+ :keymaps 'read-expression-map
+ "M-g"	'nil)
+
+(general-define-key
  :keymaps 'minibuffer-local-completion-map
+ "M-g"	'nil
  "C-r"	'nil
  "M-n"	'nil
  "M-p"	'nil

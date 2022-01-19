@@ -85,7 +85,6 @@
  `(
    ("t" "Todo" entry (file ,(concat org-directory "archive/refile.org")) "* TODO %?\n  %u\n  %a\n  %i")
    ("n" "note" entry (file ,(concat org-directory "archive/refile.org")) "* %?              :NOTE:\n  %u\n  %a\n  %i")
-   ("N" "NOTCH" entry (file ,(concat org-directory "archive/refile.org")) "* NOTCH %?\n  SCHEDULED: <2013-12-18 Ср. 01:30 .+1y>\n  %u\n  %a")
    ("w" "org-protocol" entry (file ,(concat org-directory "archive/refile.org")) "* Review %c  :NOTE:\n  %U\n  %i" :immediate-finish 1)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
