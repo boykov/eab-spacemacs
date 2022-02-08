@@ -517,21 +517,12 @@
 (general-define-key
  :prefix "C-a"
  "a"		`(,(ilam (eab/wg-switch-to-workgroup ":clock:")) :which-key "apple :clock:")
+ "A"		`(,(ilam (eab/wg-switch-to-workgroup ":auto:")) :which-key "AUTO :auto:")
+ "e"		`(,(ilam (eab/wg-switch-to-workgroup ":eab-spacemacs:")) :which-key "eagle :eab-spacemacs:")
+ "4"		`(,(ilam (eab/wg-switch-to-workgroup ":portal:")) :which-key "4 :portal:")
+ "b"		`(,(ilam (eab/wg-switch-to-workgroup ":fz:")) :which-key ":fz:")
  "f"            'projectile-switch-project
  "F"            'projectile-discover-projects-in-directory
- ;; "f"		`(,(ilam (eab/wg-switch-to-workgroup ":sync-redmine:")) :which-key "fish :sync-redmine:")
- "t"		`(,(ilam (eab/wg-switch-to-workgroup ":jup:")) :which-key "tree :jup:")
- "e"		`(,(ilam (eab/wg-switch-to-workgroup ":eab-spacemacs:")) :which-key "eagle :eab-spacemacs:")
- "l"		`(,(ilam (eab/wg-switch-to-workgroup ":cc:")) :which-key "lamp :cc:")
- "4"		`(,(ilam (eab/wg-switch-to-workgroup ":mail:")) :which-key "4 :mail:")
- "g"		`(,(ilam (eab/wg-switch-to-workgroup ":gsie:")) :which-key ":gsie:")
- "b"		`(,(ilam (eab/wg-switch-to-workgroup ":fz:")) :which-key ":fz:")
- "j"		`(,(ilam (eab/wg-switch-to-workgroup ":jac:")) :which-key ":jac:")
- "m"		`(,(ilam (eab/wg-switch-to-workgroup ":dbsym:")) :which-key ":dbsym:")
- "C-e"		`(,(ilam (eab/wg-switch-to-workgroup ":dotspace:")) :which-key ":dotspace:")
- "d"		`(,(ilam (eab/wg-switch-to-workgroup ":spacemacs:")) :which-key ":spacemacs:")
- "5"		`(,(ilam (eab/wg-switch-to-workgroup ":ahmed-examples:")) :which-key ":ahmed-examples:")
- "i"		`(,(ilam (eab/wg-switch-to-workgroup ":lit:")) :which-key ":lit:")
  "p"		'eab/wg-switch-to-previous-workgroup
  "o"		'eab/wg-rotate-base
  "O"		'eab/wg-rotate-twice

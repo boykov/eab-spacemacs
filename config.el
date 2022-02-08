@@ -20,6 +20,8 @@
 			      (magit-section nil)
 			      all)))
 
+(defvar eab/first-emacsclient 't "nil if run again")
+
 (defun eab/loaded-ok ()
   (if (not configuration-layer-error-count)
       (kill-emacs)
@@ -129,13 +131,13 @@
 	    ))
 ;; See also eab-header in ~/texmf/tex/latex/eab-styles/eab-header.sty
 
-(setq-put eab/wg-path "~/git/auto/wg/*")
+(setq-put eab/wg-path "~/git/org/wg/*")
 
-(setq-put eab/wg-update-list
-	  '(("~/.emacs.d/" ":.emacs.d:")
-	    ("~/git/org/" ":clock:")
-	    ("~/git/org/clock/" ":clock:")
-	    ("~/git/cc/" ":cc:")))
+(defun eab/wg-update-list-1 (path)
+  (let* ((true-path (file-truename path))
+	 (nondir (file-name-nondirectory path))
+	 (name (concat ":" nondir ":")))
+    `(,true-path ,name)))
 
 (setq-put eab/workgroups-save (concat (eab/history-dir) ".emacs_workgroups"))
 (setq-put wg-session-file (eab/bind-path eab/workgroups-save))

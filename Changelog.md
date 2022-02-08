@@ -1,5 +1,14 @@
 # Changelog
 
+### 0.0.22
+
+Convert hardcoded var `eab/wg-update-list` to defun `eab/wg-update-list-1`.
+Move `eab/wg-path` to `~/git/org`.
+Fix `eab/wg-create-workgroup`: path and `wg-save-session` for predefined wg configs.
+Improve keybinds `eab/wg-switch-to-workgroup`.
+Add `eab/first-emacsclient`.
+Disable `indent-tabs-mode` for org.
+
 ### 0.0.21
 
 Move `eab/update-agenda`.

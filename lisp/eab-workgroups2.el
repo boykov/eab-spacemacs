@@ -29,11 +29,12 @@
 
 (defun eab/wg-create-workgroup (path)
   (let* ((true-path (file-truename path))
-	 (nondir (file-name-nondirectory true-path))
+	 (nondir (file-name-nondirectory path))
 	 (name (concat ":" nondir ":")))
     (wg-create-workgroup name)
     (dired true-path)
-    (eab/wg-update-workgroup "dflt")))
+    (eab/wg-update-workgroup "dflt")
+    (wg-save-session t)))
 
 ;; TODO можно использовать `gr list` вместо wg/*: все-равно вручную
 ;; пополняю оба эти списка хотя, симлинки требуют меньше зависимостей

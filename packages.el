@@ -387,9 +387,9 @@ which require an initialization must be listed explicitly in the list.")
   (use-package eab-workgroups2
     :init
     (eab/bind-path eab/wg-path)
+    (setq eab/wg-update-list (mapcar 'eab/wg-update-list-1 (file-expand-wildcards eab/wg-path)))
     (eab/bind-path eab/workgroups-save)
     (eab/bind-path wg-session-file)
-    (eab/bind-path eab/wg-update-list)
     (setq wg-use-default-session-file 't)
     (setq wg-control-frames 'nil)
     (setq wg-session-load-on-start nil)
