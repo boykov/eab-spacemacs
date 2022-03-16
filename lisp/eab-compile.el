@@ -86,7 +86,7 @@
   (interactive)
   (let ((compilation-buffer-name-function
 	 (lambda (mode) (concat "*" "gr status" "*"))))
-    (eab/compile (concat "gr status "))))
+    (eab/compile (concat "ssh chronos docker exec eab-gr gr status "))))
 
 (defun eab/compile-goto-error ()
   (interactive)

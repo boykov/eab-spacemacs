@@ -23,7 +23,7 @@
   (eab/sh-over-bash "xdg-open" (helm-get-selection) 't)
   (minibuffer-keyboard-quit))
 
-(setq helm-locate-command "locate %s -e -r %s")
+(setq helm-locate-command "ssh chronos locate %s -e -r %s")
 
 
 (setq helm-idle-delay 0.01)

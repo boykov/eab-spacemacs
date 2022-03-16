@@ -289,7 +289,7 @@
 
 ;; See `eab/clocktable-scope' in eab-path-org.el
 
-(defvar eab/total-minutes 8921760.0)
+(defvar eab/total-minutes 9110880.0)
 
 (defun csum-percent ()
   (format "%0.2f" (* (/ (org-clock-sum-current-item)

@@ -431,7 +431,7 @@
  ;; shell and shell-utils
  "f"		'eab/see-file
  "SPC"		'eab/gr-tag-default-directory
- "M-d"		(ilam (eab/sh-over-bash "~/git/auto/test-dotemacs.sh" "" 't))
+ "M-d"		(ilam (eab/sh-over-bash "ssh chronos ~/git/auto/test-dotemacs.sh" "" 't))
  "M-p"		(ilam (let ((shell-command-switch "-ic")) (eab/shell-command "dpemacs")))
  "M-P"		(ilam (eab/shell-command "bash -i -c dpemacs_new"))
  "M-m"		(ilam (eab/sh-over-bash "~/git/auto/firefoxmacro.sh" ""	't)))

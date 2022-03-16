@@ -1,5 +1,11 @@
 # Changelog
 
+### 0.0.23
+
+Disable `org-roam`, `sauron-fx-mplayer`.
+Use `locate`, `test-dotemacs`, `gr status` over `ssh`.
+Init `org-html--format-image` from `ox-html.el`.
+
 ### 0.0.22
 
 Convert hardcoded var `eab/wg-update-list` to defun `eab/wg-update-list-1`.
