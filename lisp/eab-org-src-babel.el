@@ -28,7 +28,7 @@
    (shell . t)
    ))
 
-(add-to-list 'org-babel-default-header-args:dot '(:cmdline . "-Tpng"))
+(add-to-list 'org-babel-default-header-args:dot '(:cmdline . "-Tsvg"))
 
 ;; TODO it's danger
 (setq org-confirm-babel-evaluate nil)

@@ -65,6 +65,6 @@
      (server-eval-at "serverC" '(progn
 				  (org-publish-project "html-base" 't)
 				  (org-publish-project "html-clock" 't))))
-   (lambda (result) (sauron-add-event 'eab 3 (concat "async result: <" result ">")))))
+   (lambda (result) (eab/gotify "eab/org-publish-html" (concat "async result: <" result ">") 0))))
 
 (provide 'eab-server)

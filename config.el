@@ -22,6 +22,14 @@
 
 (defvar eab/first-emacsclient 't "nil if run again")
 
+(defun eab/gotify (title message priority)
+  (shell-command
+   (concat "tkn=`ssh chronos gpg -d -q ~/.ssh/.gpggotify.gpg`;"
+	   "curl \"http://192.168.2.18:8085/message?token=$tkn\" "
+	   "-F \"title=" title
+	   "\" -F \"message=" message
+	   "\" -F \"priority=" (number-to-string priority) "\"")))
+
 (defun eab/loaded-ok ()
   (if (not configuration-layer-error-count)
       (kill-emacs)

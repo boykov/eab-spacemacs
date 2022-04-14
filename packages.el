@@ -491,7 +491,7 @@ which require an initialization must be listed explicitly in the list.")
   (use-package org-agenda-property
     :after (org-agenda)
     :config
-    (setq org-agenda-property-list '("Custom_ID")))
+    (setq org-agenda-property-list '("Custom_BIB")))
   )
 (defun eab-spacemacs/init-region-bindings-mode nil
   (require 'region-bindings-mode)

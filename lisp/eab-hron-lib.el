@@ -12,7 +12,7 @@
 ;; TODO предварительно закрыть все *.org буферы в server?
 (defun eab/batch-publish ()
   (progn
-    (server-eval-at "serverP" '(sauron-add-event 'eab 3 "Come in to eab/batch-publish"))
+    (eab/gotify "publish..." "Come in to eab/batch-publish" 0)
     (shell-command "cd /home/eab/git/org && git pull")
     (auto-revert-buffers)
     (eab/update-all-dblocks) ;; DONE why doesn't work?
@@ -501,15 +501,15 @@
 	  ", csum "
 	  eab/hron-csum-day))
 	(server-eval-at "serverP" '(add-to-list 'mode-line-modes '(t " [!] ")))
-	(sauron-fx-mplayer "/usr/share/sounds/ubuntu/stereo/phone-incoming-call.ogg"))
+	(eab/gotify "bad csum" "[!]" 5))
     (progn
       (setq eab/total-csum eab/hron-csum-day)
       (eab/send-mail "All time Совпадает!")
       (server-eval-at "serverP" `(progn
 				  (setq eab/total-csum ,eab/total-csum)
-				  (sauron-add-event 'eab 3 "All time Совпадает!")
+				  (eab/gotify "ok csum" "All time Совпадает!" 0)
 				  (setq mode-line-modes (remove '(t " [!] ") mode-line-modes))))
-      (sauron-add-event 'eab 3 "All time Совпадает!"))))
+      )))
 
 (defun eab/send-csum-all-remote (&optional arg)
   (interactive "P")
@@ -585,7 +585,7 @@
 	    (/ (truncate (* forecast-hours 100)) 100)) ":00"))) 0.0))
 
 ;; TODO если извлекать id из столбца Headline, а затем по id получать
-;; Custom_ID, то можно обойтись без отдельного столбца
+;; Custom_BIB, то можно обойтись без отдельного столбца
 ;; TODO see eab/abbrev-link
 (defun eab/paper-link (name)
   (if (not (string= name ""))

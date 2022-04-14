@@ -1,5 +1,11 @@
 # Changelog
 
+### 0.0.24
+
+Rename `Custom_ID` by `Custom_BIB`.
+Add `eab/gotify`.
+Setup `svg` publishing for `src dot`: patch `org-html--format-image`.
+
 ### 0.0.23
 
 Disable `org-roam`, `sauron-fx-mplayer`.

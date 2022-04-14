@@ -11,8 +11,8 @@
 	    (?n . "[[contents:%l][%l-contents]]")
 	    (?p . "[[papers:%l][%l-paper]]")
 	    (?t . "%t")
-	    (?h . "* %t\n  :PROPERTIES:\n  :Custom_ID: %l\n  :END:\n  [[papers:%l][%l-paper]]")
-	    (?d . "* %t\n  :PROPERTIES:\n  :Custom_ID: %l\n  :END:\n  [[djvu:%l][%l-djvu]]")))))
+	    (?h . "* %t\n  :PROPERTIES:\n  :Custom_BIB: %l\n  :END:\n  [[papers:%l][%l-paper]]")
+	    (?d . "* %t\n  :PROPERTIES:\n  :Custom_BIB: %l\n  :END:\n  [[djvu:%l][%l-djvu]]")))))
   (define-key org-mode-map (kbd "C-c )") 'reftex-citation)
   (define-key org-mode-map (kbd "C-c (") 'org-mode-reftex-search))
 

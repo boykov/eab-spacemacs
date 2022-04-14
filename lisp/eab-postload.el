@@ -19,10 +19,10 @@
 (defun eab/test-dotemacs ()
   (if (not configuration-layer-error-count)
       (progn
-	(server-eval-at "serverP" '(sauron-add-event 'eab 3 "OK Dotemacs is loaded! Expectations OK!"))
+	(eab/gotify "ok expectations" "OK Dotemacs is loaded! Expectations OK!" 0)
 	(kill-emacs))
     (progn
-	(server-eval-at "serverP" '(sauron-add-event 'eab 3 "Dotemacs is failed!"))
+	(eab/gotify "bad dotemacs" "Dotemacs is failed!" 5)
 	(kill-emacs))))
 
 (electric-indent-mode)
