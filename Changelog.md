@@ -1,5 +1,18 @@
 # Changelog
 
+### 0.0.25
+
+Improve `eab/grep`:
+ 
+* refactoring `eab/grep`: add various vars and defun;
+* implement `rg` over `git ls-files` with `xargs`;
+
+Improve `eab/grep-switch`, `eab-misc/git-wip`.
+Fix and improve `eab/with-git-toplevel`: enable directory without git.
+Patch `workgroups2` and `org-sql`: use `eval-and-compile` for `defconst`.
+Disable `org-crypt-use-before-save-magic`.
+Ignore `*.elc`.
+
 ### 0.0.24
 
 Rename `Custom_ID` by `Custom_BIB`.

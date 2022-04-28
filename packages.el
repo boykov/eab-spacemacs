@@ -47,6 +47,7 @@
     peg
     (org-ql :location local)
     org-special-block-extras
+    org-sql
 
     git-commit
     git-timemachine
@@ -692,6 +693,8 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-peg nil)
 (defun eab-spacemacs/init-org-super-agenda nil)
 (defun eab-spacemacs/init-org-special-block-extras nil)
+(defun eab-spacemacs/init-org-sql nil
+  (require 'org-sql))
 (defun eab-spacemacs/init-org-ql nil
   (require 'org-ql)
   (require 'org-ql-search)

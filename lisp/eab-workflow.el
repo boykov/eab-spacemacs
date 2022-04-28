@@ -73,22 +73,34 @@
 	   (if (file-remote-p default-directory)
 	       (file-remote-p default-directory)
 	     ""))
-	  (try (shell-command-to-string "git rev-parse --show-superproject-working-tree --show-toplevel | head -1"))
-	  (fatal (if (and (> (length try) 10) (string= (substring try 0 5) "fatal"))
-		     't
-		   nil))
-	  (git-toplevel (shell-command-to-string "git rev-parse --show-toplevel"))
-	  (git-superproject (if fatal
-			   git-toplevel
-			 try))
+	  (check-fatal
+	   (lambda (s)
+	     (if (and (> (length s) 10) (string= (substring s 0 5) "fatal")) 't nil)))
+	  (try-super
+	   (shell-command-to-string
+	    "git rev-parse --show-superproject-working-tree --show-toplevel | head -1"))
+	  (fatal-super (funcall check-fatal try-super))
+	  (try-toplevel
+	   (shell-command-to-string
+	    "git rev-parse --show-toplevel"))
+	  (fatal-toplevel (funcall check-fatal try-toplevel))
+	  (git-superproject (if fatal-super
+				(if fatal-toplevel
+				    nil
+				  try-toplevel)
+			      try-super))
 	  (git-nothing (if (file-remote-p default-directory)
-			     (file-remote-p default-directory 'localname)
-			   default-directory))
+			   (file-remote-p default-directory 'localname)
+			 default-directory))
 	  (top-level (cond
 		      ((equal arg 2)
-		       (substring git-superproject 0 -1))
+		       (if (not git-superproject)
+			   git-nothing
+			 (substring git-superproject 0 -1)))
 		      ((not arg)
-		       (substring git-toplevel 0 -1))
+		       (if (not fatal-toplevel)
+			   (substring try-toplevel 0 -1)
+			 git-nothing))
 		      ((equal arg '(4))
 		       git-nothing)))
 	  (default-directory

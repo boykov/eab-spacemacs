@@ -19,6 +19,25 @@
 ;; (setcar (car grep-regexp-alist)   "^\\(.*?[^/\n]\\):[   ]*\\([1-9][0-9]*\\)[    ]*:")
 (setcar (car grep-regexp-alist) "^\\(.+?\\):[ \t]*\\([1-9][0-9]*\\)[ \t]*:")
 
+(setq grep-highlight-matches 'auto-detect)
+
+;; DONE fixed bug (grep-compute-defaults): if grep-history is empty than
+;; grep-command isn't parsed correctly
+;; (setq grep-history '("grep -i -nH -e test  `git ls-files \\`git rev-parse --show-toplevel\\``"))
+
+(setq eab/grep-command-args " --max-depth 0 --color never --no-heading --pcre2 -U -i -nH -e ")
+(setq eab/grep-command (concat "rg" eab/grep-command-args))
+(setq eab/grep-ls "git ls-files `git rev-parse --show-toplevel`")
+(setq eab/grep-ls-recurse "git ls-files --recurse-submodules `git rev-parse --show-toplevel`")
+(setq eab/grep-clock-left "\"^- <20(\\n[^\*-]|.)*?(.*|\\n)")
+(setq eab/grep-clock-right "(\\n|.)*?((?=\\n- <)|(?=\\n\\*)|(?=\\Z))\"")
+(setq eab/grep-sort " | sort -t$':' -k1,1 -k2n")
+(setq eab/grep-xargs " | xargs -d '\\n' ")
+(defun eab/grep-ls-gitmode? ()
+  (or (file-exists-p (concat default-directory "/.gitignore"))
+      (string= (shell-command-to-string "git clean -n `pwd` | wc -l") "0\n")))
+
+
 (defun eab/grep-align ()
   (interactive)
   (read-only-mode -1)
@@ -49,12 +68,13 @@
 (defun eab/grep-switch ()
   "Switch to org-mode aware grep."
   (interactive)
-  (let* ((ss-0 (cadr (split-string (car compilation-arguments) eab/grep-command)))
-	 (ss (car (split-string ss-0 " `git ls-files \\\\`git rev-parse --show-toplevel\\\\``")))
+  (let* ((ss-0 (car (split-string (car compilation-arguments) eab/grep-sort)))
+	 (ss-1 (concat (car (split-string ss-0 eab/grep-command)) eab/grep-command))
+	 (ss (cadr (split-string ss-0 (concat " " eab/grep-command))))
 	 (compilation-arguments
-	  (append (list (concat eab/grep-command "\"^- <20(\\n[^\*-]|.)*?(.*|\\n)"
+	  (append (list (concat ss-1 eab/grep-clock-left
 			  ss
-			  "(\\n|.)*?((?=\\n- <)|(?=\\n\\*)|(?=\\Z))\" `git ls-files \\`git rev-parse --show-toplevel\\`` | sort -t$':' -k1,1 -k2n"))
+			  eab/grep-clock-right eab/grep-sort))
 	  (cdr compilation-arguments))))
     (eab/recompile)))
 
@@ -62,17 +82,6 @@
   (if (string= extension "gz")
       "zgrep"
     "rg"))
-
-(setq grep-highlight-matches 'auto-detect)
-
-;; DONE fixed bug (grep-compute-defaults): if grep-history is empty than
-;; grep-command isn't parsed correctly
-;; (setq grep-history '("grep -i -nH -e test  `git ls-files \\`git rev-parse --show-toplevel\\``"))
-
-(setq eab/grep-command-args " --max-depth 0 --color never --no-heading --pcre2 -U -i -nH -e ")
-(setq eab/grep-command (concat "rg" eab/grep-command-args))
-(setq eab/grep-ls " `git ls-files \\`git rev-parse --show-toplevel\\``")
-(setq eab/grep-ls-recurse " `git ls-files --recurse-submodules \\`git rev-parse --show-toplevel\\``")
 
 (defun eab/grep-gitmodules (arg)
   (let* ((gitmodules-1 (concat
@@ -97,29 +106,27 @@
 
 (defun eab/grep (arg)
   (interactive "P")
-  ;; TODO disable toplevel if a simple directory
   (eab/with-git-toplevel
    (let* ((grep-host-defaults-alist nil)
 	  (extension (ignore-errors
 		       (file-name-extension buffer-file-name)))
-	  (str (concat (eab/gz-grep extension) eab/grep-command-args))
+	  (grep-with-args (concat (eab/gz-grep extension) eab/grep-command-args))
+	  (target-files (eab/grep-gitmodules arg))
 	  (grep-command-no-list
-	   (concat 
-	    (if (or (file-exists-p (concat default-directory "/.gitignore"))
-		    (string= (shell-command-to-string "git clean -n `pwd` | wc -l") "0\n"))
-		`,(concat str (eab/grep-gitmodules arg))
-	      `,(concat str " *."
-			extension)) " | sort -t$':' -k1,1 -k2n"))
-	  (len-str (1+ (length str)))
+	   (if (eab/grep-ls-gitmode?)
+	       (concat target-files eab/grep-xargs grep-with-args)
+	     (concat grep-with-args " *." extension)))
+	  (len-str (1+ (length grep-command-no-list)))
+	  (grep-command-no-list-sort (concat grep-command-no-list eab/grep-sort))
 	  (grep-command
 	   (if grep-history
-	       (cons grep-command-no-list len-str)
-	     grep-command-no-list))
+	       (cons grep-command-no-list-sort len-str)
+	     grep-command-no-list-sort))
 	  (grep-command-complete
 	   (concat
-	    (substring grep-command-no-list 0 len-str)
+	    (substring grep-command-no-list-sort 0 len-str)
 	    (symbol-name (symbol-at-point)) " "
-	    (substring grep-command-no-list len-str))))
+	    (substring grep-command-no-list-sort len-str))))
      (if (or (not arg) (equal arg 2))
 	 (let ((current-prefix-arg nil))
 	   (call-interactively 'grep))
@@ -133,7 +140,7 @@
   (interactive)
   (let ((grep-host-defaults-alist nil)
         (grep-find-command
-         `(, (concat "find . -iname '**' -type f -print0 | xargs -0 -e " eab/grep-command "\"\" | sort -t$':' -k1,1 -k2n") . 116)))
+         `(, (concat "find . -iname '**' -type f -print0 | xargs -0 -e " eab/grep-command "\"\"" eab/grep-sort) . 116)))
     (call-interactively 'find-grep)))
 
 ;;  orgmode awared grep
@@ -141,7 +148,7 @@
   (interactive)
   (let ((grep-host-defaults-alist nil)
         (grep-command
-         `(, (concat eab/grep-command "\"^- <20(\\n[^\*-]|.)*?(.*|\\n)(\\n|.)*?((?=\\n- <)|(?=\\n\\*)|(?=\\Z))\" `git ls-files \\`git rev-parse --show-toplevel\\`` | sort -t$':' -k1,1 -k2n") . 93)))
+         `(, (concat eab/grep-ls eab/grep-xargs (concat "rg" eab/grep-command-args) eab/grep-clock-left eab/grep-clock-right eab/grep-sort) . 154)))
     (call-interactively 'grep)))
 
 (grep-a-lot-advise eab/grep)
