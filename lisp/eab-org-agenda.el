@@ -4,7 +4,7 @@
   (replace-regexp-in-string (regexp-quote what) with in nil 'literal))
 
 (setq eab/org-ql-H-query '(and (or (not (tags "noagenda")) (tags "agenda")) (clocked 600) ))
-(setq eab/org-ql-O-query '(and (or (not (tags "noagenda")) (tags "agenda")) (clocked 6000) (not (clocked 600))))
+(setq eab/org-ql-O-query '(and (or (not (tags "noagenda")) (tags "agenda")) (clocked 6000) (not (clocked 400))))
 (setq eab/org-ql-W-query '(and (and (or (tags "w1c") (tags "fz")) (or (not (tags "noagenda")) (tags "agenda"))) (clocked 560)))
 
 
@@ -175,8 +175,8 @@
 (defadvice org-agenda (after eab-advice-agenda activate)
   (eab/short-name-agenda))
 
-(defadvice org-ql-search (after eab-org-ql-search activate)
-  (eab/fix-agenda-buffer-name))
+;; (defadvice org-ql-search (after eab-org-ql-search activate)
+;;   (eab/fix-agenda-buffer-name))
 ;; (ad-remove-advice 'org-ql-search 'after 'eab-org-ql-search)
 ;; (ad-deactivate 'org-ql-search)
 ;; (ad-activate 'org-ql-search)

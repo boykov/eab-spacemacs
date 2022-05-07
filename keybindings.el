@@ -558,7 +558,7 @@
  "W"		`(,(ilam (org-ql-search org-agenda-files eab/org-ql-W-query :super-groups '((:auto-dir-name)) :sort 'priority )) :which-key " ")
  ;; "W"		`(,(ilam (switch-to-buffer eab/agenda-W-command)) :which-key " ")
  "M"		`(,(ilam (switch-to-buffer eab/agenda-M-command)) :which-key " ")
- "C-s"		`(,(ilam (switch-to-buffer "*Sauron*")) :which-key " "))
+ "C-s"		'eab/gotify-status)
 (setq eab/wg-map (lookup-key global-map (kbd "C-a")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

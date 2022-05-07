@@ -1,5 +1,14 @@
 # Changelog
 
+### 0.0.26
+
+Set `source-directory`.
+Improve `eab/grep-sort` add `LC_ALL=C`, `eab/grep-clock-left`.
+Add `eab/gotify-status`.
+Refactoring `org-publish-project-alist` using `add-to-list`.
+Fix `org-agenda-buffer-name` again: extra `defadvice` for
+`eab/fix-agenda-buffer-name`.
+
 ### 0.0.25
 
 Improve `eab/grep`:

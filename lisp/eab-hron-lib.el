@@ -7,6 +7,92 @@
 ;; Requirements: org-mode, sauron
 ;; Status: not intended to be distributed yet
 
+(add-to-list 'org-publish-project-alist
+	     `("html-base"
+	       :base-directory ,(concat org-directory "archive/")
+	       :exclude "timeline.org"
+	       :publishing-directory ,(concat eab/org-publish-directory "archive/")
+	       :base-url ,(concat eab/org-publish-directory-file "archive/")
+	       :working-directory ,(concat eab/org-publish-directory "archive/")
+	       :online-suffix ".html"
+	       :working-suffix ".org"
+	       ;; :recursive t
+	       :with-drawers ("CLOCK")
+	       :section_numbers nil
+	       :table-of-contents nil
+	       :base-extension "org"
+	       :publishing-function org-html-publish-to-html
+	       :auto-sitemap t                ; Generate sitemap.org automagically...
+	       :sitemap-filename "sitemap.org"  ; ... call it sitemap.org (it's the default)...
+	       :sitemap-title "Sitemap"         ; ... with title 'Sitemap'.
+	       :style-include-default t
+	       :author-info nil
+	       :creator-info nil))
+
+(add-to-list 'org-publish-project-alist
+	     `("html-clock"
+	       :base-directory ,(concat org-directory "clock/")
+	       :exclude "timeline.org"
+	       :publishing-directory ,(concat eab/org-publish-directory "clock/")
+	       :base-url ,(concat eab/org-publish-directory-file "clock/")
+	       :working-directory ,(concat eab/org-publish-directory "clock/")
+	       :online-suffix ".html"
+	       :working-suffix ".org"
+	       :recursive t
+	       :with-drawers ("CLOCK")
+	       :section_numbers nil
+	       :table-of-contents nil
+	       :base-extension "org"
+	       :publishing-function org-html-publish-to-html
+	       :auto-sitemap nil                ; Generate sitemap.org automagically...
+	       :sitemap-filename "sitemap.org"  ; ... call it sitemap.org (it's the default)...
+	       :sitemap-title "Sitemap"         ; ... with title 'Sitemap'.
+	       :style-include-default t
+	       :author-info nil
+	       :creator-info nil))
+
+(add-to-list 'org-publish-project-alist
+	     `("html-nightly"
+	       :base-directory ,(concat org-directory "gen/nightly/")
+	       :publishing-directory ,(concat eab/org-publish-directory "gen/nightly/")
+	       :base-url ,(concat eab/org-publish-directory-file "gen/nightly/")
+	       :working-directory ,(concat eab/org-publish-directory "gen/nightly/")
+	       :online-suffix ".html"
+	       :working-suffix ".org"
+	       :recursive t
+	       :with-drawers ("CLOCK")
+	       :section_numbers nil
+	       :table-of-contents nil
+	       :base-extension "org"
+	       :publishing-function org-html-publish-to-html
+	       :auto-sitemap t                ; Generate sitemap.org automagically...
+	       :sitemap-filename "sitemap.org"  ; ... call it sitemap.org (it's the default)...
+	       :sitemap-title "Sitemap"         ; ... with title 'Sitemap'.
+	       :style-include-default t
+	       :author-info nil
+	       :creator-info nil))
+
+(add-to-list 'org-publish-project-alist
+	     `("html-gen"
+	       :base-directory ,(concat org-directory "gen/")
+	       :publishing-directory ,(concat eab/org-publish-directory "gen/")
+	       :base-url ,(concat eab/org-publish-directory-file "gen/")
+	       :working-directory ,(concat eab/org-publish-directory "gen/")
+	       :online-suffix ".html"
+	       :working-suffix ".org"
+	       ;; :recursive t
+	       :with-drawers ("CLOCK")
+	       :section_numbers nil
+	       :table-of-contents nil
+	       :base-extension "org"
+	       :publishing-function org-html-publish-to-html
+	       :auto-sitemap t                ; Generate sitemap.org automagically...
+	       :sitemap-filename "sitemap.org"  ; ... call it sitemap.org (it's the default)...
+	       :sitemap-title "Sitemap"         ; ... with title 'Sitemap'.
+	       :style-include-default t
+	       :author-info nil
+	       :creator-info nil))
+
 ;; TODO don't use (org-publish-remove-all-timestamps) after fixing bug
 ;; in org-mode
 ;; TODO предварительно закрыть все *.org буферы в server?

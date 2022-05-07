@@ -175,9 +175,10 @@
 
 (cond ((eab/onhost "jonesbook") (setq-put source-directory "~/emacs/src/emacs/")) ;; DONE old path
       ((eab/onhost "victory")   (setq-put source-directory "~/src/emacs/"))
-      ((eab/onhost "kairos")   (setq-put source-directory "~/data/gitno/github/emacs/src"))
+      ((eab/onhost "kairos")    (setq-put source-directory "~/data/gitno/github/emacs/src"))
       ((eab/onhost "chronos")   (setq-put source-directory "~/data/gitno/github/emacs/src"))
-      ((eab/onhost "cyclos")   (setq-put source-directory "~/data/gitno/github/emacs/src")))
+      ((eab/onhost "chronos28") (setq-put source-directory "~/git/eabmisc/eab-docker-emacs/emacs-28.1/src"))
+      ((eab/onhost "cyclos")    (setq-put source-directory "~/data/gitno/github/emacs/src")))
 
 
 (setq-put custom-file (concat user-emacs-directory "custom.el"))

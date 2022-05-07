@@ -88,6 +88,12 @@
 	 (lambda (mode) (concat "*" "gr status" "*"))))
     (eab/compile (concat "ssh chronos docker exec eab-gr gr status "))))
 
+(defun eab/gotify-status ()
+  (interactive)
+  (let ((compilation-buffer-name-function
+	 (lambda (mode) (concat "*" "compilation: gotify" "*"))))
+    (eab/compile (concat "ssh chronos 'sqlite3 -column /var/gotify/data/gotify.db \"select datetime(date,\\\"localtime\\\"),title,message from messages order by date desc limit 10;\"'"))))
+
 (defun eab/compile-goto-error ()
   (interactive)
   (let ((istc? truncate-lines))
