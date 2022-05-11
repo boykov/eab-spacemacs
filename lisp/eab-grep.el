@@ -25,8 +25,8 @@
 ;; grep-command isn't parsed correctly
 ;; (setq grep-history '("grep -i -nH -e test  `git ls-files \\`git rev-parse --show-toplevel\\``"))
 
-(setq eab/grep-command-args " --max-depth 0 --color never --no-heading --pcre2 -U -i -nH -e ")
-(setq eab/grep-command (concat "rg" eab/grep-command-args))
+(setq eab/grep-command-args " --max-depth 0 --color never --no-heading --pcre2 -M 1000 -U -i -nH -e ")
+(defun eab/grep-command () (concat "rg" eab/grep-command-args))
 (setq eab/grep-ls "git ls-files `git rev-parse --show-toplevel`")
 (setq eab/grep-ls-recurse "git ls-files --recurse-submodules `git rev-parse --show-toplevel`")
 (setq eab/grep-clock-left "\"^- (<20|\\[X|\\[ )(\\n[^\*-]|.)*?(.*|\\n)")
@@ -69,8 +69,8 @@
   "Switch to org-mode aware grep."
   (interactive)
   (let* ((ss-0 (car (split-string (car compilation-arguments) eab/grep-sort)))
-	 (ss-1 (concat (car (split-string ss-0 eab/grep-command)) eab/grep-command))
-	 (ss (cadr (split-string ss-0 (concat " " eab/grep-command))))
+	 (ss-1 (concat (car (split-string ss-0 (eab/grep-command))) (eab/grep-command)))
+	 (ss (cadr (split-string ss-0 (concat " " (eab/grep-command)))))
 	 (compilation-arguments
 	  (append (list (concat ss-1 eab/grep-clock-left
 			  ss
@@ -124,7 +124,7 @@
 	     grep-command-no-list-sort))
 	  (grep-command-complete
 	   (concat
-	    (substring grep-command-no-list-sort 0 len-str)
+	    (substring grep-command-no-list-sort 0 (1- len-str))
 	    (symbol-name (symbol-at-point)) " "
 	    (substring grep-command-no-list-sort len-str))))
      (if (or (not arg) (equal arg 2))
@@ -138,17 +138,19 @@
 
 (defun eab/find-grep ()
   (interactive)
-  (let ((grep-host-defaults-alist nil)
+  (let* ((grep-host-defaults-alist nil)
+	(command (concat "find . -iname '**' -type f -print0 | xargs -0 -e " (eab/grep-command) "\"\""))
         (grep-find-command
-         `(, (concat "find . -iname '**' -type f -print0 | xargs -0 -e " eab/grep-command "\"\"" eab/grep-sort) . 116)))
+         `(, (concat command eab/grep-sort) . ,(length command))))
     (call-interactively 'find-grep)))
 
 ;;  orgmode awared grep
 (defun eab/clock-grep ()
   (interactive)
-  (let ((grep-host-defaults-alist nil)
-        (grep-command
-         `(, (concat eab/grep-ls eab/grep-xargs (concat "rg" eab/grep-command-args) eab/grep-clock-left eab/grep-clock-right eab/grep-sort) . 154)))
+  (let* ((grep-host-defaults-alist nil)
+	 (command (concat eab/grep-ls eab/grep-xargs (concat "rg" eab/grep-command-args) eab/grep-clock-left))
+         (grep-command
+          `(, (concat command eab/grep-clock-right eab/grep-sort) . ,(1+ (length command)))))
     (call-interactively 'grep)))
 
 (grep-a-lot-advise eab/grep)

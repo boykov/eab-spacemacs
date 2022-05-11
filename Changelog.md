@@ -1,5 +1,17 @@
 # Changelog
 
+### 0.0.27
+
+Add `neveragenda` tag.
+Rm legacy unused `eab/save-W`, `eab/update-agenda`, `org-agenda-custom-commands`.
+Mv settings to `:init` for `eab-org-agenda`.
+Fix `sign` in `eab/org-clock`.
+Improve `eab/org-ql-*-query` buffer names.
+Ripgrep: add `-M` limit.
+Fix `eab/find-grep`, `eab/clock-grep` `eab/grep` cursor positions.
+Add `esup` package.
+Add `eab/org-ql-view-refresh` without buffer renaming.
+
 ### 0.0.26
 
 Set `source-directory`.

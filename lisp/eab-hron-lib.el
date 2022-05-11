@@ -114,7 +114,6 @@
     ;; (org-mobile-push)
     (eab/shell-command "git stash save batch")
     (sleep-for 1)
-    ;; (eab/update-agenda)
     ))
     ;; (delete-frame nil 'force)))
 
@@ -260,11 +259,20 @@
     (let (s h m)
       (setq s (- (org-float-time at-time)
 		 (org-float-time start-time))
+	    ss (cl-signum s)
+	    s (abs s)
 	    h (floor (/ s 3600))
 	    s (- s (* 3600 h))
 	    m (floor (/ s 60))
 	    s (- s (* 60 s)))
-      (insert " => " (format "%2d:%02d" h m)))))
+      (insert " => " (let ((fh (cond
+				((and (= ss -1) (< h 10))
+				 "-%1d")
+				((and (= ss -1) (> h 9))
+				 "-%2d")
+				(t
+				 "%2d"))))
+			       (format (concat fh ":%02d") h m))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;		  _   _	_      	_     _	  _

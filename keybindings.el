@@ -172,7 +172,6 @@
  "<f6>"		'eab/revert-buffer
  "<f7>"		'eab/fix-windows-coding
  "<print>"	'eab/make-list-paths
- "<kp-end>"	(ilam (switch-to-buffer eab/agenda-H-command))
  "C-,"		'eab/eepitch-this-line
  "C-r"		'eab/eepitch-this-line
  "C-M-r"	'eab/eepitch-paragraph
@@ -549,15 +548,12 @@
  ;;  "s"	'bmkp-cycle ;; TODO сделать обертку, выбирающую navlist в соответствии с группой
  ;;  "t"	`(,(ilam (bmkp-choose-navlist-of-type "any")) :which-key " ")
  ;; DONE по имени буфера: нарушение SPOT!
- "h"		`(,(ilam (switch-to-buffer (concat "*Org QL View: " (eab/replace-in-string "\"" "" (prin1-to-string eab/org-ql-H-query)) "*"))) :which-key " ")
- "H"		`(,(ilam (org-ql-search org-agenda-files eab/org-ql-H-query :super-groups '((:auto-dir-name)) :sort 'priority ) (switch-to-buffer (concat "*Org QL View: " (eab/replace-in-string "\"" "" (prin1-to-string eab/org-ql-H-query)) "*")) (setq-local org-agenda-buffer-name (buffer-name))) :which-key " ")
- "0"		`(,(ilam (switch-to-buffer (concat "*Org QL View: " (eab/replace-in-string "\"" "" (prin1-to-string eab/org-ql-O-query)) "*"))) :which-key " ")
- ")"		`(,(ilam (org-ql-search org-agenda-files eab/org-ql-O-query :super-groups '((:auto-dir-name)) :sort 'priority ) (switch-to-buffer (concat "*Org QL View: " (eab/replace-in-string "\"" "" (prin1-to-string eab/org-ql-O-query)) "*")) (setq-local org-agenda-buffer-name (buffer-name))) :which-key " ")
- "1"		`(,(ilam (switch-to-buffer eab/agenda-a-command)) :which-key " ")
- "w"		`(,(ilam (switch-to-buffer (concat "*Org QL View: " (eab/replace-in-string "\"" "" (prin1-to-string eab/org-ql-W-query))  "*"))) :which-key " ")
- "W"		`(,(ilam (org-ql-search org-agenda-files eab/org-ql-W-query :super-groups '((:auto-dir-name)) :sort 'priority )) :which-key " ")
- ;; "W"		`(,(ilam (switch-to-buffer eab/agenda-W-command)) :which-key " ")
- "M"		`(,(ilam (switch-to-buffer eab/agenda-M-command)) :which-key " ")
+ "h"		`(,(ilam (switch-to-buffer (concat "*Org QL View: " (prin1-to-string 'eab/org-ql-H-query) "*"))) :which-key " ")
+ "H"		`(,(ilam (org-ql-search org-agenda-files eab/org-ql-H-query :super-groups '((:auto-dir-name)) :sort 'priority :buffer (concat "*Org QL View: " (prin1-to-string 'eab/org-ql-H-query) "*")) (switch-to-buffer (concat "*Org QL View: " (prin1-to-string 'eab/org-ql-H-query) "*")) (setq-local org-agenda-buffer-name (buffer-name))) :which-key " ")
+ "0"		`(,(ilam (switch-to-buffer (concat "*Org QL View: " (prin1-to-string 'eab/org-ql-O-query) "*"))) :which-key " ")
+ ")"		`(,(ilam (org-ql-search org-agenda-files eab/org-ql-O-query :super-groups '((:auto-dir-name)) :sort 'priority :buffer (concat "*Org QL View: " (prin1-to-string 'eab/org-ql-O-query) "*")) (switch-to-buffer (concat "*Org QL View: " (prin1-to-string 'eab/org-ql-O-query) "*")) (setq-local org-agenda-buffer-name (buffer-name))) :which-key " ")
+ "w"		`(,(ilam (switch-to-buffer (concat "*Org QL View: " (prin1-to-string 'eab/org-ql-W-query)  "*"))) :which-key " ")
+ "W"		`(,(ilam (org-ql-search org-agenda-files eab/org-ql-W-query :super-groups '((:auto-dir-name)) :sort 'priority :buffer (concat "*Org QL View: " (prin1-to-string 'eab/org-ql-W-query)  "*")) (switch-to-buffer (concat "*Org QL View: " (prin1-to-string 'eab/org-ql-W-query) "*")) (setq-local org-agenda-buffer-name (buffer-name))) :which-key " ")
  "C-s"		'eab/gotify-status)
 (setq eab/wg-map (lookup-key global-map (kbd "C-a")))
 
@@ -893,6 +889,10 @@
    :keymaps 'org-src-mode-map
    "s-'"	'org-edit-src-exit
    "C-l '"	'org-edit-src-exit)
+
+  (general-define-key
+   :keymaps 'org-ql-view-map
+   "g" #'eab/org-ql-view-refresh)
 
   (general-define-key
    :keymaps 'org-agenda-mode-map

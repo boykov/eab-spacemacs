@@ -158,6 +158,7 @@
     oneonone
     emacsc
 
+    esup
     vterm
     emamux
     vagrant
@@ -477,6 +478,7 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-logstash-conf nil)
 (defun eab-spacemacs/init-nginx-mode nil)
 (defun eab-spacemacs/init-emamux nil)
+(defun eab-spacemacs/init-esup nil)
 (defun eab-spacemacs/init-libgit nil
   (if (not (version< emacs-version "26.1"))
       (require 'libgit)))
@@ -981,7 +983,23 @@ which require an initialization must be listed explicitly in the list.")
 
   (use-package eab-org)
   (use-package eab-org-publish)
-  (use-package eab-org-agenda)
+  (use-package eab-org-agenda
+    :init
+    (add-hook 'org-agenda-mode-hook (lambda () (hl-line-mode 1)))
+    (setq org-sort-agenda-notime-is-late nil)
+    (setq org-agenda-sorting-strategy
+	  '((agenda habit-down time-up priority-down category-keep)
+	    (todo timestamp-down)
+	    (tags priority-down category-keep)
+	    (search category-keep)))
+    (setq org-agenda-hide-tags-regexp nil)
+    (org-toggle-sticky-agenda t)
+    (setq org-mobile-agendas '("S" "g" "a"))
+    (setq org-agenda-include-diary nil)
+    (setq org-agenda-archives-mode 't)
+    (setq org-agenda-text-search-extra-files (quote (agenda-archives)))
+    (setq org-agenda-clockreport-parameter-plist (quote (:link nil :maxlevel 2)))
+    )
   (use-package eab-lexical)
   (use-package eab-org-protocol)
   (use-package eab-org-src-babel)
