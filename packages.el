@@ -759,8 +759,9 @@ which require an initialization must be listed explicitly in the list.")
   (setq yas-key-syntaxes '("w_" "w_." "w_.()" "^ "))
 
   (defun yas-org-very-safe-expand ()
+    (yas-minor-mode 't)
     (let ((yas-fallback-behavior 'return-nil)
-	  (yas-minor-mode 't))
+	  )
       (yas-expand)))
 
   (add-hook 'org-mode-hook

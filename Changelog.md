@@ -1,5 +1,15 @@
 # Changelog
 
+### 0.0.28
+
+Add `eab/emacs-service-alist`, fix `eab/history-dir`.
+Add `systemctl restart` + `desktop-save` for instances.
+Enable `desktop-read`.
+Fix `define-obsolete-function-alias` for `bbdb`.
+Fix `eab/wg-create-workgroup`: check already existed group and add all
+groups to history.
+Fix `yas-org-very-safe-expand`.
+
 ### 0.0.27
 
 Add `neveragenda` tag.

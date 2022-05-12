@@ -103,8 +103,7 @@
 
 (defun eab/history-dir ()
   (let ((dir
-	 (eval (cdr
-		(assoc eab/daemon-name (gethash 'eab/history-dir-alist eab/paths-hash))))))
+	 (cdr (assoc eab/daemon-name (gethash 'eab/history-dir-alist eab/paths-hash)))))
     (if (not (file-exists-p dir))
 	(ignore-errors (make-directory dir)))
     dir))
@@ -113,13 +112,18 @@
   (eab/history-dir))
 
 (setq-put eab/history-dir-alist
-	  '(
-	    ("server" . (concat user-emacs-directory "history/"))
-	    ("serverM" . (concat user-emacs-directory "historyM/"))
-	    ("serverP" . (concat user-emacs-directory "historyP/"))
-	    ("serverC" . (concat user-emacs-directory "historyC/"))
+	  `(
+	    ("server"  . ,(concat user-emacs-directory "history/"))
+	    ("serverM" . ,(concat user-emacs-directory "historyM/"))
+	    ("serverP" . ,(concat user-emacs-directory "historyP/"))
+	    ("serverC" . ,(concat user-emacs-directory "historyC/"))
 	    ))
 
+(setq-put eab/emacs-service-alist
+	  '(
+	    ("serverP" . "docker-compose-emacs")
+	    ("serverC" . "docker-compose-clocksum")
+	  ))
 
 ;; TODO можно ли подобные настройки не считать "путями" и убрать из path?
 (setq-put org-clock-persist-file (concat (eab/history-dir) "org-clock-save.el"))

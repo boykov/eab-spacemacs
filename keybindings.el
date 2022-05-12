@@ -484,7 +484,7 @@
  "8"	`(,(ilam (eepitch-ansi-term "8")) :which-key " ")
  "9"	`(,(ilam (eepitch-ansi-term "9")) :which-key " ")
  "c"	'eab/switch-compile
- "x"	'nil
+ "x"	(ilam (desktop-save (eab/desktop-dir)) (eab/sh-over-bash (concat "ssh chronos sudo systemctl restart " (cdr (assoc eab/daemon-name (gethash 'eab/emacs-service-alist eab/paths-hash)))) "" 't))
  "h"	'eab/switch-help
  "z"	'undo-tree-visualize
  "s"	'eab/switch-async

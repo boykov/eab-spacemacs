@@ -43,16 +43,13 @@
   (eab/workgroups-save-file-load)
   (if (fboundp 'grep-a-lot-clear-stack)
       (grep-a-lot-clear-stack))
-  ;; (ignore-errors (let ((dir (eab/desktop-dir)))
-  ;; 		   (if (file-exists-p (concat dir ".emacs.desktop"))
-  ;; 		       (desktop-read dir))))
   (winner-mode)
-  (if (= (shell-command "ps -A | grep Xorg") 0)
-      (setq minibuffer-frame-alist
-	    `((top . ,(/ (x-display-pixel-height) 2))
-	      (left . ,(/ (* (x-display-pixel-width) 1) 4))
-	      (width . ,(/ (* 1on1-minibuffer-frame-width-percent (x-display-pixel-width))
-			   (* 100 (frame-char-width 1on1-minibuffer-frame)) 2)) (height . 2))))
+  ;; (if (= (shell-command "ps -A | grep Xorg") 0)
+  ;;     (setq minibuffer-frame-alist
+  ;; 	    `((top . ,(/ (x-display-pixel-height) 2))
+  ;; 	      (left . ,(/ (* (x-display-pixel-width) 1) 4))
+  ;; 	      (width . ,(/ (* 1on1-minibuffer-frame-width-percent (x-display-pixel-width))
+  ;; 			   (* 100 (frame-char-width 1on1-minibuffer-frame)) 2)) (height . 2))))
 
   ;; (make-frame (append 1on1-minibuffer-frame-alist minibuffer-frame-alist))
   ;; (load-file eab/secrets-path)
@@ -69,6 +66,9 @@
    (equal (ido-completing-read-silent "prompt: " '("one" "two" "three" "four" "five") "t")
 	  '("three" "two")))
   (global-eldoc-mode 0)
+  (ignore-errors (let ((dir (eab/desktop-dir)))
+		   (if (file-exists-p (concat dir ".emacs.desktop"))
+		       (desktop-read dir))))
   )
 
 ;; check inet connection first
