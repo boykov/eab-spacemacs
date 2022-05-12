@@ -1,4 +1,4 @@
-;;; eab-helm.el --- eab helm configure
+;;; eab-helm.el --- eab helm configure -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2010-2022 Evgeny Boykov
 ;;
@@ -7,11 +7,11 @@
 ;; Requirements: helm
 ;; Status: not intended to be distributed yet
 
-(require 'helm) ;; fix boundp helm-map
-(require 'helm-elisp)
-(require 'helm-locate)
-(require 'helm-config)
-(require 'helm-multi-match)
+(use-package helm) ;; fix boundp helm-map
+(use-package helm-elisp)
+(use-package helm-locate)
+(use-package helm-config)
+(use-package helm-multi-match)
 ;;(require 'helm-match-plugin)
 ;; (helm-match-plugin-mode 0) ;; bug in terminal mode
 (remove-hook 'helm-update-hook 'helm-mp-highlight-match)
@@ -35,9 +35,5 @@
 		     helm-source-files-in-current-dir
 		     helm-source-complex-command-history
 		     ))
-
-(eab/bind-path eab/downloads-path)
-
-(eab/bind-path eab/musicdb-path)
 
 (provide 'eab-helm)

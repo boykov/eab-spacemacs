@@ -7,9 +7,6 @@
 ;; Requirements:
 ;; Status: not intended to be distributed yet
 
-(when (string-match-p "^25" emacs-version)
-  (setq dotspacemacs-install-packages 'used-but-keep-unused))
-
 (defvar eab-spacemacs-packages
   `(
     solarized-theme
@@ -300,7 +297,11 @@ which require an initialization must be listed explicitly in the list.")
   (use-package eab-tags)
   )
 (defun eab-spacemacs/init-helm nil
-  (use-package eab-helm)
+  (use-package eab-helm
+    :defer
+    :config
+    (eab/bind-path eab/musicdb-path)
+    )
   )
 (defun eab-spacemacs/init-helm-descbinds nil
   (require 'helm-descbinds)
@@ -427,15 +428,14 @@ which require an initialization must be listed explicitly in the list.")
 	    ))
   )
 (defun eab-spacemacs/init-magit nil
-  (if (not (version< emacs-version "26.1"))
-      (progn
-	(use-package magit
-	  :after (libgit))
-	(require 'magit-wip)))
+  (use-package magit
+    :defer
+    :after (libgit))
+  ;; (use-package magit-wip)
   (defadvice vc-annotate (before eab-vc-annotate activate)
     (vc-refresh-state))
 
-  (require 'git-wip) ;; TODO can remove it and use magit-wip-mode?
+  (require 'git-wip) ;; DONE can remove it and use magit-wip-mode? No, it's better
 ;; (setq auto-revert-buffer-list-filter 'magit-auto-revert-repository-buffer-p)
 ;;    ("-S" "Submodule diff"                 ("-S" "--submodule=diff"))
 ;; (put 'magit-status-mode 'magit-diff-default-arguments
@@ -480,8 +480,7 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-emamux nil)
 (defun eab-spacemacs/init-esup nil)
 (defun eab-spacemacs/init-libgit nil
-  (if (not (version< emacs-version "26.1"))
-      (require 'libgit)))
+  (require 'libgit))
 (defun eab-spacemacs/init-vterm nil
     (setq vterm-keymap-exceptions '("C-c" "C-x" "C-u" "C-g" "C-h" "C-l" "M-x" "M-o" "C-v" "M-v" "C-y" "M-y" "M-s" "M-a" "M-i" "M-k" "M-j" "M-l" "C-a" "M-c" "M-p")))
 
@@ -521,8 +520,8 @@ which require an initialization must be listed explicitly in the list.")
   (use-package eab-smex)
   )
 (defun eab-spacemacs/init-smartparens nil
-  (require 'smartparens) ;; fix boundp sp-keymap
-  (require 'smartparens-latex)
+  (use-package smartparens) ;; fix boundp sp-keymap
+  (use-package smartparens-latex)
   ;; (smartparens-global-mode)
   (setq sp-ignore-modes-list nil)
   )
@@ -578,7 +577,8 @@ which require an initialization must be listed explicitly in the list.")
 		     (docker-utils-get-marked-items-ids))) ":")))))
 
 (defun eab-spacemacs/init-docker-tramp ()
-  (use-package docker-tramp))
+  (use-package docker-tramp
+    :defer))
 
 (defun eab-spacemacs/init-elpa-mirror nil)
 (defun eab-spacemacs/init-ace-window nil)
@@ -599,13 +599,13 @@ which require an initialization must be listed explicitly in the list.")
   )
 (defun eab-spacemacs/init-request nil)
 (defun eab-spacemacs/init-python-mode nil
-  (require 'python-mode)
-  ;; (require 'ipython)
-  (setq py-python-command "ipython")
-  (defvar py-mode-map python-mode-map)
-  (setq py-start-run-py-shell nil)
-  (setq py-force-py-shell-name-p 't) ;; DONE error with #!/usr/bin/python
-  (setq ipython-completion-command-string "print(';'.join(get_ipython().Completer.all_completions('%s')))\n")
+  ;; (use-package python-mode
+  ;;   :init
+  ;;   ;; (require 'ipython)
+  ;;   (setq py-python-command "ipython")
+  ;;   (setq py-start-run-py-shell nil)
+  ;;   (setq py-force-py-shell-name-p 't) ;; DONE error with #!/usr/bin/python
+  ;;   (setq ipython-completion-command-string "print(';'.join(get_ipython().Completer.all_completions('%s')))\n"))
   )
 (defun eab-spacemacs/init-pydoc-info nil
   (require 'pydoc-info)
@@ -682,7 +682,8 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-org-jekyll nil)
 
 (defun eab-spacemacs/init-org-redmine ()
-  (require 'org-redmine))
+  ;; (use-package org-redmine)
+  )
 
 (defun eab-spacemacs/init-pkg-info nil)
 (defun eab-spacemacs/init-epl nil)
@@ -696,11 +697,16 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-org-super-agenda nil)
 (defun eab-spacemacs/init-org-special-block-extras nil)
 (defun eab-spacemacs/init-org-sql nil
-  (require 'org-sql))
+  (use-package org-sql
+    :defer))
 (defun eab-spacemacs/init-org-ql nil
-  (require 'org-ql)
-  (require 'org-ql-search)
-  (setq org-link-parameters (remove '("org-ql-search" :follow org-ql-view--link-follow :store org-ql-view--link-store) org-link-parameters))
+  (use-package org-ql
+    :defer)
+  (use-package org-ql-search
+    :defer
+    :config
+    (setq org-link-parameters (remove '("org-ql-search" :follow org-ql-view--link-follow :store org-ql-view--link-store) org-link-parameters))
+    )
 )
 (defun eab-spacemacs/init-org-mode/lisp nil
   ;; fix 'file is already exist' bug
@@ -746,30 +752,44 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-minimap nil)
 (defun eab-spacemacs/init-markdown-mode nil)
 (defun eab-spacemacs/init-auto-complete nil
-  (use-package eab-auto-complete)
+  (use-package auto-complete)
+  (use-package auto-complete-config)
+  ;; (use-package auto-complete-emacs-lisp)
+  (use-package mode-local)
+  (use-package eab-auto-complete
+    :after (org)
+    :init
+    (eab/bind-path ac-comphist-file)
+    (eab/bind-path eab/american-english)
+    :config
+    (defvar-mode-local org-mode ac-auto-start nil)
+    (defvar-mode-local org-mode ac-use-quick-help nil)
+    )
   )
 (defun eab-spacemacs/init-yasnippet nil
-  (require 'yasnippet)
+  (use-package yasnippet
+    :defer
+    :init
 
-  (setq yas-snippet-dirs '())
-  ;; cd el-get && git clone https://github.com/AndreaCrotti/yasnippet-snippets
-  (add-to-list 'yas-snippet-dirs (eab/bind-path eab/yasnippets-path))
-  (add-to-list 'yas-snippet-dirs (eab/bind-path eab/eab-snippets-path))
+    (setq yas-snippet-dirs '())
+    ;; cd el-get && git clone https://github.com/AndreaCrotti/yasnippet-snippets
+    ;; (add-to-list 'yas-snippet-dirs (eab/bind-path eab/yasnippets-path))
+    (add-to-list 'yas-snippet-dirs (eab/bind-path eab/eab-snippets-path))
 
-  (setq yas-key-syntaxes '("w_" "w_." "w_.()" "^ "))
+    (setq yas-key-syntaxes '("w_" "w_." "w_.()" "^ "))
 
-  (defun yas-org-very-safe-expand ()
-    (yas-minor-mode 't)
-    (let ((yas-fallback-behavior 'return-nil)
-	  )
-      (yas-expand)))
+    (defun yas-org-very-safe-expand ()
+      (yas-minor-mode 't)
+      (let ((yas-fallback-behavior 'return-nil)
+	    )
+	(yas-expand)))
 
-  (add-hook 'org-mode-hook
-            (lambda ()
-              (make-variable-buffer-local 'yas-trigger-key)
-              (setq yas-trigger-key [tab])
-              (add-to-list 'org-tab-first-hook 'yas-org-very-safe-expand)
-              (define-key yas-keymap [tab] 'yas-next-field)))
+    (add-hook 'org-mode-hook
+              (lambda ()
+		(make-variable-buffer-local 'yas-trigger-key)
+		(setq yas-trigger-key [tab])
+		(add-to-list 'org-tab-first-hook 'yas-org-very-safe-expand)
+		(define-key yas-keymap [tab] 'yas-next-field))))
   )
 (defun eab-spacemacs/init-kv nil)
 (defun eab-spacemacs/init-jira nil)
@@ -805,9 +825,9 @@ which require an initialization must be listed explicitly in the list.")
     )
   )
 (defun eab-spacemacs/init-bbdb/lisp nil
-  (require 'bbdb-loaddefs)
-  (require 'bbdb)
-  (require 'bbdb-anniv)
+  (use-package bbdb-loaddefs)
+  (use-package bbdb)
+  (use-package bbdb-anniv)
   (eab/bind-path bbdb-file)
   (bbdb-initialize 'gnus 'message 'sc) ;; 'w3m)
   (add-hook 'gnus-startup-hook 'bbdb-insinuate-gnus)
@@ -910,11 +930,23 @@ which require an initialization must be listed explicitly in the list.")
   )
 
 (defun eab-spacemacs/init-gnus nil
-  (use-package eab-gnus)
+  ;; (use-package eab-gnus)
   )
 
 (defun eab-spacemacs/init-tramp nil
-  (use-package eab-tramp)
+  (use-package tramp
+    :config
+    (setq tramp-default-method "ssh")
+    (eab/bind-path tramp-persistency-file-name)
+    )
+  (use-package eab-tramp
+    :defer
+    :config
+    (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
+    (add-to-list 'tramp-methods eab/sussh)
+    (add-to-list 'tramp-methods eab/sudo)
+    (add-to-list 'tramp-methods (eab/singularity "`pwd`/"))
+    )
   )
 
 (defun eab-spacemacs/init-outline nil
@@ -953,6 +985,8 @@ which require an initialization must be listed explicitly in the list.")
   )
 
 (defun eab-spacemacs/init-dired nil
+  (use-package dired-async)
+  (use-package dired-x)
   (use-package eab-dired
     :after (docker-tramp eab-tramp))
   )
@@ -1019,6 +1053,7 @@ which require an initialization must be listed explicitly in the list.")
   (defvar eab/dired-map (make-sparse-keymap)
     "keymap for fast dired")
   (global-set-key (kbd "C-x d") nil)
+  (eab/bind-path eab/downloads-path)
   (general-define-key
    :prefix "C-x d"
    "d" '(ido-dired :which-key "ido-dired")

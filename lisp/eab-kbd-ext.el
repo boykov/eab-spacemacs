@@ -92,7 +92,6 @@
 		      nxml-mode-hook
 		      org-agenda-mode-map
 		      org-mode-map
-		      py-mode-map
 		      python-mode-map
 		      query-replace-map
 		      shell-mode-map

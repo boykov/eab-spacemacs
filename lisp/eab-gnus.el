@@ -1,4 +1,4 @@
-;;; eab-gnus.el --- eab gnus extension
+;;; eab-gnus.el --- eab gnus extension -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2010-2022 Evgeny Boykov
 ;;
@@ -17,7 +17,8 @@
 
 (setq gnus-large-newsgroup 100)
 (setq gnus-always-read-dribble-file t)
-(setq gnus-message-archive-group (quote ((if (message-news-p) "sent-news" "nnimap+Dovecot:[Gmail]/Sent Mail"))))
+(setq gnus-message-archive-group
+      (quote ((if (message-news-p) "sent-news" "nnimap+Dovecot:[Gmail]/Sent Mail"))))
 (setq gnus-select-method (quote (nnml "")))
 
 (setq mail-sources nil)
@@ -50,7 +51,8 @@
 (setq gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
 (setq imap-ssl-program "gnutls-cli --port %p %s")
 (setq gnus-summary-line-format "%U%R%z%I%(%[%4L: %-23,25D %-23,23f% %-23,43F%]%) %s\n")
-(setq gnus-ignored-from-addresses "[artscan@list\\.ru|eugeniy.boykov@gmail\\.com|boykov@as\\.khb\\.ru]") ;; exclude my addresses for valid field %f
+(setq gnus-ignored-from-addresses
+      "[artscan@list\\.ru|eugeniy.boykov@gmail\\.com|boykov@as\\.khb\\.ru]") ;; exclude my addresses for valid field %f
 
 (setq nnmail-split-methods '(
                              ("NOT-RU" "^\\(To\\|From\\|Cc\\):.*@\\.ru")

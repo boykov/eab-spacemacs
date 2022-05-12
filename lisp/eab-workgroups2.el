@@ -35,8 +35,7 @@
 	(progn
 	  (wg-create-workgroup name)
 	  (dired true-path)
-	  (eab/wg-update-workgroup "dflt")
-	  (wg-save-session t)))
+	  (eab/wg-update-workgroup "dflt")))
     (eab/wg-add-workgroup-to-history (wg-workgroup-uid (wg-get-workgroup name 't)))))
 
 ;; TODO можно использовать `gr list` вместо wg/*: все-равно вручную
@@ -45,7 +44,8 @@
 (defun eab/create-workgroups ()
   (interactive)
   (mapcar 'eab/wg-create-workgroup
-	  (file-expand-wildcards eab/wg-path)))
+	  (file-expand-wildcards eab/wg-path))
+  (wg-save-session t))
 
 (defun eab/wg-add-workgroup-to-history (id)
   (interactive)

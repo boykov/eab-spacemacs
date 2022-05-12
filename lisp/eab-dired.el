@@ -7,8 +7,6 @@
 ;; Requirements: dired dired-async eab-find-func
 ;; Status: not intended to be distributed yet
 
-(require 'dired-async)
-(require 'dired-x)
 
 (eab/patch-this-code
  'dired-async-create-files
@@ -85,10 +83,9 @@
 	 (method (file-remote-p path 'method))
 	 (host (file-remote-p path 'host))
 	 (file (file-name-nondirectory local))
-	 (eab/singularity-dir (file-name-directory local))
 	 (tramp-methods (append
 			 (list
-			  (eab/singularity))
+			  (eab/singularity (file-name-directory local)))
 			 tramp-methods)))
     (find-file (concat "/" method ":" host "|singularity:" file ":/"))))
 

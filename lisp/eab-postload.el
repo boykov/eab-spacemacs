@@ -69,12 +69,16 @@
   (ignore-errors (let ((dir (eab/desktop-dir)))
 		   (if (file-exists-p (concat dir ".emacs.desktop"))
 		       (desktop-read dir))))
+  (require 'yasnippet)
+  (yas-reload-all)
+  (require 'org-ql-search)
+  (require 'org-sql)
+  (require 'eab-helm)
   )
 
 ;; check inet connection first
 (eab/bind-path eab/check-inet-path)
 
-(yas-reload-all)
 
 ;; TODO приходится вручную еще раз запускать, почему?
 ;; может быть это связано с нововведением dbus-launch?

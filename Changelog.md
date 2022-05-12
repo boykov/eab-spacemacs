@@ -1,5 +1,14 @@
 # Changelog
 
+### 0.0.29
+
+Disable `eab/yasnippets-path`, `eab-gnus`, `python-mode`, `org-redmine`.
+Disable `25`, `26.1` emacs version check.
+Refactoring `eab/singularity`, `eab-auto-complete`, `eab/create-workgroups`.
+Add lexical binding for `eab-auto-complete`, `eab-gnus`.
+Apply `use-package` with `:init` instead of `require`.
+Add emacs daemon restart hotkey.
+
 ### 0.0.28
 
 Add `eab/emacs-service-alist`, fix `eab/history-dir`.
