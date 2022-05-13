@@ -937,7 +937,6 @@ which require an initialization must be listed explicitly in the list.")
     (eab/bind-path tramp-persistency-file-name)
     )
   (use-package eab-tramp
-    :defer
     :config
     (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
     (add-to-list 'tramp-methods eab/sussh)

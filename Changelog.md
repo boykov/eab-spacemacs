@@ -1,5 +1,10 @@
 # Changelog
 
+### 0.1.1
+
+Switch to `master` branch.
+Fix missed `eab-dired`: disable `:defer` for `eab-tramp`.
+
 ### 0.0.30
 
 Mv `spacemacs` to `eab-spacemacs/local/`.
