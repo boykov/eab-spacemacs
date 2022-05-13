@@ -1,5 +1,14 @@
 # Changelog
 
+### 0.0.30
+
+Mv `spacemacs` to `eab-spacemacs/local/`.
+Fix `clocksum-28` org-mode.
+Rm legacy `eab-org-mode`, `Makefile`.
+Add `eab-spacemacs-path` in `eab-spacemacs/local/spacemacs/init.el`.
+Add `eab/load-desktop`.
+Update `readme`.
+
 ### 0.0.29
 
 Disable `eab/yasnippets-path`, `eab-gnus`, `python-mode`, `org-redmine`.

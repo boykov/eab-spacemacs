@@ -901,6 +901,7 @@ which require an initialization must be listed explicitly in the list.")
                                               ("4" "maple" nil "mint")))))
   )
 
+;; for history only
 (defun eab-spacemacs/init-eab-org-mode/lisp ()
   (require 'org)
   (require 'org-crypt)
@@ -922,11 +923,7 @@ which require an initialization must be listed explicitly in the list.")
   (require 'ob-python)
   (require 'ob-makefile)
   (require 'ob-R)
-;;  (require 'ob-rec)
-  )
-
-(defun eab-spacemacs/init-eab-org-mode/contrib/lisp ()
-  (require 'htmlize)
+  ;;  (require 'ob-rec)
   )
 
 (defun eab-spacemacs/init-gnus nil

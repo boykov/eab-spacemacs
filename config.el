@@ -8,7 +8,7 @@
 ;; Status: not intended to be distributed yet
 
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
-(add-to-list 'load-path (concat user-emacs-directory "private/eab-spacemacs/lisp"))
+(add-to-list 'load-path (concat eab-spacemacs-path "lisp"))
 
 (defvar eab/first-emacsclient 't "nil if run again")
 
@@ -154,14 +154,14 @@
 (setq-put eab/translate-path "~/bin/translate")
 
 (setq-put eab/eeansi-path (expand-file-name "~/.eev/eeansi.sh"))
-(setq-put eab/eegchannel-path (expand-file-name (concat user-emacs-directory "private/eab-spacemacs/local/eev-current/eegchannel")))
+(setq-put eab/eegchannel-path (expand-file-name (concat eab-spacemacs-path "local/eev-current/eegchannel")))
 
 
 (setq-put abbrev-file-name (concat (eab/history-dir) ".abbrev_defs"))
 (setq-put ido-save-directory-list-file (concat (eab/history-dir) ".ido.last"))
 (setq-put mc/list-file (concat (eab/history-dir) ".mc-lists.el"))
-(setq-put pm-macro-files `(,(concat user-emacs-directory "private/eab-spacemacs/lisp/eab-pmacros.el")))
-(setq-put power-macros-file (concat user-emacs-directory "private/eab-spacemacs/lisp/eab-pmacros.el"))
+(setq-put pm-macro-files `(,(concat eab-spacemacs-path "lisp/eab-pmacros.el")))
+(setq-put power-macros-file (concat eab-spacemacs-path "lisp/eab-pmacros.el"))
 (setq-put reftex-default-bibliography '("~/git/lit/boykov.bib"))
 (setq-put eab/secrets-path (concat user-emacs-directory "eab-private/eab-secrets.el.gpg"))
 
@@ -176,7 +176,7 @@
 
 
 (setq-put custom-file (concat user-emacs-directory "custom.el"))
-(setq-put eab/emaxima-path (concat user-emacs-directory "private/eab-spacemacs/local/eab-misc/emaxima"))
+(setq-put eab/emaxima-path (concat eab-spacemacs-path "local/eab-misc/emaxima"))
 
 (setq-put auto-save-list-file-prefix (concat (eab/history-dir) "auto-save-list/.saves-"))
 
@@ -223,8 +223,8 @@
 (setq-put ansible-vault-pass-file "/home/eab/.ansible/passwd_cc")
 (setq-put ansible-vault-pass-file "/home/eab/.ansible/passwd_fz")
 
-(setq-put eab/yasnippets-path (concat user-emacs-directory "private/eab-spacemacs/local/yasnippet-snippets"))
-(setq-put eab/eab-snippets-path (concat user-emacs-directory "private/eab-spacemacs/snippets"))
+(setq-put eab/yasnippets-path (concat eab-spacemacs-path "local/yasnippet-snippets"))
+(setq-put eab/eab-snippets-path (concat eab-spacemacs-path "snippets"))
 
 (setq-put eab/sauron-sound-path "/usr/share/sounds/ubuntu/stereo/service-login.ogg")
  

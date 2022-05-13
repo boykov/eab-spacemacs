@@ -36,11 +36,17 @@
 
 (eab/bind-path eab/secrets-path)
 ; TODO create function and hook after first start frame
+
+(defun eab/load-desktop ()
+  ;; TODO don't setup defadvice wg-switch-to-workgroup before it
+  (eab/workgroups-save-file-load)
+  (ignore-errors (let ((dir (eab/desktop-dir)))
+		   (if (file-exists-p (concat dir ".emacs.desktop"))
+		       (desktop-read dir)))))
+
 (defun eab/load-personal ()
   (interactive)
   (disable-theme 'solarized-light)
-  ;; TODO don't setup defadvice wg-switch-to-workgroup before it
-  (eab/workgroups-save-file-load)
   (if (fboundp 'grep-a-lot-clear-stack)
       (grep-a-lot-clear-stack))
   (winner-mode)
@@ -66,9 +72,6 @@
    (equal (ido-completing-read-silent "prompt: " '("one" "two" "three" "four" "five") "t")
 	  '("three" "two")))
   (global-eldoc-mode 0)
-  (ignore-errors (let ((dir (eab/desktop-dir)))
-		   (if (file-exists-p (concat dir ".emacs.desktop"))
-		       (desktop-read dir))))
   (require 'yasnippet)
   (yas-reload-all)
   (require 'org-ql-search)
