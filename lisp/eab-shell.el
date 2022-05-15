@@ -70,14 +70,14 @@ process: e.g. nautilus or gnome-terminals"
 (defun eab/dired-see-file ()
   "See file by external application with dired."
   (interactive)
-  (eab/sh-over-bash "xdg-open"
+  (eab/sh-over-bash eab/xdg-open
 		    (replace-regexp-in-string "`" "\\\\`" (dired-get-filename)) 't))
 
 (defun eab/ido-see-file ()
   "See file by external application with ido."
   (interactive)
   (progn
-    (eab/sh-over-bash "xdg-open" (concat ido-current-directory
+    (eab/sh-over-bash eab/xdg-open (concat ido-current-directory
                                          (if ido-matches
                                              (ido-name (car ido-matches))
                                            ido-text)) 't)
@@ -87,7 +87,7 @@ process: e.g. nautilus or gnome-terminals"
   "See current file by external application."
   (interactive)
   (progn
-    (eab/sh-over-bash "xdg-open" buffer-file-name 't)
+    (eab/sh-over-bash eab/xdg-open buffer-file-name 't)
     (abort-recursive-edit)))
 
 (defun eab/minibuffer-see-file ()
@@ -95,7 +95,7 @@ process: e.g. nautilus or gnome-terminals"
   (interactive)
   (progn
     (eab/sh-over-bash
-     "xdg-open"
+     eab/xdg-open
      (concat eab/homedir
 	     (substring (minibuffer-contents)
 			1 (length (minibuffer-contents)))) 't)

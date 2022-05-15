@@ -4,7 +4,7 @@
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 
-;; Requirements: org-mode, sauron
+;; Requirements: org-mode
 ;; Status: not intended to be distributed yet
 
 (add-to-list 'org-publish-project-alist

@@ -1,5 +1,21 @@
 # Changelog
 
+### 0.1.2
+
+Update `eab-avy`.
+Add `eab/websocket` for `eab/gotify-status` (use gotify instead of `sauron`).
+Add `eab/xdg-open`. Fix `eab/helm-select-action`.
+Fix `magit-section-visibility-indicator`.
+Refactor `eab/gr-status`, add config commands.
+
+Delete:
+
+* sauron
+* twittering-mode
+* eab-twit
+* eab-sudo
+* eab-lexical
+
 ### 0.1.1
 
 Switch to `master` branch.

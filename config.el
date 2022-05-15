@@ -19,6 +19,19 @@
 	   "-F \"title=" title
 	   "\" -F \"message=" message
 	   "\" -F \"priority=" (number-to-string priority) "\"")))
+(setq eab/gotify-client-token
+      (shell-command-to-string "ssh chronos gpg -d -q ~/.ssh/.gpggotify-client.gpg"))
+(setq eab/gotify-ws (concat "ws://192.168.2.18:8085/stream?token=" eab/gotify-client-token))
+(setq eab/gotify-command
+      "ssh chronos 'sqlite3 -column /var/gotify/data/gotify.db \"select datetime(date,\\\"localtime\\\"),title,message from messages order by date desc limit 10;\"'")
+
+(setq eab/gr-command
+      "ssh chronos docker exec eab-gr gr status ")
+
+(setq eab/test-dotemacs-command
+      "ssh chronos ~/git/auto/test-dotemacs.sh")
+
+(setq eab/xdg-open "ssh chronos DISPLAY=:0 xdg-open")
 
 (defun eab/loaded-ok ()
   (if (not configuration-layer-error-count)
@@ -115,6 +128,11 @@
 	    ("serverC" . "docker-compose-clocksum")
 	  ))
 
+(setq eab/emacs-service-command
+      (concat
+       "ssh chronos sudo systemctl restart "
+       (cdr (assoc eab/daemon-name (gethash 'eab/emacs-service-alist eab/paths-hash)))))
+
 ;; TODO можно ли подобные настройки не считать "путями" и убрать из path?
 (setq-put org-clock-persist-file (concat (eab/history-dir) "org-clock-save.el"))
 (setq-put org-id-locations-file (concat (eab/history-dir) ".org-id-locations"))
@@ -199,8 +217,6 @@
 (setq-put eab/check-inet-path "~/git/auto/check-inet.sh")
 (setq-put eab/musicdb-path "~/data/dbs/media/music.db")
 (setq-put eab/downloads-path "~/downloads/")
-(setq-put eab/twittering-modeP (expand-file-name "~/.twittering-modeP.gpg"))
-(setq-put eab/twittering-modeC (expand-file-name "~/.twittering-modeC.gpg"))
 
 (setq-put eab/american-english (eab/read-lines "/usr/share/dict/american-english"))
 
@@ -217,6 +233,7 @@
 (setq-put gnus-init-file (concat user-emacs-directory ".gnus"))
 (setq-put gnus-startup-file (concat (eab/history-dir) ".newsrc"))
 (setq-put helm-c-adaptative-history-file (concat (eab/history-dir) "helm-adaptive-history"))
+(setq-put helm-locate-command "ssh chronos locate %s -e -r %s")
 (setq-put nnmail-message-id-cache-file (concat (eab/history-dir) ".nnmail-cache"))
 (setq-put tramp-persistency-file-name (concat (eab/history-dir) "tramp"))
 (setq-put url-configuration-directory (concat (eab/history-dir) "url/"))
@@ -225,8 +242,6 @@
 
 (setq-put eab/yasnippets-path (concat eab-spacemacs-path "local/yasnippet-snippets"))
 (setq-put eab/eab-snippets-path (concat eab-spacemacs-path "snippets"))
-
-(setq-put eab/sauron-sound-path "/usr/share/sounds/ubuntu/stereo/service-login.ogg")
  
 (eval-after-load "enriched"
   '(defun enriched-decode-display-prop (start end &optional param)

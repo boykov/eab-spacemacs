@@ -84,15 +84,38 @@
 
 (defun eab/gr-status ()
   (interactive)
-  (let ((compilation-buffer-name-function
-	 (lambda (mode) (concat "*" "gr status" "*"))))
-    (eab/compile (concat "ssh chronos docker exec eab-gr gr status "))))
+  (let* ((gr-buffer "*gr status*")
+	 (compilation-buffer-name-function
+	  `(lambda (mode) ,gr-buffer)))
+    (save-window-excursion
+      (eab/compile eab/gr-command))
+    (switch-to-buffer gr-buffer nil 't)))
 
-(defun eab/gotify-status ()
+(setq eab/gotify-ready? nil)
+(defun eab/gotify-status (&optional arg)
   (interactive)
-  (let ((compilation-buffer-name-function
-	 (lambda (mode) (concat "*" "compilation: gotify" "*"))))
-    (eab/compile (concat "ssh chronos 'sqlite3 -column /var/gotify/data/gotify.db \"select datetime(date,\\\"localtime\\\"),title,message from messages order by date desc limit 10;\"'"))))
+  (let ((gotify-buffer "*compilation: gotify*"))
+    (if eab/gotify-ready?
+	(switch-to-buffer gotify-buffer nil 't)
+      (progn
+	(let ((compilation-buffer-name-function
+	       `(lambda (mode) ,gotify-buffer)))
+	  (save-window-excursion
+	    (eab/compile eab/gotify-command)))
+	(setq eab/websocket
+              (websocket-open eab/gotify-ws
+                              :on-message `(lambda (_websocket frame)
+					    (save-window-excursion
+					      (switch-to-buffer ,gotify-buffer)
+					      (let ((compilation-buffer-name-function nil))
+						(recompile))))
+                              ;; (message "ws frame: %S" (websocket-frame-text frame)))
+                              :on-close (lambda (_websocket) (message "websocket closed"))))
+	(setq eab/gotify-ready? 't)
+	(switch-to-buffer gotify-buffer nil 't)))))
+
+;; (websocket-send-text eab/websocket "hello from emacs")
+;; (websocket-close eab/websocket)
 
 (defun eab/compile-goto-error ()
   (interactive)
@@ -104,12 +127,12 @@
 	  (point (point)))
       (compile-goto-error)
       (run-with-timer 0.01 nil `(lambda ()
-				 (let ((cb (current-buffer)))
-				       (pop-to-buffer ,buf)
-				       (recenter ,line)
-				       (goto-char ,point)
-				       (toggle-truncate-lines ,istc?)
-				       (pop-to-buffer cb)))))))
+				  (let ((cb (current-buffer)))
+				    (pop-to-buffer ,buf)
+				    (recenter ,line)
+				    (goto-char ,point)
+				    (toggle-truncate-lines ,istc?)
+				    (pop-to-buffer cb)))))))
 
 ;; - TODO это closure, let over lambda? зачем здесь funcall? похоже, чтобы сразу выполнить lambda
 ;; - а почему тогда не использовать просто defun? ясно, отложенные вычисления

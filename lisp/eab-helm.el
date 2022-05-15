@@ -20,11 +20,10 @@
 
 (defun eab/helm-select-action ()
   (interactive)
-  (eab/sh-over-bash "xdg-open" (helm-get-selection) 't)
-  (minibuffer-keyboard-quit))
+  (eab/sh-over-bash eab/xdg-open (helm-get-selection) 't)
+  (abort-recursive-edit))
 
-(setq helm-locate-command "ssh chronos locate %s -e -r %s")
-
+(eab/bind-path helm-locate-command)
 
 (setq helm-idle-delay 0.01)
 (setq helm-input-idle-delay 0.01)

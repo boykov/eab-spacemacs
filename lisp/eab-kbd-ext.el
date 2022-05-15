@@ -98,7 +98,6 @@
 		      slime-mode-hook
 		      slime-repl-mode-hook
 		      term-mode-map
-		      twittering-mode-hook
 		      vc-annotate-mode-map
 		      ))
 

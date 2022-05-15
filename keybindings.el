@@ -148,7 +148,7 @@
  "s-,"		'kmacro-end-or-call-macro-repeat
  "s-."		nil
  "s-m"		'kmacro-keymap
- "<kp-insert>"	'sauron-pop-to-buffer
+ "<kp-insert>"	'nil
  "s-a"		'append-to-buffer)
 
 (general-define-key
@@ -186,8 +186,8 @@
  "C-c s"	'eab/org-agenda-search
  "C-c u"	'eab/unbound-var
  "C-c U"	'eab/unbound-fun
- "C-c v"	'eab/twit-visit
- "C-c w"	'eab/twit-search
+ "C-c v"	'nil
+ "C-c w"	'nil
  "C-c e"	'eab/edit-list-at-point
  "C-h C-f"	'eab/find-function-at-point
  "C-h C-k"	'eab/describe-key-find
@@ -218,7 +218,7 @@
  "<f8>"		'eepitch-this-line
  "<kp-enter>"	'winner-undo
  "<kp-add>"	(ilam (gnus-group-read-group t t "nnimap+Dovecot:inbox"))
- "<kp-begin>"	'twit
+ "<kp-begin>"	'nil
  ;; "<kp-home>" (ilam (switch-to-buffer "&bitlbee"))
  "<M-kp-equal>" (ilam (shell-command "suspend_until.sh 4:00 &"))
  "<kp-delete>"	(ilam (kill-buffer-and-window)))
@@ -430,7 +430,7 @@
  ;; shell and shell-utils
  "f"		'eab/see-file
  "SPC"		'eab/gr-tag-default-directory
- "M-d"		(ilam (eab/sh-over-bash "ssh chronos ~/git/auto/test-dotemacs.sh" "" 't))
+ "M-d"		(ilam (eab/sh-over-bash eab/test-dotemacs-command "" 't))
  "M-p"		(ilam (let ((shell-command-switch "-ic")) (eab/shell-command "dpemacs")))
  "M-P"		(ilam (eab/shell-command "bash -i -c dpemacs_new"))
  "M-m"		(ilam (eab/sh-over-bash "~/git/auto/firefoxmacro.sh" ""	't)))
@@ -486,7 +486,7 @@
  "c"	'eab/switch-compile
  "x"	(ilam
 	 (desktop-save (eab/desktop-dir))
-	 (eab/sh-over-bash (concat "ssh chronos sudo systemctl restart " (cdr (assoc eab/daemon-name (gethash 'eab/emacs-service-alist eab/paths-hash)))) "" 't))
+	 (eab/sh-over-bash eab/emacs-service-command "" 't))
  "X"    (ilam
 	 (run-with-timer 0.1 nil 'kill-emacs)
 	 (eab/sh-over-bash (concat "sleep 0.2 && emacs --daemon=" eab/daemon-name) "" 't))
@@ -753,14 +753,6 @@
    "M-n"	'nil
    "M-p"	'nil))
 
-(eab/add-hook twittering-edit-mode-hook eab/twittering-edit-hook
-  (general-define-key
-   :keymaps 'twittering-edit-mode-map
-   "C-l M-p"	'twittering-edit-previous-history
-   "C-l M-n"	'twittering-edit-next-history
-   "M-p"	'nil
-   "M-n"	'nil))
-
 (eab/add-hook eshell-mode-hook eab/eshell-hook
   (general-define-key
    :keymaps 'eshell-mode-map
@@ -941,29 +933,6 @@
    :keymaps 'f90-mode-map
    "C-j"	'nil
    "C-d"	eab/compile-map))
-
-(eab/add-hook twittering-mode-hook eab/twittering-hook
-  (general-define-key
-   :keymaps 'twittering-mode-map
-   "u"		'eab/twittering-update-status-interactive
-   "d"		'ace-link-info
-   "M-v"	'nil
-   "C-v"	'nil
-   "@"		'eab/twit-filter
-   "f"		'twittering-follow
-   "r"		'twittering-retweet
-   "R"		'twittering-toggle-or-retrieve-replied-statuses
-   "F"		'twittering-favorite
-   "s-f"	'twittering-friends-timeline
-   "s-r"	'twittering-replies-timeline
-   "s-u"	'twittering-user-timeline
-   "s-d"	'twittering-direct-messages-timeline
-   "s-s"	'twittering-update-status-interactive
-   "s-e"	'twittering-erase-old-statuses
-   "s-m"	'twittering-retweet
-   "s-t"	'twittering-set-current-hashtag
-   "C-m"	'twittering-enter
-   "s-l"	'twittering-update-lambda))
 
 (eab/add-hook slime-repl-mode-hook eab/slime-repl-hook
   (general-define-key

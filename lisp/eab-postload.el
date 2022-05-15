@@ -62,10 +62,6 @@
   ;; (eab/check-smtp)
   ;; (gnus)
   ;; (erc :server "localhost")
-  (sauron-start)
-  (sauron-notifications-start)
-  ;; (sauron-org-start)
-  (sauron-twittering-stop)
   (wg-change-modeline)
   (require 'cl-macs)
   (cl-assert

@@ -22,7 +22,6 @@
 ;; (eab/search-word eab/org-agenda-search
 ;; 		 "agenda ql search" org-ql-search
 ;; 		 (org-agenda-files '(and (clocked 560) (not (tags "noagenda"))) :super-groups '((:auto-dir-name)) :sort 'priority))
-(eab/search-word eab/twit-search "twitter search" twittering-search (word)) ;; SOMEDAY команда сохраняется в command-history и её можно повторить
 (eab/search-word eab/add-eab-abbrev "abbrev save" define-abbrev (eab-abbrev-table word word))
 (eab/search-word eab/google-translate "google translate" eab/shell-translate (word))
 (eab/search-word eab/google-translate "google translate" eab/shell-translate-remote (word))

@@ -17,7 +17,6 @@
     dictionary
     auto-dictionary ;; switcher for flyspell
     howdoi
-    twittering-mode
 
     (org-mode/lisp :location local)
     ,(when (not (string-match-p "^25" emacs-version)) 'org-roam)
@@ -73,7 +72,6 @@
     idle-highlight-mode ;; + no melpa
     highlight ;; dired+
     string-edit
-    sauron
     smart-compile
     general
     xterm-color
@@ -162,6 +160,7 @@
     vagrant-tramp
     docker
     docker-tramp
+    websocket
 
     ;; built-in
     (gnus :location built-in)
@@ -412,21 +411,6 @@ which require an initialization must be listed explicitly in the list.")
       (if (not (string-equal word ""))
           (define-abbrev eab-abbrev-table word word))))
   )
-(defun eab-spacemacs/init-sauron nil
-  ;; Requirements: twittering-mode
-  ;; exclude sauron-org
-  (setq sauron-modules '(sauron-notifications sauron-twittering))
-  (require 'sauron)
-  ;; (require 'sauron-org)
-  (require 'sauron-notifications)
-  (setq sauron-separate-frame nil)
-  (eab/bind-path eab/sauron-sound-path)
-  (add-hook 'sauron-event-added-functions
-	  (lambda (origin prio msg &optional props)
-	    (sauron-fx-mplayer eab/sauron-sound-path)
-	    ;;(notifications-notify :title "Sauron" :body msg)))
-	    ))
-  )
 (defun eab-spacemacs/init-magit nil
   (use-package magit
     :defer
@@ -434,6 +418,7 @@ which require an initialization must be listed explicitly in the list.")
   ;; (use-package magit-wip)
   (defadvice vc-annotate (before eab-vc-annotate activate)
     (vc-refresh-state))
+  (setq magit-section-visibility-indicator nil)
 
   (require 'git-wip) ;; DONE can remove it and use magit-wip-mode? No, it's better
 ;; (setq auto-revert-buffer-list-filter 'magit-auto-revert-repository-buffer-p)
@@ -584,19 +569,6 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-ace-window nil)
 (defun eab-spacemacs/init-ace-jump-buffer nil)
 (defun eab-spacemacs/init-ace-link nil)
-(defun eab-spacemacs/init-twittering-mode nil
-  (require 'twittering-mode)
-  (setq twittering-use-native-retweet 't)
-  (setq twittering-initial-timeline-spec-string ":home")
-  (setq twittering-use-master-password t)
-  (eab/bind-path eab/twittering-modeP)
-  (eab/bind-path eab/twittering-modeC)
-  (if (eab/ondaemon "serverP")
-      (setq twittering-private-info-file eab/twittering-modeP))
-  (if (eab/ondaemon "serverC")
-      (setq twittering-private-info-file eab/twittering-modeC))
-  (use-package eab-twit)
-  )
 (defun eab-spacemacs/init-request nil)
 (defun eab-spacemacs/init-python-mode nil
   ;; (use-package python-mode
@@ -631,7 +603,6 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-crontab-mode nil)
 (defun eab-spacemacs/init-shut-up nil)
 (defun eab-spacemacs/init-parsebib nil)
-(defun eab-spacemacs/init-package-build nil)
 (defun eab-spacemacs/init-jedi-core nil)
 (defun eab-spacemacs/init-ebib nil
   (eab/bind-path ebib-file-search-dirs)
@@ -678,7 +649,8 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-python-environment nil)
 (defun eab-spacemacs/init-jedi nil)
 (defun eab-spacemacs/init-bibretrieve nil)
-(defun eab-spacemacs/init-websocket nil)
+(defun eab-spacemacs/init-websocket nil
+  (use-package websocket))
 (defun eab-spacemacs/init-org-jekyll nil)
 
 (defun eab-spacemacs/init-org-redmine ()
@@ -861,6 +833,7 @@ which require an initialization must be listed explicitly in the list.")
 				   (pm-get-available-macros))))))))
   (require 'gnugol)
   (setq diredp-hide-details-initially-flag nil)
+  ;; dired+ нужен для привычной подсветки
   (require 'dired+)
   (require 'dired-details)
   ;; TODO почему приходится делать unload?
@@ -1031,7 +1004,6 @@ which require an initialization must be listed explicitly in the list.")
     (setq org-agenda-text-search-extra-files (quote (agenda-archives)))
     (setq org-agenda-clockreport-parameter-plist (quote (:link nil :maxlevel 2)))
     )
-  (use-package eab-lexical)
   (use-package eab-org-protocol)
   (use-package eab-org-src-babel)
   (use-package eab-org-todo)

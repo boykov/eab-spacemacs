@@ -50,7 +50,7 @@
 				   (output-dvi "xdvi")
 				   (output-pdf "Evince")
 				   ;; (output-pdf "xpdf")
-				   (output-html "xdg-open")))
+				   (output-html eab/xdg-open)))
 
 (setq TeX-command-default "EAB")
 

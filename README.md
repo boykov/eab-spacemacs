@@ -1,6 +1,6 @@
 # eab spacemacs layer
 
-See [changes history](Changelog).
+See [changes history](Changelog.md).
 
 It consists of subsystems:
 
