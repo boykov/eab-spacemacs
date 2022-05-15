@@ -58,14 +58,7 @@
 	       :author-info nil
 	       :creator-info nil))
 
-(setq org-html-head-extra "
-<style type=\"text/css\">
-  pre.src:before {
-    top: -5px;
-  }
-</style>
-")
-
+;; Fix src blocks colors for org-publish-current-file
 (if (eab/ondaemon "serverP")
     (setq org-html-htmlize-output-type 'css))
 

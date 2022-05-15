@@ -150,6 +150,9 @@
   (interactive)
   (eab/wg-switch-to-workgroup-history-1))
 
+(defvar ido-directory-nonreadable nil "")
+(defvar ido-directory-too-big nil "")
+(defvar ido-context-switch-command nil "")
 (defvar ido-choice-list nil "")
 
 (defun eab/wg-switch-to-workgroup-history-1 ()

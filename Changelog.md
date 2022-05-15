@@ -1,5 +1,14 @@
 # Changelog
 
+### 0.1.3
+
+Mv `pre.src:before` to `org-html-themes`.
+Fix `clocksum-28` org-mode again: add missed `yasnippet`, `org`.
+Fix `smart-compile` annoying `Makefile`.
+Fix `eab/wg-switch-to-workgroup-history`:
+
+    Error in post-command-hook (ido-exhibit): (void-variable ido-directory-nonreadable)
+
 ### 0.1.2
 
 Update `eab-avy`.

@@ -98,6 +98,8 @@
 ;; TODO предварительно закрыть все *.org буферы в server?
 (defun eab/batch-publish ()
   (progn
+    (require 'yasnippet)
+    (require 'org)
     (eab/gotify "publish..." "Come in to eab/batch-publish" 0)
     (shell-command "cd /home/eab/git/org && git pull")
     (auto-revert-buffers)

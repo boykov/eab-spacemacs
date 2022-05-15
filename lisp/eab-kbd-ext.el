@@ -15,7 +15,7 @@
 
 ;; TODO сделать backup перед обнулением eab/free-map
 ;; (define-key git-commit-mode-map (kbd "M-n") 'git-commit-next-message)
-;; (define-key git-commit-mode-map (kbd "M-p") 'git-commit-next-message)
+;; (define-key git-commit-mode-map (kbd "M-p") 'git-commit-prev-message)
 
 (defun eab/ergo-fill-nil (mode-map keys)
   (mapcar (lambda (x) (eab/ergo-set-nil mode-map x)) keys))

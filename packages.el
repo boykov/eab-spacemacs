@@ -310,6 +310,7 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-smart-compile nil
   (require 'smart-compile)
   (setq-default smart-compile-check-makefile nil)
+  (setq-default smart-compile-check-build-system nil)
   (add-to-list 'smart-compile-alist '(graphviz-dot-mode . "xdot.py %F"))
   (add-to-list 'smart-compile-alist '(python-mode . "python %F"))
   (add-to-list 'smart-compile-alist '(textile-mode . "make push id=%f"))
