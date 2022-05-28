@@ -82,14 +82,19 @@
 (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
 ;; (add-hook 'compilation-mode-hook 'rename-uniquely)
 
+(setq eab/gr-ready? nil)
 (defun eab/gr-status ()
   (interactive)
   (let* ((gr-buffer "*gr status*")
 	 (compilation-buffer-name-function
 	  `(lambda (mode) ,gr-buffer)))
-    (save-window-excursion
-      (eab/compile eab/gr-command))
-    (switch-to-buffer gr-buffer nil 't)))
+    (if eab/gr-ready?
+	(switch-to-buffer gr-buffer nil 't)
+      (progn
+	(save-window-excursion
+	  (eab/compile eab/gr-command))
+	(setq eab/gr-ready? 't)
+	(switch-to-buffer gr-buffer nil 't)))))
 
 (setq eab/gotify-ready? nil)
 (defun eab/gotify-status (&optional arg)

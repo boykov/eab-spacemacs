@@ -73,6 +73,11 @@
   (require 'org-ql-search)
   (require 'org-sql)
   (require 'eab-helm)
+  (set-face-attribute 'default nil
+                    :family "Source Code Pro"
+                    :height 130
+                    :weight 'normal
+                    :width 'normal)
   )
 
 ;; check inet connection first

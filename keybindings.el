@@ -431,6 +431,7 @@
  "f"		'eab/see-file
  "SPC"		'eab/gr-tag-default-directory
  "M-d"		(ilam (eab/sh-over-bash eab/test-dotemacs-command "" 't))
+ "M-b"		(ilam (eab/sh-over-bash eab/batch-publish-command "" 't))
  "M-p"		(ilam (let ((shell-command-switch "-ic")) (eab/shell-command "dpemacs")))
  "M-P"		(ilam (eab/shell-command "bash -i -c dpemacs_new"))
  "M-m"		(ilam (eab/sh-over-bash "~/git/auto/firefoxmacro.sh" ""	't)))
@@ -489,7 +490,7 @@
 	 (eab/sh-over-bash eab/emacs-service-command "" 't))
  "X"    (ilam
 	 (run-with-timer 0.1 nil 'kill-emacs)
-	 (eab/sh-over-bash (concat "sleep 0.2 && emacs --daemon=" eab/daemon-name) "" 't))
+	 (eab/sh-over-bash (concat "sleep 0.3 && emacs --daemon=" eab/daemon-name) "" 't))
  "h"	'eab/switch-help
  "z"	'undo-tree-visualize
  "s"	'eab/switch-async

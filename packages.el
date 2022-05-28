@@ -300,6 +300,10 @@ which require an initialization must be listed explicitly in the list.")
     :defer
     :config
     (eab/bind-path eab/musicdb-path)
+    (defun eab/helm-find-file-or-marked (candidate)
+      (helm-find-file-or-marked (concat "/ssh:chronos:" candidate)))
+    (setf (cdr (rassoc 'helm-find-file-or-marked helm-type-file-actions))
+      'eab/helm-find-file-or-marked)
     )
   )
 (defun eab-spacemacs/init-helm-descbinds nil

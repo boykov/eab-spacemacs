@@ -31,6 +31,9 @@
 (setq eab/test-dotemacs-command
       "ssh chronos ~/git/auto/test-dotemacs.sh")
 
+(setq eab/batch-publish-command
+      "ssh chronos ~/git/org/misc/batch-publish.sh")
+
 (setq eab/xdg-open "ssh chronos DISPLAY=:0 xdg-open")
 
 (defun eab/loaded-ok ()
@@ -233,7 +236,7 @@
 (setq-put gnus-init-file (concat user-emacs-directory ".gnus"))
 (setq-put gnus-startup-file (concat (eab/history-dir) ".newsrc"))
 (setq-put helm-c-adaptative-history-file (concat (eab/history-dir) "helm-adaptive-history"))
-(setq-put helm-locate-command "ssh chronos locate %s -e -r %s")
+(setq-put helm-locate-command "ssh chronos plocate %s -e %s")
 (setq-put nnmail-message-id-cache-file (concat (eab/history-dir) ".nnmail-cache"))
 (setq-put tramp-persistency-file-name (concat (eab/history-dir) "tramp"))
 (setq-put url-configuration-directory (concat (eab/history-dir) "url/"))

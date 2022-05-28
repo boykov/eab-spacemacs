@@ -1,5 +1,14 @@
 # Changelog
 
+### 0.1.4
+
+Add "Source Code Pro" font, set `height`.
+Add `fix-esup.patch`.
+Add `batch-publish` hotkey.
+Add `eab/gr-ready?`.
+Init `eab/helm-find-file-or-marked` wrapper.
+Use `plocate`.
+
 ### 0.1.3
 
 Mv `pre.src:before` to `org-html-themes`.
