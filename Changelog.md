@@ -1,5 +1,12 @@
 # Changelog
 
+### 0.1.5
+
+Do not remove timestamps in `nightly`.
+Mv `template plot` to `nightly`.
+Add optional `fast` parameter for `eab/batch-publish`.
+Rfct. `if progn` -> `when`.
+
 ### 0.1.4
 
 Add "Source Code Pro" font, set `height`.

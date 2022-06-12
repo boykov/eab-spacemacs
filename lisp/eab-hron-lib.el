@@ -96,28 +96,29 @@
 ;; TODO don't use (org-publish-remove-all-timestamps) after fixing bug
 ;; in org-mode
 ;; TODO предварительно закрыть все *.org буферы в server?
-(defun eab/batch-publish ()
+(defun eab/batch-publish (&optional fast)
   (progn
     (require 'yasnippet)
     (require 'org)
-    (eab/gotify "publish..." "Come in to eab/batch-publish" 0)
+    (if (not fast)
+	(eab/gotify "publish..." "Come in to eab/batch-publish" 0)
+      (eab/gotify "fast publish..." "" 0))
     (shell-command "cd /home/eab/git/org && git pull")
     (auto-revert-buffers)
-    (eab/update-all-dblocks) ;; DONE why doesn't work?
-    ;; DONE it seems to hangs up `eab/update-reports-nightly'
-    (eab/create-template "plot")
-    (eab/update-reports-nightly)
-    (org-publish-remove-all-timestamps)
-    (org-publish-project "html-base" t)
-    (org-publish-project "html-clock" t)
-    (eab/send-csum)
-    (eab/check-csum-all)
-    (eab/send-csum-all)
-    ;; (org-mobile-push)
+    (when (not fast)
+      (eab/update-all-dblocks) ;; DONE why doesn't work?
+      ;; DONE it seems to hangs up `eab/update-reports-nightly'
+      (eab/update-reports-nightly)
+      (org-publish-remove-all-timestamps))
+    (org-publish-project "html-base" (not fast))
+    (org-publish-project "html-clock" (not fast))
+    (when (not fast)
+      (eab/send-csum)
+      (eab/check-csum-all)
+      (eab/send-csum-all))
     (eab/shell-command "git stash save batch")
     (sleep-for 1)
     ))
-    ;; (delete-frame nil 'force)))
 
 (defun eab/org-sort-time-func ()
   (ignore-errors
@@ -359,12 +360,9 @@
 
 (defun eab/update-reports-nightly ()
   (interactive)
+  (eab/create-template "plot")
   (ignore-errors (kill-buffer "time-reports-nightly.org"))
   (eab/create-nightly)
-  (org-publish-remove-all-timestamps)
-  ;; (org-publish-project "html-nightly" t)
-  ;; (shell-command
-  ;;  (concat "cp -f " org-directory "templates/time-reports " org-directory "gen/time-reports-nightly.org"))
   (find-file (concat org-directory "gen/time-reports-nightly.org"))
   (auto-revert-buffers)
   (org-update-all-dblocks)
@@ -385,7 +383,7 @@
 
 ;; See `eab/clocktable-scope' in eab-path-org.el
 
-(defvar eab/total-minutes 9110880.0)
+(defvar eab/total-minutes 9234720.0)
 
 (defun csum-percent ()
   (format "%0.2f" (* (/ (org-clock-sum-current-item)
