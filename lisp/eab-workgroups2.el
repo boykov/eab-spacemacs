@@ -31,12 +31,14 @@
   (let* ((true-path (file-truename path))
 	 (nondir (file-name-nondirectory path))
 	 (name (concat ":" nondir ":")))
-    (if (not (wg-get-workgroup name 't))
-	(progn
-	  (wg-create-workgroup name)
-	  (dired true-path)
-	  (eab/wg-update-workgroup "dflt")))
-    (eab/wg-add-workgroup-to-history (wg-workgroup-uid (wg-get-workgroup name 't)))))
+    (when (file-directory-p true-path)
+      (if (not (wg-get-workgroup name 't))
+	  (progn
+	    (wg-create-workgroup name)
+	    (dired true-path)
+	    (eab/wg-update-workgroup "dflt")))
+      (eab/wg-add-workgroup-to-history
+       (wg-workgroup-uid (wg-get-workgroup name 't))))))
 
 ;; TODO можно использовать `gr list` вместо wg/*: все-равно вручную
 ;; пополняю оба эти списка хотя, симлинки требуют меньше зависимостей

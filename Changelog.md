@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.1.6
+
+Add `file-directory-p` check for `eab/create-workgroups`.
+
 ### 0.1.5
 
 Do not remove timestamps in `nightly`.
