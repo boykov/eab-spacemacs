@@ -1,5 +1,21 @@
 # Changelog
 
+### 0.1.7
+
+Fix `~/bin/gr`.
+Add `transient-history-file`, `recentf`, `custom` to `setq-put`.
+Always `desktop-save`.
+
+Update `eab-workgroups2`:
+* Start from `blank` workgroup
+* Move `:` to link names
+* Use `file` or `directory` for targets
+
+Use `org-chronos` for `serverP`.
+Fix workgroup paths `~/pnt/jaguar/git` -> `~/git`.
+
+Fix `eab/batch-publish` for "first-running" case.
+
 ### 0.1.6
 
 Add `file-directory-p` check for `eab/create-workgroups`.

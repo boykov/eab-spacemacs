@@ -424,6 +424,7 @@ which require an initialization must be listed explicitly in the list.")
   (defadvice vc-annotate (before eab-vc-annotate activate)
     (vc-refresh-state))
   (setq magit-section-visibility-indicator nil)
+  (eab/bind-path transient-history-file)
 
   (require 'git-wip) ;; DONE can remove it and use magit-wip-mode? No, it's better
 ;; (setq auto-revert-buffer-list-filter 'magit-auto-revert-repository-buffer-p)

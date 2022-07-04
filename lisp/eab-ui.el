@@ -14,6 +14,8 @@
 (eab/bind-path save-place-file)
 (eab/bind-path url-configuration-directory)
 (eab/bind-path source-directory)
+(eab/bind-path recentf-save-file)
+(eab/bind-path custom-file)
 
 (setq find-function-C-source-directory source-directory)
 

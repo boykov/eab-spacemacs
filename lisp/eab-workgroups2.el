@@ -28,14 +28,16 @@
        eab/wg-update-list)))
 
 (defun eab/wg-create-workgroup (path)
-  (let* ((true-path (file-truename path))
+  (let* ((true-path
+	  (replace-regexp-in-string "pnt/jaguar/" ""
+	   (file-truename path)))
 	 (nondir (file-name-nondirectory path))
-	 (name (concat ":" nondir ":")))
-    (when (file-directory-p true-path)
+	 (name nondir))
+    (when (file-exists-p true-path)
       (if (not (wg-get-workgroup name 't))
 	  (progn
-	    (wg-create-workgroup name)
-	    (dired true-path)
+	    (wg-create-workgroup name 't)
+	    (find-file true-path)
 	    (eab/wg-update-workgroup "dflt")))
       (eab/wg-add-workgroup-to-history
        (wg-workgroup-uid (wg-get-workgroup name 't))))))

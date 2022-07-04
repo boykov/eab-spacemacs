@@ -26,7 +26,7 @@
       "ssh chronos 'sqlite3 -column /var/gotify/data/gotify.db \"select datetime(date,\\\"localtime\\\"),title,message from messages order by date desc limit 10;\"'")
 
 (setq eab/gr-command
-      "ssh chronos docker exec eab-gr gr status ")
+      "ssh chronos ~/bin/gr status")
 
 (setq eab/test-dotemacs-command
       "ssh chronos ~/git/auto/test-dotemacs.sh")
@@ -141,7 +141,14 @@
 (setq-put org-id-locations-file (concat (eab/history-dir) ".org-id-locations"))
 (setq-put projectile-known-projects-file (concat (eab/history-dir) "projectile-bookmarks.eld"))
 
-(setq-put org-directory "~/git/org/")
+(if (eab/ondaemon "serverP")
+    (progn
+      (setq-put org-directory "~/git/org-chronos/")
+      (setq-put eab/wg-path "~/git/org-chronos/wg/*"))
+  (progn
+    (setq-put org-directory "~/git/org/")
+    (setq-put eab/wg-path "~/git/org/wg/*")))
+
 (setq-put eab/org-publish-directory "~/pub/org/")
 (setq-put eab/org-publish-directory-file "file:///home/eab/pub/org/")
 (setq-put org-mobile-directory "~/Dropbox/MobileOrg")
@@ -154,12 +161,11 @@
 	    ))
 ;; See also eab-header in ~/texmf/tex/latex/eab-styles/eab-header.sty
 
-(setq-put eab/wg-path "~/git/org/wg/*")
 
 (defun eab/wg-update-list-1 (path)
   (let* ((true-path (file-truename path))
 	 (nondir (file-name-nondirectory path))
-	 (name (concat ":" nondir ":")))
+	 (name nondir))
     `(,true-path ,name)))
 
 (setq-put eab/workgroups-save (concat (eab/history-dir) ".emacs_workgroups"))
@@ -196,7 +202,7 @@
       ((eab/onhost "cyclos")    (setq-put source-directory "~/data/gitno/github/emacs/src")))
 
 
-(setq-put custom-file (concat user-emacs-directory "custom.el"))
+(setq-put custom-file (concat (eab/history-dir) "custom.el"))
 (setq-put eab/emaxima-path (concat eab-spacemacs-path "local/eab-misc/emaxima"))
 
 (setq-put auto-save-list-file-prefix (concat (eab/history-dir) "auto-save-list/.saves-"))
@@ -240,6 +246,8 @@
 (setq-put nnmail-message-id-cache-file (concat (eab/history-dir) ".nnmail-cache"))
 (setq-put tramp-persistency-file-name (concat (eab/history-dir) "tramp"))
 (setq-put url-configuration-directory (concat (eab/history-dir) "url/"))
+(setq-put transient-history-file (concat (eab/history-dir) "transient/history.el"))
+(setq-put recentf-save-file (concat (eab/history-dir) "recentf"))
 (setq-put ansible-vault-pass-file "/home/eab/.ansible/passwd_cc")
 (setq-put ansible-vault-pass-file "/home/eab/.ansible/passwd_fz")
 

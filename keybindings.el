@@ -489,6 +489,7 @@
 	 (desktop-save (eab/desktop-dir))
 	 (eab/sh-over-bash eab/emacs-service-command "" 't))
  "X"    (ilam
+	 (desktop-save (eab/desktop-dir))
 	 (run-with-timer 0.1 nil 'kill-emacs)
 	 (eab/sh-over-bash (concat "sleep 0.3 && emacs --daemon=" eab/daemon-name) "" 't))
  "h"	'eab/switch-help
