@@ -28,9 +28,7 @@
        eab/wg-update-list)))
 
 (defun eab/wg-create-workgroup (path)
-  (let* ((true-path
-	  (replace-regexp-in-string "pnt/jaguar/" ""
-	   (file-truename path)))
+  (let* ((true-path (file-truename path))
 	 (nondir (file-name-nondirectory path))
 	 (name nondir))
     (when (file-exists-p true-path)

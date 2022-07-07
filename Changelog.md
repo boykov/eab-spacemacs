@@ -1,5 +1,12 @@
 # Changelog
 
+### 0.1.8
+
+Fix `eab/wg-create-workgroup`.
+Improve `eab/delete-nightly`.
+
+Disable `pnt/jaguar/` fixing.
+
 ### 0.1.7
 
 Fix `~/bin/gr`.
