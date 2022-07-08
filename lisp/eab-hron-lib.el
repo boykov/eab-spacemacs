@@ -52,27 +52,6 @@
 	       :creator-info nil))
 
 (add-to-list 'org-publish-project-alist
-	     `("html-nightly"
-	       :base-directory ,(concat org-directory "gen/nightly/")
-	       :publishing-directory ,(concat eab/org-publish-directory "gen/nightly/")
-	       :base-url ,(concat eab/org-publish-directory-file "gen/nightly/")
-	       :working-directory ,(concat eab/org-publish-directory "gen/nightly/")
-	       :online-suffix ".html"
-	       :working-suffix ".org"
-	       :recursive t
-	       :with-drawers ("CLOCK")
-	       :section_numbers nil
-	       :table-of-contents nil
-	       :base-extension "org"
-	       :publishing-function org-html-publish-to-html
-	       :auto-sitemap t                ; Generate sitemap.org automagically...
-	       :sitemap-filename "sitemap.org"  ; ... call it sitemap.org (it's the default)...
-	       :sitemap-title "Sitemap"         ; ... with title 'Sitemap'.
-	       :style-include-default t
-	       :author-info nil
-	       :creator-info nil))
-
-(add-to-list 'org-publish-project-alist
 	     `("html-gen"
 	       :base-directory ,(concat org-directory "gen/")
 	       :publishing-directory ,(concat eab/org-publish-directory "gen/")
@@ -116,7 +95,7 @@
       (org-publish-remove-all-timestamps))
     (org-publish-project "html-base" (not fast))
     (org-publish-project "html-clock" (not fast))
-    (eab/shell-command "git stash save batch")
+    ;; (eab/shell-command "git stash save batch")
     (sleep-for 1)
     ))
 
@@ -294,7 +273,7 @@
 (defun eab/create-nightly ()
   (interactive)
   (shell-command (concat org-directory "misc/create-" "nightly" ".sh"))
-  (if (eab/ondaemon "serverC")
+  (if (eab/ondaemon (eab/server-C))
       (shell-command (concat org-directory "misc/fix-" "nightly" ".sh")))
   )
 
@@ -413,7 +392,7 @@
 (defun eab/renew-agenda-files ()
   (interactive)
   (eab/renew-agenda-files-1)
-  (server-eval-at "serverC" '(eab/renew-agenda-files-1))
+  (server-eval-at (eab/server-C) '(eab/renew-agenda-files-1))
   )
 
 (defun eab/check-csum-day (&optional date)
@@ -435,7 +414,7 @@
    (format-time-string
     (car org-time-stamp-formats)
     (apply 'encode-time  (org-parse-time-string (eab/hron-add-current 0 0)))))
-  (if (eab/ondaemon "serverC")
+  (if (eab/ondaemon (eab/server-C))
       (insert "\" :maxlevel 1 :narrow 80! :link t :scope eab/clocktable-scope\n")
     (insert "\" :maxlevel 1 :narrow 80! :link t :scope (eab/clocktable-scope)\n"))
   (insert "#+END:")
@@ -483,7 +462,7 @@
   (require 'org)
   (org-mode)
   (insert "* контрольная сумма\n")
-  (if (eab/ondaemon "serverC")
+  (if (eab/ondaemon (eab/server-C))
       (insert "#+BEGIN: clocktable :maxlevel 1 :narrow 80! :scope eab/clocktable-scope\n")
     (insert "#+BEGIN: clocktable :maxlevel 1 :narrow 80! :scope (eab/clocktable-scope)\n"))
   (insert "#+END:")
@@ -575,12 +554,12 @@
 	  (eab/get-all-csum)
 	  ", csum "
 	  eab/hron-csum-day))
-	(server-eval-at "serverP" '(add-to-list 'mode-line-modes '(t " [!] ")))
+	(server-eval-at (eab/server-P) '(add-to-list 'mode-line-modes '(t " [!] ")))
 	(eab/gotify "bad csum" "[!]" 5))
     (progn
       (setq eab/total-csum eab/hron-csum-day)
       (eab/send-mail "All time Совпадает!")
-      (server-eval-at "serverP" `(progn
+      (server-eval-at (eab/server-P) `(progn
 				  (setq eab/total-csum ,eab/total-csum)
 				  (eab/gotify "ok csum" "All time Совпадает!" 0)
 				  (setq mode-line-modes (remove '(t " [!] ") mode-line-modes))))
@@ -596,7 +575,7 @@
 		   (lambda ()
 		     (require 'server)
 		     (sleep-for 1)
-		     (server-eval-at "serverC" '(progn
+		     (server-eval-at ,(eab/server-C) '(progn
 						  (shell-command "cd /home/eab/git/org && git pull")
 						  (auto-revert-buffers)
 						  (,fname)

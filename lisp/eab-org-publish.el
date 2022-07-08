@@ -59,7 +59,7 @@
 	       :creator-info nil))
 
 ;; Fix src blocks colors for org-publish-current-file
-(if (eab/ondaemon "serverP")
+(if (eab/ondaemon (eab/server-P))
     (setq org-html-htmlize-output-type 'css))
 
 (provide 'eab-org-publish)

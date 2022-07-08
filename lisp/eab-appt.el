@@ -2,7 +2,7 @@
 ;; 
 
 ;; Activate appointments so we get notifications
-(when (and (eab/ondaemon "serverP") (not noninteractive))
+(when (and (eab/ondaemon (eab/server-P)) (not noninteractive))
   (appt-activate t)
   (run-at-time nil nil (lambda () (message "%s" "hello")))
   (run-at-time nil 3600 'org-save-all-org-buffers)
@@ -16,7 +16,7 @@
 (setq appt-display-interval 12)
 
 ;; edit timer-idle-list
-(when (eab/ondaemon "serverP")
+(when (eab/ondaemon (eab/server-P))
   (run-with-idle-timer 15 't (lambda () (interactive) (save-some-buffers 't))))
 
 (provide 'eab-appt)

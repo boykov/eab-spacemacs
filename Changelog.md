@@ -1,5 +1,13 @@
 # Changelog
 
+### 0.1.9
+
+Add `(eab/server-*)` functions.
+Disabe `git stash` in `eab/batch-publish`.
+Update `ergoemacs-mode`, fix `ergoemacs-move-cursor-next-pane`.
+Fix `serverC` org files in `fundamental-mode`.
+Rm legacy `html-nightly`.
+
 ### 0.1.8
 
 Fix `eab/wg-create-workgroup`.

@@ -158,7 +158,7 @@
  "M-Q"	'ergoemacs-close-current-buffer
  "M-`"	'ergoemacs-switch-to-next-frame
  "M-S"	'ergoemacs-move-cursor-previous-pane
- "M-s"	'ergoemacs-move-cursor-next-pane
+ "M-s"	(ilam (ergoemacs-move-cursor-previous-pane -1))
  "M-w"	'ergoemacs-shrink-whitespaces
  "M-~"	'ergoemacs-switch-to-previous-frame
  "C-/"	'ergoemacs-toggle-letter-case

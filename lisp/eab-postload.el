@@ -30,7 +30,7 @@
 
 ;; DONE похоже, переменная server-name здесь еще не становится serverC
 
-(if (and (or (eab/ondaemon "serverP") (eab/ondaemon "server")) (not noninteractive))
+(if (and (or (eab/ondaemon (eab/server-P)) (eab/ondaemon "server")) (not noninteractive))
     (progn
       (load-theme 'spacemacs-dark 't)))
 

@@ -61,6 +61,12 @@
 (defun eab/ondaemon (def)
   (if (string= eab/daemon-name def) 't))
 
+(defun eab/server-P ()
+  "serverP")
+
+(defun eab/server-C ()
+  "serverC")
+
 ;; TODO для многих патчей требуется одновременно несколько замен
 ;; значит, если продолжать в этом направлении, надо заменить пару
 ;; (regexp rep) на список пар
@@ -78,7 +84,7 @@
 	 (let ((end (point)))
 	   (buffer-substring-no-properties bgn end)))))) lex))
 
-;; (if (eab/ondaemon "serverC")
+;; (if (eab/ondaemon (eab/server-C))
 ;;     (setq debug-on-error 't))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -121,14 +127,14 @@
 	  `(
 	    ("server"  . ,(concat user-emacs-directory "history/"))
 	    ("serverM" . ,(concat user-emacs-directory "historyM/"))
-	    ("serverP" . ,(concat user-emacs-directory "historyP/"))
-	    ("serverC" . ,(concat user-emacs-directory "historyC/"))
+	    (,(eab/server-P) . ,(concat user-emacs-directory "historyP/"))
+	    (,(eab/server-C) . ,(concat user-emacs-directory "historyC/"))
 	    ))
 
 (setq-put eab/emacs-service-alist
-	  '(
-	    ("serverP" . "docker-compose-emacs")
-	    ("serverC" . "docker-compose-clocksum")
+	  `(
+	    (,(eab/server-P) . "docker-compose-emacs")
+	    (,(eab/server-C) . "docker-compose-clocksum")
 	  ))
 
 (setq eab/emacs-service-command
@@ -141,7 +147,7 @@
 (setq-put org-id-locations-file (concat (eab/history-dir) ".org-id-locations"))
 (setq-put projectile-known-projects-file (concat (eab/history-dir) "projectile-bookmarks.eld"))
 
-(if (eab/ondaemon "serverP")
+(if (eab/ondaemon (eab/server-P))
     (progn
       (setq-put org-directory "~/git/org-chronos/")
       (setq-put eab/wg-path "~/git/org-chronos/wg/*"))
