@@ -1,5 +1,11 @@
 # Changelog
 
+### 0.1.10
+
+Fix wrong `bad csum` event.
+Fix `eab/send-csum-all` dependency from `serverP`.
+Add `microcyclos` emacs `serverP` type.
+
 ### 0.1.9
 
 Add `(eab/server-*)` functions.

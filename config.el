@@ -62,7 +62,9 @@
   (if (string= eab/daemon-name def) 't))
 
 (defun eab/server-P ()
-  "serverP")
+  (if (or (eab/ondaemon "serverP")
+	  (eab/ondaemon "microcyclos"))
+	  eab/daemon-name))
 
 (defun eab/server-C ()
   "serverC")
@@ -125,15 +127,17 @@
 
 (setq-put eab/history-dir-alist
 	  `(
-	    ("server"  . ,(concat user-emacs-directory "history/"))
-	    ("serverM" . ,(concat user-emacs-directory "historyM/"))
-	    (,(eab/server-P) . ,(concat user-emacs-directory "historyP/"))
+	    ("server"        . ,(concat user-emacs-directory "history/"))
+	    ("serverM"       . ,(concat user-emacs-directory "historyM/"))
+	    ("serverP"       . ,(concat user-emacs-directory "historyP/"))
+	    ("microcyclos"         . ,(concat user-emacs-directory "historyMicrocyclos/"))
 	    (,(eab/server-C) . ,(concat user-emacs-directory "historyC/"))
 	    ))
 
 (setq-put eab/emacs-service-alist
 	  `(
-	    (,(eab/server-P) . "docker-compose-emacs")
+	    ("serverP"       . "docker-compose-emacs")
+	    ("microcyclos"         . "docker-compose-micro")
 	    (,(eab/server-C) . "docker-compose-clocksum")
 	  ))
 

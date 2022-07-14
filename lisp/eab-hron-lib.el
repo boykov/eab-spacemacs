@@ -83,11 +83,11 @@
 	(eab/gotify "publish..." "Come in to eab/batch-publish" 0)
       (eab/gotify "fast publish..." "" 0))
     (shell-command "cd /home/eab/git/org && git pull")
+    (auto-revert-buffers)
     (when (not fast)
       (eab/send-csum)
       (eab/check-csum-all)
       (eab/send-csum-all))
-    (auto-revert-buffers)
     (when (not fast)
       (eab/update-all-dblocks) ;; DONE why doesn't work?
       ;; DONE it seems to hangs up `eab/update-reports-nightly'
@@ -547,23 +547,8 @@
   (if (not (string-equal
 	    eab/hron-csum-day
 	    (concat "*" (eab/get-all-csum) "*")))
-      (progn
-	(eab/send-mail
-	 (concat
-	  "All time failed: calendar "
-	  (eab/get-all-csum)
-	  ", csum "
-	  eab/hron-csum-day))
-	(server-eval-at (eab/server-P) '(add-to-list 'mode-line-modes '(t " [!] ")))
-	(eab/gotify "bad csum" "[!]" 5))
-    (progn
-      (setq eab/total-csum eab/hron-csum-day)
-      (eab/send-mail "All time Совпадает!")
-      (server-eval-at (eab/server-P) `(progn
-				  (setq eab/total-csum ,eab/total-csum)
-				  (eab/gotify "ok csum" "All time Совпадает!" 0)
-				  (setq mode-line-modes (remove '(t " [!] ") mode-line-modes))))
-      )))
+      (eab/gotify "bad csum" "[!]" 5)
+    (eab/gotify "ok csum" "All time Совпадает!" 0)))
 
 (defun eab/send-csum-all-remote (&optional arg)
   (interactive "P")
