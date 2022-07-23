@@ -22,6 +22,9 @@
 (require 'autorevert)
 (global-auto-revert-mode)
 ;; TODO with notify my workflow breaks
+;; not all org buffers auto reverts, i.e. a bug?
+;; (setq auto-revert-use-notify 't)
+;; (setq auto-revert-avoid-polling 't)
 (setq auto-revert-use-notify nil)
 ;; (setq auto-revert-remote-files 't) it breaks magit-status buffer
 

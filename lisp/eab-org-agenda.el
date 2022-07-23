@@ -7,6 +7,24 @@
 (setq eab/org-ql-O-query '(and (or (not (tags "noagenda")) (tags "agenda")) (not (tags "neveragenda")) (clocked 6000) (not (clocked 400))))
 (setq eab/org-ql-W-query '(and (and (or (tags "w1c") (tags "fz")) (or (not (tags "noagenda")) (tags "agenda")) (not (tags "neveragenda"))) (clocked 560)))
 
+(defun eab/org-ql-switch (query)
+  (switch-to-buffer
+   (concat "*Org QL View: "
+	   (prin1-to-string query) "*"))
+  (eab/org-ql-view-refresh))
+
+(defun eab/org-ql-search (query)
+  (org-ql-search
+    org-agenda-files
+    (eval query)
+    :super-groups
+    '((:auto-dir-name))
+    :sort 'priority
+    :buffer (concat "*Org QL View: " (prin1-to-string query) "*"))
+  (switch-to-buffer
+   (concat "*Org QL View: " (prin1-to-string query) "*"))
+  (setq-local org-agenda-buffer-name (buffer-name)))
+
 ;; TODO instead of org-ql-view-refresh with wrong rename-buffer
 (defun eab/org-ql-view-refresh (&optional prompt)
   "Refresh current `org-ql-search' buffer.

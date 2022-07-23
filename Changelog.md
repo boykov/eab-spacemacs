@@ -1,5 +1,16 @@
 # Changelog
 
+### 0.1.12
+
+- [ ] browser-remote: how to override DISPLAY? See `browse-url` example
+`(copy-sequence process-environment)` and `(setenv "DISPLAY" ..)`
+
+### 0.1.11
+
+Force `eab/org-ql-view-refresh` on `switch-to-buffer`.
+Add `eab/org-ql-*` funcs.
+Add `magit-insert-modules`.
+
 ### 0.1.10
 
 Fix wrong `bad csum` event.

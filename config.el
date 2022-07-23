@@ -130,14 +130,14 @@
 	    ("server"        . ,(concat user-emacs-directory "history/"))
 	    ("serverM"       . ,(concat user-emacs-directory "historyM/"))
 	    ("serverP"       . ,(concat user-emacs-directory "historyP/"))
-	    ("microcyclos"         . ,(concat user-emacs-directory "historyMicrocyclos/"))
+	    ("microcyclos"   . ,(concat user-emacs-directory "historyMicrocyclos/"))
 	    (,(eab/server-C) . ,(concat user-emacs-directory "historyC/"))
 	    ))
 
 (setq-put eab/emacs-service-alist
 	  `(
 	    ("serverP"       . "docker-compose-emacs")
-	    ("microcyclos"         . "docker-compose-micro")
+	    ("microcyclos"   . "docker-compose-micro")
 	    (,(eab/server-C) . "docker-compose-clocksum")
 	  ))
 

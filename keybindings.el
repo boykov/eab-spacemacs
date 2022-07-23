@@ -555,12 +555,12 @@
  ;;  "s"	'bmkp-cycle ;; TODO сделать обертку, выбирающую navlist в соответствии с группой
  ;;  "t"	`(,(ilam (bmkp-choose-navlist-of-type "any")) :which-key " ")
  ;; DONE по имени буфера: нарушение SPOT!
- "h"		`(,(ilam (switch-to-buffer (concat "*Org QL View: " (prin1-to-string 'eab/org-ql-H-query) "*"))) :which-key " ")
- "H"		`(,(ilam (org-ql-search org-agenda-files eab/org-ql-H-query :super-groups '((:auto-dir-name)) :sort 'priority :buffer (concat "*Org QL View: " (prin1-to-string 'eab/org-ql-H-query) "*")) (switch-to-buffer (concat "*Org QL View: " (prin1-to-string 'eab/org-ql-H-query) "*")) (setq-local org-agenda-buffer-name (buffer-name))) :which-key " ")
- "0"		`(,(ilam (switch-to-buffer (concat "*Org QL View: " (prin1-to-string 'eab/org-ql-O-query) "*"))) :which-key " ")
- ")"		`(,(ilam (org-ql-search org-agenda-files eab/org-ql-O-query :super-groups '((:auto-dir-name)) :sort 'priority :buffer (concat "*Org QL View: " (prin1-to-string 'eab/org-ql-O-query) "*")) (switch-to-buffer (concat "*Org QL View: " (prin1-to-string 'eab/org-ql-O-query) "*")) (setq-local org-agenda-buffer-name (buffer-name))) :which-key " ")
- "w"		`(,(ilam (switch-to-buffer (concat "*Org QL View: " (prin1-to-string 'eab/org-ql-W-query)  "*"))) :which-key " ")
- "W"		`(,(ilam (org-ql-search org-agenda-files eab/org-ql-W-query :super-groups '((:auto-dir-name)) :sort 'priority :buffer (concat "*Org QL View: " (prin1-to-string 'eab/org-ql-W-query)  "*")) (switch-to-buffer (concat "*Org QL View: " (prin1-to-string 'eab/org-ql-W-query) "*")) (setq-local org-agenda-buffer-name (buffer-name))) :which-key " ")
+ "h"		`(,(ilam (eab/org-ql-switch 'eab/org-ql-H-query)) :which-key " ")
+ "H"		`(,(ilam (eab/org-ql-search 'eab/org-ql-H-query)) :which-key " ")
+ "0"		`(,(ilam (eab/org-ql-switch 'eab/org-ql-O-query)) :which-key " ")
+ ")"		`(,(ilam (eab/org-ql-search 'eab/org-ql-O-query)) :which-key " ")
+ "w"		`(,(ilam (eab/org-ql-switch 'eab/org-ql-W-query)) :which-key " ")
+ "W"		`(,(ilam (eab/org-ql-search 'eab/org-ql-W-query)) :which-key " ")
  "C-s"		'eab/gotify-status)
 (setq eab/wg-map (lookup-key global-map (kbd "C-a")))
 
