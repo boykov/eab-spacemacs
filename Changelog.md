@@ -1,9 +1,15 @@
 # Changelog
 
-### 0.1.12
+### 0.1.13
 
 - [ ] browser-remote: how to override DISPLAY? See `browse-url` example
 `(copy-sequence process-environment)` and `(setenv "DISPLAY" ..)`
+
+### 0.1.12
+
+Fix `system-time-locale`: serverC `english` vs `russian` published timestamps.
+Fix `magit` package wrong initialization.
+Fix `eab/open-corresponding-html`.
 
 ### 0.1.11
 

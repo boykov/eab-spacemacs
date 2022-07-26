@@ -34,6 +34,9 @@
     (progn
       (load-theme 'spacemacs-dark 't)))
 
+(if (eab/ondaemon (eab/server-C))
+    (setq system-time-locale "ru_RU.UTF-8"))
+
 (eab/bind-path eab/secrets-path)
 ; TODO create function and hook after first start frame
 

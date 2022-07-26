@@ -419,12 +419,13 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-magit nil
   (use-package magit
     :defer
-    :after (libgit))
+    :after (libgit)
+    :init
+    (add-to-list 'magit-status-sections-hook 'magit-insert-modules 't))
   ;; (use-package magit-wip)
   (defadvice vc-annotate (before eab-vc-annotate activate)
     (vc-refresh-state))
   (setq magit-section-visibility-indicator nil)
-  (add-to-list 'magit-status-sections-hook 'magit-insert-modules 't)
   (eab/bind-path transient-history-file)
 
   (require 'git-wip) ;; DONE can remove it and use magit-wip-mode? No, it's better

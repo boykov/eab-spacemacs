@@ -49,7 +49,7 @@
 
 (defun eab/open-corresponding-html ()
   (interactive)
-  (let ((path (replace-regexp-in-string "eab\/git\/org" "eab/pub/org" (buffer-file-name))))
+  (let ((path (replace-regexp-in-string (file-truename org-directory) eab/org-publish-directory (buffer-file-name))))
     (find-file (replace-regexp-in-string "\.org$" ".html" path))))
 
 (provide 'eab-org-protocol)
