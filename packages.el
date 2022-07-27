@@ -161,6 +161,7 @@
     docker
     docker-tramp
     websocket
+    daemons
 
     ;; built-in
     (gnus :location built-in)
@@ -179,6 +180,11 @@ which require an initialization must be listed explicitly in the list.")
 
 (defvar eab-spacemacs-excluded-packages '()
   "List of packages to exclude.")
+
+(defun eab-spacemacs/init-daemons nil
+  (use-package daemons)
+  (setq daemons-init-system-submodules '(daemons-systemd))
+  (defun daemons-systemd--cmd () (concat eab/ssh-host " sudo systemctl")))
 
 (defun eab-spacemacs/init-solarized-theme nil)
 (defun eab-spacemacs/init-s ()
@@ -421,6 +427,7 @@ which require an initialization must be listed explicitly in the list.")
     :defer
     :after (libgit)
     :init
+    (require 'magit-status)
     (add-to-list 'magit-status-sections-hook 'magit-insert-modules 't))
   ;; (use-package magit-wip)
   (defadvice vc-annotate (before eab-vc-annotate activate)

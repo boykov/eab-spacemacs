@@ -11,30 +11,31 @@
 (add-to-list 'load-path (concat eab-spacemacs-path "lisp"))
 
 (defvar eab/first-emacsclient 't "nil if run again")
+(defvar eab/ssh-host "ssh chronos" "current host")
 
 (defun eab/gotify (title message priority)
   (shell-command
-   (concat "tkn=`ssh chronos gpg -d -q ~/.ssh/.gpggotify.gpg`;"
+   (concat "tkn=`" eab/ssh-host " gpg -d -q ~/.ssh/.gpggotify.gpg`;"
 	   "curl \"http://192.168.2.18:8085/message?token=$tkn\" "
 	   "-F \"title=" title
 	   "\" -F \"message=" message
 	   "\" -F \"priority=" (number-to-string priority) "\"")))
 (setq eab/gotify-client-token
-      (shell-command-to-string "ssh chronos gpg -d -q ~/.ssh/.gpggotify-client.gpg"))
+      (shell-command-to-string (concat eab/ssh-host " gpg -d -q ~/.ssh/.gpggotify-client.gpg")))
 (setq eab/gotify-ws (concat "ws://192.168.2.18:8085/stream?token=" eab/gotify-client-token))
 (setq eab/gotify-command
-      "ssh chronos 'sqlite3 -column /var/gotify/data/gotify.db \"select datetime(date,\\\"localtime\\\"),title,message from messages order by date desc limit 10;\"'")
+      (concat eab/ssh-host " 'sqlite3 -column /var/gotify/data/gotify.db \"select datetime(date,\\\"localtime\\\"),title,message from messages order by date desc limit 10;\"'"))
 
 (setq eab/gr-command
-      "ssh chronos ~/bin/gr status")
+      (concat eab/ssh-host " ~/bin/gr status"))
 
 (setq eab/test-dotemacs-command
-      "ssh chronos ~/git/auto/test-dotemacs.sh")
+      (concat eab/ssh-host " ~/git/auto/test-dotemacs.sh"))
 
 (setq eab/batch-publish-command
-      "ssh chronos ~/git/org/misc/batch-publish.sh")
+      (concat eab/ssh-host " ~/git/org/misc/batch-publish.sh"))
 
-(setq eab/xdg-open "ssh chronos DISPLAY=:0 xdg-open")
+(setq eab/xdg-open (concat eab/ssh-host " DISPLAY=:0 xdg-open"))
 
 (defun eab/loaded-ok ()
   (if (not configuration-layer-error-count)
@@ -143,7 +144,8 @@
 
 (setq eab/emacs-service-command
       (concat
-       "ssh chronos sudo systemctl restart "
+       eab/ssh-host
+       " sudo systemctl restart "
        (cdr (assoc eab/daemon-name (gethash 'eab/emacs-service-alist eab/paths-hash)))))
 
 ;; TODO можно ли подобные настройки не считать "путями" и убрать из path?
@@ -252,7 +254,7 @@
 (setq-put gnus-init-file (concat user-emacs-directory ".gnus"))
 (setq-put gnus-startup-file (concat (eab/history-dir) ".newsrc"))
 (setq-put helm-c-adaptative-history-file (concat (eab/history-dir) "helm-adaptive-history"))
-(setq-put helm-locate-command "ssh chronos plocate %s -e %s")
+(setq-put helm-locate-command (concat eab/ssh-host " plocate %s -e %s"))
 (setq-put nnmail-message-id-cache-file (concat (eab/history-dir) ".nnmail-cache"))
 (setq-put tramp-persistency-file-name (concat (eab/history-dir) "tramp"))
 (setq-put url-configuration-directory (concat (eab/history-dir) "url/"))

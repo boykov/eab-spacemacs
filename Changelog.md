@@ -2,8 +2,14 @@
 
 ### 0.1.13
 
-- [ ] browser-remote: how to override DISPLAY? See `browse-url` example
-`(copy-sequence process-environment)` and `(setenv "DISPLAY" ..)`
+Fix missed `magit-status`.
+Add `daemons`.
+Add `eab/ssh-host`.
+Add `eab/gotify` message empty arguments and `finished`.
+
+How to override DISPLAY? See `browse-url` example `(copy-sequence
+process-environment)` and `(setenv "DISPLAY" ..)` or just do `sudo sed
+-i "s/\$DISPLAY/:0/" /usr/local/bin/browser-remote` manually.
 
 ### 0.1.12
 
