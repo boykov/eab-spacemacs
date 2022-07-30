@@ -152,14 +152,11 @@
 (setq-put org-clock-persist-file (concat (eab/history-dir) "org-clock-save.el"))
 (setq-put org-id-locations-file (concat (eab/history-dir) ".org-id-locations"))
 (setq-put projectile-known-projects-file (concat (eab/history-dir) "projectile-bookmarks.eld"))
+(setq-put eab/wg-path "~/git/eab-system/wg/*")
 
 (if (eab/ondaemon (eab/server-P))
-    (progn
-      (setq-put org-directory "~/git/org-chronos/")
-      (setq-put eab/wg-path "~/git/org-chronos/wg/*"))
-  (progn
-    (setq-put org-directory "~/git/org/")
-    (setq-put eab/wg-path "~/git/org/wg/*")))
+    (setq-put org-directory "~/git/org-chronos/")
+  (setq-put org-directory "~/git/org/"))
 
 (setq-put eab/org-publish-directory "~/pub/org/")
 (setq-put eab/org-publish-directory-file "file:///home/eab/pub/org/")

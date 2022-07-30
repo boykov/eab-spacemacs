@@ -1,5 +1,10 @@
 # Changelog
 
+### 0.1.14
+
+Mv `wg` to `eab-system`.
+Fix `daemons` :init.
+
 ### 0.1.13
 
 Fix missed `magit-status`.

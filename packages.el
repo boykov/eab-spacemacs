@@ -182,9 +182,11 @@ which require an initialization must be listed explicitly in the list.")
   "List of packages to exclude.")
 
 (defun eab-spacemacs/init-daemons nil
-  (use-package daemons)
-  (setq daemons-init-system-submodules '(daemons-systemd))
-  (defun daemons-systemd--cmd () (concat eab/ssh-host " sudo systemctl")))
+  (use-package daemons
+    :init
+    (setq daemons-init-system-submodules '(daemons-systemd))
+    (require 'daemons-systemd)
+    (defun daemons-systemd--cmd () (concat eab/ssh-host " sudo systemctl"))))
 
 (defun eab-spacemacs/init-solarized-theme nil)
 (defun eab-spacemacs/init-s ()
