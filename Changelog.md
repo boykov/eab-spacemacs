@@ -1,5 +1,10 @@
 # Changelog
 
+### 0.1.15
+
+Fix `eab/patch-this-code` with `overriding-terminal-local-map`.
+Rfct. rm extra git/auto entries.
+
 ### 0.1.14
 
 Mv `wg` to `eab-system`.

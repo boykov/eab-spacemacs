@@ -75,17 +75,18 @@
 ;; (regexp rep) на список пар
 ;; лучше использовать el-patch
 (defun eab/patch-this-code (func-name regexp rep &optional lex)
-  (eval
-   (read
-    (replace-regexp-in-string
-     regexp
-     rep
-     (save-window-excursion
-       (find-function-do-it func-name nil 'switch-to-buffer)
-       (let ((bgn (point)))
-	 (forward-sexp)
-	 (let ((end (point)))
-	   (buffer-substring-no-properties bgn end)))))) lex))
+  (let ((overriding-terminal-local-map (make-sparse-keymap)))
+    (eval
+     (read
+      (replace-regexp-in-string
+       regexp
+       rep
+       (save-window-excursion
+	 (find-function-do-it func-name nil 'switch-to-buffer)
+	 (let ((bgn (point)))
+	   (forward-sexp)
+	   (let ((end (point)))
+	     (buffer-substring-no-properties bgn end)))))) lex)))
 
 ;; (if (eab/ondaemon (eab/server-C))
 ;;     (setq debug-on-error 't))

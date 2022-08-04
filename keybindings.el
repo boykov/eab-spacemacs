@@ -431,10 +431,7 @@
  "f"		'eab/see-file
  "SPC"		'eab/gr-tag-default-directory
  "M-d"		(ilam (eab/sh-over-bash eab/test-dotemacs-command "" 't))
- "M-b"		(ilam (eab/sh-over-bash eab/batch-publish-command "" 't))
- "M-p"		(ilam (let ((shell-command-switch "-ic")) (eab/shell-command "dpemacs")))
- "M-P"		(ilam (eab/shell-command "bash -i -c dpemacs_new"))
- "M-m"		(ilam (eab/sh-over-bash "~/git/auto/firefoxmacro.sh" ""	't)))
+ "M-b"		(ilam (eab/sh-over-bash eab/batch-publish-command "" 't)))
 (setq eab/temacs-map (lookup-key global-map (kbd "C-l")))
 
 (defvar eab/compile-map (make-sparse-keymap)
