@@ -1,5 +1,10 @@
 # Changelog
 
+### 0.1.16
+
+Add `julia-mode`.
+Fix `ergoemacs-compact-uncompact-block` for `org-mode`.
+
 ### 0.1.15
 
 Fix `eab/patch-this-code` with `overriding-terminal-local-map`.

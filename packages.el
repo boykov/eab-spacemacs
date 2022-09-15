@@ -87,6 +87,7 @@
     edit-list
     yasnippet
 
+    julia-mode
     graphviz-dot-mode
     feature-mode
     nginx-mode
@@ -208,6 +209,9 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-ergoemacs-mode ()
   (require 'ergoemacs-translate)
   (require 'ergoemacs-functions)
+  (eab/patch-this-code
+   'ergoemacs-compact-uncompact-block
+   "fill-paragraph" "org-fill-paragraph")
   )
 
 (defun eab-spacemacs/init-rpm-spec-mode ())
@@ -479,6 +483,7 @@ which require an initialization must be listed explicitly in the list.")
 
 (defun eab-spacemacs/init-logstash-conf nil)
 (defun eab-spacemacs/init-nginx-mode nil)
+(defun eab-spacemacs/init-julia-mode nil)
 (defun eab-spacemacs/init-emamux nil)
 (defun eab-spacemacs/init-esup nil)
 (defun eab-spacemacs/init-libgit nil
