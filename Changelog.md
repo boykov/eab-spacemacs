@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.1.17
+
+Add `highlight-indentation`.
+
 ### 0.1.16
 
 Add `julia-mode`.

@@ -86,6 +86,7 @@
     undo-tree
     edit-list
     yasnippet
+    highlight-indentation
 
     julia-mode
     graphviz-dot-mode
@@ -793,6 +794,7 @@ which require an initialization must be listed explicitly in the list.")
   )
 (defun eab-spacemacs/init-ibuffer-vc nil)
 (defun eab-spacemacs/init-highlight nil)
+(defun eab-spacemacs/init-highlight-indentation nil)
 (defun eab-spacemacs/init-graphviz-dot-mode nil)
 (defun eab-spacemacs/init-gist nil)
 (defun eab-spacemacs/init-gh nil)
