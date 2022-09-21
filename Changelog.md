@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.1.18
+
+Add `prettier`.
+
 ### 0.1.17
 
 Add `highlight-indentation`.
