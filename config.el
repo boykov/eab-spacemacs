@@ -64,6 +64,7 @@
 
 (defun eab/server-P ()
   (if (or (eab/ondaemon "serverP")
+	  (eab/ondaemon "cyclos")
 	  (eab/ondaemon "microcyclos"))
 	  eab/daemon-name))
 
@@ -133,6 +134,7 @@
 	    ("serverM"       . ,(concat user-emacs-directory "historyM/"))
 	    ("serverP"       . ,(concat user-emacs-directory "historyP/"))
 	    ("microcyclos"   . ,(concat user-emacs-directory "historyMicrocyclos/"))
+	    ("cyclos"        . ,(concat user-emacs-directory "historyCyclos/"))
 	    (,(eab/server-C) . ,(concat user-emacs-directory "historyC/"))
 	    ))
 
@@ -140,6 +142,7 @@
 	  `(
 	    ("serverP"       . "docker-compose-emacs")
 	    ("microcyclos"   . "docker-compose-micro")
+	    ("cyclos"        . "cyclos-emacs")
 	    (,(eab/server-C) . "docker-compose-clocksum")
 	  ))
 

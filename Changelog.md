@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.1.19
+
+Add `cyclos` daemon.
+
 ### 0.1.18
 
 Add `prettier`.
