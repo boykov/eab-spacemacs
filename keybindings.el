@@ -837,12 +837,12 @@
    "C-d"		eab/compile-map
    "<f6>"		'eab/revert-buffer
    "s-'"		'org-edit-src-code
-   "s-k"		'org-metadown
+   "s-k"		'undefined
    "s-i"		'org-metaup
    "s-p"		'org-priority-up
    "s-j"		'org-metaleft
    "s-l"		'org-metaright
-   "s-K"		'org-shiftmetadown
+   "s-K"		'undefined
    "s-I"		'org-shiftmetaup
    "s-J"		'org-shiftmetaleft
    "s-L"		'org-shiftmetaright
@@ -1242,9 +1242,9 @@
    "s-l"	'paredit-forward-slurp-sexp
    "s-j"	'paredit-backward-slurp-sexp
    "s-I"	'paredit-splice-sexp
-   "s-K"	'paredit-splice-sexp
+   "s-K"	'undefined
    "s-i"	'paredit-splice-sexp-killing-backward
-   "s-k"	'paredit-splice-sexp-killing-forward
+   "s-k"	'undefined
    "M-("	'paredit-wrap-round
    "M-r"	'paredit-forward-kill-word
    "M-e"	'paredit-backward-kill-word

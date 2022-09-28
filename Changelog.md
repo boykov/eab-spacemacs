@@ -1,5 +1,10 @@
 # Changelog
 
+### 0.1.20
+
+Use `s-k` binding for ubuntu 22.04 layout changing.
+Add `batch-publish` sleep delay.
+
 ### 0.1.19
 
 Add `cyclos` daemon.

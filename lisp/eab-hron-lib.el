@@ -79,6 +79,7 @@
   (progn
     (require 'yasnippet)
     (require 'org)
+    (sleep-for 1)
     (if (not fast)
 	(eab/gotify "publish..." "Come in to eab/batch-publish" 0)
       (eab/gotify "fast publish..." "started" 0))
