@@ -85,6 +85,7 @@
       (eab/gotify "fast publish..." "started" 0))
     (shell-command "cd /home/eab/git/org && git pull")
     (auto-revert-buffers)
+    (sleep-for 1)
     (when (not fast)
       (eab/send-csum)
       (eab/check-csum-all)
