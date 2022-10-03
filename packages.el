@@ -55,6 +55,7 @@
     magit
     forge
     orgit
+    diff-hl
 
     help+
     help-fns+
@@ -488,6 +489,8 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-julia-mode nil)
 (defun eab-spacemacs/init-emamux nil)
 (defun eab-spacemacs/init-esup nil)
+(defun eab-spacemacs/init-diff-hl nil
+  (require 'diff-hl))
 (defun eab-spacemacs/init-libgit nil
   (require 'libgit))
 (defun eab-spacemacs/init-vterm nil

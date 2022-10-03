@@ -13,15 +13,22 @@
 (defvar eab/first-emacsclient 't "nil if run again")
 (defvar eab/ssh-host "ssh chronos" "current host")
 
+(setq eab/gotify-token
+      (substring (shell-command-to-string (concat eab/ssh-host " <<'END'
+~/git/auto/keepass.sh \"portal/gotify\" -a app-test-token
+END
+" )) 0 -1))
 (defun eab/gotify (title message priority)
   (shell-command
-   (concat "tkn=`" eab/ssh-host " gpg -d -q ~/.ssh/.gpggotify.gpg`;"
-	   "curl \"http://192.168.2.18:8085/message?token=$tkn\" "
+   (concat "curl \"http://192.168.2.18:8085/message?token=" eab/gotify-token "\" "
 	   "-F \"title=" title
 	   "\" -F \"message=" message
 	   "\" -F \"priority=" (number-to-string priority) "\"")))
 (setq eab/gotify-client-token
-      (shell-command-to-string (concat eab/ssh-host " gpg -d -q ~/.ssh/.gpggotify-client.gpg")))
+      (substring (shell-command-to-string (concat eab/ssh-host " <<'END'
+~/git/auto/keepass.sh \"portal/gotify\" -a client-token
+END
+" )) 0 -1))
 (setq eab/gotify-ws (concat "ws://192.168.2.18:8085/stream?token=" eab/gotify-client-token))
 (setq eab/gotify-command
       (concat eab/ssh-host " 'sqlite3 -column /var/gotify/data/gotify.db \"select datetime(date,\\\"localtime\\\"),title,message from messages order by date desc limit 10;\"'"))

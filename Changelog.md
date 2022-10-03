@@ -1,5 +1,10 @@
 # Changelog
 
+### 0.1.21
+
+Use `keepass.sh`.
+Add `diff-hl`.
+
 ### 0.1.20
 
 Use `s-k` binding for ubuntu 22.04 layout changing.
