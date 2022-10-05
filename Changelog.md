@@ -1,5 +1,13 @@
 # Changelog
 
+### 0.1.22
+
+Add `eab/ssh-host-local` for `ssh cyclos/chronos`.
+Add serverC tcp socket.
+Use `serverC-use-tcp` for all `server-eval-at` serverC.
+Fix `eab/suppress-greeting`.
+Fix `source-directory`.
+
 ### 0.1.21
 
 Use `keepass.sh`.

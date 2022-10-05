@@ -18,8 +18,9 @@
   "Evaluate sexp before point on serverC; print value in minibuffer."
   (interactive)
   (let ((sexp (call-interactively (lambda () (interactive) (preceding-sexp)))))
-    (server-eval-at (eab/server-C)
-		    `(eval ',sexp))))
+    (let ((server-use-tcp serverC-use-tcp))
+      (server-eval-at (eab/server-C)
+		      `(eval ',sexp)))))
 
 ;; TODO обобщить формирование body и выполнение remote
 (defun eab/org-publish-current-file-remote ()
@@ -27,10 +28,11 @@
   (let* ((name (buffer-file-name))
 	 (body `(lambda ()
 		  (require 'server)
-		  (server-eval-at ,(eab/server-C) '(progn
-					       (shell-command "cd /home/eab/git/org && git pull")
-					       (auto-revert-buffers)
-					       (org-publish-file ,name)))
+		  (let ((server-use-tcp ,serverC-use-tcp))
+		    (server-eval-at ,(eab/server-C) '(progn
+						       (shell-command "cd /home/eab/git/org && git pull")
+						       (auto-revert-buffers)
+						       (org-publish-file ,name))))
 		  )))
     (eval `(async-start
 	       ,body
@@ -42,7 +44,8 @@
 	      (async-start
 	       (lambda ()
 		 (require 'server)
-		 (server-eval-at ,(eab/server-C) '(eab/shell-translate ,phrase 't)))
+		 (let ((server-use-tcp ,serverC-use-tcp))
+		   (server-eval-at ,(eab/server-C) '(eab/shell-translate ,phrase 't))))
 	       (lambda (result)
 		 (message "async result: <%s>" result)
 		 (define-abbrev eab-abbrev-table ,phrase result))))))
@@ -53,9 +56,10 @@
   (async-start
    (lambda ()
      (require 'server)
-     (server-eval-at ,(eab/server-C) '(progn
-				  (org-publish-project "html-base" 't)
-				  (org-publish-project "html-clock" 't))))
+     (let ((server-use-tcp ,serverC-use-tcp))
+       (server-eval-at ,(eab/server-C) '(progn
+					  (org-publish-project "html-base" 't)
+					  (org-publish-project "html-clock" 't)))))
    (lambda (result) (eab/gotify "eab/org-publish-html" (concat "async result: <" result ">") 0))))
 
 (provide 'eab-server)

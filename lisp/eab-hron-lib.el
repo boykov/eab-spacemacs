@@ -396,7 +396,8 @@
 (defun eab/renew-agenda-files ()
   (interactive)
   (eab/renew-agenda-files-1)
-  (server-eval-at (eab/server-C) '(eab/renew-agenda-files-1))
+  (let ((server-use-tcp serverC-use-tcp))
+    (server-eval-at (eab/server-C) '(eab/renew-agenda-files-1)))
   )
 
 (defun eab/check-csum-day (&optional date)
@@ -564,12 +565,13 @@
 		   (lambda ()
 		     (require 'server)
 		     (sleep-for 1)
-		     (server-eval-at ,(eab/server-C) '(progn
-						  (shell-command "cd /home/eab/git/org && git pull")
-						  (auto-revert-buffers)
-						  (,fname)
-						  (eab/send-csum-all)
-						  ))
+		     (let ((server-use-tcp ,serverC-use-tcp))
+		       (server-eval-at ,(eab/server-C) '(progn
+							  (shell-command "cd /home/eab/git/org && git pull")
+							  (auto-revert-buffers)
+							  (,fname)
+							  (eab/send-csum-all)
+							  )))
 		     (kill-emacs))
 		   (lambda (result) (message "async result: <%s>" result)))))))
 

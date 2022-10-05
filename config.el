@@ -13,6 +13,16 @@
 (defvar eab/first-emacsclient 't "nil if run again")
 (defvar eab/ssh-host "ssh chronos" "current host")
 
+;; Fix
+(setq eab/suppress-greeting
+      (substring (shell-command-to-string (concat eab/ssh-host " <<'END'
+echo stub
+END
+" )) 0 -1))
+
+;; (let ((server-use-tcp serverC-use-tcp))
+;;     (server-eval-at (eab/server-C) 'eab/gotify-token))
+
 (setq eab/gotify-token
       (substring (shell-command-to-string (concat eab/ssh-host " <<'END'
 ~/git/auto/keepass.sh \"portal/gotify\" -a app-test-token
@@ -77,6 +87,7 @@ END
 
 (defun eab/server-C ()
   "serverC")
+(setq serverC-use-tcp 't)
 
 ;; TODO для многих патчей требуется одновременно несколько замен
 ;; значит, если продолжать в этом направлении, надо заменить пару
@@ -95,6 +106,11 @@ END
 	   (forward-sexp)
 	   (let ((end (point)))
 	     (buffer-substring-no-properties bgn end)))))) lex)))
+
+(if (eab/ondaemon (eab/server-C))
+    (progn
+      (setq server-port 5001)
+      (setq server-use-tcp 't)))
 
 ;; (if (eab/ondaemon (eab/server-C))
 ;;     (setq debug-on-error 't))
@@ -153,9 +169,12 @@ END
 	    (,(eab/server-C) . "docker-compose-clocksum")
 	  ))
 
+(cond ((eab/onhost "chronos28")    (setq eab/ssh-host-local /eab/ssh-host))
+      ((eab/onhost "cyclos-emacs") (setq eab/ssh-host-local "ssh cyclos")))
+
 (setq eab/emacs-service-command
       (concat
-       eab/ssh-host
+       eab/ssh-host-local
        " sudo systemctl restart "
        (cdr (assoc eab/daemon-name (gethash 'eab/emacs-service-alist eab/paths-hash)))))
 
@@ -214,12 +233,12 @@ END
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(cond ((eab/onhost "jonesbook") (setq-put source-directory "~/emacs/src/emacs/")) ;; DONE old path
-      ((eab/onhost "victory")   (setq-put source-directory "~/src/emacs/"))
-      ((eab/onhost "kairos")    (setq-put source-directory "~/data/gitno/github/emacs/src"))
-      ((eab/onhost "chronos")   (setq-put source-directory "~/data/gitno/github/emacs/src"))
-      ((eab/onhost "chronos28") (setq-put source-directory "~/git/eabmisc/eab-docker-emacs/emacs-28.1/src"))
-      ((eab/onhost "cyclos")    (setq-put source-directory "~/data/gitno/github/emacs/src")))
+(cond ((eab/onhost "jonesbook")    (setq-put source-directory "~/emacs/src/emacs/")) ;; DONE old path
+      ((eab/onhost "victory")      (setq-put source-directory "~/src/emacs/"))
+      ((eab/onhost "kairos")       (setq-put source-directory "~/data/github/emacs/src"))
+      ((eab/onhost "chronos")      (setq-put source-directory "~/data/github/emacs/src"))
+      ((eab/onhost "chronos28")    (setq-put source-directory "~/git/eabmisc/eab-docker-emacs/emacs-28.1/src"))
+      ((eab/onhost "cyclos-emacs") (setq-put source-directory "~/data/github/emacs/src")))
 
 
 (setq-put custom-file (concat (eab/history-dir) "custom.el"))
