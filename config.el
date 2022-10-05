@@ -169,7 +169,7 @@ END
 	    (,(eab/server-C) . "docker-compose-clocksum")
 	  ))
 
-(cond ((eab/onhost "chronos28")    (setq eab/ssh-host-local /eab/ssh-host))
+(cond ((eab/onhost "chronos28")    (setq eab/ssh-host-local eab/ssh-host))
       ((eab/onhost "cyclos-emacs") (setq eab/ssh-host-local "ssh cyclos")))
 
 (setq eab/emacs-service-command
