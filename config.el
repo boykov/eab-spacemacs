@@ -170,6 +170,7 @@ END
 	  ))
 
 (cond ((eab/onhost "chronos28")    (setq eab/ssh-host-local eab/ssh-host))
+      ((eab/onhost "clocksum-28")  (setq eab/ssh-host-local eab/ssh-host))
       ((eab/onhost "cyclos-emacs") (setq eab/ssh-host-local "ssh cyclos")))
 
 (setq eab/emacs-service-command
