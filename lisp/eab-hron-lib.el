@@ -84,8 +84,8 @@
 	(eab/gotify "publish..." "Come in to eab/batch-publish" 0)
       (eab/gotify "fast publish..." "started" 0))
     (shell-command "cd /home/eab/git/org && git pull")
-    (auto-revert-buffers)
     (sleep-for 1)
+    (revert-all-buffers)
     (when (not fast)
       (eab/send-csum)
       (eab/check-csum-all)
@@ -324,7 +324,7 @@
   (ignore-errors (kill-buffer "time-reports-nightly.org"))
   (eab/create-nightly)
   (find-file (concat org-directory "gen/time-reports-nightly.org"))
-  (auto-revert-buffers)
+  (revert-all-buffers)
   (org-update-all-dblocks)
   (save-buffer)
   (org-publish-project "html-gen" t)
@@ -568,7 +568,7 @@
 		     (let ((server-use-tcp ,serverC-use-tcp))
 		       (server-eval-at ,(eab/server-C) '(progn
 							  (shell-command "cd /home/eab/git/org && git pull")
-							  (auto-revert-buffers)
+							  (revert-all-buffers)
 							  (,fname)
 							  (eab/send-csum-all)
 							  )))
@@ -633,8 +633,8 @@
 ;; Custom_BIB, то можно обойтись без отдельного столбца
 ;; TODO see eab/abbrev-link
 (defun eab/paper-link (name)
-  (if (not (string= name ""))
-      (concat "[[papers:" name "][" name "]]")
+  (if (and name (not (string= name "")))
+      (concat "[[papers:" name "][" name ".pdf]]")
     ""))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -31,7 +31,7 @@
 		  (let ((server-use-tcp ,serverC-use-tcp))
 		    (server-eval-at ,(eab/server-C) '(progn
 						       (shell-command "cd /home/eab/git/org && git pull")
-						       (auto-revert-buffers)
+						       (revert-all-buffers)
 						       (org-publish-file ,name))))
 		  )))
     (eval `(async-start

@@ -273,4 +273,10 @@ a communication channel."
        attributes))
      info)))
 
+(defun org-html-statistics-cookie (statistics-cookie _contents _info)
+  "Transcode a STATISTICS-COOKIE object from Org to HTML.
+CONTENTS is nil.  INFO is a plist holding contextual information."
+  (let ((cookie-value (org-element-property :value statistics-cookie)))
+    (format "<span class=\"todo TODO\">%s</span>" cookie-value)))
+
 (provide 'eab-org-extension)

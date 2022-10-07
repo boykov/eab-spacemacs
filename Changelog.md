@@ -1,5 +1,11 @@
 # Changelog
 
+### 0.1.23
+
+Fix `eab/paper-link` nil case.
+Improve `org-html-statistics-cookie`.
+Add `revert-all-buffers`, replace `auto-revert-buffers` by it.
+
 ### 0.1.22
 
 Add `eab/ssh-host-local` for `ssh cyclos/chronos`.
