@@ -83,7 +83,7 @@
     (if (not fast)
 	(eab/gotify "publish..." "Come in to eab/batch-publish" 0)
       (eab/gotify "fast publish..." "started" 0))
-    (shell-command "cd /home/eab/git/org && git pull")
+    (shell-command (concat "cd " org-directory " && git pull"))
     (sleep-for 1)
     (revert-all-buffers)
     (when (not fast)
@@ -567,7 +567,7 @@
 		     (sleep-for 1)
 		     (let ((server-use-tcp ,serverC-use-tcp))
 		       (server-eval-at ,(eab/server-C) '(progn
-							  (shell-command "cd /home/eab/git/org && git pull")
+							  (shell-command (concat "cd " org-directory " && git pull"))
 							  (revert-all-buffers)
 							  (,fname)
 							  (eab/send-csum-all)

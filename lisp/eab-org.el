@@ -106,7 +106,7 @@
 (setq org-refile-use-cache 't)
 
 ;; Targets start with the file name - allows creating level 1 tasks
-;; TODO появился баг, типа невозможности рефайлинга в корень git/org/todo.org\
+;; TODO появился баг, типа невозможности рефайлинга в корень org-directory/todo.org\
 ;; просит уточнить место, а требуется остановиться
 ;; (setq org-refile-use-outline-path (quote full-file-path))
 (setq org-refile-use-outline-path (quote file))

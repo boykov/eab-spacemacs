@@ -639,7 +639,7 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-deft nil)
 (defun eab-spacemacs/init-org-roam nil
   ;; (use-package org-roam)
-  ;; (setq org-roam-directory "/home/eab/git/org/clock")
+  ;; (setq org-roam-directory (concat org-directory "clock"))
   ;; (org-roam-db-autosync-mode 0)
   )
 (defun eab-spacemacs/init-ewmctrl nil)

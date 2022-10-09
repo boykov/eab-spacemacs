@@ -49,9 +49,6 @@ END
 (setq eab/test-dotemacs-command
       (concat eab/ssh-host " ~/git/auto/test-dotemacs.sh"))
 
-(setq eab/batch-publish-command
-      (concat eab/ssh-host " ~/git/org/misc/batch-publish.sh"))
-
 (setq eab/xdg-open (concat eab/ssh-host " DISPLAY=:0 xdg-open"))
 
 (defun eab/loaded-ok ()
@@ -199,7 +196,10 @@ END
 
 (if (eab/ondaemon (eab/server-P))
     (setq-put org-directory "~/git/org-chronos/")
-  (setq-put org-directory "~/git/org/"))
+  (setq-put org-directory "/home/eab/pnt/jaguar/git/org/"))
+
+(setq eab/batch-publish-command
+      (concat eab/ssh-host " " (eab/get-path 'org-directory) "misc/batch-publish.sh"))
 
 (setq-put eab/org-publish-directory "~/pub/org/")
 (setq-put eab/org-publish-directory-file "file:///home/eab/pub/org/")

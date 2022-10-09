@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.1.24
+
+Rfct `org-directory`. Set `/home/eab/pnt/jaguar/git/org/` for `serverC`.
+
 ### 0.1.23
 
 Fix `eab/paper-link` nil case.

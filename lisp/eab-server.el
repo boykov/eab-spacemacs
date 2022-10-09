@@ -30,7 +30,7 @@
 		  (require 'server)
 		  (let ((server-use-tcp ,serverC-use-tcp))
 		    (server-eval-at ,(eab/server-C) '(progn
-						       (shell-command "cd /home/eab/git/org && git pull")
+						       (shell-command (concat "cd " org-directory " && git pull"))
 						       (revert-all-buffers)
 						       (org-publish-file ,name))))
 		  )))
