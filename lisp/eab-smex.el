@@ -40,7 +40,7 @@
   (smex-update-and-rerun))
 
 ;; DONE убрать грубое внедрение в код smex.el
-(eab/patch-this-code 'smex-completing-read "(car choices)" "")
+(eab/patch-this-code 'smex-completing-read '(("(car choices)" . "")))
 
 (defun eab/smex-extended ()
   "Command for calling `helm-minibuffer-history' from `smex'"

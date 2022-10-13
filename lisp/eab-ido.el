@@ -60,7 +60,7 @@
 ;; Disable. Check speed
 (eab/patch-this-code
  'projectile-project-buffer-p
- "(file-truename default-directory)" "(expand-file-name default-directory)")
+ '(("(file-truename default-directory)" . "(expand-file-name default-directory)")))
 
 ;; (eab/patch-this-code
 ;;  'projectile-file-truename
@@ -69,7 +69,7 @@
 ;; Disable. Check speed
 (eab/patch-this-code
  'projectile-project-root
- "(file-truename dir)" "(expand-file-name dir)")
+ '(("(file-truename dir)" . "(expand-file-name dir)")))
 
 ;; TODO добавить в список буферов "projectile-switch-project",
 ;; можно также использовать projectile-discover-projects-in-directory

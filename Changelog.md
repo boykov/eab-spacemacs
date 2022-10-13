@@ -1,5 +1,12 @@
 # Changelog
 
+### 0.1.25
+
+Fix `org-clocktable-write-default` for fz month reports.
+Improve `eab/patch-this-code`: add `:native`, `:lexical` and `rpairs`.
+Convert functions from `eab-org-extension` to patched.
+Add `eab-lisp` with "Let Over Lambda" `dlambda`.
+
 ### 0.1.24
 
 Rfct `org-directory`. Set `/home/eab/pnt/jaguar/git/org/` for `serverC`.

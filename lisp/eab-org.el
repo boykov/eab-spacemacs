@@ -19,11 +19,68 @@
 (require 'ol-bbdb)
 (require 'ox-latex)
 (require 'ox-extra)
+(require 'ox-html)
 
 (require 'tex)
 (require 'tex-site)
 
 (setq org-odt-display-outline-level 1)
+
+(eab/patch-this-code
+ 'org-clocktable-write-default
+ '(("(and total-time (> total-time 0))" .
+    "(and total-time (>= total-time 0))"))
+ :lexical 't
+ :native 't)
+
+(eab/patch-this-code
+ 'org-clock-sum
+ '(("(or (> t1 0) (> (aref ltimes level) 0))" .
+    "(or (>= t1 0) (> (aref ltimes level) 0))"))
+ :lexical 't
+ :native 't)
+
+(eab/patch-this-code
+ 'org-clock-get-table-data
+ '(("(> time 0)" .
+    "(>= time 0)")
+   ("file:%s::%s" .
+    "id:%s")
+   ("(buffer-file-name) search" .
+    "(save-match-data (org-id-get-create))"))
+ :lexical 't
+ :native 't)
+
+(eab/patch-this-code
+ 'org-html-section
+ '(("text-%s" .
+    "ID-%s")
+   ("or (org-element-property :ID parent)" .
+    "or (org-element-property :ID parent)
+		    (org-element-property :CUSTOM_ID parent)"))
+ :lexical 't
+ :native 't)
+
+(eab/patch-this-code
+ 'org-html--format-image
+ '(("org-html-close-tag" .
+    "")
+   ("\"img\"" .
+    "let* ((ext (file-name-extension source))
+	 (prefix (if (string= \"svg\" ext) \"embed\" \"img\")))
+    (org-html-close-tag
+     prefix")
+   ("info))" .
+    "info)))"))
+ :lexical 't
+ :native 't)
+
+(eab/patch-this-code
+ 'org-html-statistics-cookie
+ '(("<code>%s</code>" .
+    "<span class=\\\\\"todo TODO\\\\\">%s</span>"))
+ :lexical 't
+ :native 't)
 
 (eab/bind-path org-directory)
 (eab/bind-path eab/org-publish-directory)

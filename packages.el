@@ -214,7 +214,7 @@ which require an initialization must be listed explicitly in the list.")
   (require 'ergoemacs-functions)
   (eab/patch-this-code
    'ergoemacs-compact-uncompact-block
-   "fill-paragraph" "org-fill-paragraph")
+   '(("fill-paragraph" . "org-fill-paragraph")))
   )
 
 (defun eab-spacemacs/init-rpm-spec-mode ())
