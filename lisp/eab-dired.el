@@ -10,21 +10,21 @@
 
 (eab/patch-this-code
  'dired-async-create-files
- '(("(require 'cl-lib) (require 'dired-aux) (require 'dired-x)" .
- (let ((print-quoted 't))
-   (prin1-to-string
-    `(progn
-       (require 'cl-lib)
-       (require 'dired-aux)
-       (require 'dired-x)
-       (add-to-list
-	'load-path
-	,(file-name-directory
-	  (buffer-file-name
-	   (car (find-function-noselect 'docker-tramp-add-method)))))
-       (require 'tramp)
-       (add-to-list 'tramp-methods ',eab/sussh)
-       (require 'docker-tramp))))))
+ `(("(require 'cl-lib) (require 'dired-aux) (require 'dired-x)" .
+    ,(let ((print-quoted 't))
+       (prin1-to-string
+	`(progn
+	   (require 'cl-lib)
+	   (require 'dired-aux)
+	   (require 'dired-x)
+	   (add-to-list
+	    'load-path
+	    ,(file-name-directory
+	      (buffer-file-name
+	       (car (find-function-noselect 'docker-tramp-add-method)))))
+	   (require 'tramp)
+	   (add-to-list 'tramp-methods ',eab/sussh)
+	   (require 'docker-tramp))))))
  :lexical 't)
 
 (dired-async-mode)

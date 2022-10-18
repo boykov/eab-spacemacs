@@ -31,7 +31,7 @@
 
 (add-to-list 'org-publish-project-alist
 	     `("html-clock"
-	       :base-directory ,(concat org-directory "clock/")
+	       :base-directory ,(concat (file-truename org-directory) "clock/")
 	       :exclude "timeline.org"
 	       :publishing-directory ,(concat eab/org-publish-directory "clock/")
 	       :base-url ,(concat eab/org-publish-directory-file "clock/")

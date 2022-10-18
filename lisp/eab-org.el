@@ -55,7 +55,7 @@
  'org-html-section
  '(("text-%s" .
     "ID-%s")
-   ("or (org-element-property :ID parent)" .
+   ("or (org-element-property :CUSTOM_ID parent)" .
     "or (org-element-property :ID parent)
 		    (org-element-property :CUSTOM_ID parent)"))
  :lexical 't

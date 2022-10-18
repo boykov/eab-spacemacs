@@ -7,11 +7,41 @@
 (setq eab/org-ql-O-query '(and (or (not (tags "noagenda")) (tags "agenda")) (not (tags "neveragenda")) (clocked 6000) (not (clocked 400))))
 (setq eab/org-ql-W-query '(and (and (or (tags "w1c") (tags "fz")) (or (not (tags "noagenda")) (tags "agenda")) (not (tags "neveragenda"))) (clocked 560)))
 
+(defun eab/org-ql-query-buffer (query)
+  (concat "*Org QL View: "
+	  (prin1-to-string query) "*"))
+
 (defun eab/org-ql-switch (query)
-  (switch-to-buffer
-   (concat "*Org QL View: "
-	   (prin1-to-string query) "*"))
-  (eab/org-ql-view-refresh))
+  (let* ((buffer-name (eab/org-ql-query-buffer query))
+	 (window (get-buffer-window buffer-name)))
+    (if window
+	(select-window window)
+      (switch-to-buffer buffer-name))
+    (if (or (not (boundp 'eab/org-ql-select-hash))
+	    (not (string= eab/org-ql-select-hash (eab/org-ql-select-md5))))
+	(progn
+	  (eab/org-ql-view-refresh)
+	  (setq-local eab/org-ql-select-hash (eab/org-ql-select-md5))))))
+
+(defun eab/update-query-on-idle (query)
+  (let* ((buffer-name (eab/org-ql-query-buffer query))
+	 (window (get-buffer-window (current-buffer))))
+    (if (get-buffer-window buffer-name)
+	(progn
+	  (eab/org-ql-switch query)
+	  (if window
+	      (select-window window)))
+      (save-window-excursion
+	(eab/org-ql-switch query)))))
+
+(defun eab/org-ql-select-md5 ()
+  (let ((results (org-ql-select
+		   org-ql-view-buffers-files
+		   org-ql-view-query
+                   :action 'element-with-markers
+                   :narrow org-ql-view-narrow
+                   :sort org-ql-view-sort)))
+    (md5 (prin1-to-string results))))
 
 (defun eab/org-ql-search (query)
   (org-ql-search
@@ -20,9 +50,9 @@
     :super-groups
     '((:auto-dir-name))
     :sort 'priority
-    :buffer (concat "*Org QL View: " (prin1-to-string query) "*"))
+    :buffer (eab/org-ql-query-buffer query))
   (switch-to-buffer
-   (concat "*Org QL View: " (prin1-to-string query) "*"))
+   (eab/org-ql-query-buffer query))
   (setq-local org-agenda-buffer-name (buffer-name)))
 
 ;; TODO instead of org-ql-view-refresh with wrong rename-buffer

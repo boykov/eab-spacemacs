@@ -1,5 +1,13 @@
 # Changelog
 
+### 0.1.26
+
+Fix `org-html-section` ID, `dired-async-create-files` patch.
+Add `eab/org-ql-query-buffer`, `eab/org-ql-select-md5`,
+`eab/org-ql-select-hash` and `eab/update-query-on-idle`.
+Improve `eab/org-ql-switch`.
+Add `eab/org-publish-current-file`, `org-directory` true path.
+
 ### 0.1.25
 
 Fix `org-clocktable-write-default` for fz month reports.

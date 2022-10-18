@@ -62,4 +62,12 @@
 (if (eab/ondaemon (eab/server-P))
     (setq org-html-htmlize-output-type 'css))
 
+(defun eab/org-publish-current-file ()
+  (interactive)
+  (let ((org-publish-use-timestamps-flag nil)
+	(default-directory (concat (file-truename org-directory) "clock/")))
+    (org-publish-file
+     (file-truename (buffer-file-name (buffer-base-buffer)))
+     nil 't)))
+
 (provide 'eab-org-publish)
