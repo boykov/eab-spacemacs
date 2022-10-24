@@ -209,7 +209,10 @@ END
 (setq eab/batch-publish-command
       (concat eab/ssh-host " " (eab/get-path 'org-directory) "misc/batch-publish.sh"))
 
-(setq-put eab/org-publish-directory "~/pub/org/")
+(if (eab/ondaemon (eab/server-P))
+    (setq-put eab/org-publish-directory "/ssh:chronos:/home/eab/pub/org/")
+  (setq-put eab/org-publish-directory "~/pub/org/"))
+
 (setq-put eab/org-publish-directory-file "file:///home/eab/pub/org/")
 (setq-put org-mobile-directory "~/Dropbox/MobileOrg")
 (setq-put org-ditaa-jar-path "/usr/bin/ditaa")

@@ -1,5 +1,16 @@
 # Changelog
 
+### 0.1.27
+
+Convert `eab/total-minutes` to defun.
+Fix extra no-cache `eab/org-publish-current-file` parameter.
+Set `serverP` remote `eab/org-publish-directory`.
+Add MVP `index.js` to `eab/org-publish-current-file`,
+use `next.js` app in `eab/open-heading-browser`.
+Move `org-html-style-default` to `org-html-themes`.
+Fix `org-level-*` font size.
+Add `eab/browse-paper`.
+
 ### 0.1.26
 
 Fix `org-html-section` ID, `dired-async-create-files` patch.

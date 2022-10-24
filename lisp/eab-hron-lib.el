@@ -343,15 +343,16 @@
 
 ;; See `eab/clocktable-scope' in eab-path-org.el
 
-(defvar eab/total-minutes 9234720.0)
+(defun eab/total-minutes ()
+  (* (- (org-time-stamp-to-now "<2007-01-01 Пн. 00:00>")) 1.12 24 60))
 
 (defun csum-percent ()
   (format "%0.2f" (* (/ (org-clock-sum-current-item)
-     eab/total-minutes) 100)))
+			(eab/total-minutes)) 100)))
 
 (defun csum-file-percent ()
   (format "%0.2f" (* (/ (org-clock-sum)
-     eab/total-minutes) 100)))
+     (eab/total-minutes)) 100)))
 
 (defun csum ()
   (org-minutes-to-clocksum-string (org-clock-sum-current-item)))
@@ -515,10 +516,6 @@
 	", csum "
 	eab/hron-csum-day))
     (eab/send-mail "Совпадает!")))
-
-;; TODO aren't used
-(defvar eab/hron-initial-time nil "Date of begining of diarize")
-(setq eab/hron-initial-time (apply 'encode-time (org-parse-time-string "<2007-01-01 Пн. 00:00>")))
 
 ;; TODO create arbitrary date instead hard-coded 01-01-2007
 (defun eab/get-all-csum ()

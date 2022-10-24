@@ -211,4 +211,10 @@
 
 (org-add-link-type "rel" 'browse-url 'wvxvw/export-rel-url)
 
+(custom-set-faces
+  '(org-level-1 ((t (:inherit outline-1 :height 1.0))))
+  '(org-level-2 ((t (:inherit outline-2 :height 1.0))))
+  '(org-level-3 ((t (:inherit outline-3 :height 1.0))))
+)
+
 (provide 'eab-org)

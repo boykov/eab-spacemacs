@@ -68,6 +68,12 @@
 	(default-directory (concat (file-truename org-directory) "clock/")))
     (org-publish-file
      (file-truename (buffer-file-name (buffer-base-buffer)))
-     nil 't)))
+     nil)
+    (shell-command
+     (concat eab/ssh-host " <<'END'
+sed -i 's/uid=/uid=1/' ~/git/eab-kb/js/pages/index.js
+END"))))
+
+(setq org-html-head-include-default-style nil)
 
 (provide 'eab-org-publish)
