@@ -154,3 +154,10 @@
  'global "na"
  "align org - <..> note"
  "C-l RET C-l L ESC ; > SPC")
+
+
+(pm-def-macro
+ 'insert-paper-link
+ nil nil
+ ""
+ "M-SPC M-m M-c M-n [[papers: M-m ][ M-v ]]")

@@ -59,4 +59,10 @@
     "https://share.homew.keenetic.pro/papers/"
     (org-entry-get nil "Custom_BIB") ".pdf")))
 
+(defun eab/browse-paper-1 (word)
+  (browse-url
+   (concat
+    "https://share.homew.keenetic.pro/papers/"
+    word ".pdf")))
+
 (provide 'eab-org-protocol)

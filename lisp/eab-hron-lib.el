@@ -195,6 +195,14 @@
   (if eab/hron-todo-from-agenda
       (switch-to-buffer eab/agendah-buffer)))
 
+(defun eab/org-parse-current-time ()
+  (apply 'encode-time
+	 (org-parse-time-string
+	  (substring
+	   (shell-command-to-string
+	    (concat "cd " org-directory "clock && ../misc/clock.sh -s getCT"))
+	   0 -1))))
+
 (defun eab/hron-todo-setup ()
   (interactive)
   (load eab/org-file nil 't)
@@ -357,9 +365,16 @@
 (defun csum ()
   (org-minutes-to-clocksum-string (org-clock-sum-current-item)))
 
+(defun csum-hours ()
+  (org-minutes-to-clocksum-string (org-clock-sum-current-item) '(("h") (special . h:mm))))
+
 (defun csum-file ()
   (org-clock-sum)
   (org-minutes-to-clocksum-string org-clock-file-total-minutes))
+
+(defun csum-file-hours ()
+  (org-clock-sum)
+  (org-minutes-to-clocksum-string org-clock-file-total-minutes '(("h") (special . h:mm))))
 
 (defun csum-year ()
   (eab/forecast-hron (org-minutes-to-clocksum-string (eab/clock-sum-this-year))))

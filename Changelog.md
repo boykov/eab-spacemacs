@@ -1,5 +1,13 @@
 # Changelog
 
+### 0.1.28
+
+Fix `magit-libgit` missed package.
+Improve `showhide` snippet.
+Add `insert-paper-link` pmacro.
+Add `eab/browse-paper-at-point`.
+Add `csum-hours`, `csum-file-hours`, `eab/org-parse-current-time`.
+
 ### 0.1.27
 
 Convert `eab/total-minutes` to defun.

@@ -18,6 +18,7 @@
 
 (eab/search-word eab/edit-list-at-point "Edit-list at point" eab/edit-list-1 (word))
 (eab/search-word eab/gnugol-search "gnugol search" gnugol (word))
+(eab/search-word eab/browse-paper-at-point "gnugol search" eab/browse-paper-1 (word))
 (eab/search-word eab/org-agenda-search "agenda search" org-search-view (nil word))
 ;; (eab/search-word eab/org-agenda-search
 ;; 		 "agenda ql search" org-ql-search

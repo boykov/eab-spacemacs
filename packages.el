@@ -49,7 +49,6 @@
     git-timemachine
     git-wip-timemachine
     libgit
-    magit-libgit
     magit-annex
     git-annex
     magit
@@ -455,7 +454,6 @@ which require an initialization must be listed explicitly in the list.")
     :after (magit))
   )
 (defun eab-spacemacs/init-git-annex nil)
-(defun eab-spacemacs/init-magit-libgit nil)
 (defun eab-spacemacs/init-git-commit nil)
 (defun eab-spacemacs/init-forge nil
   ;; (require 'forge)
