@@ -231,8 +231,6 @@
  "M-m"		'sp-forward-sexp
  "M-n"		'sp-backward-sexp
  "M-?"		(ilam (auto-complete))
- ;; Disabled, bug
- ;; "C-S-k"	(ilam (set-input-method nil))
  "s-k"		(ilam (if (equal current-input-method "TeX") (set-input-method "russian-computer") (set-input-method "TeX")))
  "C-s"		(ilam (save-some-buffers 't))
  "C-:"		'isearch-moccur
@@ -293,7 +291,6 @@
  "M-v"	'nil
  "M-s"	'nil)
 
-;; TODO надо C-y, теперь уже C-l, везде сделать переменной
 (general-define-key
  :keymaps 'minibuffer-local-map
  "C-q"		'quoted-insert
@@ -359,6 +356,7 @@
 (global-set-key (kbd "C-l") nil)
 (general-define-key
  :prefix "C-l"
+ "C-k"          (ilam (set-input-method nil)) ;; "C-S-k" Disabled, bug
  "H"		'org-clock-in
  "C-h"		'org-clock-out
  "c"		'org-store-link

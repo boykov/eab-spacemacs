@@ -1,5 +1,15 @@
 # Changelog
 
+### 0.1.29
+
+Fix `eab/eval-last-sexp-serverN` message.
+Don't comment `eab/gotify-token` check.
+Add `ido-better-flex`.
+Use `(set-input-method nil)` for `C-l C-k`.
+Add `insert-showhide` pm macro.
+
+TODO serverC eab/gotify-token is defined unstable.
+
 ### 0.1.28
 
 Fix `magit-libgit` missed package.

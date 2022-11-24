@@ -155,9 +155,14 @@
  "align org - <..> note"
  "C-l RET C-l L ESC ; > SPC")
 
-
 (pm-def-macro
  'insert-paper-link
  nil nil
  ""
- "M-SPC M-m M-c M-n [[papers: M-m ][ M-v ]]")
+ "C-l C-k M-m M-n M-SPC M-m M-c M-n [[papers: M-m ][ M-v ]]")
+
+(pm-def-macro
+ 'insert-showhide
+ nil nil
+ ""
+ "C-l C-k RET M-i s h o TAB M-k M-SPC 2*M-k M-x 2*M-w M-C-o M-v")

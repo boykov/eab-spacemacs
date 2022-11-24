@@ -11,16 +11,16 @@
   "Evaluate sexp before point on serverM; print value in minibuffer."
   (interactive)
   (let ((sexp (call-interactively (lambda () (interactive) (preceding-sexp)))))
-    (server-eval-at "serverM"
-		    `(eval ',sexp))))
+    (message "%s" (server-eval-at "serverM"
+				  `(eval ',sexp)))))
 
 (defun eab/eval-last-sexp-serverC ()
   "Evaluate sexp before point on serverC; print value in minibuffer."
   (interactive)
   (let ((sexp (call-interactively (lambda () (interactive) (preceding-sexp)))))
     (let ((server-use-tcp serverC-use-tcp))
-      (server-eval-at (eab/server-C)
-		      `(eval ',sexp)))))
+      (message "%s" (server-eval-at (eab/server-C)
+				    `(eval ',sexp))))))
 
 ;; TODO обобщить формирование body и выполнение remote
 (defun eab/org-publish-current-file-remote ()

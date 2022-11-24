@@ -20,8 +20,9 @@ echo stub
 END
 " )) 0 -1))
 
-;; (let ((server-use-tcp serverC-use-tcp))
-;;     (server-eval-at (eab/server-C) 'eab/gotify-token))
+'((let ((server-use-tcp serverC-use-tcp))
+    (server-eval-at (eab/server-C) 'eab/gotify-token))
+  )
 
 (setq eab/gotify-token
       (substring (shell-command-to-string (concat eab/ssh-host " <<'END'

@@ -899,6 +899,7 @@ which require an initialization must be listed explicitly in the list.")
                                               ("5.1" "maple" nil "mint")
                                               ("5" "maple" nil "mint")
                                               ("4" "maple" nil "mint")))))
+  (require 'ido-better-flex)
   )
 
 ;; for history only
