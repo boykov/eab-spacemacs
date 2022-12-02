@@ -1,5 +1,13 @@
 # Changelog
 
+### 0.1.30
+
+Fix ssh remote command extra greeting message.
+Fix `default-input-method` after `set-input-method`.
+Try to fix `keepass.sh` with `2>/dev/null`, see auto.
+Disable `flx-ido-mode`.
+Fix `eab/org-ql-view-refresh` position: replace `point` with `line/column`.
+
 ### 0.1.29
 
 Fix `eab/eval-last-sexp-serverN` message.
@@ -59,7 +67,6 @@ Add `revert-all-buffers`, replace `auto-revert-buffers` by it.
 Add `eab/ssh-host-local` for `ssh cyclos/chronos`.
 Add serverC tcp socket.
 Use `serverC-use-tcp` for all `server-eval-at` serverC.
-Fix `eab/suppress-greeting`.
 Fix `source-directory`.
 
 ### 0.1.21

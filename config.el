@@ -13,19 +13,13 @@
 (defvar eab/first-emacsclient 't "nil if run again")
 (defvar eab/ssh-host "ssh chronos" "current host")
 
-;; Fix
-(setq eab/suppress-greeting
-      (substring (shell-command-to-string (concat eab/ssh-host " <<'END'
-echo stub
-END
-" )) 0 -1))
-
 '((let ((server-use-tcp serverC-use-tcp))
-    (server-eval-at (eab/server-C) 'eab/gotify-token))
+    (list (server-eval-at (eab/server-C) 'eab/gotify-token)
+	  (server-eval-at (eab/server-C) 'eab/gotify-client-token)))
   )
 
 (setq eab/gotify-token
-      (substring (shell-command-to-string (concat eab/ssh-host " <<'END'
+      (substring (shell-command-to-string (concat eab/ssh-host " bash <<'END'
 ~/git/auto/keepass.sh \"portal/gotify\" -a app-test-token
 END
 " )) 0 -1))
@@ -36,7 +30,7 @@ END
 	   "\" -F \"message=" message
 	   "\" -F \"priority=" (number-to-string priority) "\"")))
 (setq eab/gotify-client-token
-      (substring (shell-command-to-string (concat eab/ssh-host " <<'END'
+      (substring (shell-command-to-string (concat eab/ssh-host " bash <<'END'
 ~/git/auto/keepass.sh \"portal/gotify\" -a client-token
 END
 " )) 0 -1))
@@ -45,7 +39,7 @@ END
       (concat eab/ssh-host " 'sqlite3 -column /var/gotify/data/gotify.db \"select datetime(date,\\\"localtime\\\"),title,message from messages order by date desc limit 10;\"'"))
 
 (setq eab/gr-command
-      (concat eab/ssh-host " ~/bin/gr status"))
+      (concat eab/ssh-host " bash ~/bin/gr status"))
 
 (setq eab/test-dotemacs-command
       (concat eab/ssh-host " ~/git/auto/test-dotemacs.sh"))

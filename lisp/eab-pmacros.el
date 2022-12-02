@@ -71,7 +71,7 @@
 	'insert-clock
 	'global [8388718 99]
 	"Insert <clock> at -"
-	"M-; clock: RET 2*M-l M-SPC 2*M-m M-l M-c C-u C-SPC C-u C-SPC M-l SPC <
+	"C-l C-k M-; clock: RET 2*M-l M-SPC 2*M-m M-l M-c C-u C-SPC C-u C-SPC M-l SPC <
  M-v > M-; clock: RET M-; - SPC RET 2*M-j"
  ;--------------------------------------------------------------------
 )

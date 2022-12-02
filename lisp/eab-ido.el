@@ -13,7 +13,7 @@
 (setq ido-enable-flex-matching t)
 (setq ido-everywhere t)
 (setq ido-use-faces nil) ;; disable ido faces to see flx highlights.
-(flx-ido-mode 1) ;; see eab/org-insert-link-fast: (let ((ido-mode nil)))
+;; (flx-ido-mode 1) ;; see eab/org-insert-link-fast: (let ((ido-mode nil)))
 (setq flx-ido-threshold 16000)
 (setq ido-max-directory-size 90000)
 (setq ido-max-work-directory-list 999)

@@ -63,8 +63,9 @@ update search arguments."
   (interactive "P")
   (unless org-ql-view-buffers-files
     (user-error "Not an Org QL View buffer"))
-  (let* ((current-line (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
-         (old-pos (point))
+  (let* ((current-string (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
+         (old-line (current-line))
+         (old-column (current-column))
          (defaults (list org-ql-view-buffers-files
                          org-ql-view-query
                          :sort org-ql-view-sort
@@ -77,9 +78,11 @@ update search arguments."
       (apply #'org-ql-search defaults))
     ;; Now in the results buffer.
     (goto-char (point-min))
-    (or (when (search-forward current-line nil t)
+    (or (when (search-forward current-string nil t)
           (beginning-of-line))
-        (goto-char old-pos))
+        (progn
+	  (goto-line (if (eq old-column 0) old-line (1- old-line)))
+	  (move-to-column old-column)))
     (message "View refreshed")))
 
 (defun eab/org-agenda-files ()

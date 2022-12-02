@@ -231,7 +231,7 @@
  "M-m"		'sp-forward-sexp
  "M-n"		'sp-backward-sexp
  "M-?"		(ilam (auto-complete))
- "s-k"		(ilam (if (equal current-input-method "TeX") (set-input-method "russian-computer") (set-input-method "TeX")))
+ "s-k"		(ilam (if (equal current-input-method "TeX") (set-input-method "russian-computer") (set-input-method "TeX")) (setq default-input-method "russian-computer"))
  "C-s"		(ilam (save-some-buffers 't))
  "C-:"		'isearch-moccur
  "C-c t"	'dictionary-search
@@ -356,7 +356,7 @@
 (global-set-key (kbd "C-l") nil)
 (general-define-key
  :prefix "C-l"
- "C-k"          (ilam (set-input-method nil)) ;; "C-S-k" Disabled, bug
+ "C-k"          (ilam (set-input-method nil) (setq default-input-method "russian-computer")) ;; "C-S-k" Disabled, bug
  "H"		'org-clock-in
  "C-h"		'org-clock-out
  "c"		'org-store-link

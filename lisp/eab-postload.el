@@ -69,7 +69,7 @@
   (require 'cl-macs)
   (cl-assert
    (equal (ido-completing-read-silent "prompt: " '("one" "two" "three" "four" "five") "t")
-	  '("three" "two")))
+	  '("two" "three")))
   (global-eldoc-mode 0)
   (require 'yasnippet)
   (yas-reload-all)
