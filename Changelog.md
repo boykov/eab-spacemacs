@@ -1,5 +1,14 @@
 # Changelog
 
+### 0.1.31
+
+Fix `eab/search-word` macro: use `arg` instead of `word`.
+Rm `gnugol` related.
+Use `eab/ssh-host-local` for `eab/gr-command`.
+Fix sort `multi-character tab $:` on remote tramp.
+Add `eab/update-gr-status-on-idle`.
+Improve `eab/hron-todo` with `eab/org-parse-current-time` and `eab/hron-set-current`.
+
 ### 0.1.30
 
 Fix ssh remote command extra greeting message.

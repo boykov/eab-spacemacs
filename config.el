@@ -38,9 +38,6 @@ END
 (setq eab/gotify-command
       (concat eab/ssh-host " 'sqlite3 -column /var/gotify/data/gotify.db \"select datetime(date,\\\"localtime\\\"),title,message from messages order by date desc limit 10;\"'"))
 
-(setq eab/gr-command
-      (concat eab/ssh-host " bash ~/bin/gr status"))
-
 (setq eab/test-dotemacs-command
       (concat eab/ssh-host " ~/git/auto/test-dotemacs.sh"))
 
@@ -184,6 +181,12 @@ END
 (cond ((eab/onhost "chronos28")    (setq eab/ssh-host-local eab/ssh-host))
       ((eab/onhost "clocksum-28")  (setq eab/ssh-host-local eab/ssh-host))
       ((eab/onhost "cyclos-emacs") (setq eab/ssh-host-local "ssh cyclos")))
+
+(setq eab/gr-command
+      (concat eab/ssh-host-local " bash ~/bin/gr status"))
+
+(setq eab/update-gr-command
+      (concat eab/ssh-host-local " bash ~/bin/gr @fz git fetch"))
 
 (setq eab/emacs-service-command
       (concat

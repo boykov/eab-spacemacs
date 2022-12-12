@@ -179,19 +179,22 @@
 	(setq eab/hron-todo-from-agenda 't)
 	(org-agenda-switch-to))
     (setq eab/hron-todo-from-agenda nil))
-  (eab/org-clock (apply 'encode-time
-			(org-parse-time-string
-			 (eab/hron-current-time-stamp)))
-		 (apply 'encode-time
-			(org-parse-time-string
-			 (eab/hron-add-current
-			  hour
-			  minute))))
-  (if (eq arg 4)
-	nil
-      (eab/hron-change-current
-       hour
-       minute))
+  (if (not (eq arg 2))
+      (eab/org-clock (apply 'encode-time
+			    (org-parse-time-string
+			     (eab/hron-current-time-stamp)))
+		     (apply 'encode-time
+			    (org-parse-time-string
+			     (eab/hron-add-current
+			      hour
+			      minute)))))
+  (cl-case arg
+    (4 nil)
+    (2 (eab/hron-set-current
+	(format-time-string "%Y-%m-%d %a %H:%M" (eab/org-parse-current-time))))
+    (otherwise (eab/hron-change-current
+		hour
+		minute)))
   (if eab/hron-todo-from-agenda
       (switch-to-buffer eab/agendah-buffer)))
 
@@ -223,7 +226,7 @@
 
 (defun eab/hron-todo (&optional arg)
   (interactive "p")
-  (eab/hron-todo-setup)
+  (if (not (eq arg 2)) (eab/hron-todo-setup))
   (if org-agenda-bulk-marked-entries
       (progn
 	(execute-kbd-macro

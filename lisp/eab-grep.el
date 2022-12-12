@@ -31,7 +31,7 @@
 (setq eab/grep-ls-recurse "git ls-files --recurse-submodules `git rev-parse --show-toplevel`")
 (setq eab/grep-clock-left "\"^- (<20|\\[X|\\[ )(\\n[^\*-]|.)*?(.*|\\n)")
 (setq eab/grep-clock-right "(\\n|.)*?((?=\\n- <)|(?=\\n\\*)|(?=\\Z))\"")
-(setq eab/grep-sort " | LC_ALL=C sort -t$':' -k1,1 -k2n")
+(setq eab/grep-sort " | LC_ALL=C sort -t ':' -k1,1 -k2n")
 (setq eab/grep-xargs " | xargs -d '\\n' ")
 (defun eab/grep-ls-gitmode? ()
   (or (file-exists-p (concat default-directory "/.gitignore"))

@@ -96,6 +96,11 @@
 	(setq eab/gr-ready? 't)
 	(switch-to-buffer gr-buffer nil 't)))))
 
+(defun eab/update-gr-status-on-idle ()
+  (with-temp-buffer
+    (shell-command-to-string eab/update-gr-command))
+  (message "'%s' refreshed" eab/update-gr-command))
+
 (setq eab/gotify-ready? nil)
 (defun eab/gotify-status (&optional arg)
   (interactive)

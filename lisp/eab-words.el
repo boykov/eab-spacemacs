@@ -4,21 +4,22 @@
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 
-;; Requirements: edit-list abbrev dictionary gnugol
+;; Requirements: edit-list abbrev dictionary
 ;; Status: ready
 
 (require 'abbrev)
 
 (defmacro eab/search-word (funcname name function &optional funargs)
   "Wrapper for search word interface."
-  `(defun ,funcname (word)
-     (interactive
-      (list (read-string (concat ,name " word: ") (current-word))))
-     (,function ,@funargs)))
+  `(defun ,funcname (&optional arg)
+     (interactive "P")
+     (let ((word (if arg
+		     (read-string (concat ,name " word: ") (current-word))
+		   (current-word))))
+       (,function ,@funargs))))
 
 (eab/search-word eab/edit-list-at-point "Edit-list at point" eab/edit-list-1 (word))
-(eab/search-word eab/gnugol-search "gnugol search" gnugol (word))
-(eab/search-word eab/browse-paper-at-point "gnugol search" eab/browse-paper-1 (word))
+(eab/search-word eab/browse-paper-at-point "browse paper" eab/browse-paper-1 (word))
 (eab/search-word eab/org-agenda-search "agenda search" org-search-view (nil word))
 ;; (eab/search-word eab/org-agenda-search
 ;; 		 "agenda ql search" org-ql-search

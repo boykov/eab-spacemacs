@@ -180,7 +180,6 @@
  "C-c RET"	'org-return
  "C-c c"	'eab/add-eab-abbrev
  "C-c d"	'eab/tracker-search
- "C-c g"	'eab/gnugol-search
  "C-c O"	'eab/open-corresponding-html
  "C-c b"	'eab/open-heading-browser
  "C-c s"	'eab/org-agenda-search
@@ -1352,8 +1351,6 @@
      "П"	(ilam (eab/or-self-insert 'google))
      "l"	(ilam (eab/or-self-insert 'eab/replace-selection))
      "д"	(ilam (eab/or-self-insert 'eab/replace-selection))
-     "s"	(ilam (eab/or-self-insert 'gnugol-search-selection))
-     "ы"	(ilam (eab/or-self-insert 'gnugol-search-selection))
      "e"	'mc/edit-lines
      "у"	'mc/edit-lines
      "x"	(ilam (eab/or-self-insert 'kill-rectangle))

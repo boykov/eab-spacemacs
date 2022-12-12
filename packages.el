@@ -858,7 +858,6 @@ which require an initialization must be listed explicitly in the list.")
 				  (mapcar
 				   (lambda (x) (symbol-name x))
 				   (pm-get-available-macros))))))))
-  (require 'gnugol)
   (setq diredp-hide-details-initially-flag nil)
   ;; dired+ нужен для привычной подсветки
   (require 'dired+)
