@@ -97,11 +97,11 @@
 ;; (org-mobile-create-sumo-agenda) - Create a file that contains all custom agenda views.
 
 ;; TODO move this functionality to eab/bind-path
-(if (not (boundp 'eab/org-publish-directory-file))
-    (setq eab/org-publish-directory-file "ERROR"))
+(unless (boundp 'eab/org-publish-directory-file)
+  (setq eab/org-publish-directory-file "ERROR"))
 
-(if (not (boundp 'eab/org-publish-directory))
-    (setq eab/org-publish-directory "ERROR"))
+(unless (boundp 'eab/org-publish-directory)
+  (setq eab/org-publish-directory "ERROR"))
 
 (add-hook 'bibtex-mode-hook (lambda () (bibtex-set-dialect 'BibTeX)))
 (add-hook 'grep-mode-hook 'org-link-minor-mode)

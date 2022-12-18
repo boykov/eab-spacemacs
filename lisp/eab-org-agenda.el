@@ -17,11 +17,10 @@
     (if window
 	(select-window window)
       (switch-to-buffer buffer-name))
-    (if (or (not (boundp 'eab/org-ql-select-hash))
-	    (not (string= eab/org-ql-select-hash (eab/org-ql-select-md5))))
-	(progn
-	  (eab/org-ql-view-refresh)
-	  (setq-local eab/org-ql-select-hash (eab/org-ql-select-md5))))))
+    (when (or (not (boundp 'eab/org-ql-select-hash))
+	      (not (string= eab/org-ql-select-hash (eab/org-ql-select-md5))))
+      (eab/org-ql-view-refresh)
+      (setq-local eab/org-ql-select-hash (eab/org-ql-select-md5)))))
 
 (defun eab/update-query-on-idle (query)
   (let* ((buffer-name (eab/org-ql-query-buffer query))

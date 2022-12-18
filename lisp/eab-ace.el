@@ -21,9 +21,9 @@
         (isearch-buffer (current-buffer))
         (isearch-update-post-hook
 	 (lambda ()
-	    (interactive)
-	    (if (not (equal isearch-string ""))
-		(isearch-exit)))))
+	   (interactive)
+	   (unless (equal isearch-string "")
+	     (isearch-exit)))))
     (isearch-exit)
     ;; TODO ace -> avy
     (ace-jump-do (concat "\\b" isearch-string))))

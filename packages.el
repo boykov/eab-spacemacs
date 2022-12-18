@@ -427,9 +427,9 @@ which require an initialization must be listed explicitly in the list.")
   (defadvice dictionary-search (after eab-dictionary-abbrev activate)
     "Put searched word for dictionary to eab-abbrev-table"
     (let ((word (ad-get-arg 0)))
-      (if (not (string-equal word ""))
-          (define-abbrev eab-abbrev-table word word))))
-  )
+      (unless (string-equal word "")
+        (define-abbrev eab-abbrev-table word word)))))
+
 (defun eab-spacemacs/init-magit nil
   (use-package magit
     :defer
@@ -444,10 +444,10 @@ which require an initialization must be listed explicitly in the list.")
   (eab/bind-path transient-history-file)
 
   (require 'git-wip) ;; DONE can remove it and use magit-wip-mode? No, it's better
-;; (setq auto-revert-buffer-list-filter 'magit-auto-revert-repository-buffer-p)
-;;    ("-S" "Submodule diff"                 ("-S" "--submodule=diff"))
-;; (put 'magit-status-mode 'magit-diff-default-arguments
-;;     '("--submodule=diff"))
+  ;; (setq auto-revert-buffer-list-filter 'magit-auto-revert-repository-buffer-p)
+  ;;    ("-S" "Submodule diff"                 ("-S" "--submodule=diff"))
+  ;; (put 'magit-status-mode 'magit-diff-default-arguments
+  ;;     '("--submodule=diff"))
   )
 (defun eab-spacemacs/init-magit-annex nil
   (use-package magit-annex

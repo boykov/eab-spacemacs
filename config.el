@@ -44,11 +44,9 @@ END
 (setq eab/xdg-open (concat eab/ssh-host " DISPLAY=:0 xdg-open"))
 
 (defun eab/loaded-ok ()
-  (if (not configuration-layer-error-count)
-      (kill-emacs)
-    (progn
-      (shell-command "echo > $HOME/dotemacs.error")
-      (kill-emacs))))
+  (if configuration-layer-error-count
+      (shell-command "echo > $HOME/dotemacs.error"))
+  (kill-emacs))
 
 (defun display-startup-echo-area-message ()
   "Change the default welcome message of minibuffer to another one."
@@ -59,8 +57,8 @@ END
 (setq eab/homedir (getenv "HOME"))
 (setq eab/daemon-name (daemonp))
 
-(if (not (stringp eab/daemon-name))
-    (setq eab/daemon-name "server"))
+(unless (stringp eab/daemon-name)
+  (setq eab/daemon-name "server"))
 
 (defun eab/onhomedir (def)
   (if (string= eab/homedir def) 't))
@@ -153,8 +151,8 @@ END
 (defun eab/history-dir ()
   (let ((dir
 	 (cdr (assoc eab/daemon-name (gethash 'eab/history-dir-alist eab/paths-hash)))))
-    (if (not (file-exists-p dir))
-	(ignore-errors (make-directory dir)))
+    (unless (file-exists-p dir)
+      (ignore-errors (make-directory dir)))
     dir))
 
 (defun eab/desktop-dir ()

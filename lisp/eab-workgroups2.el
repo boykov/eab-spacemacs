@@ -19,8 +19,8 @@
 
 ;; (eab/print-0 (wg-workgroup-names))
 (defun eab/wg-init ()
-  (if (not (boundp 'eab/workgroups-save))
-      (setq eab/workgroups-save wg-session-file))
+  (unless (boundp 'eab/workgroups-save)
+    (setq eab/workgroups-save wg-session-file))
   (if (boundp 'eab/wg-update-list)
       (mapcar
        (lambda (lst)
@@ -32,11 +32,10 @@
 	 (nondir (file-name-nondirectory path))
 	 (name nondir))
     (when (file-exists-p true-path)
-      (if (not (wg-get-workgroup name 't))
-	  (progn
-	    (wg-create-workgroup name 't)
-	    (find-file true-path)
-	    (eab/wg-update-workgroup "dflt")))
+      (unless (wg-get-workgroup name 't)
+	(wg-create-workgroup name 't)
+	(find-file true-path)
+	(eab/wg-update-workgroup "dflt"))
       (eab/wg-add-workgroup-to-history
        (wg-workgroup-uid (wg-get-workgroup name 't))))))
 
@@ -83,8 +82,8 @@
                    eab/wg-update-hash))
          (wg-defined (if wg-name (wg-get-workgroup wg-name) nil))
          (wg-current (wg-current-workgroup 't)))
-    (if (not (equal wg-defined wg-current))
-        (if wg-defined (wg-switch-to-workgroup wg-defined)))))
+    (unless (equal wg-defined wg-current)
+      (if wg-defined (wg-switch-to-workgroup wg-defined)))))
 
 (defun eab/wg-revert-and-update ()
   "Revert current workgroup and update selected workgroup by current config"
@@ -228,16 +227,16 @@
 (defun eab/wg-rotate-base ()
   (interactive)
   (let ((base (eab/wg-base-name (eab/wg-current-workgroup))))
-    (if (not (eab/wg-base? (eab/wg-current-workgroup)))
-	(let* ((num (string-to-number (cadr (split-string (eab/wg-current-workgroup) "xxx"))))
-	       (name (format (concat base "xxx%s") (+ num 1))))
-	  (if (not (member name (wg-workgroup-names t)))
-	      (wg-switch-to-workgroup (wg-get-workgroup base))
-	    (wg-switch-to-workgroup name)))
-      (let* ((name (format (concat (eab/wg-current-workgroup) "xxx0"))))
+    (if (eab/wg-base? (eab/wg-current-workgroup))
+	(let* ((name (format (concat (eab/wg-current-workgroup) "xxx0"))))
+	  (if (member name (wg-workgroup-names t))
+	      (wg-switch-to-workgroup name)
+	    (message "No extra workgroups")))
+      (let* ((num (string-to-number (cadr (split-string (eab/wg-current-workgroup) "xxx"))))
+	     (name (format (concat base "xxx%s") (+ num 1))))
 	(if (member name (wg-workgroup-names t))
 	    (wg-switch-to-workgroup name)
-	  (message "No extra workgroups"))))))
+	  (wg-switch-to-workgroup (wg-get-workgroup base)))))))
 
 (defun eab/wg-rotate-twice ()
   (interactive)

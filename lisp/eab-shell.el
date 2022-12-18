@@ -21,10 +21,9 @@
 			 (concat comstr "&")
 		       comstr))
       (sleep-for 1)
-      (if async
-	  (progn
-	    (switch-to-buffer "*Async Shell Command*")
-	    (kill-buffer))))))
+      (when async
+	(switch-to-buffer "*Async Shell Command*")
+	(kill-buffer)))))
 
 (defun eab/shell-command (command &optional output-buffer error-buffer)
   "Run command by `call-process-shell-command' in separate
@@ -117,8 +116,8 @@ process: e.g. nautilus or gnome-terminals"
 	  (shell-command-to-string
 	   (concat "export TERM=eterm-color && " eab/translate-path " " phrase)))
 	 "\n"))
-  (if (not not-abbrevp)
-      (define-abbrev eab-abbrev-table phrase (car eab/tmp-str)))
+  (unless not-abbrevp
+    (define-abbrev eab-abbrev-table phrase (car eab/tmp-str)))
   (message "%s" (car eab/tmp-str)))
 
 (defun eab/latinize (str)

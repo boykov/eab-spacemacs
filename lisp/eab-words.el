@@ -33,9 +33,9 @@
 
 ;; TODO see eab/paper-link
 (defun eab/abbrev-link (abbrev name)
-  (if (not (string= name ""))
-      (concat "[[" abbrev ":" name "][" name "]]")
-    ""))
+  (if (string= name "")
+      ""
+    (concat "[[" abbrev ":" name "][" name "]]")))
 
 (defun eab/replace-selection ()
   (interactive)

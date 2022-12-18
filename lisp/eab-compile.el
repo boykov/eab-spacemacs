@@ -39,9 +39,10 @@
   (let ((pos (line-at-pos))
 	(point (point))
 	(compilation-buffer-name-function nil))
-    (if (not arg)
-	(recompile)
-      (recompile arg))
+    (if arg
+	(recompile arg)
+      (recompile)
+      )
     (setq-local compilation-finish-functions
 		`((lambda
 		    (buffer msg)
@@ -61,8 +62,8 @@
 	   (let ((minibuffer-history-variable 'compile-history))
 	     (helm-minibuffer-history))
 	   (buffer-substring (point-min) (point-max)))))
-    (if (not (string= cmd ""))
-	(compile cmd))))
+    (unless (string= cmd "")
+      (compile cmd))))
 
 ;; Helper for compilation. Close the compilation window if
 ;; there was no error at all.
@@ -88,13 +89,11 @@
   (let* ((gr-buffer "*gr status*")
 	 (compilation-buffer-name-function
 	  `(lambda (mode) ,gr-buffer)))
-    (if eab/gr-ready?
-	(switch-to-buffer gr-buffer nil 't)
-      (progn
-	(save-window-excursion
-	  (eab/compile eab/gr-command))
-	(setq eab/gr-ready? 't)
-	(switch-to-buffer gr-buffer nil 't)))))
+    (unless eab/gr-ready?
+      (save-window-excursion
+	(eab/compile eab/gr-command))
+      (setq eab/gr-ready? 't))
+    (switch-to-buffer gr-buffer nil 't)))
 
 (defun eab/update-gr-status-on-idle ()
   (with-temp-buffer

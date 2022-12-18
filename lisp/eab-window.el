@@ -55,8 +55,8 @@
   (interactive)
   (eab/with-git-toplevel
    (eab/switch-window (concat "*compilation: " (projectile-project-name) "*")))
-  (if (not (eq major-mode 'compilation-mode))
-      (compilation-mode)))
+  (unless (eq major-mode 'compilation-mode)
+    (compilation-mode)))
 
 (defun eab/switch-grep ()
   (interactive)

@@ -47,20 +47,20 @@
 
 (defun eab/revert-buffer ()
   (interactive)
-  (if (not (buffer-modified-p))
-      (cond ((string= eab/revert-buffer "u")
-             (progn
-	       (let ((revert-without-query (list (buffer-file-name))))
-		 (revert-buffer-with-coding-system 'cp1251))
-	       (setq eab/revert-buffer "w")))
-            ((string= eab/revert-buffer "w")
-             (progn (let ((revert-without-query (list (buffer-file-name))))
-		      (revert-buffer-with-coding-system 'utf-8))
-                    (setq eab/revert-buffer "d")))
-            ((string= eab/revert-buffer "d")
-             (progn (let ((revert-without-query (list (buffer-file-name))))
-		      (revert-buffer-with-coding-system 'cp866))
-                    (setq eab/revert-buffer "u"))))))
+  (unless (buffer-modified-p)
+    (cond ((string= eab/revert-buffer "u")
+           (progn
+	     (let ((revert-without-query (list (buffer-file-name))))
+	       (revert-buffer-with-coding-system 'cp1251))
+	     (setq eab/revert-buffer "w")))
+          ((string= eab/revert-buffer "w")
+           (progn (let ((revert-without-query (list (buffer-file-name))))
+		    (revert-buffer-with-coding-system 'utf-8))
+                  (setq eab/revert-buffer "d")))
+          ((string= eab/revert-buffer "d")
+           (progn (let ((revert-without-query (list (buffer-file-name))))
+		    (revert-buffer-with-coding-system 'cp866))
+                  (setq eab/revert-buffer "u"))))))
 
 (defun eab/fix-windows-coding ()
   (interactive)
@@ -94,13 +94,13 @@
 			 default-directory))
 	  (top-level (cond
 		      ((equal arg 2)
-		       (if (not git-superproject)
-			   git-nothing
-			 (substring git-superproject 0 -1)))
-		      ((not arg)
-		       (if (not fatal-toplevel)
-			   (substring try-toplevel 0 -1)
+		       (if git-superproject
+			   (substring git-superproject 0 -1)
 			 git-nothing))
+		      ((not arg)
+		       (if fatal-toplevel
+			   git-nothing
+			 (substring try-toplevel 0 -1)))
 		      ((equal arg '(4))
 		       git-nothing)))
 	  (default-directory

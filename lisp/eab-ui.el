@@ -114,14 +114,13 @@
 
 (setq system-time-locale "ru_RU.UTF-8")
 
-(if (not window-system);; Only use in tty-sessions.
-    (progn
-      (defvar arrow-keys-map (make-sparse-keymap) "Keymap for arrow keys")
-      (define-key esc-map "O" arrow-keys-map)
-      (define-key arrow-keys-map "A" 'previous-line)
-      (define-key arrow-keys-map "B" 'next-line)
-      (define-key arrow-keys-map "C" 'forward-char)
-      (define-key arrow-keys-map "D" 'backward-char)))
+(unless window-system ;; Only use in tty-sessions.
+  (defvar arrow-keys-map (make-sparse-keymap) "Keymap for arrow keys")
+  (define-key esc-map "O" arrow-keys-map)
+  (define-key arrow-keys-map "A" 'previous-line)
+  (define-key arrow-keys-map "B" 'next-line)
+  (define-key arrow-keys-map "C" 'forward-char)
+  (define-key arrow-keys-map "D" 'backward-char))
 
 (setq browse-url-browser-function (quote browse-url-firefox))
 (setq browse-url-firefox-program "/usr/local/bin/browser-remote")

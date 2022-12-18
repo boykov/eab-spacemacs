@@ -1,5 +1,12 @@
 # Changelog
 
+### 0.1.32
+
+Rfct.
+Replace `if not` with `if` or `unless`.
+Replace `progn` with `when`.
+Fix `eab/hron-todo-bulk-hour 0` case.
+
 ### 0.1.31
 
 Fix `eab/search-word` macro: use `arg` instead of `word`.

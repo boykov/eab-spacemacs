@@ -8,22 +8,18 @@
 ;; Status: ready
 
 (setq desktop-load-locked-desktop 't)
-(if (and (not noninteractive))
-    (progn
-      (if configuration-layer-error-count
-	  (add-to-list 'mode-line-modes '(t " [ERROR] ")))
-      ;; TODO раньше был nil, потом стало глючить
-      ;; из-за enable-local-variables
-      (setq-default TeX-master t)))
+(when (and (not noninteractive))
+  (if configuration-layer-error-count
+      (add-to-list 'mode-line-modes '(t " [ERROR] ")))
+  ;; TODO раньше был nil, потом стало глючить
+  ;; из-за enable-local-variables
+  (setq-default TeX-master t))
 
 (defun eab/test-dotemacs ()
-  (if (not configuration-layer-error-count)
-      (progn
-	(eab/gotify "ok expectations" "OK Dotemacs is loaded! Expectations OK!" 0)
-	(kill-emacs))
-    (progn
-	(eab/gotify "bad dotemacs" "Dotemacs is failed!" 5)
-	(kill-emacs))))
+  (if configuration-layer-error-count
+      (eab/gotify "bad dotemacs" "Dotemacs is failed!" 5)
+    (eab/gotify "ok expectations" "OK Dotemacs is loaded! Expectations OK!" 0))
+  (kill-emacs))
 
 (electric-indent-mode)
 (electric-pair-mode -1)
@@ -31,8 +27,7 @@
 ;; DONE похоже, переменная server-name здесь еще не становится serverC
 
 (if (and (or (eab/ondaemon (eab/server-P)) (eab/ondaemon "server")) (not noninteractive))
-    (progn
-      (load-theme 'spacemacs-dark 't)))
+    (load-theme 'spacemacs-dark 't))
 
 (if (eab/ondaemon (eab/server-C))
     (setq system-time-locale "ru_RU.UTF-8"))

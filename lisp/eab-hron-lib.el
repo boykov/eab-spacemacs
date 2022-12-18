@@ -80,17 +80,18 @@
     (require 'yasnippet)
     (require 'org)
     (sleep-for 1)
-    (if (not fast)
-	(eab/gotify "publish..." "Come in to eab/batch-publish" 0)
-      (eab/gotify "fast publish..." "started" 0))
+    (if fast
+	(eab/gotify "fast publish..." "started" 0)
+      (eab/gotify "publish..." "Come in to eab/batch-publish" 0)
+      )
     (shell-command (concat "cd " org-directory " && git pull"))
     (sleep-for 1)
     (revert-all-buffers)
-    (when (not fast)
+    (unless fast
       (eab/send-csum)
       (eab/check-csum-all)
       (eab/send-csum-all))
-    (when (not fast)
+    (unless fast
       (eab/update-all-dblocks) ;; DONE why doesn't work?
       ;; DONE it seems to hangs up `eab/update-reports-nightly'
       (eab/update-reports-nightly)
@@ -98,9 +99,10 @@
     (org-publish-project "html-base" (not fast))
     (org-publish-project "html-clock" (not fast))
     ;; (eab/shell-command "git stash save batch")
-    (if (not fast)
-	(eab/gotify "...finished" "success" 0)
-      (eab/gotify "...fast finished" "success" 0))
+    (if fast
+	(eab/gotify "...fast finished" "success" 0)
+      (eab/gotify "...finished" "success" 0)
+      )
     ))
 
 (defun eab/org-sort-time-func ()
@@ -179,15 +181,15 @@
 	(setq eab/hron-todo-from-agenda 't)
 	(org-agenda-switch-to))
     (setq eab/hron-todo-from-agenda nil))
-  (if (not (eq arg 2))
-      (eab/org-clock (apply 'encode-time
-			    (org-parse-time-string
-			     (eab/hron-current-time-stamp)))
-		     (apply 'encode-time
-			    (org-parse-time-string
-			     (eab/hron-add-current
-			      hour
-			      minute)))))
+  (unless (eq arg 2)
+    (eab/org-clock (apply 'encode-time
+			  (org-parse-time-string
+			   (eab/hron-current-time-stamp)))
+		   (apply 'encode-time
+			  (org-parse-time-string
+			   (eab/hron-add-current
+			    hour
+			    minute)))))
   (cl-case arg
     (4 nil)
     (2 (eab/hron-set-current
@@ -226,7 +228,11 @@
 
 (defun eab/hron-todo (&optional arg)
   (interactive "p")
-  (if (not (eq arg 2)) (eab/hron-todo-setup))
+  (if (eq arg 2)
+      (progn
+	(setq eab/hron-todo-bulk-hour 0)
+	(setq eab/hron-todo-bulk-minute 0))
+    (eab/hron-todo-setup))
   (if org-agenda-bulk-marked-entries
       (progn
 	(execute-kbd-macro
@@ -527,13 +533,14 @@
 
 (defun eab/send-csum ()
   (eab/check-csum-day)
-  (if (not (string-equal eab/hron-csum-day "*1d 0:00*"))
-      (eab/send-mail
-       (concat
-	"Сумма не равна 24 часа failed: calendar 1d"
-	", csum "
-	eab/hron-csum-day))
-    (eab/send-mail "Совпадает!")))
+  (if (string-equal eab/hron-csum-day "*1d 0:00*")
+      (eab/send-mail "Совпадает!")
+    (eab/send-mail
+     (concat
+      "Сумма не равна 24 часа failed: calendar 1d"
+      ", csum "
+      eab/hron-csum-day))
+    ))
 
 ;; TODO create arbitrary date instead hard-coded 01-01-2007
 (defun eab/get-all-csum ()
@@ -564,11 +571,11 @@
      ":" (if (= (length min) 1) (concat "0" min) min))))
 
 (defun eab/send-csum-all ()
-  (if (not (string-equal
-	    eab/hron-csum-day
-	    (concat "*" (eab/get-all-csum) "*")))
-      (eab/gotify "bad csum" "[!]" 5)
-    (eab/gotify "ok csum" "All time Совпадает!" 0)))
+  (if (string-equal
+       eab/hron-csum-day
+       (concat "*" (eab/get-all-csum) "*"))
+      (eab/gotify "ok csum" "All time Совпадает!" 0)
+    (eab/gotify "bad csum" "[!]" 5)))
 
 (defun eab/send-csum-all-remote (&optional arg)
   (interactive "P")
