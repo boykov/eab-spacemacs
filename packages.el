@@ -89,6 +89,7 @@
     highlight-indentation
     prettier
 
+    racket-mode
     julia-mode
     graphviz-dot-mode
     feature-mode
@@ -285,8 +286,36 @@ which require an initialization must be listed explicitly in the list.")
   )
 
 (defun eab-spacemacs/init-auto-dictionary ()
-  (use-package auto-dictionary)
-  (use-package eab-auto-dictionary)
+  (use-package auto-dictionary
+    :config
+    ;; (add-hook 'flyspell-mode-hook (lambda () (auto-dictionary-mode 1)))
+    ;; (flyspell-delete-all-overlays)
+    (add-to-list 'adict-language-list "ru" 't)
+    (add-to-list 'adict-dictionary-list
+		 `("ru" . ,(adict-guess-dictionary-name '("ru"))) 't)
+    (let ((hash adict-hash))
+      (adict-add-word hash 19 "и" "в" "не" "на" "что" "с" "то" "я" "он" "как" "а"
+		      "по" "к" "его" "все" "из" "за" "это" "у" "же" "от" "но" "было" "так"
+		      "бы" "о" "еще" "меня" "был" "только" "она" "уже" "ее" "мне" "сказал" "ты"
+		      "для" "мы" "они" "до" "их" "когда" "или" "ему" "ни" "вы" "даже" "под"
+		      "него" "если" "чтобы" "вот" "чем" "где" "себя" "была" "нас" "время"
+		      "ли" "быть" "раз" "может" "есть" "со" "были" "там" "нет" "очень"
+		      "кто" "без" "тут" "во" "будет" "тоже" "этого" "надо" "себе"
+		      "да" "ничего" "при" "тебя" "них" "этом" "того" "можно" "этот"
+		      "потом" "человек" "вас" "сейчас" "один" "здесь" "теперь" "тебе"
+		      "через" "больше" "всех" "лет" "том" "после" "сам" "нибудь" "ним"
+		      "просто" "вдруг" "над" "потому" "ведь" "вам" "дело" "тогда"
+		      "спросил" "жизни" "два" "чего" "который" "тем" "нам" "перед"
+		      "глаза" "всего" "уж" "им" "своей" "несколько" "день" "всегда"
+		      "какой" "ей" "более" "такой" "тот" "этой" "нее" "которые"
+		      "ней" "эти" "стал" "жизнь" "сразу" "мог" "совсем" "свою" "об"
+		      "почему" "пока" "конечно" "люди" "года" "человека" "куда" "почти"
+		      "руки" "людей" "хотя" "три" "снова" "хорошо" "знаю" "много" "сказать"
+		      "будто" "лишь" "голову" "про" "сказала" "всем" "между" "говорит"
+		      "никогда" "опять" "свои" "другой" "мой" "своих" "эту" "такое" "знал"
+		      "своего" "таки" "собой" "дома" "времени" "чуть" "свой" "лучше" "именно"
+		      "друг" "лицо" "руку" "вообще" "свое" "которой" "никто" "кого"
+		      "этих" "говорил" "вместе" "назад")))
   )
 
 (defun eab-spacemacs/init-spacemacs-theme ()
@@ -485,6 +514,7 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-logstash-conf nil)
 (defun eab-spacemacs/init-nginx-mode nil)
 (defun eab-spacemacs/init-julia-mode nil)
+(defun eab-spacemacs/init-racket-mode nil)
 (defun eab-spacemacs/init-emamux nil)
 (defun eab-spacemacs/init-esup nil)
 (defun eab-spacemacs/init-diff-hl nil
@@ -927,7 +957,7 @@ which require an initialization must be listed explicitly in the list.")
   )
 
 (defun eab-spacemacs/init-gnus nil
-  ;; (use-package eab-gnus)
+  (use-package :disabled t eab-gnus)
   )
 
 (defun eab-spacemacs/init-tramp nil
@@ -1036,8 +1066,8 @@ which require an initialization must be listed explicitly in the list.")
   (use-package eab-org-todo)
   (use-package eab-hron-lib)
   (use-package eab-org-latex)
-  (use-package eab-greek-to-latex)
-  (use-package eab-org-reftex)
+  (use-package :disabled t eab-greek-to-latex)
+  (use-package :disabled t eab-org-reftex)
   (when (string= (daemonp) "serverC")
     (use-package eab-org-extension)
     (eab/check-csum-day))

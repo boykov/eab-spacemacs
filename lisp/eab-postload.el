@@ -58,8 +58,6 @@
   ;; (make-frame (append 1on1-minibuffer-frame-alist minibuffer-frame-alist))
   ;; (load-file eab/secrets-path)
   ;; (eab/check-smtp)
-  ;; (gnus)
-  ;; (erc :server "localhost")
   (wg-change-modeline)
   (require 'cl-macs)
   (cl-assert

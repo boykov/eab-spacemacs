@@ -81,19 +81,6 @@
 (require 'ps-print)
 (require 'ps-mule)
 
-(require 'erc-log)
-(eab/bind-path erc-log-channels-directory)
-(erc-log-enable)
-(setq erc-server-history-list "localhost")
-(setq erc-log-file-coding-system 'utf-8) 
-(setq erc-save-buffer-on-part nil
-      erc-save-queries-on-quit nil
-      erc-log-write-after-send t
-      erc-log-write-after-insert t)
-
-(eval-after-load "erc"
-    '(set-face-foreground 'erc-nick-default-face "magenta"))
-
 ;; (require 'dictem)
 ;; (setq dictem-server "localhost")
 
@@ -115,6 +102,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (push '("\\.md\\'" . markdown-mode) auto-mode-alist)
+(add-to-list 'auto-mode-alist '("\\.rkt\\'" . racket-mode))
 (add-to-list 'auto-mode-alist '("\\.jl\\'" . julia-mode))
 (add-to-list 'auto-mode-alist '("\\.spec\\|\\.spec\\.in" . rpm-spec-mode))
 (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))

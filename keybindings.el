@@ -767,15 +767,6 @@
 ;; (eab/add-hook log-edit-mode-hook eab/log-edit-hook
 ;;   (eab/free-map log-edit-mode-map))
 
-;; (eab/add-hook erc-mode-hook eab/erc-hook
-;;   (general-define-key
-;;    :keymaps 'erc-mode-map
-;;    "C-l M-n" 'erc-next-command
-;;    "C-l M-p" 'erc-previous-command
-;;    "C-a"	'nil
-;;    "M-n"	'nil
-;;    "M-p"	'nil))
-
 ;; (general-define-key
 ;;  :keymaps 'popup-isearch-keymap
 ;;  "C-k"	(ilam (insert "л")))

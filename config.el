@@ -9,6 +9,7 @@
 
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 (add-to-list 'load-path (concat eab-spacemacs-path "lisp"))
+(add-to-list 'load-path (concat eab-spacemacs-path "features"))
 
 (defvar eab/first-emacsclient 't "nil if run again")
 (defvar eab/ssh-host "ssh chronos" "current host")
@@ -296,7 +297,6 @@ END
 (setq-put bookmark-default-file (concat (eab/history-dir) ".emacs.bmk"))
 (setq-put ebib-file-search-dirs '("~/git/lit/"))
 (setq-put ebib-preload-bib-files '("~/git/lit/boykov.bib"))
-(setq-put erc-log-channels-directory (concat (eab/history-dir) "logs/"))
 (setq-put eshell-history-file-name "~/.bash_history")
 (setq-put gnus-init-file (concat user-emacs-directory ".gnus"))
 (setq-put gnus-startup-file (concat (eab/history-dir) ".newsrc"))

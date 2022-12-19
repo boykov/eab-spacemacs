@@ -83,22 +83,35 @@
 (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
 ;; (add-hook 'compilation-mode-hook 'rename-uniquely)
 
+(setq eab/gr-buffer "*gr status*")
 (setq eab/gr-ready? nil)
 (defun eab/gr-status ()
   (interactive)
-  (let* ((gr-buffer "*gr status*")
-	 (compilation-buffer-name-function
-	  `(lambda (mode) ,gr-buffer)))
+  (let* ((compilation-buffer-name-function
+	  `(lambda (mode) ,eab/gr-buffer)))
     (unless eab/gr-ready?
       (save-window-excursion
 	(eab/compile eab/gr-command))
       (setq eab/gr-ready? 't))
-    (switch-to-buffer gr-buffer nil 't)))
+    (eab/async-update-gr)
+    (switch-to-buffer eab/gr-buffer nil 't)))
+
+(cl-defun eab/async-update-gr (&optional &key recompile)
+  (async-start
+   `(lambda ()
+      (with-temp-buffer
+	(shell-command-to-string ,eab/update-gr-command))
+      "@fz updated")
+   `(lambda (result)
+      (if ,recompile
+	  (save-window-excursion
+	    (switch-to-buffer eab/gr-buffer)
+	    (let ((compilation-buffer-name-function nil))
+	      (recompile))))
+      (message "async result: <%s>" result))))
 
 (defun eab/update-gr-status-on-idle ()
-  (with-temp-buffer
-    (shell-command-to-string eab/update-gr-command))
-  (message "'%s' refreshed" eab/update-gr-command))
+  (eab/async-update-gr :recompile 't))
 
 (setq eab/gotify-ready? nil)
 (defun eab/gotify-status (&optional arg)

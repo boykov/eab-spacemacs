@@ -1,5 +1,15 @@
 # Changelog
 
+### 0.1.33
+
+Add `disabled` features.
+Add `eab/async-update-gr` to `eab/gr-status`.
+Add `eab/gr-buffer`.
+Add `racket-mode`.
+Rfct and move `eab-auto-dictionary` to `packages.el`.
+Delete `erc`.
+Fix wrong remote tramp `default-directory` in `eab/sh-over-bash`.
+
 ### 0.1.32
 
 Rfct.

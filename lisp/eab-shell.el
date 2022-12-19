@@ -15,15 +15,16 @@
 
 (defun eab/sh-over-bash (com fname &optional async)
   "Run com with fname over bash -i -c."
-  (save-window-excursion
-    (let ((comstr (eab/over-bash com fname)))
-      (shell-command (if async
-			 (concat comstr "&")
-		       comstr))
-      (sleep-for 1)
-      (when async
-	(switch-to-buffer "*Async Shell Command*")
-	(kill-buffer)))))
+  (let ((default-directory "~/"))
+    (save-window-excursion
+      (let ((comstr (eab/over-bash com fname)))
+	(shell-command (if async
+			   (concat comstr "&")
+			 comstr))
+	(sleep-for 1)
+	(when async
+	  (switch-to-buffer "*Async Shell Command*")
+	  (kill-buffer))))))
 
 (defun eab/shell-command (command &optional output-buffer error-buffer)
   "Run command by `call-process-shell-command' in separate
