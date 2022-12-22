@@ -187,6 +187,9 @@ END
 (setq eab/update-gr-command
       (concat eab/ssh-host-local " bash ~/bin/gr @fz git fetch"))
 
+(setq eab/check-gr-command
+      (concat eab/ssh-host-local " bash ~/bin/gr @fz ~/git/auto/gr-git-log.sh | wc -l"))
+
 (setq eab/emacs-service-command
       (concat
        eab/ssh-host-local

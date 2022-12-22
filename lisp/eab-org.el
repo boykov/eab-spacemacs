@@ -217,4 +217,22 @@
   '(org-level-3 ((t (:inherit outline-3 :height 1.0))))
 )
 
+(defun org-mark-paragraph (&optional arg allow-extend)
+  (interactive "p\np")
+  (unless arg (setq arg 1))
+  (when (zerop arg)
+    (error "Cannot mark zero paragraphs"))
+  (cond ((and allow-extend
+	      (or (and (eq last-command this-command) (mark t))
+		  (and transient-mark-mode mark-active)))
+	 (set-mark
+	  (save-excursion
+	    (goto-char (mark))
+	    (org-forward-paragraph arg)
+	    (point))))
+	(t
+	 (org-forward-paragraph arg)
+	 (push-mark nil t t)
+	 (org-backward-paragraph arg))))
+
 (provide 'eab-org)

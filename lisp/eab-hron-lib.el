@@ -234,13 +234,19 @@
 	(setq eab/hron-todo-bulk-minute 0))
     (eab/hron-todo-setup))
   (if org-agenda-bulk-marked-entries
-      (progn
-	(execute-kbd-macro
-	 (read-kbd-macro
-	  "B f eab/hron-todo-bulk RET"))
-	(eab/hron-change-current
-	 eab/hron-todo-bulk-hour
-	 eab/hron-todo-bulk-minute))
+      (save-excursion
+	(progn
+	  (let ((method current-input-method)
+		(len (length org-agenda-bulk-marked-entries)))
+	    (if (or (= len 2) (= len 1))
+		(execute-kbd-macro 'mark-timeline))
+	    (set-input-method method))
+	  (execute-kbd-macro
+	   (read-kbd-macro
+	    "B f eab/hron-todo-bulk RET"))
+	  (eab/hron-change-current
+	   eab/hron-todo-bulk-hour
+	   eab/hron-todo-bulk-minute)))
     (eab/hron-todo-1 eab/hron-todo-bulk-hour eab/hron-todo-bulk-minute arg)))
 
 (defun eab/org-clock (&optional start-time at-time)

@@ -121,7 +121,7 @@
  "M-N"		'beginning-of-defun
  "M-O"		'forward-paragraph
  "C-S-SPC"	'mark-defun
- "M-S-SPC"	'mark-paragraph
+ "M-S-SPC"	'org-mark-paragraph
  "M-SPC"	'set-mark-command
  "C-M-@"	'set-rectangular-region-anchor
  "M-U"		'backward-paragraph
@@ -1325,8 +1325,8 @@
      "0"	(ilam (eab/or-self-insert-body (er/expand-region 0)))
      "p"	(ilam (eab/or-self-insert-body (er/expand-region 1)))
      "-"	(ilam (eab/or-self-insert-body (er/expand-region -1)))
-     "P"	(ilam (eab/or-self-insert-body (progn (er/expand-region 0) (mark-paragraph))))
-     "З"	(ilam (eab/or-self-insert-body (progn (er/expand-region 0) (mark-paragraph))))
+     "P"	(ilam (eab/or-self-insert-body (progn (er/expand-region 0) (org-mark-paragraph))))
+     "З"	(ilam (eab/or-self-insert-body (progn (er/expand-region 0) (org-mark-paragraph))))
      "I"	(ilam (eab/or-self-insert 'indent-region))
      "Ш"	(ilam (eab/or-self-insert 'indent-region))
      "d"	(ilam (eab/or-self-insert-body (progn (er/expand-region 0) (mark-defun))))

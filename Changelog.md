@@ -1,5 +1,14 @@
 # Changelog
 
+### 0.1.34
+
+Add `mark-timeline` and fix `eab/hron-todo`.
+Improve `eab/gotify-status` with `websocket-openp` check.
+Rename to `eab/gotify-websocket`.
+Add `eab/check-gr-command`.
+Reimplement `eab/eepitch-paragraph`.
+Add `org-mark-paragraph`.
+
 ### 0.1.33
 
 Add `disabled` features.

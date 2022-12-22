@@ -166,3 +166,9 @@
  nil nil
  ""
  "C-l C-k RET M-i s h o TAB M-k M-SPC 2*M-k M-x 2*M-w M-C-o M-v")
+
+(pm-def-macro
+ 'mark-timeline
+ nil nil
+ ""
+ "M-J C-l C-k M-; :timeline: RET m")
