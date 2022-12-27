@@ -1,5 +1,18 @@
 # Changelog
 
+### 0.1.35
+
+Use `search-forward-regexp` empty or few spaces line and
+`eechannel-send` in `eab/eepitch-paragraph`.
+Add `org-align-list-item`.
+Rfct `eab/wrap-eepitch-this`: do not use `eepitch-line`.
+Add `C-M-,` keybinding for `eab/pm-write-last-kbd-macro`.
+Fix extra `chronos` gr update.
+Up to 2023 year.
+Fix wrong syntax `:disabled t` -> `:disabled`.
+Add keybindings for copy/paste `rectangle`.
+Add `transient` map to `eab/hron-todo`.
+
 ### 0.1.34
 
 Add `mark-timeline` and fix `eab/hron-todo`.

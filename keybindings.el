@@ -1,6 +1,6 @@
 ;;; keybindings.el ---
 
-;; Copyright (C) 2010-2022 Evgeny Boykov
+;; Copyright (C) 2010-2023 Evgeny Boykov
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords:
@@ -103,6 +103,7 @@
  "M-'"		'comment-dwim
  "M-<"		'kmacro-start-macro
  "M-,"		'kmacro-end-or-call-macro
+ "C-M-,"        'eab/pm-write-last-kbd-macro
  "M-/"		'dabbrev-expand
  "M-1"		'delete-other-windows
  "M-2"		'split-window-vertically
@@ -1322,6 +1323,10 @@
      :keymaps 'region-bindings-mode-map
      "u"	'untabify
      "г"	'untabify
+     "c"	'copy-rectangle-as-kill
+     "с"	'copy-rectangle-as-kill
+     "v"	'yank-rectangle
+     "м"	'yank-rectangle
      "0"	(ilam (eab/or-self-insert-body (er/expand-region 0)))
      "p"	(ilam (eab/or-self-insert-body (er/expand-region 1)))
      "-"	(ilam (eab/or-self-insert-body (er/expand-region -1)))

@@ -172,3 +172,11 @@
  nil nil
  ""
  "M-J C-l C-k M-; :timeline: RET m")
+
+
+(pm-def-macro
+ 'org-align-list-item
+ nil nil
+ ""
+ "M-U M-j M-h M-SPC M-; - RET M-j M-c M-p M-l M-SPC M-O M-i r M-v 2*SPC
+ RET 2*C-w")

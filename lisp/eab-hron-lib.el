@@ -1,6 +1,6 @@
 ;;; eab-hron-lib.el --- 
 
-;; Copyright (C) 2010-2022 Evgeny Boykov
+;; Copyright (C) 2010-2023 Evgeny Boykov
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 
@@ -228,6 +228,14 @@
 
 (defun eab/hron-todo (&optional arg)
   (interactive "p")
+  (set-transient-map
+   (let ((map (make-sparse-keymap)))
+     (define-key map "u" (ilam
+			  (eab/hron-set-current
+			   (format-time-string "%Y-%m-%d %a %H:%M" (eab/org-parse-current-time)))
+			  (run-with-timer 0.01 nil `(lambda ()
+						      (call-interactively 'eab/hron-todo)))
+			  (abort-minibuffers))) map) 't nil)
   (if (eq arg 2)
       (progn
 	(setq eab/hron-todo-bulk-hour 0)

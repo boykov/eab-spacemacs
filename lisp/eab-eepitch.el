@@ -1,6 +1,6 @@
 ;;; eab-eepitch.el ---  eab eev extension
 
-;; Copyright (C) 2010-2022 Evgeny Boykov
+;; Copyright (C) 2010-2023 Evgeny Boykov
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 
@@ -70,15 +70,11 @@
     (eab/ansi-prepare line))
    (t (list line 't))))
 
-(defun eab/wrap-eepitch-this (line)
+(defun eab/wrap-eepitch-this (region)
   (interactive)
   (if (eab/in-target-buffer? "ansi")
-      (eechannel-send nil (concat line "\n"))
-    (progn
-      (eepitch-prepare-target-buffer)	; for other lines reconstruct the
-      (eepitch-display-target-buffer)	; target buffer, display it, make
-      (eepitch-not-this-buffer)  ; sure it's a different buffer, and
-      (eepitch-line line))))	   ; pitch the line to the target.
+      (eechannel-send nil region)
+    (error "There isn't target buffer")))
 
 (defun eab/eepitch-buffer-end ()
   (save-window-excursion
@@ -91,7 +87,7 @@
   (interactive)
   (eab/eepitch-buffer-end)
   (let* ((prepare (eab/this-line (buffer-substring (ee-bol) (ee-eol))))
-         (line (car prepare)))
+         (line (concat (car prepare) "\n")))
     (if (cadr prepare)
 	(eab/wrap-eepitch-this line))
       (ee-next-line 1)))
@@ -99,29 +95,21 @@
 (defun eab/eepitch-paragraph ()
   (interactive)
   (flet ((forward ()
-		  (if (eq major-mode 'python-mode)
-		      (forward-paragraph)
-		    (org-forward-paragraph)))
+		  (search-forward-regexp "^ *$"))
 	 (backward ()
-		   (if (eq major-mode 'python-mode)
-		       (backward-paragraph)
-		     (org-backward-paragraph))))
-    (let ((n
-	   (+
-	    (save-excursion
-	      (forward)
-	      (let ((st (point)))
-		(backward)
-		(let ((en (point)))
-		  (count-lines st en))))
-	    (if
-		(eq major-mode 'python-mode)
-		1
-	      0))))
+		   (backward-char)
+		   (search-backward-regexp "^ *$")))
+    (let ((region
+	   (save-excursion
+	     (forward)
+	     (let ((st (point)))
+	       (backward)
+	       (let ((en (point)))
+		 (ee-se-to-string st en))))))
+      (eab/eepitch-buffer-end)
+      (eechannel-send nil region)
       (forward)
-      (backward)
-      (next-line)
-      (while (> (setq n (1- n)) 0)
-	(eab/eepitch-this-line)))))
+      (if (eq major-mode 'python-mode)
+	  (eab/eepitch-this-line)))))
 
 (provide 'eab-eepitch)

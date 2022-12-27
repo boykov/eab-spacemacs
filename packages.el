@@ -1,6 +1,6 @@
 ;;; packages.el --- eab Layer packages File for Spacemacs
 ;;
-;; Copyright (C) 2010-2022 Evgeny Boykov
+;; Copyright (C) 2010-2023 Evgeny Boykov
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords:
@@ -957,7 +957,7 @@ which require an initialization must be listed explicitly in the list.")
   )
 
 (defun eab-spacemacs/init-gnus nil
-  (use-package :disabled t eab-gnus)
+  (use-package :disabled eab-gnus)
   )
 
 (defun eab-spacemacs/init-tramp nil
@@ -1066,8 +1066,8 @@ which require an initialization must be listed explicitly in the list.")
   (use-package eab-org-todo)
   (use-package eab-hron-lib)
   (use-package eab-org-latex)
-  (use-package :disabled t eab-greek-to-latex)
-  (use-package :disabled t eab-org-reftex)
+  (use-package :disabled eab-greek-to-latex)
+  (use-package :disabled eab-org-reftex)
   (when (string= (daemonp) "serverC")
     (use-package eab-org-extension)
     (eab/check-csum-day))

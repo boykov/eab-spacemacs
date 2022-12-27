@@ -1,6 +1,6 @@
 ;;; eab-compile.el --- eab compile extension
 
-;; Copyright (C) 2010-2022 Evgeny Boykov
+;; Copyright (C) 2010-2023 Evgeny Boykov
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 

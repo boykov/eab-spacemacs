@@ -22,7 +22,7 @@
 (when (eab/ondaemon (eab/server-P))
   (run-with-idle-timer 5 't (lambda () (interactive) (eab/update-query-on-idle 'eab/org-ql-H-query))))
 
-(when (eab/ondaemon (eab/server-P))
+(when (eab/onhost "cyclos-emacs")
   (run-with-idle-timer 100 't (lambda () (interactive) (eab/update-gr-status-on-idle))))
 
 (provide 'eab-appt)
