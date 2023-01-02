@@ -192,8 +192,7 @@
 			    minute)))))
   (cl-case arg
     (4 nil)
-    (2 (eab/hron-set-current
-	(format-time-string "%Y-%m-%d %a %H:%M" (eab/org-parse-current-time))))
+    (2 (eab/hron-update-current-time))
     (otherwise (eab/hron-change-current
 		hour
 		minute)))
@@ -207,6 +206,11 @@
 	   (shell-command-to-string
 	    (concat "cd " org-directory "clock && ../misc/clock.sh -s getCT"))
 	   0 -1))))
+
+(defun eab/hron-update-current-time ()
+  (eab/hron-set-current
+	 (format-time-string "%Y-%m-%d %a %H:%M"
+			     (eab/org-parse-current-time))))
 
 (defun eab/hron-todo-setup ()
   (interactive)
@@ -226,13 +230,44 @@
 (defun eab/hron-todo-bulk ()
   (eab/hron-todo-1 eab/hron-todo-bulk-hour eab/hron-todo-bulk-minute 4))
 
+(defadvice org-shiftup (after eab/org-shift-update activate)
+  (eab/org-shift-update-1))
+
+(defadvice org-shiftdown (after eab/org-shift-update activate)
+  (eab/org-shift-update-1))
+
+(defadvice org-shiftmetaup (after eab/org-shift-update activate)
+  (eab/org-shift-update-1))
+
+(defadvice org-shiftmetadown (after eab/org-shift-update activate)
+  (eab/org-shift-update-1))
+
+(defvar eab/org-shift-timeout 0.3 "Lock current time delay timeout")
+(defvar eab/org-shift-counter 0 "Lock current time instances counter")
+(defvar eab/org-shift-updating nil "Lock current time updating flag")
+
+(defun eab/org-shift-update-1 ()
+  (incf eab/org-shift-counter)
+  (unless eab/org-shift-updating
+    (setq eab/org-shift-updating 't)
+    (run-with-timer eab/org-shift-timeout nil 'eab/org-shift-update-2)))
+
+(defun eab/org-shift-update-2 ()
+  (decf eab/org-shift-counter)
+  (if (org-at-clock-log-p)
+      (if (< eab/org-shift-counter 1)
+	  (progn
+	    (save-buffer)
+	    (eab/hron-update-current-time)
+	    (setq eab/org-shift-updating nil))
+	(run-with-timer eab/org-shift-timeout nil 'eab/org-shift-update-2))))
+
 (defun eab/hron-todo (&optional arg)
   (interactive "p")
   (set-transient-map
    (let ((map (make-sparse-keymap)))
      (define-key map "u" (ilam
-			  (eab/hron-set-current
-			   (format-time-string "%Y-%m-%d %a %H:%M" (eab/org-parse-current-time)))
+			  (eab/hron-update-current-time)
 			  (run-with-timer 0.01 nil `(lambda ()
 						      (call-interactively 'eab/hron-todo)))
 			  (abort-minibuffers))) map) 't nil)

@@ -159,6 +159,7 @@
 
     esup
     vterm
+    (emacs-eat :location local)
     emamux
     vagrant
     vagrant-tramp
@@ -523,6 +524,42 @@ which require an initialization must be listed explicitly in the list.")
   (require 'libgit))
 (defun eab-spacemacs/init-vterm nil
     (setq vterm-keymap-exceptions '("C-c" "C-x" "C-u" "C-g" "C-h" "C-l" "M-x" "M-o" "C-v" "M-v" "C-y" "M-y" "M-s" "M-a" "M-i" "M-k" "M-j" "M-l" "C-a" "M-c" "M-p")))
+(defun eab-spacemacs/init-emacs-eat nil
+  (use-package eat
+    :config
+    (setq eat-mode-map
+	  (let ((map (make-sparse-keymap)))
+	    (define-key map [?\C-c ?\M-d] #'eat-char-mode)
+	    (define-key map [?\C-c ?\C-j] #'eat-semi-char-mode)
+	    (define-key map [?\C-c ?\C-k] #'eat-kill-process)
+	    (define-key map [?\C-c ?\C-p] #'eat-previous-shell-prompt)
+	    (define-key map [?\C-c ?\C-n] #'eat-next-shell-prompt)
+	    map))
+
+    (setq eat-semi-char-mode-map
+	  (let ((map (eat-term-make-keymap
+		      #'eat-self-input
+		      '(:ascii :arrow :navigation)
+		      '( [?\C-\\] [?\C-q] [?\C-c] [?\C-x] [?\C-g] [?\C-h]
+			 [?\e ?\C-c] [?\C-u] [?\C-q] [?\e ?x] [?\e ?:]
+			 [?\e ?!] [?\e ?&] [?\C-y] [?\e ?y]))))
+	    (define-key map [?\C-q] #'eat-quoted-input)
+	    (define-key map [?\C-y] #'eat-yank)
+	    (define-key map [?\M-y] #'eat-yank-from-kill-ring)
+	    (define-key map [?\C-c ?\C-c] #'eat-self-input)
+	    (define-key map [?\C-c ?\C-e] #'eat-emacs-mode)
+	    (define-key map [remap insert-char] #'eat-input-char)
+	    map))
+
+    (setq eat-char-mode-map
+	  (let ((map (eat-term-make-keymap
+		      #'eat-self-input
+		      '(:ascii :arrow :navigation :function)
+		      '([?\e ?\C-m]))))
+	    (define-key map [?\C-\M-m] #'eat-semi-char-mode)
+	    map))
+    )
+  )
 
 
 (defun eab-spacemacs/init-auctex nil

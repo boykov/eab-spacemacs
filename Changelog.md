@@ -1,5 +1,11 @@
 # Changelog
 
+### 0.1.36
+
+Add `eab/hron-update-current-time`, `eab/org-shift-update-2` with
+`eab/org-shift-counter`.
+Add `emacs-eat` and init keymaps.
+
 ### 0.1.35
 
 Use `search-forward-regexp` empty or few spaces line and
