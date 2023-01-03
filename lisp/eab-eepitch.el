@@ -11,29 +11,26 @@
 (require 'eev-browse-url)
 (require 'eev-mini-steps)
 
+(defvar eab/run-ansi-kind "eat" "Choose eat/ansi")
+
 (defun eab/run-tmux (sym)
   (let ((default-directory "/ssh:kairos-host:/home/eab/"))
     (shell-command (concat "tmux select-window -t 13:" sym))))
 
-(defun eab/run-ansi (prog buf)
-  (let ((buffer (get-buffer (concat "*" buf "*")))
-	(default-directory
-	  (if (file-remote-p default-directory)
-	      "~/"
-	    default-directory)))
+(defun eab/run-ansi (kind prog sym)
+  (let* ((buf (concat "ansi-term" sym))
+	 (buffer (get-buffer (concat "*" buf "*")))
+	 (default-directory
+	   (if (file-remote-p default-directory)
+	       "~/"
+	     default-directory)))
     (if buffer
         (switch-to-buffer-other-window buffer)
-      (ansi-term prog buf))))
-
-(defun eab/run-vterm (prog buf)
-  (let ((buffer (get-buffer (concat "*" buf "*")))
-	(default-directory
-	  (if (file-remote-p default-directory)
-	      "~/"
-	    default-directory)))
-    (if buffer
-        (switch-to-buffer-other-window buffer)
-      (vterm (concat "*" buf "*")))))
+      (progn
+	(if (string= kind "ansi")
+	    (ansi-term prog buf))
+	(if (string= kind "eat")
+	    (eat prog (string-to-number sym)))))))
 
 (defun eepitch-ansi-term (sym)
   (interactive)
@@ -41,16 +38,8 @@
     (shell-command (concat "echo \"" eab/eegchannel-path " " sym " /bin/bash\" > " eab/eeansi-path)))
   (eechannel sym)
   (save-window-excursion
-    (eepitch `(eab/run-ansi eab/eeansi-path (concat "ansi-term" ,sym))))
-  (switch-to-buffer-other-window (concat "*ansi-term" sym "*")))
-
-(defun eepitch-vterm-term (sym)
-  (interactive)
-  (let ((default-directory "~/"))
-    (shell-command (concat "echo \"" eab/eegchannel-path " " sym " /bin/bash\" > " eab/eeansi-path)))
-  (eechannel sym)
-  (save-window-excursion
-    (eepitch `(eab/run-vterm eab/eeansi-path (concat "ansi-term" ,sym))))
+    (eepitch `(eab/run-ansi eab/run-ansi-kind eab/eeansi-path ,sym))
+    (setq eepitch-target-buffer (get-buffer (concat "*ansi-term" sym "*"))))
   (switch-to-buffer-other-window (concat "*ansi-term" sym "*")))
 
 (defun eab/in-target-buffer? (str)

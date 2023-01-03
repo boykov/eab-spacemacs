@@ -526,6 +526,7 @@ which require an initialization must be listed explicitly in the list.")
     (setq vterm-keymap-exceptions '("C-c" "C-x" "C-u" "C-g" "C-h" "C-l" "M-x" "M-o" "C-v" "M-v" "C-y" "M-y" "M-s" "M-a" "M-i" "M-k" "M-j" "M-l" "C-a" "M-c" "M-p")))
 (defun eab-spacemacs/init-emacs-eat nil
   (use-package eat
+    :after (key-chord)
     :config
     (setq eat-mode-map
 	  (let ((map (make-sparse-keymap)))
@@ -534,6 +535,7 @@ which require an initialization must be listed explicitly in the list.")
 	    (define-key map [?\C-c ?\C-k] #'eat-kill-process)
 	    (define-key map [?\C-c ?\C-p] #'eat-previous-shell-prompt)
 	    (define-key map [?\C-c ?\C-n] #'eat-next-shell-prompt)
+	    (key-chord-define map "jj" #'eat-semi-char-mode)
 	    map))
 
     (setq eat-semi-char-mode-map
@@ -542,13 +544,18 @@ which require an initialization must be listed explicitly in the list.")
 		      '(:ascii :arrow :navigation)
 		      '( [?\C-\\] [?\C-q] [?\C-c] [?\C-x] [?\C-g] [?\C-h]
 			 [?\e ?\C-c] [?\C-u] [?\C-q] [?\e ?x] [?\e ?:]
+			 [?\C-a] [?\C-l] [?\e ?a] [?\e ?s] [?\C-b] [?\e ?1]
+			 [?\e ?c] [?\e ?v] [?\e ?g]
+			 [?\e ?o] [?\e ?j] [?\C-v] [?\C-o] [?\C-e]
 			 [?\e ?!] [?\e ?&] [?\C-y] [?\e ?y]))))
 	    (define-key map [?\C-q] #'eat-quoted-input)
 	    (define-key map [?\C-y] #'eat-yank)
 	    (define-key map [?\M-y] #'eat-yank-from-kill-ring)
+	    (define-key map [?\M-j] (ilam (eat-self-input 1 'left)))
 	    (define-key map [?\C-c ?\C-c] #'eat-self-input)
 	    (define-key map [?\C-c ?\C-e] #'eat-emacs-mode)
 	    (define-key map [remap insert-char] #'eat-input-char)
+	    (key-chord-define map "jj" #'eat-emacs-mode)
 	    map))
 
     (setq eat-char-mode-map
@@ -558,6 +565,29 @@ which require an initialization must be listed explicitly in the list.")
 		      '([?\e ?\C-m]))))
 	    (define-key map [?\C-\M-m] #'eat-semi-char-mode)
 	    map))
+
+    (define-minor-mode eat--semi-char-mode
+      "Minor mode for semi-char mode keymap."
+      :interactive nil
+      :keymap eat-semi-char-mode-map)
+
+    (define-minor-mode eat--char-mode
+      "Minor mode for char mode keymap."
+      :interactive nil
+      :keymap eat-char-mode-map)
+
+    (eab/patch-this-code
+     'eat
+     `((,(let ((print-quoted 't))
+	   (prin1-to-string
+	    `(format "%s<%d>" eat-buffer-name arg))) .
+	    ,(let ((print-quoted 't))
+	       (prin1-to-string
+		`(format "*ansi-term%d*" arg))))))
+
+    (add-hook 'eat--semi-char-mode-hook (lambda () (setq input-method-function 'key-chord-input-method)))
+    ;; (add-hook 'eat--char-mode-hook (lambda () (setq input-method-function 'key-chord-input-method)))
+    (add-hook 'eat-mode-hook (lambda () (setq input-method-function 'key-chord-input-method)))
     )
   )
 

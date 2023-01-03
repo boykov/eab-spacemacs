@@ -1,5 +1,11 @@
 # Changelog
 
+### 0.1.37
+
+Update `eat` keymaps
+Rm `eepitch-vterm-term`, use `kind` in `eab/run-ansi`, patch format.
+Add `key-chord` hooks.
+
 ### 0.1.36
 
 Add `eab/hron-update-current-time`, `eab/org-shift-update-2` with
