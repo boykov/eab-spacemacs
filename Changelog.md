@@ -1,5 +1,11 @@
 # Changelog
 
+### 0.1.38
+
+Add `org-transclusion`.
+Fix and update `emacs-eat`.
+Fix wrong order `:disabled name` -> `name :disabled`.
+
 ### 0.1.37
 
 Update `eat` keymaps

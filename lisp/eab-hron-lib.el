@@ -247,13 +247,13 @@
 (defvar eab/org-shift-updating nil "Lock current time updating flag")
 
 (defun eab/org-shift-update-1 ()
-  (incf eab/org-shift-counter)
+  (cl-incf eab/org-shift-counter)
   (unless eab/org-shift-updating
     (setq eab/org-shift-updating 't)
     (run-with-timer eab/org-shift-timeout nil 'eab/org-shift-update-2)))
 
 (defun eab/org-shift-update-2 ()
-  (decf eab/org-shift-counter)
+  (cl-decf eab/org-shift-counter)
   (if (org-at-clock-log-p)
       (if (< eab/org-shift-counter 1)
 	  (progn

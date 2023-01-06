@@ -44,6 +44,7 @@
     (org-ql :location local)
     org-special-block-extras
     org-sql
+    org-transclusion
 
     git-commit
     git-timemachine
@@ -526,7 +527,7 @@ which require an initialization must be listed explicitly in the list.")
     (setq vterm-keymap-exceptions '("C-c" "C-x" "C-u" "C-g" "C-h" "C-l" "M-x" "M-o" "C-v" "M-v" "C-y" "M-y" "M-s" "M-a" "M-i" "M-k" "M-j" "M-l" "C-a" "M-c" "M-p")))
 (defun eab-spacemacs/init-emacs-eat nil
   (use-package eat
-    :after (key-chord)
+    :after (key-chord eab-minimal)
     :config
     (setq eat-mode-map
 	  (let ((map (make-sparse-keymap)))
@@ -545,13 +546,22 @@ which require an initialization must be listed explicitly in the list.")
 		      '( [?\C-\\] [?\C-q] [?\C-c] [?\C-x] [?\C-g] [?\C-h]
 			 [?\e ?\C-c] [?\C-u] [?\C-q] [?\e ?x] [?\e ?:]
 			 [?\C-a] [?\C-l] [?\e ?a] [?\e ?s] [?\C-b] [?\e ?1]
-			 [?\e ?c] [?\e ?v] [?\e ?g]
-			 [?\e ?o] [?\e ?j] [?\C-v] [?\C-o] [?\C-e]
+			 [?\e ?c] [?\e ?v] [?\e ?g] [?\e ?h] [?\e ?p]
+			 [?\C-p] [?\C-n] [?\C-v] [?\C-o] [?\C-e]
+			 [?\e ?o] [?\e ?j] [?\e ?l] [?\e ?k] [?\e ?i] [?\e ?\s]
 			 [?\e ?!] [?\e ?&] [?\C-y] [?\e ?y]))))
 	    (define-key map [?\C-q] #'eat-quoted-input)
 	    (define-key map [?\C-y] #'eat-yank)
+	    (define-key map [?\M-v] #'eat-yank)
 	    (define-key map [?\M-y] #'eat-yank-from-kill-ring)
 	    (define-key map [?\M-j] (ilam (eat-self-input 1 'left)))
+	    (define-key map [?\M-l] (ilam (eat-self-input 1 'right)))
+	    (define-key map [?\M-k] (ilam (eat-self-input 1 'down)))
+	    (define-key map [?\M-i] (ilam (eat-self-input 1 'up)))
+	    (define-key map [?\M-h] (ilam (eat-self-input 1 'home)))
+	    (define-key map [?\M-p] (ilam (eat-self-input 1 'end)))
+	    (define-key map [?\C-p] (ilam (eat-self-input 1 'up)))
+	    (define-key map [?\C-n] (ilam (eat-self-input 1 'down)))
 	    (define-key map [?\C-c ?\C-c] #'eat-self-input)
 	    (define-key map [?\C-c ?\C-e] #'eat-emacs-mode)
 	    (define-key map [remap insert-char] #'eat-input-char)
@@ -793,6 +803,8 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-org-sql nil
   (use-package org-sql
     :defer))
+(defun eab-spacemacs/init-org-transclusion nil
+  (use-package org-transclusion))
 (defun eab-spacemacs/init-org-ql nil
   (use-package org-ql
     :defer)
@@ -1024,7 +1036,7 @@ which require an initialization must be listed explicitly in the list.")
   )
 
 (defun eab-spacemacs/init-gnus nil
-  (use-package :disabled eab-gnus)
+  (use-package eab-gnus :disabled)
   )
 
 (defun eab-spacemacs/init-tramp nil
@@ -1133,8 +1145,8 @@ which require an initialization must be listed explicitly in the list.")
   (use-package eab-org-todo)
   (use-package eab-hron-lib)
   (use-package eab-org-latex)
-  (use-package :disabled eab-greek-to-latex)
-  (use-package :disabled eab-org-reftex)
+  (use-package eab-greek-to-latex :disabled)
+  (use-package eab-org-reftex :disabled)
   (when (string= (daemonp) "serverC")
     (use-package eab-org-extension)
     (eab/check-csum-day))

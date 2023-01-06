@@ -79,7 +79,7 @@
          (line (concat (car prepare) "\n")))
     (if (cadr prepare)
 	(eab/wrap-eepitch-this line))
-      (ee-next-line 1)))
+    (ee-next-line 1)))
 
 (defun eab/eepitch-paragraph ()
   (interactive)
