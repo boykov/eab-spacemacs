@@ -14,11 +14,11 @@
     (message "%s" (server-eval-at "serverM"
 				  `(eval ',sexp)))))
 
-(defun eab/eval-last-sexp-serverC ()
-  "Evaluate sexp before point on serverC; print value in minibuffer."
+(defun eab/eval-last-sexp-server-C ()
+  "Evaluate sexp before point on server-C; print value in minibuffer."
   (interactive)
   (let ((sexp (call-interactively (lambda () (interactive) (preceding-sexp)))))
-    (let ((server-use-tcp serverC-use-tcp))
+    (let ((server-use-tcp server-C-use-tcp))
       (message "%s" (server-eval-at (eab/server-C)
 				    `(eval ',sexp))))))
 
@@ -28,7 +28,7 @@
   (let* ((name (buffer-file-name))
 	 (body `(lambda ()
 		  (require 'server)
-		  (let ((server-use-tcp ,serverC-use-tcp))
+		  (let ((server-use-tcp ,server-C-use-tcp))
 		    (server-eval-at ,(eab/server-C) '(progn
 						       (shell-command (concat "cd " org-directory " && git pull"))
 						       (revert-all-buffers)
@@ -44,7 +44,7 @@
 	      (async-start
 	       (lambda ()
 		 (require 'server)
-		 (let ((server-use-tcp ,serverC-use-tcp))
+		 (let ((server-use-tcp ,server-C-use-tcp))
 		   (server-eval-at ,(eab/server-C) '(eab/shell-translate ,phrase 't))))
 	       (lambda (result)
 		 (message "async result: <%s>" result)
@@ -56,7 +56,7 @@
   (async-start
    (lambda ()
      (require 'server)
-     (let ((server-use-tcp ,serverC-use-tcp))
+     (let ((server-use-tcp ,server-C-use-tcp))
        (server-eval-at ,(eab/server-C) '(progn
 					  (org-publish-project "html-base" 't)
 					  (org-publish-project "html-clock" 't)))))

@@ -1,5 +1,21 @@
 # Changelog
 
+### 0.1.39
+
+Fix `eab/org-shift-update-*` with `org-at-clock-log-p`.
+Fix `org-align-list-item`.
+Use `update-client.js` instead sed in `index.js`.
+Disable `shell-history` due to `.bash_history` problem.
+Init `eab/ergoemacs-compact-uncompact-block`.
+Add `typescript-mode`, `kubernetes`.
+Mv `eab/check-csum-day` to postload for serverC.
+Rm legacy extra `(eab/ondaemon (eab/server-C))` cases.
+
+Update `org-mode` to `9.6.1`, add previous `9.4.6` as `org-mode-fix`
+for `serverC`. Disable `0.1.16` fix.
+
+Rename `serverC` to `server-C`.
+
 ### 0.1.38
 
 Add `org-transclusion`.

@@ -71,7 +71,7 @@
      nil)
     (shell-command
      (concat eab/ssh-host " <<'END'
-sed -i 's/uid=/uid=1/' ~/git/eab-kb/js/pages/index.js
+docker exec eab-utils bash -c \"cd ~/git/eab-kb/js && node update-client.js\"
 END"))))
 
 (setq org-html-head-include-default-style nil)

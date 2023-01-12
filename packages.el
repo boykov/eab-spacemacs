@@ -18,7 +18,9 @@
     auto-dictionary ;; switcher for flyspell
     howdoi
 
-    (org-mode/lisp :location local)
+    ,(when (string= (daemonp) "serverC") '(org-mode-fix/lisp :location local))
+    ,(unless (string= (daemonp) "serverC") '(org-mode/lisp :location local))
+    ;; (org-mode/lisp :location local)
     ,(when (not (string-match-p "^25" emacs-version)) 'org-roam)
     deft
     outshine
@@ -90,6 +92,7 @@
     highlight-indentation
     prettier
 
+    typescript-mode
     racket-mode
     julia-mode
     graphviz-dot-mode
@@ -168,6 +171,7 @@
     docker-tramp
     websocket
     daemons
+    kubernetes
 
     ;; built-in
     (gnus :location built-in)
@@ -187,6 +191,7 @@ which require an initialization must be listed explicitly in the list.")
 (defvar eab-spacemacs-excluded-packages '()
   "List of packages to exclude.")
 
+(defun eab-spacemacs/init-kubernetes nil)
 (defun eab-spacemacs/init-daemons nil
   (use-package daemons
     :init
@@ -214,9 +219,6 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-ergoemacs-mode ()
   (require 'ergoemacs-translate)
   (require 'ergoemacs-functions)
-  (eab/patch-this-code
-   'ergoemacs-compact-uncompact-block
-   '(("fill-paragraph" . "org-fill-paragraph")))
   )
 
 (defun eab-spacemacs/init-rpm-spec-mode ())
@@ -517,6 +519,8 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-nginx-mode nil)
 (defun eab-spacemacs/init-julia-mode nil)
 (defun eab-spacemacs/init-racket-mode nil)
+(defun eab-spacemacs/init-typescript-mode nil
+  (use-package typescript-mode))
 (defun eab-spacemacs/init-emamux nil)
 (defun eab-spacemacs/init-esup nil)
 (defun eab-spacemacs/init-diff-hl nil
@@ -815,6 +819,11 @@ which require an initialization must be listed explicitly in the list.")
     )
 )
 (defun eab-spacemacs/init-org-mode/lisp nil
+  ;; fix org-element performance degradation
+  (setq org-element--cache-self-verify nil)
+  ;; fix 'file is already exist' bug
+  (setq org-babel-temporary-directory "/tmp/user/1000/babel-aa5I6G"))
+(defun eab-spacemacs/init-org-mode-fix/lisp nil
   ;; fix 'file is already exist' bug
   (setq org-babel-temporary-directory "/tmp/user/1000/babel-aa5I6G"))
 (defun eab-spacemacs/init-f nil)
@@ -977,7 +986,6 @@ which require an initialization must be listed explicitly in the list.")
   ;; (require 'dired-sort-menu)  
 
   (require 'alossage)
-  (require 'shell-history)
   (require 'shell-command-queue)
   (require 'one-key)
   (require 'json-pretty-print)
@@ -1147,8 +1155,8 @@ which require an initialization must be listed explicitly in the list.")
   (use-package eab-org-latex)
   (use-package eab-greek-to-latex :disabled)
   (use-package eab-org-reftex :disabled)
+  (use-package eab-org-extension)
   (when (string= (daemonp) "serverC")
-    (use-package eab-org-extension)
     (eab/check-csum-day))
   (global-set-key (kbd "C-h c") 'describe-key-briefly)
   (global-set-key (kbd "M-O") 'forward-paragraph)

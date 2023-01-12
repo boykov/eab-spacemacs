@@ -154,7 +154,7 @@
 
 (general-define-key
  "C-n"	'ergoemacs-new-empty-buffer
- "C-w"	'ergoemacs-compact-uncompact-block
+ "C-w"	'eab/ergoemacs-compact-uncompact-block
  "M-G"	'ergoemacs-kill-line-backward
  "M-Q"	'ergoemacs-close-current-buffer
  "M-`"	'ergoemacs-switch-to-next-frame

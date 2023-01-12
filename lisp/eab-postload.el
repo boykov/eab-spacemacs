@@ -24,13 +24,13 @@
 (electric-indent-mode)
 (electric-pair-mode -1)
 
-;; DONE похоже, переменная server-name здесь еще не становится serverC
+;; DONE похоже, переменная server-name здесь еще не становится server-C
 
 (if (and (or (eab/ondaemon (eab/server-P)) (eab/ondaemon "server")) (not noninteractive))
     (load-theme 'spacemacs-dark 't))
 
-(if (eab/ondaemon (eab/server-C))
-    (setq system-time-locale "ru_RU.UTF-8"))
+(when (eab/ondaemon (eab/server-C))
+  (setq system-time-locale "ru_RU.UTF-8"))
 
 (eab/bind-path eab/secrets-path)
 ; TODO create function and hook after first start frame

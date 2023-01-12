@@ -247,20 +247,23 @@
 (defvar eab/org-shift-updating nil "Lock current time updating flag")
 
 (defun eab/org-shift-update-1 ()
-  (cl-incf eab/org-shift-counter)
-  (unless eab/org-shift-updating
-    (setq eab/org-shift-updating 't)
-    (run-with-timer eab/org-shift-timeout nil 'eab/org-shift-update-2)))
+  (if (org-at-clock-log-p)
+      (progn
+	(cl-incf eab/org-shift-counter)
+	(unless eab/org-shift-updating
+	  (setq eab/org-shift-updating 't)
+	  (run-with-timer eab/org-shift-timeout nil 'eab/org-shift-update-2)))))
 
 (defun eab/org-shift-update-2 ()
-  (cl-decf eab/org-shift-counter)
   (if (org-at-clock-log-p)
-      (if (< eab/org-shift-counter 1)
-	  (progn
-	    (save-buffer)
-	    (eab/hron-update-current-time)
-	    (setq eab/org-shift-updating nil))
-	(run-with-timer eab/org-shift-timeout nil 'eab/org-shift-update-2))))
+      (progn
+	(cl-decf eab/org-shift-counter)
+	(if (< eab/org-shift-counter 1)
+	    (progn
+	      (save-buffer)
+	      (eab/hron-update-current-time)
+	      (setq eab/org-shift-updating nil))
+	  (run-with-timer eab/org-shift-timeout nil 'eab/org-shift-update-2)))))
 
 (defun eab/hron-todo (&optional arg)
   (interactive "p")
@@ -343,8 +346,6 @@
 (defun eab/create-nightly ()
   (interactive)
   (shell-command (concat org-directory "misc/create-" "nightly" ".sh"))
-  (if (eab/ondaemon (eab/server-C))
-      (shell-command (concat org-directory "misc/fix-" "nightly" ".sh")))
   )
 
 (defun eab/create-template (name)
@@ -470,7 +471,7 @@
 (defun eab/renew-agenda-files ()
   (interactive)
   (eab/renew-agenda-files-1)
-  (let ((server-use-tcp serverC-use-tcp))
+  (let ((server-use-tcp server-C-use-tcp))
     (server-eval-at (eab/server-C) '(eab/renew-agenda-files-1)))
   )
 
@@ -493,9 +494,7 @@
    (format-time-string
     (car org-time-stamp-formats)
     (apply 'encode-time  (org-parse-time-string (eab/hron-add-current 0 0)))))
-  (if (eab/ondaemon (eab/server-C))
-      (insert "\" :maxlevel 1 :narrow 80! :link t :scope eab/clocktable-scope\n")
-    (insert "\" :maxlevel 1 :narrow 80! :link t :scope (eab/clocktable-scope)\n"))
+  (insert "\" :maxlevel 1 :narrow 80! :link t :scope eab/clocktable-scope\n")
   (insert "#+END:")
   (previous-line)
   (org-ctrl-c-ctrl-c)
@@ -541,9 +540,7 @@
   (require 'org)
   (org-mode)
   (insert "* контрольная сумма\n")
-  (if (eab/ondaemon (eab/server-C))
-      (insert "#+BEGIN: clocktable :maxlevel 1 :narrow 80! :scope eab/clocktable-scope\n")
-    (insert "#+BEGIN: clocktable :maxlevel 1 :narrow 80! :scope (eab/clocktable-scope)\n"))
+  (insert "#+BEGIN: clocktable :maxlevel 1 :narrow 80! :scope eab/clocktable-scope\n")
   (insert "#+END:")
   (previous-line)
   (org-ctrl-c-ctrl-c)
@@ -636,7 +633,7 @@
 		   (lambda ()
 		     (require 'server)
 		     (sleep-for 1)
-		     (let ((server-use-tcp ,serverC-use-tcp))
+		     (let ((server-use-tcp ,server-C-use-tcp))
 		       (server-eval-at ,(eab/server-C) '(progn
 							  (shell-command (concat "cd " org-directory " && git pull"))
 							  (revert-all-buffers)

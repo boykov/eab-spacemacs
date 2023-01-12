@@ -14,7 +14,7 @@
 (defvar eab/first-emacsclient 't "nil if run again")
 (defvar eab/ssh-host "ssh chronos" "current host")
 
-'((let ((server-use-tcp serverC-use-tcp))
+'((let ((server-use-tcp server-C-use-tcp))
     (list (server-eval-at (eab/server-C) 'eab/gotify-token)
 	  (server-eval-at (eab/server-C) 'eab/gotify-client-token)))
   )
@@ -75,7 +75,8 @@ END
 
 (defun eab/server-C ()
   "serverC")
-(setq serverC-use-tcp 't)
+(setq server-C-use-tcp 't)
+'((setq org-fold-core-style 'overlays))
 
 ;; TODO для многих патчей требуется одновременно несколько замен
 ;; значит, если продолжать в этом направлении, надо заменить пару
@@ -166,7 +167,7 @@ END
 	    ("serverP"       . ,(concat user-emacs-directory "historyP/"))
 	    ("microcyclos"   . ,(concat user-emacs-directory "historyMicrocyclos/"))
 	    ("cyclos"        . ,(concat user-emacs-directory "historyCyclos/"))
-	    (,(eab/server-C) . ,(concat user-emacs-directory "historyC/"))
+	    ("serverC"       . ,(concat user-emacs-directory "historyC/"))
 	    ))
 
 (setq-put eab/emacs-service-alist
@@ -174,7 +175,7 @@ END
 	    ("serverP"       . "docker-compose-emacs")
 	    ("microcyclos"   . "docker-compose-micro")
 	    ("cyclos"        . "cyclos-emacs")
-	    (,(eab/server-C) . "docker-compose-clocksum")
+	    ("serverC"       . "docker-compose-clocksum")
 	  ))
 
 (cond ((eab/onhost "chronos28")    (setq eab/ssh-host-local eab/ssh-host))

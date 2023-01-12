@@ -13,6 +13,22 @@
   (execute-kbd-macro (kbd "<tab>"))
   (term-line-mode))
 
+(defun eab/org-at-paragraph-item-p ()
+  (if (eq major-mode 'org-mode)
+      (save-excursion
+	(org-backward-paragraph)
+	(if (org-at-item-p)
+	    nil
+	  (progn
+	    (backward-char)
+	    (org-at-item-p))))))
+
+(defun eab/ergoemacs-compact-uncompact-block ()
+  (interactive)
+  (if (eab/org-at-paragraph-item-p)
+      (execute-kbd-macro 'org-align-list-item)
+    (ergoemacs-compact-uncompact-block)))
+
 ;; TODO сделать backup перед обнулением eab/free-map
 ;; (define-key git-commit-mode-map (kbd "M-n") 'git-commit-next-message)
 ;; (define-key git-commit-mode-map (kbd "M-p") 'git-commit-prev-message)
