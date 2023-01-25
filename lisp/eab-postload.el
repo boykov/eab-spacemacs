@@ -15,12 +15,6 @@
   ;; из-за enable-local-variables
   (setq-default TeX-master t))
 
-(defun eab/test-dotemacs ()
-  (if configuration-layer-error-count
-      (eab/gotify "bad dotemacs" "Dotemacs is failed!" 5)
-    (eab/gotify "ok expectations" "OK Dotemacs is loaded! Expectations OK!" 0))
-  (kill-emacs))
-
 (electric-indent-mode)
 (electric-pair-mode -1)
 
@@ -30,17 +24,11 @@
     (load-theme 'spacemacs-dark 't))
 
 (when (eab/ondaemon (eab/server-C))
+  (eab/check-csum-day)
   (setq system-time-locale "ru_RU.UTF-8"))
 
 (eab/bind-path eab/secrets-path)
 ; TODO create function and hook after first start frame
-
-(defun eab/load-desktop ()
-  ;; TODO don't setup defadvice wg-switch-to-workgroup before it
-  (eab/workgroups-save-file-load)
-  (ignore-errors (let ((dir (eab/desktop-dir)))
-		   (if (file-exists-p (concat dir ".emacs.desktop"))
-		       (desktop-read dir)))))
 
 (defun eab/load-personal ()
   (interactive)
@@ -48,16 +36,7 @@
   (if (fboundp 'grep-a-lot-clear-stack)
       (grep-a-lot-clear-stack))
   (winner-mode)
-  ;; (if (= (shell-command "ps -A | grep Xorg") 0)
-  ;;     (setq minibuffer-frame-alist
-  ;; 	    `((top . ,(/ (x-display-pixel-height) 2))
-  ;; 	      (left . ,(/ (* (x-display-pixel-width) 1) 4))
-  ;; 	      (width . ,(/ (* 1on1-minibuffer-frame-width-percent (x-display-pixel-width))
-  ;; 			   (* 100 (frame-char-width 1on1-minibuffer-frame)) 2)) (height . 2))))
-
-  ;; (make-frame (append 1on1-minibuffer-frame-alist minibuffer-frame-alist))
   ;; (load-file eab/secrets-path)
-  ;; (eab/check-smtp)
   (wg-change-modeline)
   (require 'cl-macs)
   (cl-assert
@@ -76,22 +55,25 @@
                     :width 'normal)
   )
 
-;; check inet connection first
-(eab/bind-path eab/check-inet-path)
-
-
-;; TODO приходится вручную еще раз запускать, почему?
-;; может быть это связано с нововведением dbus-launch?
-;; Наоборот, пришлось убрать dbus-launch, т.к. из-за него
-;; накапливались лишние процессы, а все по-прежнему
-;; (when (and
-;;        (eq window-system 'x)
-;;        (fboundp 'dbus-register-signal))
-;;   (dbus-register-signal
-;;    :session nil "/org/gnome/evince/Window/0"
-;;    "org.gnome.evince.Window" "SyncSource"
-;;    'th-evince-sync))
-
 (setq default-input-method "russian-computer")
+
+(global-set-key (kbd "C-h c") 'describe-key-briefly)
+(global-set-key (kbd "M-O") 'forward-paragraph)
+(general-define-key
+ :prefix "C-e"
+ "d" docker-command-map)
+(defvar eab/dired-map (make-sparse-keymap)
+  "keymap for fast dired")
+(global-set-key (kbd "C-x d") nil)
+(eab/bind-path eab/downloads-path)
+(general-define-key
+ :prefix "C-x d"
+ "d" '(ido-dired :which-key "ido-dired")
+ "o" `(,(ilam (dired eab/org-publish-directory)) :which-key ,eab/org-publish-directory)
+ "h" `(,(ilam (dired "~/desktop")) :which-key "~/desktop")
+ "s" `(,(ilam (dired "~/share")) :which-key "~/share")
+ "p" `(,(ilam (dired eab/downloads-path)) :which-key ,eab/downloads-path)
+ "t" `(,(ilam (dired "~/tmp")) :which-key "~/tmp"))
+(setq eab/dired-map (lookup-key global-map (kbd "C-x d")))
 
 (provide 'eab-postload)

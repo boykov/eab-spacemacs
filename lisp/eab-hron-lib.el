@@ -340,31 +340,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Nightly
 
-;; TODO при отсеивании "лишних" #+ строк для nightly может так
+;; DONE при отсеивании "лишних" #+ строк для nightly может так
 ;; получиться, что уберутся и src блоки и тогда ссылка
 ;; call_blockname() перестанет работать: нет такого блока
 (defun eab/create-nightly ()
   (interactive)
   (shell-command (concat org-directory "misc/create-" "nightly" ".sh"))
-  )
-
-(defun eab/create-template (name)
-  (let ((fnames
-	 (remove-if
-	  (lambda (s) (or (string= s "level-0.org")
-			  (string= s "sitemap.org")))
-	  (mapcar 'file-name-nondirectory
-		  (file-expand-wildcards
-		   (concat org-directory "clock/*.org"))))))
-    (mapcar
-     (lambda (x)
-       (shell-command
-	(concat "grep -v -e \"^\\#\\+\" " org-directory "clock/" x " > " org-directory "gen/" name "/" x )))
-	    fnames)
-    (shell-command (concat org-directory "misc/create-" name ".sh"))
-    (mapcar (lambda (x)
-	      (shell-command (concat "rm -f " org-directory "gen/" name "/" x)))
-	    fnames))
   )
 
 (defun eab/delete-nightly ()
@@ -387,7 +368,6 @@
 
 (defun eab/update-reports-nightly ()
   (interactive)
-  (eab/create-template "plot")
   (ignore-errors (kill-buffer "time-reports-nightly.org"))
   (eab/create-nightly)
   (find-file (concat org-directory "gen/time-reports-nightly.org"))

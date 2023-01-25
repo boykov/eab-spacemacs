@@ -49,6 +49,12 @@ END
       (shell-command "echo > $HOME/dotemacs.error"))
   (kill-emacs))
 
+(defun eab/test-dotemacs ()
+  (if configuration-layer-error-count
+      (eab/gotify "bad dotemacs" "Dotemacs is failed!" 5)
+    (eab/gotify "ok expectations" "OK Dotemacs is loaded! Expectations OK!" 0))
+  (kill-emacs))
+
 (defun display-startup-echo-area-message ()
   "Change the default welcome message of minibuffer to another one."
   (message (with-current-buffer (get-buffer-create "*spacemacs*")
@@ -287,7 +293,6 @@ END
 (setq-put keyfreq-file-lock (concat (eab/history-dir) ".emacs.keyfreq.lock." system-name))
 
 (setq-put eab/check-cc-path "~/git/auto/check-cc.sh") ;; see eab-private/eab-secrets.el.gpg
-(setq-put eab/check-inet-path "~/git/auto/check-inet.sh")
 (setq-put eab/musicdb-path "~/data/dbs/media/music.db")
 (setq-put eab/downloads-path "~/downloads/")
 

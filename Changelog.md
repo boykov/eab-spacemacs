@@ -1,5 +1,13 @@
 # Changelog
 
+### 0.1.40
+
+Rfct. Mv part of `user-config` to `postload`.
+Mv `eab/load-desktop`, `eab/test-dotemacs`.
+Clear `dbus-launch` prompting, `Xorg` minibuffer.
+Disable `eab/check-inet-path`.
+Rm `eab/create-template`, use `eab/create-nightly` instead.
+
 ### 0.1.39
 
 Fix `eab/org-shift-update-*` with `org-at-clock-log-p`.

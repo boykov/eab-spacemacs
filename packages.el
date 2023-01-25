@@ -1109,6 +1109,15 @@ which require an initialization must be listed explicitly in the list.")
     :after (flx-ido projectile))
   )
 
+(defun eab-spacemacs/init-eab-ace-jump-mode ()
+  (evil-mode -1)
+  (use-package ace-jump-mode)
+  (use-package eab-ace)
+  )
+
+(defun eab-spacemacs/init-eab-avy ()
+  (use-package avy))
+
 (defun eab-spacemacs/user-config ()
   (use-package eab-workflow)
   (use-package eab-words
@@ -1126,7 +1135,6 @@ which require an initialization must be listed explicitly in the list.")
     (eab/bind-path eab/translate-path)
     (eab/bind-path eab/trans-path)
     )
-  (use-package eab-postload)
   (use-package eab-depend)
 
   (use-package eab-org)
@@ -1156,44 +1164,6 @@ which require an initialization must be listed explicitly in the list.")
   (use-package eab-greek-to-latex :disabled)
   (use-package eab-org-reftex :disabled)
   (use-package eab-org-extension)
-  (when (string= (daemonp) "serverC")
-    (eab/check-csum-day))
-  (global-set-key (kbd "C-h c") 'describe-key-briefly)
-  (global-set-key (kbd "M-O") 'forward-paragraph)
-  (general-define-key
-   :prefix "C-e"
-   "d" docker-command-map)
-  (defvar eab/dired-map (make-sparse-keymap)
-    "keymap for fast dired")
-  (global-set-key (kbd "C-x d") nil)
-  (eab/bind-path eab/downloads-path)
-  (general-define-key
-   :prefix "C-x d"
-   "d" '(ido-dired :which-key "ido-dired")
-   "o" `(,(ilam (dired eab/org-publish-directory)) :which-key ,eab/org-publish-directory)
-   "h" `(,(ilam (dired "~/desktop")) :which-key "~/desktop")
-   "s" `(,(ilam (dired "~/share")) :which-key "~/share")
-   "p" `(,(ilam (dired eab/downloads-path)) :which-key ,eab/downloads-path)
-   "t" `(,(ilam (dired "~/tmp")) :which-key "~/tmp"))
-  (setq eab/dired-map (lookup-key global-map (kbd "C-x d")))
+
+  (require 'eab-postload)
   )
-
-(defun eab-spacemacs/init-eab-ace-jump-mode ()
-  (evil-mode -1)
-  (use-package ace-jump-mode)
-  (use-package eab-ace)
-  )
-
-(defun eab-spacemacs/init-eab-avy ()
-  (use-package avy))
-
-;; For each package, define a function eab/init-<package-eab>
-;;
-;; (defun eab-spacemacs/init-my-package ()
-;;   "Initialize my package"
-;;   )
-;;
-;; Often the body of an initialize function uses `use-package'
-;; For more info on `use-package', see readme:
-;; https://github.com/jwiegley/use-package
-

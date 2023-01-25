@@ -16,6 +16,13 @@
 				   )))
 ;; see also eab-appt.el
 
+(defun eab/load-desktop ()
+  ;; TODO don't setup defadvice wg-switch-to-workgroup before it
+  (eab/workgroups-save-file-load)
+  (ignore-errors (let ((dir (eab/desktop-dir)))
+		   (if (file-exists-p (concat dir ".emacs.desktop"))
+		       (desktop-read dir)))))
+
 (defun eab/desktop-ignore-workgroups-mode (desktop-buffer-file-name)
        "Function to ignore workgroups-mode minor modes during restore of buffers"
        nil)
