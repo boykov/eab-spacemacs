@@ -1,5 +1,15 @@
 # Changelog
 
+### 0.1.41
+
+Fix `Save abbrevs in %s?`.
+Rm deprecate `org-drawers`.
+Improve `eab/grep-switch` with `string-trim` and negative lookhead.
+Fix `emacs-eat` bad blue color.
+Disable legacy `ansi-color-names-vector`.
+Fix `eab/org-at-paragraph-item-p` empty line case.
+Rfct. `eab/renew-agenda-files-1` postload.
+
 ### 0.1.40
 
 Rfct. Mv part of `user-config` to `postload`.

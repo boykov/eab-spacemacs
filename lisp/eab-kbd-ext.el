@@ -20,8 +20,11 @@
 	(if (org-at-item-p)
 	    nil
 	  (progn
-	    (backward-char)
-	    (org-at-item-p))))))
+	    (if (eq (string-match-p "\\`\\s-*$" (thing-at-point 'line)) 0)
+		nil
+	      (progn
+		(backward-char)
+		(org-at-item-p))))))))
 
 (defun eab/ergoemacs-compact-uncompact-block ()
   (interactive)

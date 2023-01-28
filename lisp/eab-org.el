@@ -175,7 +175,6 @@
 (setq org-clock-history-length 35)
 (setq org-clock-in-resume t)
 (setq org-clock-in-switch-to-state "STARTED")
-(setq org-drawers (quote ("PROPERTIES" "LOGBOOK" "CLOCK")))
 (setq org-clock-into-drawer "CLOCK")
 (setq org-clock-out-remove-zero-time-clocks t)
 (setq org-clock-out-when-done nil)

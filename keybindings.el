@@ -406,6 +406,7 @@
  "C-h"		'eab/hron-todo
  "M-h"		'eab/send-csum-all-remote
  "v"		'eab/org-insert-link-fast
+ "V"		'org-insert-link
  "."		(kbd "C-c . RET")
  "M-."		`(,(ilam (execute-kbd-macro (read-kbd-macro "C-c . RET C-l RET C-l l"))) :which-key " ")
  "O"		'esc-toggle-window-selectability

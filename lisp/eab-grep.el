@@ -29,8 +29,8 @@
 (defun eab/grep-command () (concat "rg" eab/grep-command-args))
 (setq eab/grep-ls "git ls-files `git rev-parse --show-toplevel`")
 (setq eab/grep-ls-recurse "git ls-files --recurse-submodules `git rev-parse --show-toplevel`")
-(setq eab/grep-clock-left "\"^- (<20|\\[X|\\[ )(\\n[^\*-]|.)*?(.*|\\n)")
-(setq eab/grep-clock-right "(\\n|.)*?((?=\\n- <)|(?=\\n\\*)|(?=\\Z))\"")
+(setq eab/grep-clock-left "\"(^- |- <20|- \\[X|- \\[ |^\\*\\*\\*\\*\\*\\* )(?:(?!(^- |- <20|- \\[X|- \\[ |^\\*+ ))(.|\\n))*?")
+(setq eab/grep-clock-right "(\\n|.)*?((?= *- \\[X)|(?= *- \\[ )|(?= *- <)|(?=\\n\\*+ )|(?=\\Z))\"")
 (setq eab/grep-sort " | LC_ALL=C sort -t ':' -k1,1 -k2n")
 (setq eab/grep-xargs " | xargs -d '\\n' ")
 (defun eab/grep-ls-gitmode? ()
@@ -73,7 +73,7 @@
 	 (ss (cadr (split-string ss-0 (concat " " (eab/grep-command)))))
 	 (compilation-arguments
 	  (append (list (concat ss-1 eab/grep-clock-left
-			  ss
+			  (string-trim ss "\"" "\"")
 			  eab/grep-clock-right eab/grep-sort))
 	  (cdr compilation-arguments))))
     (eab/recompile)))

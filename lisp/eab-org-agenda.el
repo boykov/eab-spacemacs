@@ -88,15 +88,10 @@ update search arguments."
   (remove-if
    (lambda (s) (or (string= s (concat org-directory "archive/archive.org"))
 		   (string= s (concat org-directory "clock/level-0.org"))
-		   (string= s (concat org-directory "clock/common.org"))
-		   ;; (member s (file-expand-wildcards (concat org-directory "clock/*arch.org")))
 		   ))
    (append
     (file-expand-wildcards (concat org-directory "archive/*.org"))
     (file-expand-wildcards (concat org-directory "clock/*.org")))))
-
-;; see file:eab-hron-lib.el
-(setq org-agenda-files (eab/org-agenda-files))
 
 (defun eab/org-insert-link-fast ()
   (interactive)

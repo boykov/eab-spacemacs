@@ -23,6 +23,12 @@
 (if (and (or (eab/ondaemon (eab/server-P)) (eab/ondaemon "server")) (not noninteractive))
     (load-theme 'spacemacs-dark 't))
 
+(setq eab/org-file (concat org-directory "clock/current-time.el"))
+(if (file-exists-p eab/org-file)
+    (load eab/org-file)) ;; (setq eab/hron-current-time ..
+
+(eab/renew-agenda-files-1)
+
 (when (eab/ondaemon (eab/server-C))
   (eab/check-csum-day)
   (setq system-time-locale "ru_RU.UTF-8"))

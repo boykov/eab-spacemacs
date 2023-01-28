@@ -31,7 +31,6 @@
 (require 'async)
 
 (require 'ansi-color)
-(setq ansi-color-names-vector [zenburn-bg zenburn-red zenburn-green zenburn-yellow zenburn-blue zenburn-magenta zenburn-cyan zenburn-fg])
 
 (defvar eab/recently-saved-files-list '())
 

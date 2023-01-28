@@ -602,6 +602,9 @@ which require an initialization must be listed explicitly in the list.")
     (add-hook 'eat--semi-char-mode-hook (lambda () (setq input-method-function 'key-chord-input-method)))
     ;; (add-hook 'eat--char-mode-hook (lambda () (setq input-method-function 'key-chord-input-method)))
     (add-hook 'eat-mode-hook (lambda () (setq input-method-function 'key-chord-input-method)))
+
+    (custom-set-faces
+     '(eat-term-color-4 ((t (:inherit eat-term-color-32)))))
     )
   )
 
@@ -1124,7 +1127,9 @@ which require an initialization must be listed explicitly in the list.")
     :init
     (eab/bind-path abbrev-file-name)
     (if (file-exists-p abbrev-file-name)
-	(quietly-read-abbrev-file abbrev-file-name))
+	(progn
+	  (setq save-abbrevs 'silently)
+	  (quietly-read-abbrev-file abbrev-file-name)))
     )
   (use-package eab-appt)
   (use-package eab-ui)

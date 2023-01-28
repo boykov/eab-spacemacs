@@ -127,13 +127,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; hron
 
-;; See `eab/org-file' in eab-path-org.el
-
-(setq eab/org-file (concat org-directory "clock/current-time.el"))
-
-(if (file-exists-p eab/org-file)
-    (load eab/org-file)) ;; (setq eab/hron-current-time ..
-
 (defun eab/hron-current-time-stamp ()
   (format-time-string "%Y-%m-%d %a %H:%M" eab/hron-current-time))
 
@@ -439,8 +432,6 @@
 
 (defun eab/clocktable-scope-1 ()
   (file-expand-wildcards (concat (file-name-as-directory org-directory) "clock/*.org")))
-
-(setq eab/clocktable-scope (eab/clocktable-scope-1))
 
 (defun eab/clocktable-scope () eab/clocktable-scope)
 
