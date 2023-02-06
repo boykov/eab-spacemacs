@@ -35,4 +35,12 @@
 		     helm-source-complex-command-history
 		     ))
 
+(defun eab/helm-org-agenda-files-headings (&optional arg)
+  "Preconfigured helm for org files headings."
+  (interactive "P")
+  (let ((files eab/clocktable-scope))
+      (helm :sources (helm-org-build-sources files nil arg)
+            :truncate-lines helm-org-truncate-lines
+            :buffer "*helm org headings*")))
+
 (provide 'eab-helm)

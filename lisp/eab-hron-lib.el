@@ -288,6 +288,19 @@
 	   eab/hron-todo-bulk-minute)))
     (eab/hron-todo-1 eab/hron-todo-bulk-hour eab/hron-todo-bulk-minute arg)))
 
+(defun eab/helm-hron-todo (marker)
+  (save-window-excursion
+    (helm-org-goto-marker marker)
+    (if (org-ql--predicate-clocked)
+	(progn
+	  (eab/hron-todo)
+	  (save-some-buffers 't))
+      (progn
+	(message "Empty CLOCK entry!")
+	(sleep-for 0.5)))
+    (if (yes-or-no-p "Enter another one? ")
+	(eab/helm-org-agenda-files-headings))))
+
 (defun eab/org-clock (&optional start-time at-time)
   "Insert clock string in current buffer"
   (save-excursion

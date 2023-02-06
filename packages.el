@@ -18,8 +18,8 @@
     auto-dictionary ;; switcher for flyspell
     howdoi
 
-    ,(when (string= (daemonp) "serverC") '(org-mode-fix/lisp :location local))
-    ,(unless (string= (daemonp) "serverC") '(org-mode/lisp :location local))
+    ,(when (or (string= (daemonp) "serverC") noninteractive) '(org-mode-fix/lisp :location local))
+    ,(unless (or (string= (daemonp) "serverC") noninteractive) '(org-mode/lisp :location local))
     ;; (org-mode/lisp :location local)
     ,(when (not (string-match-p "^25" emacs-version)) 'org-roam)
     deft
@@ -145,6 +145,7 @@
     helm
     helm-descbinds
     helm-helm-commands
+    helm-org
     smex ;; ido for M-x
     ido-at-point
     ido-vertical-mode
@@ -217,8 +218,38 @@ which require an initialization must be listed explicitly in the list.")
     (global-so-long-mode 1)))
 
 (defun eab-spacemacs/init-ergoemacs-mode ()
-  (require 'ergoemacs-translate)
-  (require 'ergoemacs-functions)
+  (use-package 'ergoemacs-functions
+    :config
+    (defun ergoemacs-handle-M-O ()
+      "Handle meta+O input.
+In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular meta+O keybinding."
+      (interactive)
+      (if (input-pending-p)
+	  (let ((second-char (read-char)))
+            (cond
+             ((eq second-char 65) ;; A
+              (execute-kbd-macro (kbd "<up>")))
+             ((eq second-char 66) ;; B
+              (execute-kbd-macro (kbd "<down>")))
+             ((eq second-char 67) ;; C
+              (execute-kbd-macro (kbd "<right>")))
+             ((eq second-char 68) ;; D
+              (execute-kbd-macro (kbd "<left>")))
+             ((eq second-char 72) ;; H
+              (execute-kbd-macro (kbd "<home>")))
+             ((eq second-char 70) ;; F
+              (execute-kbd-macro (kbd "<end>")))
+             (t
+              (beep))))
+	(call-interactively (key-binding [ergoemacs-meta-O]))))
+
+    (defun ergoemacs-fix-arrow-keys (keymap)
+      "Fix arrow keys for KEYMAP."
+      (let (ergoemacs-M-O-binding)
+	(setq ergoemacs-M-O-binding (lookup-key keymap (kbd "M-O")))
+	(define-key keymap (kbd "M-O") 'ergoemacs-handle-M-O)
+	(define-key keymap [ergoemacs-meta-O] ergoemacs-M-O-binding)))
+    )
   )
 
 (defun eab-spacemacs/init-rpm-spec-mode ())
@@ -345,12 +376,14 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-helm nil
   (use-package eab-helm
     :defer
+    :after (ergoemacs-mode)
     :config
     (eab/bind-path eab/musicdb-path)
     (defun eab/helm-find-file-or-marked (candidate)
       (helm-find-file-or-marked (concat "/ssh:chronos:" candidate)))
     (setf (cdr (rassoc 'helm-find-file-or-marked helm-type-file-actions))
       'eab/helm-find-file-or-marked)
+    (ergoemacs-fix-arrow-keys helm-map)
     )
   )
 (defun eab-spacemacs/init-helm-descbinds nil
@@ -358,6 +391,12 @@ which require an initialization must be listed explicitly in the list.")
   (helm-descbinds-mode)
   )
 (defun eab-spacemacs/init-helm-helm-commands nil)
+(defun eab-spacemacs/init-helm-org nil
+  (use-package helm-org
+    :after (eab-helm eab-org)
+    :config
+    (add-to-list 'helm-org-headings-actions '("eab/hron-todo" . eab/helm-hron-todo)))
+  )
 (defun eab-spacemacs/init-smart-compile nil
   (require 'smart-compile)
   (setq-default smart-compile-check-makefile nil)
@@ -824,6 +863,8 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-org-mode/lisp nil
   ;; fix org-element performance degradation
   (setq org-element--cache-self-verify nil)
+  '((setq org-element-cache-persistent nil))
+  '((setq org-element-use-cache nil))
   ;; fix 'file is already exist' bug
   (setq org-babel-temporary-directory "/tmp/user/1000/babel-aa5I6G"))
 (defun eab-spacemacs/init-org-mode-fix/lisp nil
@@ -1113,9 +1154,37 @@ which require an initialization must be listed explicitly in the list.")
   )
 
 (defun eab-spacemacs/init-eab-ace-jump-mode ()
-  (evil-mode -1)
-  (use-package ace-jump-mode)
-  (use-package eab-ace)
+  (use-package ace-jump-mode
+    :init
+    (evil-mode -1)
+    :config
+    (setq ace-jump-mode-gray-background nil) ;; it is faster
+
+    (defun eab/ace-ibuffer ()
+      (interactive)
+      (setq ido-exit 'eab-ido-exit)
+      (exit-minibuffer))
+
+    (defun eab/call-ibuffer ()
+      (if (equal (buffer-name (current-buffer)) "*Ibuffer*")
+	  (ibuffer-visit-buffer)))
+
+    (add-hook 'ace-jump-mode-end-hook 'eab/call-ibuffer)
+
+    (defun eab/isearch-ace-jump ()
+      "Invoke `ace-jump' from isearch within `current-buffer'."
+      (interactive)
+      (let ((case-fold-search isearch-case-fold-search)
+            (isearch-buffer (current-buffer))
+            (isearch-update-post-hook
+	     (lambda ()
+	       (interactive)
+	       (unless (equal isearch-string "")
+		 (isearch-exit)))))
+	(isearch-exit)
+	;; TODO ace -> avy
+	(ace-jump-do (concat "\\b" isearch-string))))
+    )
   )
 
 (defun eab-spacemacs/init-eab-avy ()

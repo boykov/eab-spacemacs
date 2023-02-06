@@ -5,6 +5,7 @@
 
 (setq eab/org-ql-H-query '(and (or (not (tags "noagenda")) (tags "agenda")) (not (tags "neveragenda")) (clocked 600) ))
 (setq eab/org-ql-O-query '(and (or (not (tags "noagenda")) (tags "agenda")) (not (tags "neveragenda")) (clocked 6000) (not (clocked 400))))
+'((setq eab/org-ql-O-query '(clocked)))
 (setq eab/org-ql-W-query '(and (and (or (tags "w1c") (tags "fz")) (or (not (tags "noagenda")) (tags "agenda")) (not (tags "neveragenda"))) (clocked 560)))
 
 (defun eab/org-ql-query-buffer (query)
@@ -83,6 +84,13 @@ update search arguments."
 	  (goto-line (if (eq old-column 0) old-line (1- old-line)))
 	  (move-to-column old-column)))
     (message "View refreshed")))
+
+(defun eab/bury-buffer ()
+  (interactive)
+  (let ((replace? (frame-parameter nil 'eab-replace-bury-buffer)))
+    (if replace?
+	(delete-frame)
+      (bury-buffer))))
 
 (defun eab/org-agenda-files ()
   (remove-if

@@ -878,6 +878,7 @@
 
   (general-define-key
    :keymaps 'org-ql-view-map
+   "q" #'eab/bury-buffer
    "g" #'eab/org-ql-view-refresh)
 
   (general-define-key
@@ -888,6 +889,8 @@
    "C-n"	'nil
    "C-k"	'nil
    "s"		'flx-isearch-forward
+   "h"		'eab/hron-todo
+   "j"		'beginning-of-buffer
    "M-g"	'org-agenda-kill
    "M-k"	'org-agenda-next-line
    "M-i"	'org-agenda-previous-line))

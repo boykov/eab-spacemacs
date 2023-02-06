@@ -44,7 +44,7 @@
  ;--------------------------------------------------------------------
 	pm-def-macro
 	'schedule-28-1w
-	'org-agenda-mode [115]
+	nil nil
 	""
 	"C-c C-s 2014-04-28 RET TAB S-C-k M-; scheduled RET M-p M-j SPC +q DEL
  1w M-s"

@@ -1,5 +1,14 @@
 # Changelog
 
+### 0.1.42
+
+Add `helm-org`, init `eab/helm-hron-todo`,
+`eab/helm-org-agenda-files-headings`.
+Fix terminal arrow keys with `"M-O"        (make-sparse-keymap)`.
+Add `eab/bury-buffer`.
+Use `org-mode-fix` for `batch` (`noninteractive`).
+Mv `eab-ace.el` to `packages.el`.
+
 ### 0.1.41
 
 Fix `Save abbrevs in %s?`.
