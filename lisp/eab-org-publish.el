@@ -1,4 +1,6 @@
-(add-to-list 'org-publish-project-alist `("html-fz" :components ("html-fz-base")))
+(add-to-list 'org-publish-project-alist
+	     `("html-fz" :components
+	       ("html-fz-base")))
 (add-to-list 'org-publish-project-alist
 	     `("html-fz-base"
 	       :base-directory "/home/eab/git/fz/tasks/sync-jira/fz-wiki/org"
@@ -13,7 +15,10 @@
 	       :author-info nil
 	       :creator-info nil))
 
-(add-to-list 'org-publish-project-alist `("html-ldap" :components ("html-ldap-base" "html-ldap-static")))
+(add-to-list 'org-publish-project-alist
+	     `("html-ldap" :components
+	       ("html-ldap-base"
+		"html-ldap-static")))
 (add-to-list 'org-publish-project-alist
 	     `("html-ldap-base"
 	       :base-directory "/home/eab/git/cc/cc-ldap-centos/docs"
@@ -36,7 +41,10 @@
 	       :publishing-function org-publish-attachment
 	       ))
 
-(add-to-list 'org-publish-project-alist `("manual" :components ("manual-base" "manual-static")))
+(add-to-list 'org-publish-project-alist
+	     `("manual" :components
+	       ("manual-base"
+		"manual-static")))
 (add-to-list 'org-publish-project-alist
 	     `("manual-static"
 	       :base-directory "/home/eab/git/eab-auto/org/"

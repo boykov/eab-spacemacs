@@ -268,7 +268,7 @@ END
       ((eab/onhost "victory")      (setq-put source-directory "~/src/emacs/"))
       ((eab/onhost "kairos")       (setq-put source-directory "~/data/github/emacs/src"))
       ((eab/onhost "chronos")      (setq-put source-directory "~/data/github/emacs/src"))
-      ((eab/onhost "chronos28")    (setq-put source-directory "~/git/eabmisc/eab-docker-emacs/emacs-28.1/src"))
+      ((eab/onhost "chronos28")    (setq-put source-directory "~/data/github/emacs/src"))
       ((eab/onhost "cyclos-emacs") (setq-put source-directory "~/data/github/emacs/src")))
 
 

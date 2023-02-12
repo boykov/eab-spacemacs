@@ -97,24 +97,28 @@
     (switch-to-buffer eab/gr-buffer nil 't)))
 
 (cl-defun eab/async-update-gr (&optional &key recompile notify)
-  (async-start
-   `(lambda ()
-      (with-temp-buffer
-	(shell-command-to-string ,eab/update-gr-command))
-      "@fz updated")
-   `(lambda (result)
-      (if ,recompile
-	  (save-window-excursion
-	    (switch-to-buffer eab/gr-buffer)
-	    (let ((compilation-buffer-name-function nil))
-	      (recompile))))
-      '(if ,notify
-	  (if (> (string-to-number (shell-command-to-string eab/check-gr-command)) 6)
-	      (eab/gotify "fz" "updated" 0)))
-      (message "async result: <%s>" result))))
+  (let
+      ((old-check (shell-command-to-string eab/check-gr-command)))
+    (async-start
+     `(lambda ()
+	(with-temp-buffer
+	  (shell-command-to-string ,eab/update-gr-command))
+	"@fz updated")
+     `(lambda (result)
+	(if ,recompile
+	    (save-window-excursion
+	      (switch-to-buffer eab/gr-buffer)
+	      (let ((compilation-buffer-name-function nil))
+		(recompile))))
+	(if ,notify
+	    (let ((fresh-check (shell-command-to-string eab/check-gr-command)))
+	      (if (not (equal ,old-check fresh-check))
+		  (if (> (string-to-number fresh-check) 6)
+		      (eab/gotify "fz" "updated" 5)))))
+	(message "async result: <%s>" result)))))
 
 (defun eab/update-gr-status-on-idle ()
-  (eab/async-update-gr :recompile 't))
+  (eab/async-update-gr :recompile 't :notify 't))
 
 (setq eab/gotify-ready? nil)
 (defvar eab/gotify-websocket nil "gotify websocket")

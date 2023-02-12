@@ -38,8 +38,10 @@
 (defun eab/helm-org-agenda-files-headings (&optional arg)
   "Preconfigured helm for org files headings."
   (interactive "P")
-  (let ((files eab/clocktable-scope))
+  (let ((files eab/clocktable-scope)
+	(timestamp (eab/hron-current-time-stamp)))
       (helm :sources (helm-org-build-sources files nil arg)
+	    :prompt (concat timestamp " pattern: ")
             :truncate-lines helm-org-truncate-lines
             :buffer "*helm org headings*")))
 

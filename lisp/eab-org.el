@@ -234,4 +234,12 @@
 	 (push-mark nil t t)
 	 (org-backward-paragraph arg))))
 
+(defun eab/org-forward-element-parent ()
+  (interactive)
+  (let* ((el (plist-get (cadr (org-element-at-point)) :parent))
+         (begin (plist-get (cadr el) :begin))
+         (end (plist-get (cadr el) :end)))
+    (when (and begin end)
+      (goto-char end))))
+
 (provide 'eab-org)

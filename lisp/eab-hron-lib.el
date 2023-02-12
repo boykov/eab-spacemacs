@@ -288,18 +288,32 @@
 	   eab/hron-todo-bulk-minute)))
     (eab/hron-todo-1 eab/hron-todo-bulk-hour eab/hron-todo-bulk-minute arg)))
 
+(defvar eab/helm-org-marker nil)
 (defun eab/helm-hron-todo (marker)
   (save-window-excursion
-    (helm-org-goto-marker marker)
-    (if (org-ql--predicate-clocked)
-	(progn
-	  (eab/hron-todo)
-	  (save-some-buffers 't))
-      (progn
-	(message "Empty CLOCK entry!")
-	(sleep-for 0.5)))
-    (if (yes-or-no-p "Enter another one? ")
-	(eab/helm-org-agenda-files-headings))))
+    (let ((markers (helm-marked-candidates :all-sources 't)))
+      (if (not eab/helm-org-marker)
+	  (setq eab/helm-org-marker
+		(with-current-buffer (get-buffer "timeline-time-mining.org")
+		  (point-max-marker))))
+      (if (> (length markers) 1)
+	  (progn
+	    (add-to-list 'markers eab/helm-org-marker)
+	    ))
+      (eab/hron-todo-setup)
+      (loop for cand in markers
+	    do
+	    (progn
+	      (message "%s" cand)
+	      (helm-org-goto-marker cand)
+	      (if (org-ql--predicate-clocked)
+		  (eab/hron-todo-1 eab/hron-todo-bulk-hour eab/hron-todo-bulk-minute
+				   (if (eq cand (car (reverse markers))) 0 4))
+		(progn
+		  (message "Empty CLOCK entry!")
+		  (sleep-for 0.5)))))
+      (save-some-buffers 't))
+    (eab/helm-org-agenda-files-headings)))
 
 (defun eab/org-clock (&optional start-time at-time)
   "Insert clock string in current buffer"

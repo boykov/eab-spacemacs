@@ -888,7 +888,7 @@
    "C-p"	'nil
    "C-n"	'nil
    "C-k"	'nil
-   "s"		'flx-isearch-forward
+   "s"		'isearch-forward
    "h"		'eab/hron-todo
    "j"		'beginning-of-buffer
    "M-g"	'org-agenda-kill
@@ -1189,6 +1189,7 @@
    "M-j"	'nil
    "M-v"	'nil
    "M-l"	'nil
+   "M-m"	'helm-toggle-visible-mark
    "M-k"	'helm-next-line
    "M-i"	'helm-previous-line
    "C-n"	'next-history-element

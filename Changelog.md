@@ -1,5 +1,15 @@
 # Changelog
 
+### 0.1.43
+
+Fix `eab/helm-hron-todo`, `eab-spacemacs/init-ergoemacs-mode`.
+Improve `eab/helm-org-agenda-files-headings`.
+Improve `eab/async-update-gr`.
+Improve `eab/helm-hron-todo`.
+Add `eab/org-forward-element-parent`.
+Fix `:all-sources`, `0 vs 4`.
+Rfct.
+
 ### 0.1.42
 
 Add `helm-org`, init `eab/helm-hron-todo`,

@@ -218,7 +218,7 @@ which require an initialization must be listed explicitly in the list.")
     (global-so-long-mode 1)))
 
 (defun eab-spacemacs/init-ergoemacs-mode ()
-  (use-package 'ergoemacs-functions
+  (use-package ergoemacs-functions
     :config
     (defun ergoemacs-handle-M-O ()
       "Handle meta+O input.
