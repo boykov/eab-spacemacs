@@ -59,6 +59,7 @@
      (let ((server-use-tcp ,server-C-use-tcp))
        (server-eval-at ,(eab/server-C) '(progn
 					  (org-publish-project "html-base" 't)
+					  (org-publish-project "html-scale" 't)
 					  (org-publish-project "html-clock" 't)))))
    (lambda (result) (eab/gotify "eab/org-publish-html" (concat "async result: <" result ">") 0))))
 

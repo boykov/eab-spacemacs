@@ -95,11 +95,10 @@ update search arguments."
 (defun eab/org-agenda-files ()
   (remove-if
    (lambda (s) (or (string= s (concat org-directory "archive/archive.org"))
-		   (string= s (concat org-directory "clock/level-0.org"))
 		   ))
    (append
     (file-expand-wildcards (concat org-directory "archive/*.org"))
-    (file-expand-wildcards (concat org-directory "clock/*.org")))))
+    (eab/clocktable-scope-1))))
 
 (defun eab/org-insert-link-fast ()
   (interactive)

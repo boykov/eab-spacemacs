@@ -52,6 +52,27 @@
 	       :creator-info nil))
 
 (add-to-list 'org-publish-project-alist
+	     `("html-scale"
+	       :base-directory ,(concat (file-truename org-directory) "scale/")
+	       :publishing-directory ,(concat eab/org-publish-directory "scale/")
+	       :base-url ,(concat eab/org-publish-directory-file "scale/")
+	       :working-directory ,(concat eab/org-publish-directory "scale/")
+	       :online-suffix ".html"
+	       :working-suffix ".org"
+	       :recursive t
+	       :with-drawers ("CLOCK")
+	       :section_numbers nil
+	       :table-of-contents nil
+	       :base-extension "org"
+	       :publishing-function org-html-publish-to-html
+	       :auto-sitemap nil                ; Generate sitemap.org automagically...
+	       :sitemap-filename "sitemap.org"  ; ... call it sitemap.org (it's the default)...
+	       :sitemap-title "Sitemap"         ; ... with title 'Sitemap'.
+	       :style-include-default t
+	       :author-info nil
+	       :creator-info nil))
+
+(add-to-list 'org-publish-project-alist
 	     `("html-gen"
 	       :base-directory ,(concat org-directory "gen/")
 	       :publishing-directory ,(concat eab/org-publish-directory "gen/")
@@ -98,6 +119,7 @@
       (org-publish-remove-all-timestamps))
     (org-publish-project "html-base" (not fast))
     (org-publish-project "html-clock" (not fast))
+    (org-publish-project "html-scale" (not fast))
     ;; (eab/shell-command "git stash save batch")
     (if fast
 	(eab/gotify "...fast finished" "success" 0)
@@ -197,7 +219,7 @@
 	 (org-parse-time-string
 	  (substring
 	   (shell-command-to-string
-	    (concat "cd " org-directory "clock && ../misc/clock.sh -s getCT"))
+	    (concat org-directory "misc/clock.sh -s getCT -c " org-directory "clock"))
 	   0 -1))))
 
 (defun eab/hron-update-current-time ()
@@ -458,7 +480,10 @@
   (mapcar (lambda (f) (eab/org-clock-sum f)) (eab/clocktable-scope)))
 
 (defun eab/clocktable-scope-1 ()
-  (file-expand-wildcards (concat (file-name-as-directory org-directory) "clock/*.org")))
+  (append
+   (file-expand-wildcards (concat (file-name-as-directory org-directory) "clock/*.org"))
+   (file-expand-wildcards (concat (file-name-as-directory org-directory) "scale/*.org"))
+   ))
 
 (defun eab/clocktable-scope () eab/clocktable-scope)
 

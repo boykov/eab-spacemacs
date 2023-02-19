@@ -376,14 +376,12 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
 (defun eab-spacemacs/init-helm nil
   (use-package eab-helm
     :defer
-    :after (ergoemacs-mode)
     :config
     (eab/bind-path eab/musicdb-path)
     (defun eab/helm-find-file-or-marked (candidate)
       (helm-find-file-or-marked (concat "/ssh:chronos:" candidate)))
     (setf (cdr (rassoc 'helm-find-file-or-marked helm-type-file-actions))
       'eab/helm-find-file-or-marked)
-    (ergoemacs-fix-arrow-keys helm-map)
     )
   )
 (defun eab-spacemacs/init-helm-descbinds nil

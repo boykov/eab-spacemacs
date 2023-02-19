@@ -1199,6 +1199,7 @@
    "M-J"	'helm-beginning-of-buffer
    "M-L"	'helm-end-of-buffer
    "M-I"	'helm-previous-page)
+  (ergoemacs-fix-arrow-keys helm-map)
   (general-define-key
    :keymaps 'helm-generic-files-map
    "M-i"	'helm-previous-line))

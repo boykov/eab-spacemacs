@@ -1,5 +1,11 @@
 # Changelog
 
+### 0.1.44
+
+Fix `ergoemacs-fix-arrow-keys` boot order.
+Improve `clock.sh`.
+Add `/scale`, `html-scale`.
+
 ### 0.1.43
 
 Fix `eab/helm-hron-todo`, `eab-spacemacs/init-ergoemacs-mode`.
