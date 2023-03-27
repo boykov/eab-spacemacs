@@ -213,6 +213,10 @@ END
     (setq-put org-directory "~/git/org-chronos/")
   (setq-put org-directory "/home/eab/pnt/jaguar/git/org/"))
 
+(defun eab/rsync-org-directory ()
+  (shell-command
+   (concat eab/ssh-host " rsync --delete -avzl --exclude \"gen\" ~/git/org-chronos/ " org-directory)))
+
 (setq eab/batch-publish-command
       (concat eab/ssh-host " " (eab/get-path 'org-directory) "misc/batch-publish.sh"))
 

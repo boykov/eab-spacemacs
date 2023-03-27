@@ -54,9 +54,9 @@
 (add-to-list 'org-publish-project-alist
 	     `("html-scale"
 	       :base-directory ,(concat (file-truename org-directory) "scale/")
-	       :publishing-directory ,(concat eab/org-publish-directory "scale/")
-	       :base-url ,(concat eab/org-publish-directory-file "scale/")
-	       :working-directory ,(concat eab/org-publish-directory "scale/")
+	       :publishing-directory ,(concat eab/org-publish-directory "clock/")
+	       :base-url ,(concat eab/org-publish-directory-file "clock/")
+	       :working-directory ,(concat eab/org-publish-directory "clock/")
 	       :online-suffix ".html"
 	       :working-suffix ".org"
 	       :recursive t
@@ -105,9 +105,11 @@
 	(eab/gotify "fast publish..." "started" 0)
       (eab/gotify "publish..." "Come in to eab/batch-publish" 0)
       )
-    (shell-command (concat "cd " org-directory " && git pull"))
+    (shell-command (concat "cd " org-directory))
+    (eab/rsync-org-directory)
     (sleep-for 1)
     (revert-all-buffers)
+    (eab/renew-agenda-files-1)
     (unless fast
       (eab/send-csum)
       (eab/check-csum-all)
@@ -135,9 +137,6 @@
 	(if (re-search-forward org-ts-regexp-both end t)
 	    (org-time-string-to-seconds (match-string 0))
 	  (org-float-time '(11861 17628 167611 772000)))))))
-
-;; DONE debug: org-table-get-specials() conflicts with :tags
-(defun eab/work-tags () "w1c|w2c|plan|hron")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;  _
@@ -658,7 +657,8 @@
 		     (sleep-for 1)
 		     (let ((server-use-tcp ,server-C-use-tcp))
 		       (server-eval-at ,(eab/server-C) '(progn
-							  (shell-command (concat "cd " org-directory " && git pull"))
+							  (shell-command (concat "cd " org-directory))
+							  (eab/rsync-org-directory)
 							  (revert-all-buffers)
 							  (,fname)
 							  (eab/send-csum-all)

@@ -1,5 +1,17 @@
 # Changelog
 
+### 0.1.45
+
+Add `eab/grep-switch-0`.
+Fix org publish paths.
+Add `eab/rsync-org-directory`, use it instead of `git pull`.
+Add `eab/org-in-src-block-p`, improve `eab/clock-grep`,
+`eab/ergoemacs-compact-uncompact-block` with `org-edit-special`.
+Add `vacancy` case to `eab/org-publish-current-file`.
+Try to switch grep by default: `eab/grep-setup-1` doesn't work.
+Fix `eab/smex-limited-commands` with `delete-dups`.
+Fix `emacs-eat` bug with diminished which-key unicode symbol.
+
 ### 0.1.44
 
 Fix `ergoemacs-fix-arrow-keys` boot order.

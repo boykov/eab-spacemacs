@@ -31,6 +31,8 @@
 (setq eab/grep-ls-recurse "git ls-files --recurse-submodules `git rev-parse --show-toplevel`")
 (setq eab/grep-clock-left "\"(^- |- <20|- \\[X|- \\[ |^\\*\\*\\*\\*\\*\\* )(?:(?!(^- |- <20|- \\[X|- \\[ |^\\*+ ))(.|\\n))*?")
 (setq eab/grep-clock-right "(\\n|.)*?((?= *- \\[X)|(?= *- \\[ )|(?= *- <)|(?=\\n\\*+ )|(?=\\Z))\"")
+(setq eab/grep-clock-left-0 "\"(^ *- |- \\[ |^\\*\\*\\*\\*\\*\\* )(?:(?!(^ *- |^\\*+ ))(.|\\n))*?")
+(setq eab/grep-clock-right-0 "(\\n|.)*?((?=^ *- )|(?= *- <)|(?=\\n\\*+ )|(?=\\Z))\"")
 (setq eab/grep-sort " | LC_ALL=C sort -t ':' -k1,1 -k2n")
 (setq eab/grep-xargs " | xargs -d '\\n' ")
 (defun eab/grep-ls-gitmode? ()
@@ -66,16 +68,31 @@
     (eab/recompile)))
 
 (defun eab/grep-switch ()
+  (interactive)
+  (if (not (boundp 'eab/grep-switch-cycle))
+      (setq-local eab/grep-switch-cycle 'init))
+  (if (eq eab/grep-switch-cycle 'full)
+      (eab/recompile))
+  (if (eq eab/grep-switch-cycle '0)
+      (progn
+	(eab/grep-switch-0 eab/grep-clock-left eab/grep-clock-right)
+	(setq-local eab/grep-switch-cycle 'full)))
+  (if (eq eab/grep-switch-cycle 'init)
+      (progn
+	(eab/grep-switch-0 eab/grep-clock-left-0 eab/grep-clock-right-0)
+	(setq-local eab/grep-switch-cycle '0))))
+
+(defun eab/grep-switch-0 (left right)
   "Switch to org-mode aware grep."
   (interactive)
   (let* ((ss-0 (car (split-string (car compilation-arguments) eab/grep-sort)))
 	 (ss-1 (concat (car (split-string ss-0 (eab/grep-command))) (eab/grep-command)))
 	 (ss (cadr (split-string ss-0 (concat " " (eab/grep-command)))))
 	 (compilation-arguments
-	  (append (list (concat ss-1 eab/grep-clock-left
-			  (string-trim ss "\"" "\"")
-			  eab/grep-clock-right eab/grep-sort))
-	  (cdr compilation-arguments))))
+	  (append (list (concat ss-1 left
+				(string-trim ss "\"" "\"")
+				right eab/grep-sort))
+		  (cdr compilation-arguments))))
     (eab/recompile)))
 
 (defun eab/gz-grep (extension)
@@ -148,11 +165,24 @@
 (defun eab/clock-grep ()
   (interactive)
   (let* ((grep-host-defaults-alist nil)
-	 (command (concat eab/grep-ls eab/grep-xargs (concat "rg" eab/grep-command-args) eab/grep-clock-left))
+	 (command (concat eab/grep-ls eab/grep-xargs (concat "rg" eab/grep-command-args) eab/grep-clock-left-0))
          (grep-command
-          `(, (concat command eab/grep-clock-right eab/grep-sort) . ,(1+ (length command)))))
+          `(, (concat command eab/grep-clock-right-0 eab/grep-sort) . ,(1+ (length command)))))
     (call-interactively 'grep)))
 
 (grep-a-lot-advise eab/grep)
+
+;; (defadvice eab/grep (after eab/grep-setup activate)
+;;   (eab/grep-setup-1))
+;; (ad-remove-advice 'eab/grep 'after 'eab/grep-setup)
+;; (ad-deactivate 'eab/grep)
+
+(defun eab/grep-setup-1 ()
+  (message  "%s" (buffer-name))
+  (save-excursion
+    (eab/switch-grep)
+    (if (equal default-directory
+	       "/home/eab/pnt/jaguar/git/org-chronos/")
+	(eab/grep-switch))))
 
 (provide 'eab-grep)

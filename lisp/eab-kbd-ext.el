@@ -26,11 +26,20 @@
 		(backward-char)
 		(org-at-item-p))))))))
 
+(defun eab/org-in-src-block-p ()
+  (if (eq major-mode 'org-mode)
+      (org-in-src-block-p)))
+
 (defun eab/ergoemacs-compact-uncompact-block ()
   (interactive)
-  (if (eab/org-at-paragraph-item-p)
-      (execute-kbd-macro 'org-align-list-item)
-    (ergoemacs-compact-uncompact-block)))
+  (if (eab/org-in-src-block-p)
+      (progn
+	(org-edit-special)
+	(ergoemacs-compact-uncompact-block)
+	(org-edit-src-exit))
+    (if (eab/org-at-paragraph-item-p)
+	(execute-kbd-macro 'org-align-list-item)
+      (ergoemacs-compact-uncompact-block))))
 
 ;; TODO сделать backup перед обнулением eab/free-map
 ;; (define-key git-commit-mode-map (kbd "M-n") 'git-commit-next-message)

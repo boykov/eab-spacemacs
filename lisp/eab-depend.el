@@ -20,6 +20,9 @@
 
 (setq which-key-idle-delay 2)
 (which-key-mode)
+(if (and (assq 'which-key-mode spacemacs--diminished-minor-modes)
+	 (eq (length spacemacs--diminished-minor-modes) 1))
+    (setq spacemacs--diminished-minor-modes nil))
 
 (setq uniquify-buffer-name-style 'forward)
 
