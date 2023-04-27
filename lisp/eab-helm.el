@@ -38,11 +38,46 @@
 (defun eab/helm-org-agenda-files-headings (&optional arg)
   "Preconfigured helm for org files headings."
   (interactive "P")
+  (load eab/org-file nil 't)
   (let ((files eab/clocktable-scope)
 	(timestamp (eab/hron-current-time-stamp)))
-      (helm :sources (helm-org-build-sources files nil arg)
-	    :prompt (concat timestamp " pattern: ")
-            :truncate-lines helm-org-truncate-lines
-            :buffer "*helm org headings*")))
+    (helm :sources
+	   (eab/helm-org-build-sources files nil arg)
+	  :prompt (concat timestamp " pattern: ")
+          :truncate-lines helm-org-truncate-lines
+          :buffer "*helm org headings*")))
+
+(defun eab/helm-org-build-sources (filenames &optional parents force-refresh)
+  (unwind-protect
+      (cl-loop for file in filenames
+               for name = (if (bufferp file)
+                              (buffer-name file)
+                            (helm-basename file))
+               collect
+               (helm-build-sync-source (format "Org headings (%s)" name)
+                 :candidates (helm-dynamic-completion
+			      (remove-if
+			       (lambda (s) (string-match ".*:nohelm:.*" s))
+                               (helm-org--get-candidates-in-file
+				file
+				helm-org-headings-fontify
+				t
+				parents (or force-refresh
+                                            helm-org--force-refresh)))
+                              'stringp
+                              nil '(metadata (display-sort-function
+                                              .
+                                              (lambda (candidates)
+                                                (sort candidates
+                                                      #'helm-generic-sort-fn))))
+                              nil helm-org-completion-styles)
+                 :match-dynamic t
+                 :filtered-candidate-transformer
+                 #'helm-org-indent-headings
+                 :action 'helm-org-headings-actions
+                 :help-message 'helm-org-headings-help-message
+                 :keymap helm-org-headings-map
+                 :group 'helm-org))
+    (setq helm-org--force-refresh nil)))
 
 (provide 'eab-helm)

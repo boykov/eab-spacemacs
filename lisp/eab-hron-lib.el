@@ -492,9 +492,16 @@
 
 (defun eab/renew-agenda-files ()
   (interactive)
-  (eab/renew-agenda-files-1)
-  (let ((server-use-tcp server-C-use-tcp))
-    (server-eval-at (eab/server-C) '(eab/renew-agenda-files-1)))
+  (ignore-errors
+    (progn
+      (let ((server-use-tcp 't))
+	(server-eval-at "cyclos" '(eab/renew-agenda-files-1)))
+      (let ((server-use-tcp server-C-use-tcp))
+	(server-eval-at (eab/server-C) '(progn
+					  (eab/rsync-org-directory)
+					  (eab/renew-agenda-files-1))))
+      (let ((server-use-tcp 't))
+	(server-eval-at "serverP" '(eab/renew-agenda-files-1)))))
   )
 
 (defun eab/check-csum-day (&optional date)

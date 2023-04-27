@@ -7,12 +7,24 @@
 ;; Requirements: none
 ;; Status: not intended to be distributed yet
 
-(defun eab/eval-last-sexp-serverM ()
+(defun eab/eval-last-sexp-server-M ()
   "Evaluate sexp before point on serverM; print value in minibuffer."
   (interactive)
   (let ((sexp (call-interactively (lambda () (interactive) (preceding-sexp)))))
     (message "%s" (server-eval-at "serverM"
 				  `(eval ',sexp)))))
+
+'((let ((server-use-tcp 't))
+    (server-eval-at "serverP" '(symbol-function 'eab/eval-last-sexp-server-M)))
+  )
+
+(defun eab/eval-last-sexp-server-P ()
+  "Evaluate sexp before point on serverM; print value in minibuffer."
+  (interactive)
+  (let ((sexp (call-interactively (lambda () (interactive) (preceding-sexp)))))
+    (message "%s" (let ((server-use-tcp 't))
+		    (server-eval-at "serverP"
+				    `(eval ',sexp))))))
 
 (defun eab/eval-last-sexp-server-C ()
   "Evaluate sexp before point on server-C; print value in minibuffer."

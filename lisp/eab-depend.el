@@ -23,6 +23,8 @@
 (if (and (assq 'which-key-mode spacemacs--diminished-minor-modes)
 	 (eq (length spacemacs--diminished-minor-modes) 1))
     (setq spacemacs--diminished-minor-modes nil))
+(require 'diminish)
+(diminish 'which-key-mode "WK")
 
 (setq uniquify-buffer-name-style 'forward)
 

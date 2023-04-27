@@ -1,5 +1,16 @@
 # Changelog
 
+### 0.1.46
+
+Fix `eab/helm-org-agenda-files-headings` with `eab/org-file`.
+Switch `serverP`, `cyclos` to tcp.
+Add external `serverP` to `eab/renew-agenda-files`.
+Add `eab/eval-last-sexp-server-P`.
+Fix `emacs-eat` with diminish `WK` again.
+Improve `eab/renew-agenda-files` for all tcp.
+Rewrite `eab/make-list-paths` via `dired-copy-filename-as-kill`.
+Add `eab/helm-org-build-sources` with `nohelm` filter.
+
 ### 0.1.45
 
 Add `eab/grep-switch-0`.

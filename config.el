@@ -127,6 +127,17 @@ END
       (setq server-port 5001)
       (setq server-use-tcp 't)))
 
+(if (eab/ondaemon (eab/server-P))
+    (progn
+      (setq server-port 5001)
+      (setq server-use-tcp 't)))
+
+'((let ((server-use-tcp 't))
+    (list (server-eval-at "serverP" 'eab/gotify-token)
+	  (server-eval-at "serverP" 'eab/gotify-client-token)))
+  )
+
+
 ;; (if (eab/ondaemon (eab/server-C))
 ;;     (setq debug-on-error 't))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
