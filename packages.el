@@ -60,7 +60,6 @@
     diff-hl
 
     help+
-    help-fns+
     help-mode+
     bookmark+
     keyfreq
@@ -218,6 +217,7 @@ which require an initialization must be listed explicitly in the list.")
     (global-so-long-mode 1)))
 
 (defun eab-spacemacs/init-ergoemacs-mode ()
+  (require 'facemenu)
   (use-package ergoemacs-functions
     :config
     (defun ergoemacs-handle-M-O ()
@@ -468,7 +468,8 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
 					 org-self-insert-command)))
   )
 (defun eab-spacemacs/init-flx-isearch ()
-  (flx-isearch-mode 0))
+  (flx-isearch-mode 0)
+  (setq isearch-search-fun-function 'isearch-search-fun-default))
 
 (defun eab-spacemacs/init-workgroups2 ()
   (use-package workgroups2
@@ -763,7 +764,6 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
   (require 'idle-highlight-mode)
   )
 (defun eab-spacemacs/init-help+ nil)
-(defun eab-spacemacs/init-help-fns+ nil)
 (defun eab-spacemacs/init-help-mode+ nil)
 (defun eab-spacemacs/init-fuzzy nil)
 (defun eab-spacemacs/init-el-mock nil)
@@ -1034,7 +1034,6 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
   (require 'rec-mode)
   (require 'color-moccur)
   (require 'moccur-edit)
-  (eval-after-load "replace" '(progn (require 'replace+)))
 
   (defun multi-occur-in-all-buffers ()
     "Show all lines matching REGEXP in all buffers."

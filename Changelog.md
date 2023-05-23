@@ -1,5 +1,14 @@
 # Changelog
 
+### 0.2.1
+
+Update emacs to `29.0.91`.
+Fix spacemacs `defmethod`.
+Fix ergoemacs `facemenu-menu`.
+Fix flx-isearch `isearch-search-fun-function`.
+Rm legacy `help-fns+`, `replace+`.
+Fix `toggle-read-only`.
+
 ### 0.1.46
 
 Fix `eab/helm-org-agenda-files-headings` with `eab/org-file`.

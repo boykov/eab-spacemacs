@@ -43,9 +43,9 @@
 
 ;; see eab-compile.el
 (defun colorize-compilation-buffer ()
-  (toggle-read-only)
+  (read-only-mode 'toggle)
   (ansi-color-apply-on-region (point-min) (point-max))
-  (toggle-read-only))
+  (read-only-mode 'toggle))
 
 ;; TODO why concrete buffer-name only?
 (defadvice display-message-or-buffer (before ansi-color activate)
