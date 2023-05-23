@@ -376,6 +376,11 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
 (defun eab-spacemacs/init-helm nil
   (use-package eab-helm
     :defer
+    :init
+    (defvar browse-url-galeon-program nil)
+    (defun browse-url-galeon nil)
+    (defvar browse-url-netscape-program nil)
+    (defun browse-url-netscape nil)
     :config
     (eab/bind-path eab/musicdb-path)
     (defun eab/helm-find-file-or-marked (candidate)

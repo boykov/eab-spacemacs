@@ -87,7 +87,7 @@ END"))
 	(progn
 	  (org-babel-tangle)
 	  (shell-command
-	   (concat "ssh chronos <<'END'
+	   (concat eab/ssh-host-local " <<'END'
 screen -d -m bash -c \"cd ~/git/eabmisc/eablatex && make resume\"
 END"))))))
 

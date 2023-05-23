@@ -823,50 +823,51 @@
 (eab/add-hook org-mode-hook eab/org-hook
   (general-define-key
    :keymaps 'org-mode-map
-   "M-D"		'ace-link-org
-   "C-d"		eab/compile-map
-   "<f6>"		'eab/revert-buffer
-   "s-'"		'org-edit-src-code
-   "s-k"		'undefined
-   "s-i"		'org-metaup
-   "s-p"		'org-priority-up
-   "s-j"		'org-metaleft
-   "s-l"		'org-metaright
-   "s-K"		'undefined
-   "s-I"		'org-shiftmetaup
-   "s-J"		'org-shiftmetaleft
-   "s-L"		'org-shiftmetaright
-   "s-<return>"		'org-insert-heading
-   "s-S-<return>"	'org-insert-todo-heading
-   "M-s-k"		'org-shiftdown
-   "M-s-i"		'org-shiftup
-   "M-s-j"		'org-shiftleft
-   "M-s-l"		'org-shiftright
-   "C-y"		'nil
-   "C-e"		'nil
-   "C-,"		'nil
-   "C-SPC"		'nil
-   "M-a"		'nil
-   "M-e"		'nil
-   "C-a"		'nil
-   "C-k"		'nil
-   "M-h"		'org-beginning-of-line
-   "M-p"		'org-end-of-line
-   "M-g"		'org-kill-line
-   "M-v"		'org-yank
-   "M-RET"		(ilam (org-insert-heading nil))
-   "M-N"		'org-backward-sentence
-   "M-M"		'org-forward-sentence
-   "C-M-u"		'outline-previous-visible-heading
-   "C-M-o"		'outline-next-visible-heading
-   "s-u"		'org-preview-latex-fragment
-   "C-c C-x M-c"	'org-copy-special
-   "C-c C-x M-x"	'org-cut-special
-   "C-c C-x M-v"	'org-paste-special
-   "s-x M-c"		'org-copy-special
-   "s-x M-x"		'org-cut-special
-   "s-x M-v"		'org-paste-special
-   "s-."		(kbd "C-c . RET"))
+   "RET"                'eab/org-return
+   "M-D"                'ace-link-org
+   "C-d"                eab/compile-map
+   "<f6>"               'eab/revert-buffer
+   "s-'"                'org-edit-src-code
+   "s-k"                'undefined
+   "s-i"                'org-metaup
+   "s-p"                'org-priority-up
+   "s-j"                'org-metaleft
+   "s-l"                'org-metaright
+   "s-K"                'undefined
+   "s-I"                'org-shiftmetaup
+   "s-J"                'org-shiftmetaleft
+   "s-L"                'org-shiftmetaright
+   "s-<return>"         'org-insert-heading
+   "s-S-<return>"       'org-insert-todo-heading
+   "M-s-k"              'org-shiftdown
+   "M-s-i"              'org-shiftup
+   "M-s-j"              'org-shiftleft
+   "M-s-l"              'org-shiftright
+   "C-y"                'nil
+   "C-e"                'nil
+   "C-,"                'nil
+   "C-SPC"              'nil
+   "M-a"                'nil
+   "M-e"                'nil
+   "C-a"                'nil
+   "C-k"                'nil
+   "M-h"                'org-beginning-of-line
+   "M-p"                'org-end-of-line
+   "M-g"                'org-kill-line
+   "M-v"                'org-yank
+   "M-RET"              (ilam (org-insert-heading nil))
+   "M-N"                'org-backward-sentence
+   "M-M"                'org-forward-sentence
+   "C-M-u"              'outline-previous-visible-heading
+   "C-M-o"              'outline-next-visible-heading
+   "s-u"                'org-preview-latex-fragment
+   "C-c C-x M-c"        'org-copy-special
+   "C-c C-x M-x"        'org-cut-special
+   "C-c C-x M-v"        'org-paste-special
+   "s-x M-c"            'org-copy-special
+   "s-x M-x"            'org-cut-special
+   "s-x M-v"            'org-paste-special
+   "s-."                (kbd "C-c . RET"))
 
   (key-chord-define org-mode-map "jj" 'org-edit-src-code)
   (key-chord-define org-src-mode-map "jj" 'org-edit-src-exit)
@@ -1146,6 +1147,7 @@
    "M-M"	'c-end-of-defun
    "M-N"	'c-beginning-of-defun
    "M-j"	'nil
+   "M-a"	'nil
    "M-e"	'nil))
 
 (eab/add-hook c-mode-hook eab/c-hook

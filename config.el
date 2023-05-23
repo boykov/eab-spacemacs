@@ -42,7 +42,7 @@ END
 (setq eab/test-dotemacs-command
       (concat eab/ssh-host " ~/git/auto/test-dotemacs.sh"))
 
-(setq eab/xdg-open (concat eab/ssh-host " DISPLAY=:0 xdg-open"))
+(setq eab/xdg-open (concat eab/ssh-host-local " DISPLAY=:0 xdg-open"))
 
 (defun eab/loaded-ok ()
   (if configuration-layer-error-count

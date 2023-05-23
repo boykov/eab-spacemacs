@@ -1,5 +1,14 @@
 # Changelog
 
+### 0.2.2
+
+Fix `helm` legacy browsers.
+Improve `java-mode-map`.
+Fix `init.el` old versions.
+Add `eab/org-return`.
+Use `eab/ssh-host-local` instead of `eab/ssh-host`.
+Untabify `org-mode-map`.
+
 ### 0.2.1
 
 Update emacs to `29.0.91`.

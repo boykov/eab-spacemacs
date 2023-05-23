@@ -147,6 +147,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (setq org-return-follows-link t)
+(defun eab/org-return (&optional arg)
+  (interactive "P")
+  (if arg
+      (let ((org-link-frame-setup (quote ((file . find-file)))))
+	(org-return))
+    (org-return)))
 
 (add-hook 'org-mode-hook (lambda () (toggle-truncate-lines)))
 
