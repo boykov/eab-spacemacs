@@ -39,13 +39,50 @@
   "Preconfigured helm for org files headings."
   (interactive "P")
   (load eab/org-file nil 't)
+  (eab/helm-org arg))
+
+(defun eab/helm-org-switch-ql (marker)
+  (eab/helm-org-ql))
+
+(defun eab/helm-org (arg)
   (let ((files eab/clocktable-scope)
-        (timestamp (eab/hron-current-time-stamp)))
+        (timestamp (eab/hron-current-time-stamp))
+        (helm-input-idle-delay helm-org-ql-input-idle-delay))
     (helm :sources
-           (eab/helm-org-build-sources files nil arg)
-          :prompt (concat timestamp " pattern: ")
+          (eab/helm-org-build-sources files nil arg)
           :truncate-lines helm-org-truncate-lines
-          :buffer "*helm org headings*")))
+          :prompt (concat timestamp " pattern: "))))
+
+(cl-defun eab/helm-org-ql ()
+  (interactive)
+  (let ((files eab/clocktable-scope)
+        (timestamp (eab/hron-current-time-stamp))
+        (helm-input-idle-delay helm-org-ql-input-idle-delay))
+    (helm :prompt (concat timestamp " pattern: ")
+          :truncate-lines helm-org-truncate-lines
+          :sources (eab/helm-org-ql-source files :name "helm-org-ql"))))
+
+(cl-defun eab/helm-org-ql-source (buffers-files &key (name "helm-org-ql"))
+  "Return Helm source named NAME that searches BUFFERS-FILES with `helm-org-ql'."
+  ;; Expansion of `helm-build-sync-source' macro.
+  (helm-make-source name 'helm-source-sync
+    :candidates (lambda ()
+                  (let* ((query (if (equal helm-pattern "") nil `(regexp ,helm-pattern)))
+                         (window-width (window-width (helm-window))))
+                    (when query
+                      (with-current-buffer (helm-buffer-get)
+                        (setq helm-org-ql-buffers-files buffers-files))
+                      (ignore-errors
+                        ;; Ignore errors that might be caused by partially typed queries.
+                        (org-ql-select buffers-files query
+                          :action `(helm-org-ql--heading ,window-width))))))
+    :match #'identity
+    :fuzzy-match nil
+    :multimatch nil
+    :nohighlight t
+    :volatile t
+    :keymap helm-org-ql-map
+    :action helm-org-ql-actions))
 
 (defun eab/helm-org-build-sources (filenames &optional parents force-refresh)
   (unwind-protect

@@ -666,6 +666,7 @@
 (eab/add-hook dictionary-mode-hook eab/dictionary-hook
   (general-define-key
    :keymaps 'dictionary-mode-map
+   "t"  'dictionary-search
    "B"  'eab/help-mode-back))
 
 (defadvice artist-mode (before eab-artist-mode activate)
@@ -1313,6 +1314,12 @@
    "B"  'help-go-back
    "F"  'help-go-forward
    "F"  'nil))
+
+(eab/add-hook eww-mode-hook eab/eww-hook
+  (general-define-key
+   :keymaps 'eww-mode-map
+   "M-I"  'nil
+   ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                     _                 _

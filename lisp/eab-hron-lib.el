@@ -226,6 +226,12 @@
          (format-time-string "%Y-%m-%d %a %H:%M"
                              (eab/org-parse-current-time))))
 
+(defun eab/insert-current-time ()
+  (interactive)
+  (insert
+   (format-time-string "%Y-%m-%d %a %H:%M"
+                       (eab/org-parse-current-time))))
+
 (defun eab/hron-todo-setup ()
   (interactive)
   (load eab/org-file nil 't)
@@ -316,7 +322,11 @@
       (if (not eab/helm-org-marker)
           (setq eab/helm-org-marker
                 (with-current-buffer (get-buffer "timeline-time-mining.org")
-                  (point-max-marker))))
+                  (org-cycle '(64))
+                  (end-of-buffer)
+                  (previous-line)
+                  (previous-line)
+                  (point-marker))))
       (if (> (length markers) 1)
           (progn
             (add-to-list 'markers eab/helm-org-marker)
@@ -326,7 +336,7 @@
             do
             (progn
               (message "%s" cand)
-              (helm-org-goto-marker cand)
+              (helm-org-ql-show-marker cand)
               (if (org-ql--predicate-clocked)
                   (eab/hron-todo-1 eab/hron-todo-bulk-hour eab/hron-todo-bulk-minute
                                    (if (eq cand (car (reverse markers))) 0 4))

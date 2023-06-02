@@ -398,6 +398,7 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
   (use-package helm-org
     :after (eab-helm eab-org)
     :config
+    (add-to-list 'helm-org-headings-actions '("eab/helm-org-switch-ql" . eab/helm-org-switch-ql))
     (add-to-list 'helm-org-headings-actions '("eab/hron-todo" . eab/helm-hron-todo)))
   )
 (defun eab-spacemacs/init-smart-compile nil
@@ -862,7 +863,10 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
     :config
     (setq org-link-parameters (remove '("org-ql-search" :follow org-ql-view--link-follow :store org-ql-view--link-store) org-link-parameters))
     )
-)
+  (use-package helm-org-ql
+    :defer
+    :config
+    (add-to-list 'helm-org-ql-actions '("eab/hron-todo" . eab/helm-hron-todo))))
 (defun eab-spacemacs/init-org-mode/lisp nil
   ;; fix org-element performance degradation
   (setq org-element--cache-self-verify nil)

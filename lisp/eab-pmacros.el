@@ -180,3 +180,13 @@
  ""
  "M-U M-j M-h M-SPC M-; - RET M-j M-c M-p M-l M-SPC M-O r M-v 2*SPC
  RET M-SPC M-h M-X M-i 2*C-w")
+
+(pm-def-macro
+ 'replace-dash
+ nil nil
+ ""
+ "
+ M-U
+ M-SPC M-O M-5 C-x 8 <return> 2013 2*RET --- RET ! M-O M-U"
+)
+

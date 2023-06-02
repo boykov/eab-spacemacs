@@ -1,5 +1,14 @@
 # Changelog
 
+### 0.2.4
+
+Improve `dictionary-search` keybinds.
+Add `replace-dash`, `eab/insert-current-time`.
+Add `helm-org-ql-actions`.
+Prepare to switch `eab/helm-org-agenda-files-headings` and
+`eab/helm-hron-todo` to `eab/helm-org-ql`.
+Add `eww` keybind `M-I`.
+
 ### 0.2.3
 
 Untabify all.
