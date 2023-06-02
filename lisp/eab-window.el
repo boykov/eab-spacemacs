@@ -19,8 +19,8 @@
   (interactive)
   (message
    (if (let (window (get-buffer-window (current-buffer)))
-	 (set-window-dedicated-p window
-				 (not (window-dedicated-p window))))
+         (set-window-dedicated-p window
+                                 (not (window-dedicated-p window))))
        "Window '%s' is dedicated"
      "Window '%s' is normal")
    (current-buffer)))
@@ -30,17 +30,17 @@
   (interactive)
   (if (window-parameter (selected-window) 'no-other-window)
       (progn
-	(set-window-parameter (selected-window) 'no-other-window nil)
-	(message "Window will now be recognized by `other-window'"))
+        (set-window-parameter (selected-window) 'no-other-window nil)
+        (message "Window will now be recognized by `other-window'"))
     (set-window-parameter (selected-window) 'no-other-window t)
     (message "Window will now be ignored by `other-window'")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;	     ____      	   _ _ 	     _
-;;	    / ___|_    	 _(_) |_ ___| |__
-;;	    \___ \ \ /\	/ / | __/ __| '_ \
-;;	     ___) \ V  V /| | || (__| |	| |
-;;	    |____/ \_/\_/ |_|\__\___|_|	|_|
+;;           ____          _ _       _
+;;          / ___|_      _(_) |_ ___| |__
+;;          \___ \ \ /\ / / | __/ __| '_ \
+;;           ___) \ V  V /| | || (__| | | |
+;;          |____/ \_/\_/ |_|\__\___|_| |_|
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Switch
 
@@ -107,11 +107,11 @@ With REVERSE non-nil the sort order is reversed."
             (setq buffers (append buffers (list buffer))))
         (setq all-buffers (cdr all-buffers))))
     (sort buffers (lambda (a b)
-		    (let ((pos-a (buffer-name a))
-			  (pos-b (buffer-name b)))
-		      (if reverse
-			  (string< pos-b pos-a)
-			(string< pos-a pos-b)))))))
+                    (let ((pos-a (buffer-name a))
+                          (pos-b (buffer-name b)))
+                      (if reverse
+                          (string< pos-b pos-a)
+                        (string< pos-a pos-b)))))))
 
 (defun compilation-a-lot-next-buffer (&optional reverse)
   "Return next compilation-a-lot buffer.

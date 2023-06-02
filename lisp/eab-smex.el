@@ -31,8 +31,8 @@
 (defun eab/clear-extended-history ()
   (interactive)
   (setq extended-command-history
-	(let ((oblist (all-completions "" obarray 'fboundp)))
-	  (remove-if-not (lambda (x) (member x oblist)) extended-command-history))))
+        (let ((oblist (all-completions "" obarray 'fboundp)))
+          (remove-if-not (lambda (x) (member x oblist)) extended-command-history))))
 
 ;; DONE переместить курсор в конец текста после вызова
 ;; всё дело в (car choices)
@@ -48,7 +48,7 @@
   (interactive)
   (if (smex-already-running)
       (let ((minibuffer-history-variable 'extended-command-history))
-	(helm-minibuffer-history))
+        (helm-minibuffer-history))
         (helm-minibuffer-history)))
 
 (provide 'eab-smex)

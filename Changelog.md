@@ -1,5 +1,10 @@
 # Changelog
 
+### 0.2.3
+
+Untabify all.
+Fix `eab/ssh-host-local`.
+
 ### 0.2.2
 
 Fix `helm` legacy browsers.
@@ -702,7 +707,7 @@ Reorder git-related packages.
 ### 0.0.1
 
 Delete dependencies:
-	
+
 * pymacs
 * anything
 * wmctrl

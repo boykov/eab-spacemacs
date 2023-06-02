@@ -57,7 +57,7 @@
     "ID-%s")
    ("or (org-element-property :CUSTOM_ID parent)" .
     "or (org-element-property :ID parent)
-		    (org-element-property :CUSTOM_ID parent)"))
+                    (org-element-property :CUSTOM_ID parent)"))
  :lexical 't
  :native 't)
 
@@ -67,7 +67,7 @@
     "")
    ("\"img\"" .
     "let* ((ext (file-name-extension source))
-	 (prefix (if (string= \"svg\" ext) \"embed\" \"img\")))
+         (prefix (if (string= \"svg\" ext) \"embed\" \"img\")))
     (org-html-close-tag
      prefix")
    ("info))" .
@@ -121,11 +121,11 @@
 (setq org-mobile-inbox-for-pull (concat org-directory "archive/flagged.org"))
 (setq org-mobile-files
       (mapcar (lambda (x)
-		(concat org-directory "archive/" x))
-	      '(
-		"refile.org"
-		"todo.org"
-		)))
+                (concat org-directory "archive/" x))
+              '(
+                "refile.org"
+                "todo.org"
+                )))
 
 (setq org-default-notes-file (concat org-directory "archive/refile.org"))
 
@@ -151,7 +151,7 @@
   (interactive "P")
   (if arg
       (let ((org-link-frame-setup (quote ((file . find-file)))))
-	(org-return))
+        (org-return))
     (org-return)))
 
 (add-hook 'org-mode-hook (lambda () (toggle-truncate-lines)))
@@ -228,17 +228,17 @@
   (when (zerop arg)
     (error "Cannot mark zero paragraphs"))
   (cond ((and allow-extend
-	      (or (and (eq last-command this-command) (mark t))
-		  (and transient-mark-mode mark-active)))
-	 (set-mark
-	  (save-excursion
-	    (goto-char (mark))
-	    (org-forward-paragraph arg)
-	    (point))))
-	(t
-	 (org-forward-paragraph arg)
-	 (push-mark nil t t)
-	 (org-backward-paragraph arg))))
+              (or (and (eq last-command this-command) (mark t))
+                  (and transient-mark-mode mark-active)))
+         (set-mark
+          (save-excursion
+            (goto-char (mark))
+            (org-forward-paragraph arg)
+            (point))))
+        (t
+         (org-forward-paragraph arg)
+         (push-mark nil t t)
+         (org-backward-paragraph arg))))
 
 (defun eab/org-forward-element-parent ()
   (interactive)

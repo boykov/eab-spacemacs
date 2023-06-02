@@ -27,9 +27,9 @@
   (interactive)
   (if (member 'recompile after-save-hook)
       (progn
-	(setq after-save-hook
-	      (remove 'recompile after-save-hook))
-	(message "No longer recompiling after saving."))
+        (setq after-save-hook
+              (remove 'recompile after-save-hook))
+        (message "No longer recompiling after saving."))
     (progn
       (add-to-list 'after-save-hook 'recompile)
       (message "Recompiling after saving."))))
@@ -37,18 +37,18 @@
 (defun eab/recompile (&optional arg)
   (interactive "P")
   (let ((pos (line-at-pos))
-	(point (point))
-	(compilation-buffer-name-function nil))
+        (point (point))
+        (compilation-buffer-name-function nil))
     (if arg
-	(recompile arg)
+        (recompile arg)
       (recompile)
       )
     (setq-local compilation-finish-functions
-		`((lambda
-		    (buffer msg)
-		    (switch-to-buffer buffer)
-		    (goto-line ,pos)
-		    (goto-char ,point))))))
+                `((lambda
+                    (buffer msg)
+                    (switch-to-buffer buffer)
+                    (goto-line ,pos)
+                    (goto-char ,point))))))
 
 (defun eab/compile (&optional cmd)
   (interactive)
@@ -58,10 +58,10 @@
 (defun eab/compile-helm ()
   (interactive)
   (let ((cmd
-	 (with-temp-buffer
-	   (let ((minibuffer-history-variable 'compile-history))
-	     (helm-minibuffer-history))
-	   (buffer-substring (point-min) (point-max)))))
+         (with-temp-buffer
+           (let ((minibuffer-history-variable 'compile-history))
+             (helm-minibuffer-history))
+           (buffer-substring (point-min) (point-max)))))
     (unless (string= cmd "")
       (compile cmd))))
 
@@ -88,10 +88,10 @@
 (defun eab/gr-status ()
   (interactive)
   (let* ((compilation-buffer-name-function
-	  `(lambda (mode) ,eab/gr-buffer)))
+          `(lambda (mode) ,eab/gr-buffer)))
     (unless eab/gr-ready?
       (save-window-excursion
-	(eab/compile eab/gr-command))
+        (eab/compile eab/gr-command))
       (setq eab/gr-ready? 't))
     (eab/async-update-gr :recompile 't :notify 't)
     (switch-to-buffer eab/gr-buffer nil 't)))
@@ -101,21 +101,21 @@
       ((old-check (shell-command-to-string eab/check-gr-command)))
     (async-start
      `(lambda ()
-	(with-temp-buffer
-	  (shell-command-to-string ,eab/update-gr-command))
-	"@fz updated")
+        (with-temp-buffer
+          (shell-command-to-string ,eab/update-gr-command))
+        "@fz updated")
      `(lambda (result)
-	(if ,recompile
-	    (save-window-excursion
-	      (switch-to-buffer eab/gr-buffer)
-	      (let ((compilation-buffer-name-function nil))
-		(recompile))))
-	(if ,notify
-	    (let ((fresh-check (shell-command-to-string eab/check-gr-command)))
-	      (if (not (equal ,old-check fresh-check))
-		  (if (> (string-to-number fresh-check) 6)
-		      (eab/gotify "fz" "updated" 5)))))
-	(message "async result: <%s>" result)))))
+        (if ,recompile
+            (save-window-excursion
+              (switch-to-buffer eab/gr-buffer)
+              (let ((compilation-buffer-name-function nil))
+                (recompile))))
+        (if ,notify
+            (let ((fresh-check (shell-command-to-string eab/check-gr-command)))
+              (if (not (equal ,old-check fresh-check))
+                  (if (> (string-to-number fresh-check) 6)
+                      (eab/gotify "fz" "updated" 5)))))
+        (message "async result: <%s>" result)))))
 
 (defun eab/update-gr-status-on-idle ()
   (eab/async-update-gr :recompile 't :notify 't))
@@ -128,23 +128,23 @@
     (unless (websocket-openp eab/gotify-websocket)
       (setq eab/gotify-websocket
             (websocket-open
-	     eab/gotify-ws
+             eab/gotify-ws
              :on-message `(lambda (_websocket frame)
-			    (let ((text (websocket-frame-text frame)))
-			      (save-window-excursion
-				(switch-to-buffer ,gotify-buffer)
-				(let ((compilation-buffer-name-function nil))
-				  (recompile)))))
+                            (let ((text (websocket-frame-text frame)))
+                              (save-window-excursion
+                                (switch-to-buffer ,gotify-buffer)
+                                (let ((compilation-buffer-name-function nil))
+                                  (recompile)))))
              :on-close (lambda (_websocket) (message "websocket closed")))))
     (if eab/gotify-ready?
-	(switch-to-buffer gotify-buffer nil 't)
+        (switch-to-buffer gotify-buffer nil 't)
       (progn
-	(let ((compilation-buffer-name-function
-	       `(lambda (mode) ,gotify-buffer)))
-	  (save-window-excursion
-	    (eab/compile eab/gotify-command)))
-	(setq eab/gotify-ready? 't)
-	(switch-to-buffer gotify-buffer nil 't)))))
+        (let ((compilation-buffer-name-function
+               `(lambda (mode) ,gotify-buffer)))
+          (save-window-excursion
+            (eab/compile eab/gotify-command)))
+        (setq eab/gotify-ready? 't)
+        (switch-to-buffer gotify-buffer nil 't)))))
 
 '((websocket-send-text eab/gotify-websocket "hello from emacs")
   (websocket-close eab/gotify-websocket)
@@ -156,17 +156,17 @@
   (let ((istc? truncate-lines))
     (toggle-truncate-lines t)
     (let ((buf (current-buffer))
-	  (line (- (count-lines (window-start) (point))
-		   (if (eq (point) (point-at-bol)) 0 1)))
-	  (point (point)))
+          (line (- (count-lines (window-start) (point))
+                   (if (eq (point) (point-at-bol)) 0 1)))
+          (point (point)))
       (compile-goto-error)
       (run-with-timer 0.01 nil `(lambda ()
-				  (let ((cb (current-buffer)))
-				    (pop-to-buffer ,buf)
-				    (recenter ,line)
-				    (goto-char ,point)
-				    (toggle-truncate-lines ,istc?)
-				    (pop-to-buffer cb)))))))
+                                  (let ((cb (current-buffer)))
+                                    (pop-to-buffer ,buf)
+                                    (recenter ,line)
+                                    (goto-char ,point)
+                                    (toggle-truncate-lines ,istc?)
+                                    (pop-to-buffer cb)))))))
 
 ;; - TODO это closure, let over lambda? зачем здесь funcall? похоже, чтобы сразу выполнить lambda
 ;; - а почему тогда не использовать просто defun? ясно, отложенные вычисления
@@ -179,12 +179,12 @@
   (let ((cwc (current-window-configuration)))
     (funcall
      `(lambda ()
-	(defun eab/compile-goto-error-same-window-internal ()
-	  (let ((cb (current-buffer))
-		(p (point)))
-	    (set-window-configuration ,cwc)
-	    (switch-to-buffer cb)
-	    (goto-char p ))))))
+        (defun eab/compile-goto-error-same-window-internal ()
+          (let ((cb (current-buffer))
+                (p (point)))
+            (set-window-configuration ,cwc)
+            (switch-to-buffer cb)
+            (goto-char p ))))))
   (compile-goto-error)
   (run-with-timer 0.01 nil 'eab/compile-goto-error-same-window-internal))
 

@@ -21,7 +21,7 @@
 (setq which-key-idle-delay 2)
 (which-key-mode)
 (if (and (assq 'which-key-mode spacemacs--diminished-minor-modes)
-	 (eq (length spacemacs--diminished-minor-modes) 1))
+         (eq (length spacemacs--diminished-minor-modes) 1))
     (setq spacemacs--diminished-minor-modes nil))
 (require 'diminish)
 (diminish 'which-key-mode "WK")
@@ -30,9 +30,9 @@
 
 
 (setq ibuffer-formats '((mark modified read-only " "
-			      (name 18 18 :left :elide))
-			(mark modified read-only " " (name 18 18 :left :elide) " "
-			      (size 9 -1 :right) " " (mode 16 16 :left :elide) " " filename-and-process)))
+                              (name 18 18 :left :elide))
+                        (mark modified read-only " " (name 18 18 :left :elide) " "
+                              (size 9 -1 :right) " " (mode 16 16 :left :elide) " " filename-and-process)))
 
 ;; (require 'el-expectations) ;; DONE devel minimalist unit testing framework
 ;; (setq exps-last-testcase nil)
@@ -98,12 +98,12 @@
     (flyspell-buffer)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;     	       	 __  __	       	  _    	      
-;;		|  \/  | ___   __| | ___  ___ 
-;;		| |\/| |/ _ \ /	_` |/ _	\/ __|
-;;		| |  | | (_) | (_| |  __/\__ \
-;;		|_|  |_|\___/ \__,_|\___||___/
-;;		       	       	       	      
+;;               __  __           _           
+;;              |  \/  | ___   __| | ___  ___ 
+;;              | |\/| |/ _ \ / _` |/ _ \/ __|
+;;              | |  | | (_) | (_| |  __/\__ \
+;;              |_|  |_|\___/ \__,_|\___||___/
+;;                                            
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (push '("\\.md\\'" . markdown-mode) auto-mode-alist)
@@ -176,7 +176,7 @@
 (add-hook 'gnus-summary-prepared-hook 'gnus-summary-hide-all-threads)
 ;; (add-hook 'gnus-summary-prepared-hook 'gnus-summary-insert-old-articles)
 ;; (add-hook 'gnus-summary-prepared-hook
-;; 	  (lambda () (interactive) (gnus-summary-insert-old-articles 100))) ;; don't need add old articles for dovecot?
+;;        (lambda () (interactive) (gnus-summary-insert-old-articles 100))) ;; don't need add old articles for dovecot?
 (add-hook 'gnus-summary-prepare-hook 'gnus-summary-sort-by-most-recent-date)
 
 ;; (add-hook 'text-mode-hook 'dictionary-tooltip-mode) ; activate for all text-based modes

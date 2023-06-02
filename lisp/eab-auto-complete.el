@@ -27,19 +27,19 @@
 
 (setq ac-modes
       (append ac-modes
-	      '(org-mode
-		text-mode
-		)))
+              '(org-mode
+                text-mode
+                )))
 
 (setq ac-sources
       (list ac-source-dabbrev
-	    ))
+            ))
 
 
 (setq ac-source-american-english
       '((candidates
-	 . (lambda ()
-	     (all-completions ac-prefix eab/american-english)))))
+         . (lambda ()
+             (all-completions ac-prefix eab/american-english)))))
 
 (defun eab/completion-at-point ()
   (interactive)
@@ -48,30 +48,30 @@
   (ac-expand 0))
 
 (add-hook 'python-mode-hook
-	  (lambda ()
-	    (setq ac-sources
-		  '(ac-source-symbols ac-source-words-in-same-mode-buffers))))
+          (lambda ()
+            (setq ac-sources
+                  '(ac-source-symbols ac-source-words-in-same-mode-buffers))))
 (add-hook 'f90-mode-hook
-	  (lambda ()
-	    (setq ac-sources
-		  '(ac-source-symbols ac-source-words-in-same-mode-buffers))))
+          (lambda ()
+            (setq ac-sources
+                  '(ac-source-symbols ac-source-words-in-same-mode-buffers))))
 (add-hook 'c++-mode-hook
-	  (lambda ()
-	    (setq ac-sources
-		  '(ac-source-abbrev ac-source-symbols ac-source-words-in-same-mode-buffers))))
+          (lambda ()
+            (setq ac-sources
+                  '(ac-source-abbrev ac-source-symbols ac-source-words-in-same-mode-buffers))))
 ;; see also eval-expression-minibuffer-setup-hook
 (add-hook 'emacs-lisp-mode-hook
-	  (lambda ()
-	    (setq ac-sources
-		  '(ac-source-words-in-buffer ac-source-symbols))))
+          (lambda ()
+            (setq ac-sources
+                  '(ac-source-words-in-buffer ac-source-symbols))))
 (add-hook 'text-mode-hook
-	  (lambda ()
-	    (setq ac-sources
-		  '(ac-source-words-in-buffer ac-source-american-english))))
+          (lambda ()
+            (setq ac-sources
+                  '(ac-source-words-in-buffer ac-source-american-english))))
 (add-hook 'org-mode-hook
-	  (lambda ()
-	    (setq ac-sources
-		  '(ac-source-words-in-buffer ac-source-american-english ac-source-symbols))))
+          (lambda ()
+            (setq ac-sources
+                  '(ac-source-words-in-buffer ac-source-american-english ac-source-symbols))))
 
 (provide 'eab-auto-complete)
 
@@ -80,10 +80,10 @@
 ;; (ac-define-source words-in-f90-buffers
 ;;   '((init . ac-update-word-index)
 ;;    (candidates ac-word-candidates
-;; 	       (lambda
-;; 		 (buffer)
-;; 		 (derived-mode-p
-;; 		  (buffer-local-value 'major-mode buffer))))))
+;;             (lambda
+;;               (buffer)
+;;               (derived-mode-p
+;;                (buffer-local-value 'major-mode buffer))))))
 ;; create variable ac-source-words-in-f90-buffers
 ;; and function ac-complete-words-in-f90-buffers
 ;; see words-in-same-mode-buffers
@@ -91,7 +91,7 @@
 ;; (defadvice ac-inline-show (after eab-ac-expand activate)
 ;;   (if (> (length ac-candidates) 1)
 ;;       (let ((ac-common-part (try-completion ac-prefix ac-candidates)))
-;; 	(ac-expand-common))
+;;      (ac-expand-common))
 ;;     (progn
 ;;       (ac-expand-string ac-common-part)
 ;;       (ac-inline-hide)))

@@ -13,18 +13,18 @@
  `(("(require 'cl-lib) (require 'dired-aux) (require 'dired-x)" .
     ,(let ((print-quoted 't))
        (prin1-to-string
-	`(progn
-	   (require 'cl-lib)
-	   (require 'dired-aux)
-	   (require 'dired-x)
-	   (add-to-list
-	    'load-path
-	    ,(file-name-directory
-	      (buffer-file-name
-	       (car (find-function-noselect 'docker-tramp-add-method)))))
-	   (require 'tramp)
-	   (add-to-list 'tramp-methods ',eab/sussh)
-	   (require 'docker-tramp))))))
+        `(progn
+           (require 'cl-lib)
+           (require 'dired-aux)
+           (require 'dired-x)
+           (add-to-list
+            'load-path
+            ,(file-name-directory
+              (buffer-file-name
+               (car (find-function-noselect 'docker-tramp-add-method)))))
+           (require 'tramp)
+           (add-to-list 'tramp-methods ',eab/sussh)
+           (require 'docker-tramp))))))
  :lexical 't)
 
 (dired-async-mode)
@@ -38,8 +38,8 @@
   (interactive)
   (if eab/dired-group-directories-off
       (progn
-	(setq dired-listing-switches "-al --group-directories-first -h")
-	(setq eab/dired-group-directories-off nil))
+        (setq dired-listing-switches "-al --group-directories-first -h")
+        (setq eab/dired-group-directories-off nil))
     (progn
       (setq dired-listing-switches "-al -h")
       (setq eab/dired-group-directories-off 't))))
@@ -58,12 +58,12 @@
    respective place (templates/) in jupiter ansible role. C-u for files/"
   (interactive "p")
   (let* ((df (dired-file-name-at-point))
-	 (file (if df df (buffer-file-name)))
-	 (local (file-remote-p file 'localname))
-	 (dir (file-name-directory local))
-	 (ansdir (if (eq arg 1)
-		     (concat eab/ansible-path "templates" dir)
-		   (concat eab/ansible-path "files" dir))))
+         (file (if df df (buffer-file-name)))
+         (local (file-remote-p file 'localname))
+         (dir (file-name-directory local))
+         (ansdir (if (eq arg 1)
+                     (concat eab/ansible-path "templates" dir)
+                   (concat eab/ansible-path "files" dir))))
     (make-directory ansdir 't)
     (copy-file file (concat ansdir (file-name-nondirectory local)) 't)))
 
@@ -71,14 +71,14 @@
   "Dired singularity.img at point"
   (interactive)
   (let* ((path (dired-file-name-at-point))
-	 (local (file-remote-p path 'localname))
-	 (method (file-remote-p path 'method))
-	 (host (file-remote-p path 'host))
-	 (file (file-name-nondirectory local))
-	 (tramp-methods (append
-			 (list
-			  (eab/singularity (file-name-directory local)))
-			 tramp-methods)))
+         (local (file-remote-p path 'localname))
+         (method (file-remote-p path 'method))
+         (host (file-remote-p path 'host))
+         (file (file-name-nondirectory local))
+         (tramp-methods (append
+                         (list
+                          (eab/singularity (file-name-directory local)))
+                         tramp-methods)))
     (find-file (concat "/" method ":" host "|singularity:" file ":/"))))
 
 (provide 'eab-dired)

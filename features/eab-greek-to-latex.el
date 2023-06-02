@@ -56,9 +56,9 @@
   (let ((beg (region-beginning))
         (end (region-end)))
     (mapcar (lambda (x)
-	       (save-excursion
-		 (eab/fast-replace-in-region (car x) (cadr x) beg end)))
-	    eab/greek-to-latex)))
+               (save-excursion
+                 (eab/fast-replace-in-region (car x) (cadr x) beg end)))
+            eab/greek-to-latex)))
 
 (defun eab/insert-greek ()
   (interactive)

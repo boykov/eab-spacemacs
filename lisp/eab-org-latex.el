@@ -11,14 +11,14 @@
 (add-to-list 'org-latex-packages-alist '("" "color"))
 
 (setq org-format-latex-options '(
-				 :foreground default
-					     :background default
-					     :scale 1.5
-					     :html-foreground "Black"
-					     :html-background "Transparent"
-					     :html-scale 1.0
-					     :matchers
-					     ("begin" "$1" "$" "$$" "\\(" "\\[")))
+                                 :foreground default
+                                             :background default
+                                             :scale 1.5
+                                             :html-foreground "Black"
+                                             :html-background "Transparent"
+                                             :html-scale 1.0
+                                             :matchers
+                                             ("begin" "$1" "$" "$$" "\\(" "\\[")))
 
 ;; using in org-preview-latex-fragment
 ;; see eab-path.el
@@ -31,16 +31,16 @@
 ;; [NO-DEFAULT-PACKAGES] - it's a macro
 (add-to-list 'org-latex-classes
       '("article"
-	 "\\documentclass[11pt]{article}
+         "\\documentclass[11pt]{article}
          [NO-DEFAULT-PACKAGES]
          \\usepackage{eab-article}
          [PACKAGES]
          \\usepackage{eab-append}"
-	 ("\\section{%s}" . "\\section*{%s}")
-	 ("\\subsection{%s}" . "\\subsection*{%s}")
-	 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-	 ("\\paragraph{%s}" . "\\paragraph*{%s}")
-	 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")
-	 ))
+         ("\\section{%s}" . "\\section*{%s}")
+         ("\\subsection{%s}" . "\\subsection*{%s}")
+         ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+         ("\\paragraph{%s}" . "\\paragraph*{%s}")
+         ("\\subparagraph{%s}" . "\\subparagraph*{%s}")
+         ))
 
 (provide 'eab-org-latex)

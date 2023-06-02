@@ -16,15 +16,15 @@
 (defun eab/org-at-paragraph-item-p ()
   (if (eq major-mode 'org-mode)
       (save-excursion
-	(org-backward-paragraph)
-	(if (org-at-item-p)
-	    nil
-	  (progn
-	    (if (eq (string-match-p "\\`\\s-*$" (thing-at-point 'line)) 0)
-		nil
-	      (progn
-		(backward-char)
-		(org-at-item-p))))))))
+        (org-backward-paragraph)
+        (if (org-at-item-p)
+            nil
+          (progn
+            (if (eq (string-match-p "\\`\\s-*$" (thing-at-point 'line)) 0)
+                nil
+              (progn
+                (backward-char)
+                (org-at-item-p))))))))
 
 (defun eab/org-in-src-block-p ()
   (if (eq major-mode 'org-mode)
@@ -34,11 +34,11 @@
   (interactive)
   (if (eab/org-in-src-block-p)
       (progn
-	(org-edit-special)
-	(ergoemacs-compact-uncompact-block)
-	(org-edit-src-exit))
+        (org-edit-special)
+        (ergoemacs-compact-uncompact-block)
+        (org-edit-src-exit))
     (if (eab/org-at-paragraph-item-p)
-	(execute-kbd-macro 'org-align-list-item)
+        (execute-kbd-macro 'org-align-list-item)
       (ergoemacs-compact-uncompact-block))))
 
 ;; TODO сделать backup перед обнулением eab/free-map
@@ -95,39 +95,39 @@
 ;; Add here map
 ;; На самом деле, в eab-kbd.el полный список, но косвенный.
 (setq eab/ergo-maps '(
-		      LaTeX-mode-map
-		      ac-complete-mode-map
-		      c-mode-map
-		      comint-mode-map
-		      compilation-mode-map
-		      diff-mode-map
-		      dired-mode-map
-		      flyspell-mode-map
-		      garak-mode-hook
-		      gnus-article-mode-map
-		      gnus-group-mode-map
-		      gnus-summary-mode-map
-		      help-mode-map
-		      ido-buffer-completion-map
-		      ido-file-completion-map
-		      isearch-mode-map
-		      java-mode-map
-		      makefile-gmake-mode-hook
-		      maplev-mode-map
-		      maxima-mode-hook
-		      message-mode-hook
-		      minibuffer-local-map
-		      nxml-mode-hook
-		      org-agenda-mode-map
-		      org-mode-map
-		      python-mode-map
-		      query-replace-map
-		      shell-mode-map
-		      slime-mode-hook
-		      slime-repl-mode-hook
-		      term-mode-map
-		      vc-annotate-mode-map
-		      ))
+                      LaTeX-mode-map
+                      ac-complete-mode-map
+                      c-mode-map
+                      comint-mode-map
+                      compilation-mode-map
+                      diff-mode-map
+                      dired-mode-map
+                      flyspell-mode-map
+                      garak-mode-hook
+                      gnus-article-mode-map
+                      gnus-group-mode-map
+                      gnus-summary-mode-map
+                      help-mode-map
+                      ido-buffer-completion-map
+                      ido-file-completion-map
+                      isearch-mode-map
+                      java-mode-map
+                      makefile-gmake-mode-hook
+                      maplev-mode-map
+                      maxima-mode-hook
+                      message-mode-hook
+                      minibuffer-local-map
+                      nxml-mode-hook
+                      org-agenda-mode-map
+                      org-mode-map
+                      python-mode-map
+                      query-replace-map
+                      shell-mode-map
+                      slime-mode-hook
+                      slime-repl-mode-hook
+                      term-mode-map
+                      vc-annotate-mode-map
+                      ))
 
 ;; DONE isearch-mode-map M-r
 ;; CANCELLED сделать eab/union-keys не списком, а картой (map)
@@ -150,13 +150,13 @@
   (push
    (list
     (if (numberp a)
-	(key-description `[,a])
+        (key-description `[,a])
       a)
     (if (keymapp b)
-	(progn
-	  (push "keymap" eab/key-bindings)
-	  (map-keymap 'eab/parse-keymaps b)
-	  'nil)
+        (progn
+          (push "keymap" eab/key-bindings)
+          (map-keymap 'eab/parse-keymaps b)
+          'nil)
       b))
    eab/key-bindings))
 
@@ -169,27 +169,27 @@
   "Make list of overlapping my eab/ergo-keys and keybindings of map"
   (remove-if-not (lambda (l) (cadr l))
                  (mapcar
-		  (lambda (key)
-		     (let
-			 ((fun (lookup-key map (read-kbd-macro key))))
-		       (if fun
-			   (list key fun))))
-		  eab/ergo-keys)
-		 ))
+                  (lambda (key)
+                     (let
+                         ((fun (lookup-key map (read-kbd-macro key))))
+                       (if fun
+                           (list key fun))))
+                  eab/ergo-keys)
+                 ))
 
 (defun eab/print-0 (body)
   "Insert value of body in current-buffer."
   (let ((print-length nil)
-	(eval-expression-print-length nil))
+        (eval-expression-print-length nil))
     (prin1 `,body (current-buffer))))
 
 (defun eab/free-map (map)
   "Make free my eab/ergo-keys keybindings in map."
   (mapcar (lambda (key)
-	     (define-key map (read-kbd-macro key) 'nil))
-	  (mapcar (lambda (h)
-		     (car h))
-		  (eab/check-map map))))
+             (define-key map (read-kbd-macro key) 'nil))
+          (mapcar (lambda (h)
+                     (car h))
+                  (eab/check-map map))))
 
 ;; (eab/print-0 (eab/check-map dired-mode-map))
 

@@ -1,33 +1,33 @@
 [submodule "extensions/eab-misc"]
-	path = local/eab-misc
-	url = http://github.com/boykov/eab-misc
+        path = local/eab-misc
+        url = http://github.com/boykov/eab-misc
 [submodule "extensions/eab-ace-jump-mode"]
-	path = local/eab-ace-jump-mode
-	url = http://github.com/boykov/ace-jump-mode
+        path = local/eab-ace-jump-mode
+        url = http://github.com/boykov/ace-jump-mode
 [submodule "extensions/eab-avy"]
-	path = local/eab-avy
-	url = http://github.com/boykov/avy
+        path = local/eab-avy
+        url = http://github.com/boykov/avy
 [submodule "extensions/org-link-minor-mode"]
-	path = local/org-link-minor-mode
-	url = http://github.com/seanohalpin/org-link-minor-mode.git
+        path = local/org-link-minor-mode
+        url = http://github.com/seanohalpin/org-link-minor-mode.git
 [submodule "extensions/bbdb"]
-	path = local/bbdb
-	url = http://github.com/boykov/bbdb.git
+        path = local/bbdb
+        url = http://github.com/boykov/bbdb.git
 [submodule "extensions/yasnippet-snippets"]
-	path = local/yasnippet-snippets
-	url = https://github.com/AndreaCrotti/yasnippet-snippets
+        path = local/yasnippet-snippets
+        url = https://github.com/AndreaCrotti/yasnippet-snippets
 [submodule "extensions/eev-current"]
-	path = local/eev-current
-	url = https://github.com/boykov/eev-current.git
+        path = local/eev-current
+        url = https://github.com/boykov/eev-current.git
 [submodule "extensions/org-mode"]
-	path = local/org-mode
-	url = https://code.orgmode.org/bzg/org-mode.git
+        path = local/org-mode
+        url = https://code.orgmode.org/bzg/org-mode.git
 [submodule "extensions/org-ql"]
-	path = local/org-ql
-	url = https://github.com/boykov/org-ql
+        path = local/org-ql
+        url = https://github.com/boykov/org-ql
 [submodule "extensions/spacemacs"]
-	path = local/spacemacs
-	url = git@github.com:boykov/spacemacs.git
+        path = local/spacemacs
+        url = git@github.com:boykov/spacemacs.git
 [submodule "extensions/emacs-eat"]
-	path = local/emacs-eat
-	url = https://codeberg.org/akib/emacs-eat
+        path = local/emacs-eat
+        url = https://codeberg.org/akib/emacs-eat

@@ -24,18 +24,18 @@
   (if (boundp 'eab/wg-update-list)
       (mapcar
        (lambda (lst)
-	 (puthash (car lst) (cadr lst) eab/wg-update-hash))
+         (puthash (car lst) (cadr lst) eab/wg-update-hash))
        eab/wg-update-list)))
 
 (defun eab/wg-create-workgroup (path)
   (let* ((true-path (file-truename path))
-	 (nondir (file-name-nondirectory path))
-	 (name nondir))
+         (nondir (file-name-nondirectory path))
+         (name nondir))
     (when (file-exists-p true-path)
       (unless (wg-get-workgroup name 't)
-	(wg-create-workgroup name 't)
-	(find-file true-path)
-	(eab/wg-update-workgroup "dflt"))
+        (wg-create-workgroup name 't)
+        (find-file true-path)
+        (eab/wg-update-workgroup "dflt"))
       (eab/wg-add-workgroup-to-history
        (wg-workgroup-uid (wg-get-workgroup name 't))))))
 
@@ -45,30 +45,30 @@
 (defun eab/create-workgroups ()
   (interactive)
   (mapcar 'eab/wg-create-workgroup
-	  (file-expand-wildcards eab/wg-path))
+          (file-expand-wildcards eab/wg-path))
   (wg-save-session t))
 
 (defun eab/wg-add-workgroup-to-history (id)
   (interactive)
   (setq eab/wg-workgroups-history
-	(reverse
-	 (remove-duplicates
-	  (reverse
-	   (append (list id) eab/wg-workgroups-history))))))
+        (reverse
+         (remove-duplicates
+          (reverse
+           (append (list id) eab/wg-workgroups-history))))))
 
 (defun eab/show-wg-workgroups-history ()
   (mapcar 'wg-workgroup-name
-	  (remove-if
-	   (lambda (x) (not x))
-	   (mapcar
-	    (lambda (uid) (wg-find-workgroup-by :uid uid t))
-	    eab/wg-workgroups-history))))
+          (remove-if
+           (lambda (x) (not x))
+           (mapcar
+            (lambda (uid) (wg-find-workgroup-by :uid uid t))
+            eab/wg-workgroups-history))))
 
 (defadvice wg-switch-to-workgroup (before eab-wg-switch-to-workgroup activate)
   (let ((workgroup (wg-current-workgroup t)))
     (if workgroup
-	(if (eab/wg-base? (wg-workgroup-name workgroup))
-	    (eab/wg-add-workgroup-to-history (wg-workgroup-uid workgroup))))))
+        (if (eab/wg-base? (wg-workgroup-name workgroup))
+            (eab/wg-add-workgroup-to-history (wg-workgroup-uid workgroup))))))
 
 ;; (ad-remove-advice 'wg-switch-to-workgroup 'before 'eab-wg-set-previous-workgroup)
 ;; (ad-deactivate 'wg-switch-to-workgroup)
@@ -78,7 +78,7 @@
   (let* ((wg-name (gethash
                    (if (buffer-file-name (get-buffer bufsw))
                        (file-name-directory
-			(abbreviate-file-name (buffer-file-name (get-buffer bufsw)))))
+                        (abbreviate-file-name (buffer-file-name (get-buffer bufsw)))))
                    eab/wg-update-hash))
          (wg-defined (if wg-name (wg-get-workgroup wg-name) nil))
          (wg-current (wg-current-workgroup 't)))
@@ -99,7 +99,7 @@
 (defun eab/workgroups-save-file-load ()
   (let ((file eab/workgroups-save))
     (if (file-exists-p file)
-	(wg-find-session-file file))))
+        (wg-find-session-file file))))
 
 ;; DONE load from eab/eab-workgroups
 (defun eab/wg-revert-workgroup ()
@@ -140,7 +140,7 @@
   (interactive)
   (let ((wg (wg-get-workgroup ":tmp:" 't)))
     (if wg
-	(wg-delete-workgroup wg))))
+        (wg-delete-workgroup wg))))
 
 (defun eab/wg-switch-to-workgroup (name)
   (wg-switch-to-workgroup (wg-get-workgroup name)))
@@ -159,22 +159,22 @@
 (defun eab/wg-switch-to-workgroup-history-1 ()
   (interactive)
   (let ((ido-current-directory nil)
-	(ido-directory-nonreadable nil)
-	(ido-directory-too-big nil)
-	(ido-context-switch-command nil)
-	(ido-choice-list
-	 (if (eq eab/wg-ido-item 'list)
-	     (eab/show-wg-workgroups-history)
-	   (wg-workgroup-names))))
+        (ido-directory-nonreadable nil)
+        (ido-directory-too-big nil)
+        (ido-context-switch-command nil)
+        (ido-choice-list
+         (if (eq eab/wg-ido-item 'list)
+             (eab/show-wg-workgroups-history)
+           (wg-workgroup-names))))
     (ido-read-internal 'list "Workgroup history: " 'ido-buffer-history nil))
   (cond
    ((eq ido-exit 'eab-refresh)
     (eab/wg-switch-to-workgroup-history-1))
    (t
     (if ido-matches
-	(progn
-	  (setq eab/wg-ido-item 'list)
-	  (wg-switch-to-workgroup (ido-name (car ido-matches))))))))
+        (progn
+          (setq eab/wg-ido-item 'list)
+          (wg-switch-to-workgroup (ido-name (car ido-matches))))))))
 
 (defun eab/wg-switch-to-previous-workgroup ()
   (interactive)
@@ -185,12 +185,12 @@
 (defun eab/wg-switch-to-previous-workgroup-1 ()
   (interactive)
   (let* ((wg-cur (wg-workgroup-name (wg-current-workgroup)))
-	(wg-list (-difference (eab/show-wg-workgroups-history) (list wg-cur))))
+        (wg-list (-difference (eab/show-wg-workgroups-history) (list wg-cur))))
     (if (or
-	 (eq last-command 'eab/wg-switch-to-previous-workgroup-1)
-	 (eq last-command 'wg-switch-to-previous-workgroup)
-	 (eq last-command 'eab/wg-switch-to-previous-workgroup))
-	(wg-switch-to-workgroup (caddr wg-list))
+         (eq last-command 'eab/wg-switch-to-previous-workgroup-1)
+         (eq last-command 'wg-switch-to-previous-workgroup)
+         (eq last-command 'eab/wg-switch-to-previous-workgroup))
+        (wg-switch-to-workgroup (caddr wg-list))
       (wg-switch-to-workgroup (car wg-list)))))
 
 (defun eab/wg-names ()
@@ -228,15 +228,15 @@
   (interactive)
   (let ((base (eab/wg-base-name (eab/wg-current-workgroup))))
     (if (eab/wg-base? (eab/wg-current-workgroup))
-	(let* ((name (format (concat (eab/wg-current-workgroup) "xxx0"))))
-	  (if (member name (wg-workgroup-names t))
-	      (wg-switch-to-workgroup name)
-	    (message "No extra workgroups")))
+        (let* ((name (format (concat (eab/wg-current-workgroup) "xxx0"))))
+          (if (member name (wg-workgroup-names t))
+              (wg-switch-to-workgroup name)
+            (message "No extra workgroups")))
       (let* ((num (string-to-number (cadr (split-string (eab/wg-current-workgroup) "xxx"))))
-	     (name (format (concat base "xxx%s") (+ num 1))))
-	(if (member name (wg-workgroup-names t))
-	    (wg-switch-to-workgroup name)
-	  (wg-switch-to-workgroup (wg-get-workgroup base)))))))
+             (name (format (concat base "xxx%s") (+ num 1))))
+        (if (member name (wg-workgroup-names t))
+            (wg-switch-to-workgroup name)
+          (wg-switch-to-workgroup (wg-get-workgroup base)))))))
 
 (defun eab/wg-rotate-twice ()
   (interactive)

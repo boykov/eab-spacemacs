@@ -225,7 +225,7 @@ which require an initialization must be listed explicitly in the list.")
 In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular meta+O keybinding."
       (interactive)
       (if (input-pending-p)
-	  (let ((second-char (read-char)))
+          (let ((second-char (read-char)))
             (cond
              ((eq second-char 65) ;; A
               (execute-kbd-macro (kbd "<up>")))
@@ -241,14 +241,14 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
               (execute-kbd-macro (kbd "<end>")))
              (t
               (beep))))
-	(call-interactively (key-binding [ergoemacs-meta-O]))))
+        (call-interactively (key-binding [ergoemacs-meta-O]))))
 
     (defun ergoemacs-fix-arrow-keys (keymap)
       "Fix arrow keys for KEYMAP."
       (let (ergoemacs-M-O-binding)
-	(setq ergoemacs-M-O-binding (lookup-key keymap (kbd "M-O")))
-	(define-key keymap (kbd "M-O") 'ergoemacs-handle-M-O)
-	(define-key keymap [ergoemacs-meta-O] ergoemacs-M-O-binding)))
+        (setq ergoemacs-M-O-binding (lookup-key keymap (kbd "M-O")))
+        (define-key keymap (kbd "M-O") 'ergoemacs-handle-M-O)
+        (define-key keymap [ergoemacs-meta-O] ergoemacs-M-O-binding)))
     )
   )
 
@@ -290,13 +290,13 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
   (setq projectile-require-project-root t)
   (eab/bind-path projectile-known-projects-file)
   (setq projectile-project-root-files-bottom-up
-	'(".git"        ; Git VCS root dir
-	  ".projectile" ; projectile project marker
-	  ".hg"         ; Mercurial VCS root dir
-	  ".fslckout"   ; Fossil VCS root dir
-	  ".bzr"        ; Bazaar VCS root dir
-	  "_darcs"      ; Darcs VCS root dir
-	  ))
+        '(".git"        ; Git VCS root dir
+          ".projectile" ; projectile project marker
+          ".hg"         ; Mercurial VCS root dir
+          ".fslckout"   ; Fossil VCS root dir
+          ".bzr"        ; Bazaar VCS root dir
+          "_darcs"      ; Darcs VCS root dir
+          ))
   )
 (defun eab-spacemacs/init-ldap-mode nil)
 
@@ -327,30 +327,30 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
     ;; (flyspell-delete-all-overlays)
     (add-to-list 'adict-language-list "ru" 't)
     (add-to-list 'adict-dictionary-list
-		 `("ru" . ,(adict-guess-dictionary-name '("ru"))) 't)
+                 `("ru" . ,(adict-guess-dictionary-name '("ru"))) 't)
     (let ((hash adict-hash))
       (adict-add-word hash 19 "и" "в" "не" "на" "что" "с" "то" "я" "он" "как" "а"
-		      "по" "к" "его" "все" "из" "за" "это" "у" "же" "от" "но" "было" "так"
-		      "бы" "о" "еще" "меня" "был" "только" "она" "уже" "ее" "мне" "сказал" "ты"
-		      "для" "мы" "они" "до" "их" "когда" "или" "ему" "ни" "вы" "даже" "под"
-		      "него" "если" "чтобы" "вот" "чем" "где" "себя" "была" "нас" "время"
-		      "ли" "быть" "раз" "может" "есть" "со" "были" "там" "нет" "очень"
-		      "кто" "без" "тут" "во" "будет" "тоже" "этого" "надо" "себе"
-		      "да" "ничего" "при" "тебя" "них" "этом" "того" "можно" "этот"
-		      "потом" "человек" "вас" "сейчас" "один" "здесь" "теперь" "тебе"
-		      "через" "больше" "всех" "лет" "том" "после" "сам" "нибудь" "ним"
-		      "просто" "вдруг" "над" "потому" "ведь" "вам" "дело" "тогда"
-		      "спросил" "жизни" "два" "чего" "который" "тем" "нам" "перед"
-		      "глаза" "всего" "уж" "им" "своей" "несколько" "день" "всегда"
-		      "какой" "ей" "более" "такой" "тот" "этой" "нее" "которые"
-		      "ней" "эти" "стал" "жизнь" "сразу" "мог" "совсем" "свою" "об"
-		      "почему" "пока" "конечно" "люди" "года" "человека" "куда" "почти"
-		      "руки" "людей" "хотя" "три" "снова" "хорошо" "знаю" "много" "сказать"
-		      "будто" "лишь" "голову" "про" "сказала" "всем" "между" "говорит"
-		      "никогда" "опять" "свои" "другой" "мой" "своих" "эту" "такое" "знал"
-		      "своего" "таки" "собой" "дома" "времени" "чуть" "свой" "лучше" "именно"
-		      "друг" "лицо" "руку" "вообще" "свое" "которой" "никто" "кого"
-		      "этих" "говорил" "вместе" "назад")))
+                      "по" "к" "его" "все" "из" "за" "это" "у" "же" "от" "но" "было" "так"
+                      "бы" "о" "еще" "меня" "был" "только" "она" "уже" "ее" "мне" "сказал" "ты"
+                      "для" "мы" "они" "до" "их" "когда" "или" "ему" "ни" "вы" "даже" "под"
+                      "него" "если" "чтобы" "вот" "чем" "где" "себя" "была" "нас" "время"
+                      "ли" "быть" "раз" "может" "есть" "со" "были" "там" "нет" "очень"
+                      "кто" "без" "тут" "во" "будет" "тоже" "этого" "надо" "себе"
+                      "да" "ничего" "при" "тебя" "них" "этом" "того" "можно" "этот"
+                      "потом" "человек" "вас" "сейчас" "один" "здесь" "теперь" "тебе"
+                      "через" "больше" "всех" "лет" "том" "после" "сам" "нибудь" "ним"
+                      "просто" "вдруг" "над" "потому" "ведь" "вам" "дело" "тогда"
+                      "спросил" "жизни" "два" "чего" "который" "тем" "нам" "перед"
+                      "глаза" "всего" "уж" "им" "своей" "несколько" "день" "всегда"
+                      "какой" "ей" "более" "такой" "тот" "этой" "нее" "которые"
+                      "ней" "эти" "стал" "жизнь" "сразу" "мог" "совсем" "свою" "об"
+                      "почему" "пока" "конечно" "люди" "года" "человека" "куда" "почти"
+                      "руки" "людей" "хотя" "три" "снова" "хорошо" "знаю" "много" "сказать"
+                      "будто" "лишь" "голову" "про" "сказала" "всем" "между" "говорит"
+                      "никогда" "опять" "свои" "другой" "мой" "своих" "эту" "такое" "знал"
+                      "своего" "таки" "собой" "дома" "времени" "чуть" "свой" "лучше" "именно"
+                      "друг" "лицо" "руку" "вообще" "свое" "которой" "никто" "кого"
+                      "этих" "говорил" "вместе" "назад")))
   )
 
 (defun eab-spacemacs/init-spacemacs-theme ()
@@ -422,19 +422,19 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
 
   (setq popwin:special-display-config nil)
   (add-to-list 'popwin:special-display-config
-	       `(,eab/special-buffer :width 20 :position left :stick t))
+               `(,eab/special-buffer :width 20 :position left :stick t))
 
   ;; see also toggle-window-dedicated
   (defun eab/special-buffer-toggle ()
     (interactive)
     (if eab/special-buffer-displaedp
-	(progn
-	  ;; (ignore-errors (delete-window (get-buffer-window eab/special-buffer)))
-	  (popwin:close-popup-window)
-	  (setq eab/special-buffer-displaedp nil))
+        (progn
+          ;; (ignore-errors (delete-window (get-buffer-window eab/special-buffer)))
+          (popwin:close-popup-window)
+          (setq eab/special-buffer-displaedp nil))
       (progn
-	(ignore-errors (popwin:display-buffer eab/special-buffer))
-	(setq eab/special-buffer-displaedp 't))))
+        (ignore-errors (popwin:display-buffer eab/special-buffer))
+        (setq eab/special-buffer-displaedp 't))))
 
   (global-set-key (kbd "<f3>") 'eab/special-buffer-toggle)
   )
@@ -444,7 +444,7 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
   (defun er/add-org-mode-expansions ()
     "Adds org-specific expansions for buffers in org-mode"
     (set (make-local-variable 'er/try-expand-list)
-	 (append
+         (append
           (remove #'mark-paragraph (remove #'er/mark-defun er/try-expand-list))
           '(org-mark-subtree
             er/mark-org-element
@@ -453,13 +453,13 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
             er/mark-sentence
             er/mark-org-parent)))
     (set (make-local-variable 'er/save-mode-excursion)
-	 #'er/save-org-mode-excursion))
+         #'er/save-org-mode-excursion))
   (defun er/add-text-mode-expansions ()
     (make-variable-buffer-local 'er/try-expand-list)
     (setq er/try-expand-list (append
                               er/try-expand-list
                               '(mark-paragraph
-				mark-page))))
+                                mark-page))))
   (add-hook 'text-mode-hook 'er/add-text-mode-expansions)
   )
 (defun eab-spacemacs/init-multiple-cursors nil
@@ -469,8 +469,8 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
       (setq mc--cmds mc--default-cmds-to-run-for-all))
   ;; TODO mc/cmds-to-run-for-all переназначается (sp-backward-sexp sp-forward-sexp)
   (setq mc/cmds-to-run-for-all (append mc/cmds-to-run-for-all
-				       '(org-delete-char
-					 org-self-insert-command)))
+                                       '(org-delete-char
+                                         org-self-insert-command)))
   )
 (defun eab-spacemacs/init-flx-isearch ()
   (flx-isearch-mode 0)
@@ -577,51 +577,51 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
     :after (key-chord eab-minimal)
     :config
     (setq eat-mode-map
-	  (let ((map (make-sparse-keymap)))
-	    (define-key map [?\C-c ?\M-d] #'eat-char-mode)
-	    (define-key map [?\C-c ?\C-j] #'eat-semi-char-mode)
-	    (define-key map [?\C-c ?\C-k] #'eat-kill-process)
-	    (define-key map [?\C-c ?\C-p] #'eat-previous-shell-prompt)
-	    (define-key map [?\C-c ?\C-n] #'eat-next-shell-prompt)
-	    (key-chord-define map "jj" #'eat-semi-char-mode)
-	    map))
+          (let ((map (make-sparse-keymap)))
+            (define-key map [?\C-c ?\M-d] #'eat-char-mode)
+            (define-key map [?\C-c ?\C-j] #'eat-semi-char-mode)
+            (define-key map [?\C-c ?\C-k] #'eat-kill-process)
+            (define-key map [?\C-c ?\C-p] #'eat-previous-shell-prompt)
+            (define-key map [?\C-c ?\C-n] #'eat-next-shell-prompt)
+            (key-chord-define map "jj" #'eat-semi-char-mode)
+            map))
 
     (setq eat-semi-char-mode-map
-	  (let ((map (eat-term-make-keymap
-		      #'eat-self-input
-		      '(:ascii :arrow :navigation)
-		      '( [?\C-\\] [?\C-q] [?\C-c] [?\C-x] [?\C-g] [?\C-h]
-			 [?\e ?\C-c] [?\C-u] [?\C-q] [?\e ?x] [?\e ?:]
-			 [?\C-a] [?\C-l] [?\e ?a] [?\e ?s] [?\C-b] [?\e ?1]
-			 [?\e ?c] [?\e ?v] [?\e ?g] [?\e ?h] [?\e ?p]
-			 [?\C-p] [?\C-n] [?\C-v] [?\C-o] [?\C-e]
-			 [?\e ?o] [?\e ?j] [?\e ?l] [?\e ?k] [?\e ?i] [?\e ?\s]
-			 [?\e ?!] [?\e ?&] [?\C-y] [?\e ?y]))))
-	    (define-key map [?\C-q] #'eat-quoted-input)
-	    (define-key map [?\C-y] #'eat-yank)
-	    (define-key map [?\M-v] #'eat-yank)
-	    (define-key map [?\M-y] #'eat-yank-from-kill-ring)
-	    (define-key map [?\M-j] (ilam (eat-self-input 1 'left)))
-	    (define-key map [?\M-l] (ilam (eat-self-input 1 'right)))
-	    (define-key map [?\M-k] (ilam (eat-self-input 1 'down)))
-	    (define-key map [?\M-i] (ilam (eat-self-input 1 'up)))
-	    (define-key map [?\M-h] (ilam (eat-self-input 1 'home)))
-	    (define-key map [?\M-p] (ilam (eat-self-input 1 'end)))
-	    (define-key map [?\C-p] (ilam (eat-self-input 1 'up)))
-	    (define-key map [?\C-n] (ilam (eat-self-input 1 'down)))
-	    (define-key map [?\C-c ?\C-c] #'eat-self-input)
-	    (define-key map [?\C-c ?\C-e] #'eat-emacs-mode)
-	    (define-key map [remap insert-char] #'eat-input-char)
-	    (key-chord-define map "jj" #'eat-emacs-mode)
-	    map))
+          (let ((map (eat-term-make-keymap
+                      #'eat-self-input
+                      '(:ascii :arrow :navigation)
+                      '( [?\C-\\] [?\C-q] [?\C-c] [?\C-x] [?\C-g] [?\C-h]
+                         [?\e ?\C-c] [?\C-u] [?\C-q] [?\e ?x] [?\e ?:]
+                         [?\C-a] [?\C-l] [?\e ?a] [?\e ?s] [?\C-b] [?\e ?1]
+                         [?\e ?c] [?\e ?v] [?\e ?g] [?\e ?h] [?\e ?p]
+                         [?\C-p] [?\C-n] [?\C-v] [?\C-o] [?\C-e]
+                         [?\e ?o] [?\e ?j] [?\e ?l] [?\e ?k] [?\e ?i] [?\e ?\s]
+                         [?\e ?!] [?\e ?&] [?\C-y] [?\e ?y]))))
+            (define-key map [?\C-q] #'eat-quoted-input)
+            (define-key map [?\C-y] #'eat-yank)
+            (define-key map [?\M-v] #'eat-yank)
+            (define-key map [?\M-y] #'eat-yank-from-kill-ring)
+            (define-key map [?\M-j] (ilam (eat-self-input 1 'left)))
+            (define-key map [?\M-l] (ilam (eat-self-input 1 'right)))
+            (define-key map [?\M-k] (ilam (eat-self-input 1 'down)))
+            (define-key map [?\M-i] (ilam (eat-self-input 1 'up)))
+            (define-key map [?\M-h] (ilam (eat-self-input 1 'home)))
+            (define-key map [?\M-p] (ilam (eat-self-input 1 'end)))
+            (define-key map [?\C-p] (ilam (eat-self-input 1 'up)))
+            (define-key map [?\C-n] (ilam (eat-self-input 1 'down)))
+            (define-key map [?\C-c ?\C-c] #'eat-self-input)
+            (define-key map [?\C-c ?\C-e] #'eat-emacs-mode)
+            (define-key map [remap insert-char] #'eat-input-char)
+            (key-chord-define map "jj" #'eat-emacs-mode)
+            map))
 
     (setq eat-char-mode-map
-	  (let ((map (eat-term-make-keymap
-		      #'eat-self-input
-		      '(:ascii :arrow :navigation :function)
-		      '([?\e ?\C-m]))))
-	    (define-key map [?\C-\M-m] #'eat-semi-char-mode)
-	    map))
+          (let ((map (eat-term-make-keymap
+                      #'eat-self-input
+                      '(:ascii :arrow :navigation :function)
+                      '([?\e ?\C-m]))))
+            (define-key map [?\C-\M-m] #'eat-semi-char-mode)
+            map))
 
     (define-minor-mode eat--semi-char-mode
       "Minor mode for semi-char mode keymap."
@@ -636,11 +636,11 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
     (eab/patch-this-code
      'eat
      `((,(let ((print-quoted 't))
-	   (prin1-to-string
-	    `(format "%s<%d>" eat-buffer-name arg))) .
-	    ,(let ((print-quoted 't))
-	       (prin1-to-string
-		`(format "*ansi-term%d*" arg))))))
+           (prin1-to-string
+            `(format "%s<%d>" eat-buffer-name arg))) .
+            ,(let ((print-quoted 't))
+               (prin1-to-string
+                `(format "*ansi-term%d*" arg))))))
 
     (add-hook 'eat--semi-char-mode-hook (lambda () (setq input-method-function 'key-chord-input-method)))
     ;; (add-hook 'eat--char-mode-hook (lambda () (setq input-method-function 'key-chord-input-method)))
@@ -668,9 +668,9 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
   ;; prevent annoying switching on rk in region-bindings-mode on set-mark-command
   ;; DONE возможно, из-за этой настройки что-то начнет работать "странно"
   (add-hook 'window-configuration-change-hook
-	    (lambda ()
-	      (if (and mark-active (not (use-region-p)))
-		  (deactivate-mark))))
+            (lambda ()
+              (if (and mark-active (not (use-region-p)))
+                  (deactivate-mark))))
   (defadvice winner-undo (before eab-winner-undo-before activate)
     (region-bindings-mode-disable))
   (defadvice winner-undo (after eab-winner-undo-after activate)
@@ -739,9 +739,9 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
     (tramp-cleanup-connection
      (tramp-dissect-file-name
       (concat "/docker:"
-	      (car (progn
-		     (docker-utils-select-if-empty)
-		     (docker-utils-get-marked-items-ids))) ":")))))
+              (car (progn
+                     (docker-utils-select-if-empty)
+                     (docker-utils-get-marked-items-ids))) ":")))))
 
 (defun eab-spacemacs/init-docker-tramp ()
   (use-package docker-tramp
@@ -816,9 +816,9 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
 (defun eab-spacemacs/init-wide-n nil)
 (defun eab-spacemacs/init-god-mode nil
   (setq god-mod-alist
-	'(("g" . "C-")
-	  (nil . "M-")
-	  ("G" . "C-M-")))
+        '(("g" . "C-")
+          (nil . "M-")
+          ("G" . "C-M-")))
   )
 (defun eab-spacemacs/init-fancy-narrow nil)
 (defun eab-spacemacs/init-outshine nil)
@@ -943,15 +943,15 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
     (defun yas-org-very-safe-expand ()
       (yas-minor-mode 't)
       (let ((yas-fallback-behavior 'return-nil)
-	    )
-	(yas-expand)))
+            )
+        (yas-expand)))
 
     (add-hook 'org-mode-hook
               (lambda ()
-		(make-variable-buffer-local 'yas-trigger-key)
-		(setq yas-trigger-key [tab])
-		(add-to-list 'org-tab-first-hook 'yas-org-very-safe-expand)
-		(define-key yas-keymap [tab] 'yas-next-field))))
+                (make-variable-buffer-local 'yas-trigger-key)
+                (setq yas-trigger-key [tab])
+                (add-to-list 'org-tab-first-hook 'yas-org-very-safe-expand)
+                (define-key yas-keymap [tab] 'yas-next-field))))
   )
 (defun eab-spacemacs/init-kv nil)
 (defun eab-spacemacs/init-jira nil)
@@ -1008,21 +1008,21 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
       (insert "\n\n")
       (insert
        (concat "(pm-def-macro\n '"
-	       name
-	       "\n nil nil\n \"\"\n \""
-	       (format-kbd-macro) "\")\n"))
+               name
+               "\n nil nil\n \"\"\n \""
+               (format-kbd-macro) "\")\n"))
       (write-region (point-min) (point-max) power-macros-file t)))
 
   (defun eab/pm-set-last-kbd-macro ()
     (interactive)
     (setq last-kbd-macro
-	  (copy-sequence
-	   (symbol-function
-	    (intern
-	     (ido-completing-read "Macro: "
-				  (mapcar
-				   (lambda (x) (symbol-name x))
-				   (pm-get-available-macros))))))))
+          (copy-sequence
+           (symbol-function
+            (intern
+             (ido-completing-read "Macro: "
+                                  (mapcar
+                                   (lambda (x) (symbol-name x))
+                                   (pm-get-available-macros))))))))
   (setq diredp-hide-details-initially-flag nil)
   ;; dired+ нужен для привычной подсветки
   (require 'dired+)
@@ -1050,7 +1050,7 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
   (require 'smart-operator)
   (add-hook 'maplev-mode-hook
             (lambda ()
-	      ;;            (smart-operator-mode-on)
+              ;;            (smart-operator-mode-on)
               (setq maplev-mint-start-options (list "-q" "-P"))
               (setq maplev-executable-alist '(("11" "maple" nil "maple")
                                               ("10" "maple" nil "mint")
@@ -1130,8 +1130,8 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
     :init
     (setq compile-command "make ")
     (setq compilation-buffer-name-function
-	  (lambda (mode)
-	    (concat "*" (downcase mode) ": " (projectile-project-name) "*")))
+          (lambda (mode)
+            (concat "*" (downcase mode) ": " (projectile-project-name) "*")))
     (setq compilation-exit-message-function 'compilation-exit-autoclose)
     (setq compilation-exit-message-function nil)
     (setq compilation-scroll-output 't)
@@ -1169,7 +1169,7 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
 
     (defun eab/call-ibuffer ()
       (if (equal (buffer-name (current-buffer)) "*Ibuffer*")
-	  (ibuffer-visit-buffer)))
+          (ibuffer-visit-buffer)))
 
     (add-hook 'ace-jump-mode-end-hook 'eab/call-ibuffer)
 
@@ -1179,13 +1179,13 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
       (let ((case-fold-search isearch-case-fold-search)
             (isearch-buffer (current-buffer))
             (isearch-update-post-hook
-	     (lambda ()
-	       (interactive)
-	       (unless (equal isearch-string "")
-		 (isearch-exit)))))
-	(isearch-exit)
-	;; TODO ace -> avy
-	(ace-jump-do (concat "\\b" isearch-string))))
+             (lambda ()
+               (interactive)
+               (unless (equal isearch-string "")
+                 (isearch-exit)))))
+        (isearch-exit)
+        ;; TODO ace -> avy
+        (ace-jump-do (concat "\\b" isearch-string))))
     )
   )
 
@@ -1198,9 +1198,9 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
     :init
     (eab/bind-path abbrev-file-name)
     (if (file-exists-p abbrev-file-name)
-	(progn
-	  (setq save-abbrevs 'silently)
-	  (quietly-read-abbrev-file abbrev-file-name)))
+        (progn
+          (setq save-abbrevs 'silently)
+          (quietly-read-abbrev-file abbrev-file-name)))
     )
   (use-package eab-appt)
   (use-package eab-ui)
@@ -1220,10 +1220,10 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
     (add-hook 'org-agenda-mode-hook (lambda () (hl-line-mode 1)))
     (setq org-sort-agenda-notime-is-late nil)
     (setq org-agenda-sorting-strategy
-	  '((agenda habit-down time-up priority-down category-keep)
-	    (todo timestamp-down)
-	    (tags priority-down category-keep)
-	    (search category-keep)))
+          '((agenda habit-down time-up priority-down category-keep)
+            (todo timestamp-down)
+            (tags priority-down category-keep)
+            (search category-keep)))
     (setq org-agenda-hide-tags-regexp nil)
     (org-toggle-sticky-agenda t)
     (setq org-mobile-agendas '("S" "g" "a"))

@@ -11,17 +11,17 @@
 
 (if (or (eab/ondaemon (eab/server-P)) (eab/ondaemon (eab/server-C)) (eab/ondaemon "serverM"))
     (add-hook 'desktop-save-hook (lambda ()
-				   ;; (eab/wg-update-all-workgroups)
-				   (eab/wg-save eab/workgroups-save)
-				   )))
+                                   ;; (eab/wg-update-all-workgroups)
+                                   (eab/wg-save eab/workgroups-save)
+                                   )))
 ;; see also eab-appt.el
 
 (defun eab/load-desktop ()
   ;; TODO don't setup defadvice wg-switch-to-workgroup before it
   (eab/workgroups-save-file-load)
   (ignore-errors (let ((dir (eab/desktop-dir)))
-		   (if (file-exists-p (concat dir ".emacs.desktop"))
-		       (desktop-read dir)))))
+                   (if (file-exists-p (concat dir ".emacs.desktop"))
+                       (desktop-read dir)))))
 
 (defun eab/desktop-ignore-workgroups-mode (desktop-buffer-file-name)
        "Function to ignore workgroups-mode minor modes during restore of buffers"
@@ -44,18 +44,18 @@
        nil)
 
 (add-to-list 'desktop-minor-mode-handlers
-	     '(guide-key-mode . eab/desktop-ignore-guide-key-mode))
+             '(guide-key-mode . eab/desktop-ignore-guide-key-mode))
 
 (add-to-list 'desktop-minor-mode-handlers
-	     '(workgroups-mode . eab/desktop-ignore-workgroups-mode))
+             '(workgroups-mode . eab/desktop-ignore-workgroups-mode))
 
 (add-to-list 'desktop-minor-mode-handlers
-	     '(global-auto-revert-mode . eab/desktop-ignore-global-auto-revert-mode))
+             '(global-auto-revert-mode . eab/desktop-ignore-global-auto-revert-mode))
 
 (add-to-list 'desktop-minor-mode-handlers
-	     '(undo-tree-mode . eab/desktop-ignore-undo-tree-mode))
+             '(undo-tree-mode . eab/desktop-ignore-undo-tree-mode))
 
 (add-to-list 'desktop-minor-mode-handlers
-	     '(undo-tree-mode . eab/desktop-ignore-auto-complete-mode))
+             '(undo-tree-mode . eab/desktop-ignore-auto-complete-mode))
 
 (provide 'eab-desktop)

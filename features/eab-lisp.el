@@ -72,6 +72,6 @@
            ds))))
 
 (funcall (let ((count 0))
-	   (dlambda
-	    (:inc () (incf count))
-	    (:dec () (decf count)))) :inc)
+           (dlambda
+            (:inc () (incf count))
+            (:dec () (decf count)))) :inc)

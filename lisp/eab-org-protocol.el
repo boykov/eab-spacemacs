@@ -14,10 +14,10 @@
       '(("eab-open-link"
          :protocol "open-link"
          :function eab-protocol-open-link)
-	("eab-save-abbrev"
+        ("eab-save-abbrev"
          :protocol "save-abbrev"
          :function eab-protocol-save-abbrev)
-	))
+        ))
 
 (defun eab-protocol-open-link (link)
   (ignore-errors (eab/wg-switch-to-workgroup ":ag:"))
@@ -33,17 +33,17 @@
 (defun eab/open-heading-browser ()
   (interactive)
   (let* ((prop (org-entry-properties))
-	 (path (if prop (cl-find-if (lambda (x) (if (string= "FILE" (car x)) 't nil)) prop)
-		 (cons 'bogus (buffer-file-name))))
-	 (id (cl-find-if (lambda (x) (if (string= "ID" (car x)) 't nil)) (org-entry-properties)))
-	 (prefix (replace-regexp-in-string "eab\/git\/org" "eab/pub/org" (cdr path))))
+         (path (if prop (cl-find-if (lambda (x) (if (string= "FILE" (car x)) 't nil)) prop)
+                 (cons 'bogus (buffer-file-name))))
+         (id (cl-find-if (lambda (x) (if (string= "ID" (car x)) 't nil)) (org-entry-properties)))
+         (prefix (replace-regexp-in-string "eab\/git\/org" "eab/pub/org" (cdr path))))
     (browse-url
      (concat "file://" (replace-regexp-in-string "\.org$" ".html" prefix) "#ID-" (cdr id)))))
 
 (defun eab/open-heading-browser ()
   (interactive)
   (let* ((fname (file-name-nondirectory (buffer-file-name)))
-	 (id (cl-find-if (lambda (x) (if (string= "ID" (car x)) 't nil)) (org-entry-properties nil 'standard))))
+         (id (cl-find-if (lambda (x) (if (string= "ID" (car x)) 't nil)) (org-entry-properties nil 'standard))))
     (browse-url
      (concat "http://localhost:3001/org/mock/" (replace-regexp-in-string "\.org$" ".html" fname) "#ID-" (cdr id)))))
 

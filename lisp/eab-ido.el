@@ -46,12 +46,12 @@
   (let ((tmp wg-dissociate-buffer-on-kill-buffer))
     (setq wg-dissociate-buffer-on-kill-buffer nil)
     (setq eab/cxb-ido-item
-	  ;; (if (ignore-errors (projectile-project-buffer-names))
-	  (if (file-remote-p default-directory)
-	      'buffer
-	    (if (projectile-project-p)
-		'list
-	      'buffer)))
+          ;; (if (ignore-errors (projectile-project-buffer-names))
+          (if (file-remote-p default-directory)
+              'buffer
+            (if (projectile-project-p)
+                'list
+              'buffer)))
     ;; prevent run-hook wg-auto-dissociate-buffer-hook for
     ;; with-temp-buffer in expand-file-name
     (eab/cxb-1)
@@ -81,44 +81,44 @@
          (ido-directory-nonreadable nil)
          (ido-directory-too-big nil)
          (require-match (confirm-nonexistent-file-or-buffer))
-	 (ido-choice-list
-	  (ignore-errors
-	    (unless (file-remote-p default-directory)
-	      (let ((l (projectile-project-buffer-names)))
-		(append (cdr l) (list (car l)))))))
+         (ido-choice-list
+          (ignore-errors
+            (unless (file-remote-p default-directory)
+              (let ((l (projectile-project-buffer-names)))
+                (append (cdr l) (list (car l)))))))
          (buf (ido-read-internal
-	       eab/cxb-ido-item
-	       (concat (symbol-name eab/cxb-ido-item) ": ")
-	       'ido-buffer-history
-	       nil
-	       require-match eab-ido-initial)))
+               eab/cxb-ido-item
+               (concat (symbol-name eab/cxb-ido-item) ": ")
+               'ido-buffer-history
+               nil
+               require-match eab-ido-initial)))
     (cond
      ((eq ido-exit 'eab-refresh)
       (eab/cxb-1 ido-text))
      ((eq ido-exit 'eab-ido-exit)
       (progn
-	(ibuffer)
-	(ace-jump-mode 0)))
+        (ibuffer)
+        (ace-jump-mode 0)))
      ((eq ido-exit 'eab-main)
       (progn
-	;; (ido-buffer-internal 'display nil nil nil ido-text nil)
-	(let ((bufsw (ido-name (car ido-matches))))
-	  ;; (ido-visit-buffer bufsw 'display t)))) ;; DONE добирается до рез-та только со второго раза
-	  (switch-to-buffer bufsw))))
+        ;; (ido-buffer-internal 'display nil nil nil ido-text nil)
+        (let ((bufsw (ido-name (car ido-matches))))
+          ;; (ido-visit-buffer bufsw 'display t)))) ;; DONE добирается до рез-та только со второго раза
+          (switch-to-buffer bufsw))))
      (t
       (if (string= ido-text buf)
-	  (helm nil ido-text nil nil nil nil)
-	;;        (ido-buffer-internal ido-default-buffer-method nil nil nil ido-text nil)
-	(if ido-matches
-	    ;; (let ((bufsw (ido-name (car ido-matches))))
-	    ;;   (if (remove-if-not (lambda (x) (equal x bufsw)) (eab/wg-names))
-	    ;; 	  (progn
-	    ;; 	    (eab/wg-switch-to-workgroup bufsw)
-	    ;; 	    (eab/wg-switched-msg))
-	    ;; 	(progn
-	    ;; 	  (eab/wg-update bufsw)
-	    ;; 	  (switch-to-buffer bufsw))))
-	    (switch-to-buffer (ido-name (car ido-matches)))))))))
+          (helm nil ido-text nil nil nil nil)
+        ;;        (ido-buffer-internal ido-default-buffer-method nil nil nil ido-text nil)
+        (if ido-matches
+            ;; (let ((bufsw (ido-name (car ido-matches))))
+            ;;   (if (remove-if-not (lambda (x) (equal x bufsw)) (eab/wg-names))
+            ;;    (progn
+            ;;      (eab/wg-switch-to-workgroup bufsw)
+            ;;      (eab/wg-switched-msg))
+            ;;  (progn
+            ;;    (eab/wg-update bufsw)
+            ;;    (switch-to-buffer bufsw))))
+            (switch-to-buffer (ido-name (car ido-matches)))))))))
 
 (defun ido-set-matches ()
   "Set `ido-matches' to the list of items matching prompt"
@@ -129,7 +129,7 @@
             ;; (if (eq ido-cur-item 'buffer)
             ;;     (append ido-cur-list (eab/wg-names))
             ;;   ido-cur-list)
-	    ido-cur-list)
+            ido-cur-list)
            (not ido-rotate)) ido-rotate nil)))
 
 (defun eab/ido-main ()

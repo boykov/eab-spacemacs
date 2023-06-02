@@ -18,13 +18,13 @@
   (let ((default-directory "~/"))
     (save-window-excursion
       (let ((comstr (eab/over-bash com fname)))
-	(shell-command (if async
-			   (concat comstr "&")
-			 comstr))
-	(sleep-for 1)
-	(when async
-	  (switch-to-buffer "*Async Shell Command*")
-	  (kill-buffer))))))
+        (shell-command (if async
+                           (concat comstr "&")
+                         comstr))
+        (sleep-for 1)
+        (when async
+          (switch-to-buffer "*Async Shell Command*")
+          (kill-buffer))))))
 
 (defun eab/shell-command (command &optional output-buffer error-buffer)
   "Run command by `call-process-shell-command' in separate
@@ -32,12 +32,12 @@ process: e.g. nautilus or gnome-terminals"
   (interactive
    (list
     (read-shell-command "EAB Shell command: " nil nil
-			(let ((filename
-			       (cond
-				(buffer-file-name)
-				((eq major-mode 'dired-mode)
-				 (dired-get-filename nil t)))))
-			  (and filename (file-relative-name filename))))
+                        (let ((filename
+                               (cond
+                                (buffer-file-name)
+                                ((eq major-mode 'dired-mode)
+                                 (dired-get-filename nil t)))))
+                          (and filename (file-relative-name filename))))
     current-prefix-arg
     shell-command-default-error-buffer))
   (call-process-shell-command command nil 0))
@@ -46,13 +46,13 @@ process: e.g. nautilus or gnome-terminals"
   "Command for manual running (thru M-A): with different settings"
   (interactive "P")
   (cond ((or (if (listp arg) (eq (car arg) 4)) (eq arg 4))
-	 (call-interactively 'eab/shell-command))
-	((eq arg 1)
-	 (let ((shell-command-switch "-ic")
-	       (current-prefix-arg nil))
-	     (call-interactively 'shell-command)))
-	(t
-	 (call-interactively 'shell-command))))
+         (call-interactively 'eab/shell-command))
+        ((eq arg 1)
+         (let ((shell-command-switch "-ic")
+               (current-prefix-arg nil))
+             (call-interactively 'shell-command)))
+        (t
+         (call-interactively 'shell-command))))
 
 (defun eab/xmodmap-set-hyper ()
   (interactive)
@@ -71,7 +71,7 @@ process: e.g. nautilus or gnome-terminals"
   "See file by external application with dired."
   (interactive)
   (eab/sh-over-bash eab/xdg-open
-		    (replace-regexp-in-string "`" "\\\\`" (dired-get-filename)) 't))
+                    (replace-regexp-in-string "`" "\\\\`" (dired-get-filename)) 't))
 
 (defun eab/ido-see-file ()
   "See file by external application with ido."
@@ -97,8 +97,8 @@ process: e.g. nautilus or gnome-terminals"
     (eab/sh-over-bash
      eab/xdg-open
      (concat eab/homedir
-	     (substring (minibuffer-contents)
-			1 (length (minibuffer-contents)))) 't)
+             (substring (minibuffer-contents)
+                        1 (length (minibuffer-contents)))) 't)
     (abort-recursive-edit)))
 
 (defun eab/add-drop (name)
@@ -112,11 +112,11 @@ process: e.g. nautilus or gnome-terminals"
 (defun eab/shell-translate (phrase &optional not-abbrevp)
   (interactive)
   (setq eab/tmp-str
-	(split-string
-	 (ansi-color-filter-apply
-	  (shell-command-to-string
-	   (concat "export TERM=eterm-color && " eab/translate-path " " phrase)))
-	 "\n"))
+        (split-string
+         (ansi-color-filter-apply
+          (shell-command-to-string
+           (concat "export TERM=eterm-color && " eab/translate-path " " phrase)))
+         "\n"))
   (unless not-abbrevp
     (define-abbrev eab-abbrev-table phrase (car eab/tmp-str)))
   (message "%s" (car eab/tmp-str)))

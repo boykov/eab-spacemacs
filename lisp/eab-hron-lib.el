@@ -8,90 +8,90 @@
 ;; Status: not intended to be distributed yet
 
 (add-to-list 'org-publish-project-alist
-	     `("html-base"
-	       :base-directory ,(concat org-directory "archive/")
-	       :exclude "timeline.org"
-	       :publishing-directory ,(concat eab/org-publish-directory "archive/")
-	       :base-url ,(concat eab/org-publish-directory-file "archive/")
-	       :working-directory ,(concat eab/org-publish-directory "archive/")
-	       :online-suffix ".html"
-	       :working-suffix ".org"
-	       ;; :recursive t
-	       :with-drawers ("CLOCK")
-	       :section_numbers nil
-	       :table-of-contents nil
-	       :base-extension "org"
-	       :publishing-function org-html-publish-to-html
-	       :auto-sitemap t                ; Generate sitemap.org automagically...
-	       :sitemap-filename "sitemap.org"  ; ... call it sitemap.org (it's the default)...
-	       :sitemap-title "Sitemap"         ; ... with title 'Sitemap'.
-	       :style-include-default t
-	       :author-info nil
-	       :creator-info nil))
+             `("html-base"
+               :base-directory ,(concat org-directory "archive/")
+               :exclude "timeline.org"
+               :publishing-directory ,(concat eab/org-publish-directory "archive/")
+               :base-url ,(concat eab/org-publish-directory-file "archive/")
+               :working-directory ,(concat eab/org-publish-directory "archive/")
+               :online-suffix ".html"
+               :working-suffix ".org"
+               ;; :recursive t
+               :with-drawers ("CLOCK")
+               :section_numbers nil
+               :table-of-contents nil
+               :base-extension "org"
+               :publishing-function org-html-publish-to-html
+               :auto-sitemap t                ; Generate sitemap.org automagically...
+               :sitemap-filename "sitemap.org"  ; ... call it sitemap.org (it's the default)...
+               :sitemap-title "Sitemap"         ; ... with title 'Sitemap'.
+               :style-include-default t
+               :author-info nil
+               :creator-info nil))
 
 (add-to-list 'org-publish-project-alist
-	     `("html-clock"
-	       :base-directory ,(concat (file-truename org-directory) "clock/")
-	       :exclude "timeline.org"
-	       :publishing-directory ,(concat eab/org-publish-directory "clock/")
-	       :base-url ,(concat eab/org-publish-directory-file "clock/")
-	       :working-directory ,(concat eab/org-publish-directory "clock/")
-	       :online-suffix ".html"
-	       :working-suffix ".org"
-	       :recursive t
-	       :with-drawers ("CLOCK")
-	       :section_numbers nil
-	       :table-of-contents nil
-	       :base-extension "org"
-	       :publishing-function org-html-publish-to-html
-	       :auto-sitemap nil                ; Generate sitemap.org automagically...
-	       :sitemap-filename "sitemap.org"  ; ... call it sitemap.org (it's the default)...
-	       :sitemap-title "Sitemap"         ; ... with title 'Sitemap'.
-	       :style-include-default t
-	       :author-info nil
-	       :creator-info nil))
+             `("html-clock"
+               :base-directory ,(concat (file-truename org-directory) "clock/")
+               :exclude "timeline.org"
+               :publishing-directory ,(concat eab/org-publish-directory "clock/")
+               :base-url ,(concat eab/org-publish-directory-file "clock/")
+               :working-directory ,(concat eab/org-publish-directory "clock/")
+               :online-suffix ".html"
+               :working-suffix ".org"
+               :recursive t
+               :with-drawers ("CLOCK")
+               :section_numbers nil
+               :table-of-contents nil
+               :base-extension "org"
+               :publishing-function org-html-publish-to-html
+               :auto-sitemap nil                ; Generate sitemap.org automagically...
+               :sitemap-filename "sitemap.org"  ; ... call it sitemap.org (it's the default)...
+               :sitemap-title "Sitemap"         ; ... with title 'Sitemap'.
+               :style-include-default t
+               :author-info nil
+               :creator-info nil))
 
 (add-to-list 'org-publish-project-alist
-	     `("html-scale"
-	       :base-directory ,(concat (file-truename org-directory) "scale/")
-	       :publishing-directory ,(concat eab/org-publish-directory "clock/")
-	       :base-url ,(concat eab/org-publish-directory-file "clock/")
-	       :working-directory ,(concat eab/org-publish-directory "clock/")
-	       :online-suffix ".html"
-	       :working-suffix ".org"
-	       :recursive t
-	       :with-drawers ("CLOCK")
-	       :section_numbers nil
-	       :table-of-contents nil
-	       :base-extension "org"
-	       :publishing-function org-html-publish-to-html
-	       :auto-sitemap nil                ; Generate sitemap.org automagically...
-	       :sitemap-filename "sitemap.org"  ; ... call it sitemap.org (it's the default)...
-	       :sitemap-title "Sitemap"         ; ... with title 'Sitemap'.
-	       :style-include-default t
-	       :author-info nil
-	       :creator-info nil))
+             `("html-scale"
+               :base-directory ,(concat (file-truename org-directory) "scale/")
+               :publishing-directory ,(concat eab/org-publish-directory "clock/")
+               :base-url ,(concat eab/org-publish-directory-file "clock/")
+               :working-directory ,(concat eab/org-publish-directory "clock/")
+               :online-suffix ".html"
+               :working-suffix ".org"
+               :recursive t
+               :with-drawers ("CLOCK")
+               :section_numbers nil
+               :table-of-contents nil
+               :base-extension "org"
+               :publishing-function org-html-publish-to-html
+               :auto-sitemap nil                ; Generate sitemap.org automagically...
+               :sitemap-filename "sitemap.org"  ; ... call it sitemap.org (it's the default)...
+               :sitemap-title "Sitemap"         ; ... with title 'Sitemap'.
+               :style-include-default t
+               :author-info nil
+               :creator-info nil))
 
 (add-to-list 'org-publish-project-alist
-	     `("html-gen"
-	       :base-directory ,(concat org-directory "gen/")
-	       :publishing-directory ,(concat eab/org-publish-directory "gen/")
-	       :base-url ,(concat eab/org-publish-directory-file "gen/")
-	       :working-directory ,(concat eab/org-publish-directory "gen/")
-	       :online-suffix ".html"
-	       :working-suffix ".org"
-	       ;; :recursive t
-	       :with-drawers ("CLOCK")
-	       :section_numbers nil
-	       :table-of-contents nil
-	       :base-extension "org"
-	       :publishing-function org-html-publish-to-html
-	       :auto-sitemap t                ; Generate sitemap.org automagically...
-	       :sitemap-filename "sitemap.org"  ; ... call it sitemap.org (it's the default)...
-	       :sitemap-title "Sitemap"         ; ... with title 'Sitemap'.
-	       :style-include-default t
-	       :author-info nil
-	       :creator-info nil))
+             `("html-gen"
+               :base-directory ,(concat org-directory "gen/")
+               :publishing-directory ,(concat eab/org-publish-directory "gen/")
+               :base-url ,(concat eab/org-publish-directory-file "gen/")
+               :working-directory ,(concat eab/org-publish-directory "gen/")
+               :online-suffix ".html"
+               :working-suffix ".org"
+               ;; :recursive t
+               :with-drawers ("CLOCK")
+               :section_numbers nil
+               :table-of-contents nil
+               :base-extension "org"
+               :publishing-function org-html-publish-to-html
+               :auto-sitemap t                ; Generate sitemap.org automagically...
+               :sitemap-filename "sitemap.org"  ; ... call it sitemap.org (it's the default)...
+               :sitemap-title "Sitemap"         ; ... with title 'Sitemap'.
+               :style-include-default t
+               :author-info nil
+               :creator-info nil))
 
 ;; TODO don't use (org-publish-remove-all-timestamps) after fixing bug
 ;; in org-mode
@@ -102,7 +102,7 @@
     (require 'org)
     (sleep-for 1)
     (if fast
-	(eab/gotify "fast publish..." "started" 0)
+        (eab/gotify "fast publish..." "started" 0)
       (eab/gotify "publish..." "Come in to eab/batch-publish" 0)
       )
     (shell-command (concat "cd " org-directory))
@@ -124,7 +124,7 @@
     (org-publish-project "html-scale" (not fast))
     ;; (eab/shell-command "git stash save batch")
     (if fast
-	(eab/gotify "...fast finished" "success" 0)
+        (eab/gotify "...fast finished" "success" 0)
       (eab/gotify "...finished" "success" 0)
       )
     ))
@@ -133,10 +133,10 @@
   (ignore-errors
     (save-excursion
       (let* ((pend (save-excursion (org-forward-heading-same-level 1) (point)))
-	     (end (if (eq (point) pend) (save-excursion (end-of-buffer) (point)) pend)))
-	(if (re-search-forward org-ts-regexp-both end t)
-	    (org-time-string-to-seconds (match-string 0))
-	  (org-float-time '(11861 17628 167611 772000)))))))
+             (end (if (eq (point) pend) (save-excursion (end-of-buffer) (point)) pend)))
+        (if (re-search-forward org-ts-regexp-both end t)
+            (org-time-string-to-seconds (match-string 0))
+          (org-float-time '(11861 17628 167611 772000)))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;  _
@@ -156,19 +156,19 @@
 
 (defun eab/hron-add-current (h m)
   (let* ((now (org-parse-time-string (eab/hron-current-time-stamp)))
-	 (second (nth 0 now))
-	 (minute (nth 1 now))
-	 (hour (nth 2 now))
-	 (day (nth 3 now))
-	 (month (nth 4 now))
-	 (year (nth 5 now)))
+         (second (nth 0 now))
+         (minute (nth 1 now))
+         (hour (nth 2 now))
+         (day (nth 3 now))
+         (month (nth 4 now))
+         (year (nth 5 now)))
     (format-time-string "%Y-%m-%d %a %H:%M"
-			(apply 'encode-time (list second (+ m minute) (+ h hour) day month year)))))
+                        (apply 'encode-time (list second (+ m minute) (+ h hour) day month year)))))
 
 (defun eab/hron-change-current (h m)
   (let ((body
-	 `(setq eab/hron-current-time
-		',(apply 'encode-time (org-parse-time-string (eab/hron-add-current h m))))))
+         `(setq eab/hron-current-time
+                ',(apply 'encode-time (org-parse-time-string (eab/hron-add-current h m))))))
     (with-temp-file eab/org-file
       (let ((standard-output (current-buffer))) (print body)))
     (funcall `(lambda () ,body))))
@@ -176,8 +176,8 @@
 (defun eab/hron-set-current (str)
   "Setup `eab/org-file' and `eab/hron-current-time'"
   (let ((body
-	 `(setq eab/hron-current-time
-		',(apply 'encode-time (org-parse-time-string str)))))
+         `(setq eab/hron-current-time
+                ',(apply 'encode-time (org-parse-time-string str)))))
     (with-temp-file eab/org-file
       (let ((standard-output (current-buffer))) (print body)))
     (funcall `(lambda () ,body))))
@@ -191,53 +191,53 @@
 (defun eab/hron-todo-1 (hour minute arg)
   (if (eq major-mode 'org-agenda-mode)
       (progn
-	(setq eab/agendah-buffer (current-buffer))
-	(setq eab/hron-todo-from-agenda 't)
-	(org-agenda-switch-to))
+        (setq eab/agendah-buffer (current-buffer))
+        (setq eab/hron-todo-from-agenda 't)
+        (org-agenda-switch-to))
     (setq eab/hron-todo-from-agenda nil))
   (unless (eq arg 2)
     (eab/org-clock (apply 'encode-time
-			  (org-parse-time-string
-			   (eab/hron-current-time-stamp)))
-		   (apply 'encode-time
-			  (org-parse-time-string
-			   (eab/hron-add-current
-			    hour
-			    minute)))))
+                          (org-parse-time-string
+                           (eab/hron-current-time-stamp)))
+                   (apply 'encode-time
+                          (org-parse-time-string
+                           (eab/hron-add-current
+                            hour
+                            minute)))))
   (cl-case arg
     (4 nil)
     (2 (eab/hron-update-current-time))
     (otherwise (eab/hron-change-current
-		hour
-		minute)))
+                hour
+                minute)))
   (if eab/hron-todo-from-agenda
       (switch-to-buffer eab/agendah-buffer)))
 
 (defun eab/org-parse-current-time ()
   (apply 'encode-time
-	 (org-parse-time-string
-	  (substring
-	   (shell-command-to-string
-	    (concat org-directory "misc/clock.sh -s getCT -c " org-directory "clock"))
-	   0 -1))))
+         (org-parse-time-string
+          (substring
+           (shell-command-to-string
+            (concat org-directory "misc/clock.sh -s getCT -c " org-directory "clock"))
+           0 -1))))
 
 (defun eab/hron-update-current-time ()
   (eab/hron-set-current
-	 (format-time-string "%Y-%m-%d %a %H:%M"
-			     (eab/org-parse-current-time))))
+         (format-time-string "%Y-%m-%d %a %H:%M"
+                             (eab/org-parse-current-time))))
 
 (defun eab/hron-todo-setup ()
   (interactive)
   (load eab/org-file nil 't)
   (let* ((prompt (eab/hron-current-time-stamp))
-	 (hour (string-to-number
-		(read-from-minibuffer
-		 (concat prompt " hour ") nil nil nil
-		 'eab/hron-todo-history)))
-	 (minute (string-to-number
-		  (read-from-minibuffer
-		   (concat prompt " minute ") nil nil nil
-		   'eab/hron-todo-history))))
+         (hour (string-to-number
+                (read-from-minibuffer
+                 (concat prompt " hour ") nil nil nil
+                 'eab/hron-todo-history)))
+         (minute (string-to-number
+                  (read-from-minibuffer
+                   (concat prompt " minute ") nil nil nil
+                   'eab/hron-todo-history))))
     (setq eab/hron-todo-bulk-hour hour)
     (setq eab/hron-todo-bulk-minute minute)))
 
@@ -263,50 +263,50 @@
 (defun eab/org-shift-update-1 ()
   (if (org-at-clock-log-p)
       (progn
-	(cl-incf eab/org-shift-counter)
-	(unless eab/org-shift-updating
-	  (setq eab/org-shift-updating 't)
-	  (run-with-timer eab/org-shift-timeout nil 'eab/org-shift-update-2)))))
+        (cl-incf eab/org-shift-counter)
+        (unless eab/org-shift-updating
+          (setq eab/org-shift-updating 't)
+          (run-with-timer eab/org-shift-timeout nil 'eab/org-shift-update-2)))))
 
 (defun eab/org-shift-update-2 ()
   (if (org-at-clock-log-p)
       (progn
-	(cl-decf eab/org-shift-counter)
-	(if (< eab/org-shift-counter 1)
-	    (progn
-	      (save-buffer)
-	      (eab/hron-update-current-time)
-	      (setq eab/org-shift-updating nil))
-	  (run-with-timer eab/org-shift-timeout nil 'eab/org-shift-update-2)))))
+        (cl-decf eab/org-shift-counter)
+        (if (< eab/org-shift-counter 1)
+            (progn
+              (save-buffer)
+              (eab/hron-update-current-time)
+              (setq eab/org-shift-updating nil))
+          (run-with-timer eab/org-shift-timeout nil 'eab/org-shift-update-2)))))
 
 (defun eab/hron-todo (&optional arg)
   (interactive "p")
   (set-transient-map
    (let ((map (make-sparse-keymap)))
      (define-key map "u" (ilam
-			  (eab/hron-update-current-time)
-			  (run-with-timer 0.01 nil `(lambda ()
-						      (call-interactively 'eab/hron-todo)))
-			  (abort-minibuffers))) map) 't nil)
+                          (eab/hron-update-current-time)
+                          (run-with-timer 0.01 nil `(lambda ()
+                                                      (call-interactively 'eab/hron-todo)))
+                          (abort-minibuffers))) map) 't nil)
   (if (eq arg 2)
       (progn
-	(setq eab/hron-todo-bulk-hour 0)
-	(setq eab/hron-todo-bulk-minute 0))
+        (setq eab/hron-todo-bulk-hour 0)
+        (setq eab/hron-todo-bulk-minute 0))
     (eab/hron-todo-setup))
   (if org-agenda-bulk-marked-entries
       (save-excursion
-	(progn
-	  (let ((method current-input-method)
-		(len (length org-agenda-bulk-marked-entries)))
-	    (if (or (= len 2) (= len 1))
-		(execute-kbd-macro 'mark-timeline))
-	    (set-input-method method))
-	  (execute-kbd-macro
-	   (read-kbd-macro
-	    "B f eab/hron-todo-bulk RET"))
-	  (eab/hron-change-current
-	   eab/hron-todo-bulk-hour
-	   eab/hron-todo-bulk-minute)))
+        (progn
+          (let ((method current-input-method)
+                (len (length org-agenda-bulk-marked-entries)))
+            (if (or (= len 2) (= len 1))
+                (execute-kbd-macro 'mark-timeline))
+            (set-input-method method))
+          (execute-kbd-macro
+           (read-kbd-macro
+            "B f eab/hron-todo-bulk RET"))
+          (eab/hron-change-current
+           eab/hron-todo-bulk-hour
+           eab/hron-todo-bulk-minute)))
     (eab/hron-todo-1 eab/hron-todo-bulk-hour eab/hron-todo-bulk-minute arg)))
 
 (defvar eab/helm-org-marker nil)
@@ -314,25 +314,25 @@
   (save-window-excursion
     (let ((markers (helm-marked-candidates :all-sources 't)))
       (if (not eab/helm-org-marker)
-	  (setq eab/helm-org-marker
-		(with-current-buffer (get-buffer "timeline-time-mining.org")
-		  (point-max-marker))))
+          (setq eab/helm-org-marker
+                (with-current-buffer (get-buffer "timeline-time-mining.org")
+                  (point-max-marker))))
       (if (> (length markers) 1)
-	  (progn
-	    (add-to-list 'markers eab/helm-org-marker)
-	    ))
+          (progn
+            (add-to-list 'markers eab/helm-org-marker)
+            ))
       (eab/hron-todo-setup)
       (loop for cand in markers
-	    do
-	    (progn
-	      (message "%s" cand)
-	      (helm-org-goto-marker cand)
-	      (if (org-ql--predicate-clocked)
-		  (eab/hron-todo-1 eab/hron-todo-bulk-hour eab/hron-todo-bulk-minute
-				   (if (eq cand (car (reverse markers))) 0 4))
-		(progn
-		  (message "Empty CLOCK entry!")
-		  (sleep-for 0.5)))))
+            do
+            (progn
+              (message "%s" cand)
+              (helm-org-goto-marker cand)
+              (if (org-ql--predicate-clocked)
+                  (eab/hron-todo-1 eab/hron-todo-bulk-hour eab/hron-todo-bulk-minute
+                                   (if (eq cand (car (reverse markers))) 0 4))
+                (progn
+                  (message "Empty CLOCK entry!")
+                  (sleep-for 0.5)))))
       (save-some-buffers 't))
     (eab/helm-org-agenda-files-headings)))
 
@@ -344,8 +344,8 @@
     (backward-char 1)
     (org-indent-line)
     (when (and (save-excursion
-		 (end-of-line 0)
-		 (org-in-item-p)))
+                 (end-of-line 0)
+                 (org-in-item-p)))
       (beginning-of-line 1)
       (org-indent-line-to (- (org-get-indentation) 2)))
     (insert org-clock-string " ")
@@ -354,29 +354,29 @@
     (org-insert-time-stamp at-time 'with-hm 'inactive)
     (let (s h m)
       (setq s (- (org-float-time at-time)
-		 (org-float-time start-time))
-	    ss (cl-signum s)
-	    s (abs s)
-	    h (floor (/ s 3600))
-	    s (- s (* 3600 h))
-	    m (floor (/ s 60))
-	    s (- s (* 60 s)))
+                 (org-float-time start-time))
+            ss (cl-signum s)
+            s (abs s)
+            h (floor (/ s 3600))
+            s (- s (* 3600 h))
+            m (floor (/ s 60))
+            s (- s (* 60 s)))
       (insert " => " (let ((fh (cond
-				((and (= ss -1) (< h 10))
-				 "-%1d")
-				((and (= ss -1) (> h 9))
-				 "-%2d")
-				(t
-				 "%2d"))))
-			       (format (concat fh ":%02d") h m))))))
+                                ((and (= ss -1) (< h 10))
+                                 "-%1d")
+                                ((and (= ss -1) (> h 9))
+                                 "-%2d")
+                                (t
+                                 "%2d"))))
+                               (format (concat fh ":%02d") h m))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;		  _   _	_      	_     _	  _
-;;		 | \ | (_) __ _| |__ | |_| |_  	_
-;;		 |  \| | |/ _` | '_ \| __| | | | |
-;;		 | |\  | | (_| | | | | |_| | |_| |
-;;		 |_| \_|_|\__, |_| |_|\__|_|\__, |
-;;		       	  |___/	       	    |___/
+;;                _   _ _       _     _   _
+;;               | \ | (_) __ _| |__ | |_| |_   _
+;;               |  \| | |/ _` | '_ \| __| | | | |
+;;               | |\  | | (_| | | | | |_| | |_| |
+;;               |_| \_|_|\__, |_| |_|\__|_|\__, |
+;;                        |___/             |___/
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Nightly
@@ -395,17 +395,17 @@
     (mapcar
      (lambda (x)
        (let ((buf (get-file-buffer x)))
-	 (if buf (kill-buffer buf))))
+         (if buf (kill-buffer buf))))
      (file-expand-wildcards pattern))
     (shell-command (concat "rm " pattern))))
 
 (defun eab/update-all-dblocks ()
   (interactive)
   (mapcar (lambda (x)
-	     (find-file x)
-	     (org-update-all-dblocks)
-	     (save-buffer))
-	  (eab/clocktable-scope)))
+             (find-file x)
+             (org-update-all-dblocks)
+             (save-buffer))
+          (eab/clocktable-scope)))
 
 (defun eab/update-reports-nightly ()
   (interactive)
@@ -420,11 +420,11 @@
   (eab/delete-nightly))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;	       	____
-;;	       / ___|___ _   _ _ __ ___
-;;	      |	|   / __| | | |	'_ ` _ \
-;;	      |	|___\__	\ |_| |	| | | |	|
-;;	       \____|___/\__,_|_| |_| |_|
+;;              ____
+;;             / ___|___ _   _ _ __ ___
+;;            | |   / __| | | | '_ ` _ \
+;;            | |___\__ \ |_| | | | | | |
+;;             \____|___/\__,_|_| |_| |_|
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Csum
@@ -436,7 +436,7 @@
 
 (defun csum-percent ()
   (format "%0.2f" (* (/ (org-clock-sum-current-item)
-			(eab/total-minutes)) 100)))
+                        (eab/total-minutes)) 100)))
 
 (defun csum-file-percent ()
   (format "%0.2f" (* (/ (org-clock-sum)
@@ -495,13 +495,13 @@
   (ignore-errors
     (progn
       (let ((server-use-tcp 't))
-	(server-eval-at "cyclos" '(eab/renew-agenda-files-1)))
+        (server-eval-at "cyclos" '(eab/renew-agenda-files-1)))
       (let ((server-use-tcp server-C-use-tcp))
-	(server-eval-at (eab/server-C) '(progn
-					  (eab/rsync-org-directory)
-					  (eab/renew-agenda-files-1))))
+        (server-eval-at (eab/server-C) '(progn
+                                          (eab/rsync-org-directory)
+                                          (eab/renew-agenda-files-1))))
       (let ((server-use-tcp 't))
-	(server-eval-at "serverP" '(eab/renew-agenda-files-1)))))
+        (server-eval-at "serverP" '(eab/renew-agenda-files-1)))))
   )
 
 (defun eab/check-csum-day (&optional date)
@@ -598,8 +598,8 @@
   ;; (execute-kbd-macro "\M-;*nil\C-m")
   (org-cycle)
   (setq eab/hron-csum-day (let ((beg (point)))
-			    (execute-kbd-macro "\M-l\M-;*\M-j\M-l")
-			    (buffer-substring-no-properties beg (point)))))
+                            (execute-kbd-macro "\M-l\M-;*\M-j\M-l")
+                            (buffer-substring-no-properties beg (point)))))
 
 ;; DONE kairos заменить на hostname
 (defun eab/send-mail (message)
@@ -621,24 +621,24 @@
 (defun eab/get-all-csum ()
   (load eab/org-file)
   (let* ((current-encoded
-	  (apply 'encode-time  (org-parse-time-string (eab/hron-add-current 0 0))))
-	 (year (- (string-to-number (format-time-string "%Y" current-encoded)) 1))
-	 (min
-	  (number-to-string (string-to-number (format-time-string "%M" current-encoded))))
-	 (hour
-	  (+
-	   (* (apply '+
-		     (mapcar (lambda (y)
-			       (calendar-day-number `(12 31 ,y)))
-			     (number-sequence 2007 year))) 24)
-	   0 ;; transfer time: winter/summer
-	   ;; see also CLOCK: [2014-10-26 Вс. 00:00]--[2014-10-26 Вс. 05:00] =>  6:00
-	   (* (- (string-to-number
-		  (cadr
-		   (split-string
-		    (calendar-day-of-year-string
-		     (read (format-time-string "(%m %d %Y)" current-encoded)))))) 1) 24)
-	   (string-to-number (format-time-string "%H" current-encoded)))))
+          (apply 'encode-time  (org-parse-time-string (eab/hron-add-current 0 0))))
+         (year (- (string-to-number (format-time-string "%Y" current-encoded)) 1))
+         (min
+          (number-to-string (string-to-number (format-time-string "%M" current-encoded))))
+         (hour
+          (+
+           (* (apply '+
+                     (mapcar (lambda (y)
+                               (calendar-day-number `(12 31 ,y)))
+                             (number-sequence 2007 year))) 24)
+           0 ;; transfer time: winter/summer
+           ;; see also CLOCK: [2014-10-26 Вс. 00:00]--[2014-10-26 Вс. 05:00] =>  6:00
+           (* (- (string-to-number
+                  (cadr
+                   (split-string
+                    (calendar-day-of-year-string
+                     (read (format-time-string "(%m %d %Y)" current-encoded)))))) 1) 24)
+           (string-to-number (format-time-string "%H" current-encoded)))))
     (concat
      (number-to-string (/ hour 24))
      "d "
@@ -659,19 +659,19 @@
   (let ((fname (if arg 'eab/check-csum-all 'eab/check-csum-all-GREP)))
     (funcall
      `(lambda () (async-start
-		   (lambda ()
-		     (require 'server)
-		     (sleep-for 1)
-		     (let ((server-use-tcp ,server-C-use-tcp))
-		       (server-eval-at ,(eab/server-C) '(progn
-							  (shell-command (concat "cd " org-directory))
-							  (eab/rsync-org-directory)
-							  (revert-all-buffers)
-							  (,fname)
-							  (eab/send-csum-all)
-							  )))
-		     (kill-emacs))
-		   (lambda (result) (message "async result: <%s>" result)))))))
+                   (lambda ()
+                     (require 'server)
+                     (sleep-for 1)
+                     (let ((server-use-tcp ,server-C-use-tcp))
+                       (server-eval-at ,(eab/server-C) '(progn
+                                                          (shell-command (concat "cd " org-directory))
+                                                          (eab/rsync-org-directory)
+                                                          (revert-all-buffers)
+                                                          (,fname)
+                                                          (eab/send-csum-all)
+                                                          )))
+                     (kill-emacs))
+                   (lambda (result) (message "async result: <%s>" result)))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -680,52 +680,52 @@
        "\\([0-9]*?\\)\\(?:d \\)*\\([0-9]+\\):\\([0-9]+\\)"
        str)
       (let* ((days
-	      (string-to-number (match-string 1 str)))
-	     (hours
-	      (string-to-number (match-string 2 str)))
-	     (minutes
-	      (string-to-number (match-string 3 str)))
-	     (total-minutes
-	      (+ minutes
-		 (* hours 60)
-		 (* days 24 60))))
-	total-minutes)))
+              (string-to-number (match-string 1 str)))
+             (hours
+              (string-to-number (match-string 2 str)))
+             (minutes
+              (string-to-number (match-string 3 str)))
+             (total-minutes
+              (+ minutes
+                 (* hours 60)
+                 (* days 24 60))))
+        total-minutes)))
 
 (defun eab/forecast-hron (str)
   (if (string-match
        "\\([0-9]*?\\)\\(?:d \\)*\\([0-9]+\\):\\([0-9]+\\)"
        str)
       (let* ((total-days
-	      (string-to-number (match-string 1 str)))
-	     (total-hours
-	      (+ (* total-days 24)
-		 (string-to-number (match-string 2 str))
-		 (/ (string-to-number (match-string 3 str)) 60.0)))
-	     (now (org-parse-time-string (eab/hron-current-time-stamp)))
-	     (days
-	      (-
-	       (string-to-number
-		(cadr
-		 (split-string
-		  (calendar-day-of-year-string (list (nth 4 now) (nth 3 now) (nth 5 now))))))
-	       1))
-	     (hours (/ (nth 2 now) 24.0))
-	     (forecast-hours
-	      (* (/ 365.0 (+ days hours))
-		 total-hours)))
-	;; forecast-hours) 0.0))
-	(if (>= forecast-hours 24)
-	    (let ((forecast-days
-		   (truncate (/ forecast-hours 24))))
-	      (concat
-	       (number-to-string forecast-days)
-	       "d "
-	       (number-to-string
-		(- (/ (truncate (* forecast-hours 100)) 100) (* forecast-days 24)))
-	       ":00"))
-	  (concat
-	   (number-to-string
-	    (/ (truncate (* forecast-hours 100)) 100)) ":00"))) 0.0))
+              (string-to-number (match-string 1 str)))
+             (total-hours
+              (+ (* total-days 24)
+                 (string-to-number (match-string 2 str))
+                 (/ (string-to-number (match-string 3 str)) 60.0)))
+             (now (org-parse-time-string (eab/hron-current-time-stamp)))
+             (days
+              (-
+               (string-to-number
+                (cadr
+                 (split-string
+                  (calendar-day-of-year-string (list (nth 4 now) (nth 3 now) (nth 5 now))))))
+               1))
+             (hours (/ (nth 2 now) 24.0))
+             (forecast-hours
+              (* (/ 365.0 (+ days hours))
+                 total-hours)))
+        ;; forecast-hours) 0.0))
+        (if (>= forecast-hours 24)
+            (let ((forecast-days
+                   (truncate (/ forecast-hours 24))))
+              (concat
+               (number-to-string forecast-days)
+               "d "
+               (number-to-string
+                (- (/ (truncate (* forecast-hours 100)) 100) (* forecast-days 24)))
+               ":00"))
+          (concat
+           (number-to-string
+            (/ (truncate (* forecast-hours 100)) 100)) ":00"))) 0.0))
 
 ;; TODO если извлекать id из столбца Headline, а затем по id получать
 ;; Custom_BIB, то можно обойтись без отдельного столбца

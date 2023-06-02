@@ -16,7 +16,7 @@
 
 '((let ((server-use-tcp server-C-use-tcp))
     (list (server-eval-at (eab/server-C) 'eab/gotify-token)
-	  (server-eval-at (eab/server-C) 'eab/gotify-client-token)))
+          (server-eval-at (eab/server-C) 'eab/gotify-client-token)))
   )
 
 (setq eab/gotify-token
@@ -27,9 +27,9 @@ END
 (defun eab/gotify (title message priority)
   (shell-command
    (concat "curl \"http://192.168.2.18:8085/message?token=" eab/gotify-token "\" "
-	   "-F \"title=" title
-	   "\" -F \"message=" message
-	   "\" -F \"priority=" (number-to-string priority) "\"")))
+           "-F \"title=" title
+           "\" -F \"message=" message
+           "\" -F \"priority=" (number-to-string priority) "\"")))
 (setq eab/gotify-client-token
       (substring (shell-command-to-string (concat eab/ssh-host " bash <<'END'
 ~/git/auto/keepass.sh \"portal/gotify\" -a client-token
@@ -41,8 +41,6 @@ END
 
 (setq eab/test-dotemacs-command
       (concat eab/ssh-host " ~/git/auto/test-dotemacs.sh"))
-
-(setq eab/xdg-open (concat eab/ssh-host-local " DISPLAY=:0 xdg-open"))
 
 (defun eab/loaded-ok ()
   (if configuration-layer-error-count
@@ -58,7 +56,7 @@ END
 (defun display-startup-echo-area-message ()
   "Change the default welcome message of minibuffer to another one."
   (message (with-current-buffer (get-buffer-create "*spacemacs*")
-	     (buffer-substring-no-properties (point-min) (point-max))))
+             (buffer-substring-no-properties (point-min) (point-max))))
   (message "Spacemacs is ready."))
 
 (setq eab/homedir (getenv "HOME"))
@@ -75,9 +73,9 @@ END
 
 (defun eab/server-P ()
   (if (or (eab/ondaemon "serverP")
-	  (eab/ondaemon "cyclos")
-	  (eab/ondaemon "microcyclos"))
-	  eab/daemon-name))
+          (eab/ondaemon "cyclos")
+          (eab/ondaemon "microcyclos"))
+          eab/daemon-name))
 
 (defun eab/server-C ()
   "serverC")
@@ -91,23 +89,23 @@ END
 (require 'cl-macs)
 (cl-defun eab/patch-this-code (func-name rpairs &optional &key lexical native)
   (let* ((overriding-terminal-local-map (make-sparse-keymap))
-	 (func-string (save-window-excursion
-			(find-function-do-it func-name nil 'switch-to-buffer)
-			(let ((bgn (point)))
-			  (forward-sexp)
-			  (let ((end (point)))
-			    (buffer-substring-no-properties bgn end)))))
-	 (func-code (read
-		     (seq-reduce
-		      (lambda (string regexp-replacement-pair)
-			(replace-regexp-in-string
-			 (car regexp-replacement-pair)
-			 (cdr regexp-replacement-pair)
-			 string))
-		      rpairs
-		      func-string))))
+         (func-string (save-window-excursion
+                        (find-function-do-it func-name nil 'switch-to-buffer)
+                        (let ((bgn (point)))
+                          (forward-sexp)
+                          (let ((end (point)))
+                            (buffer-substring-no-properties bgn end)))))
+         (func-code (read
+                     (seq-reduce
+                      (lambda (string regexp-replacement-pair)
+                        (replace-regexp-in-string
+                         (car regexp-replacement-pair)
+                         (cdr regexp-replacement-pair)
+                         string))
+                      rpairs
+                      func-string))))
     (if native
-	(native-compile (eval func-code lexical))
+        (native-compile (eval func-code lexical))
       (eval func-code lexical))))
 
 (defun revert-all-buffers ()
@@ -116,9 +114,9 @@ END
   (dolist (buf (buffer-list))
     (with-current-buffer buf
       (when (and
-	     (buffer-file-name)
-	     (file-exists-p (buffer-file-name))
-	     (not (buffer-modified-p)))
+             (buffer-file-name)
+             (file-exists-p (buffer-file-name))
+             (not (buffer-modified-p)))
         (revert-buffer t t t))))
   (message "Refreshed open files."))
 
@@ -134,7 +132,7 @@ END
 
 '((let ((server-use-tcp 't))
     (list (server-eval-at "serverP" 'eab/gotify-token)
-	  (server-eval-at "serverP" 'eab/gotify-client-token)))
+          (server-eval-at "serverP" 'eab/gotify-client-token)))
   )
 
 
@@ -161,15 +159,15 @@ END
   "Return a list of lines of a file at at FPATH."
   (if (file-exists-p file)
       (with-temp-buffer
-	(insert-file-contents file)
-	(split-string (buffer-string) "\n" t))))
+        (insert-file-contents file)
+        (split-string (buffer-string) "\n" t))))
 
 (defun eab/onhost (def)
   (if (string= system-name def) 't))
 
 (defun eab/history-dir ()
   (let ((dir
-	 (cdr (assoc eab/daemon-name (gethash 'eab/history-dir-alist eab/paths-hash)))))
+         (cdr (assoc eab/daemon-name (gethash 'eab/history-dir-alist eab/paths-hash)))))
     (unless (file-exists-p dir)
       (ignore-errors (make-directory dir)))
     dir))
@@ -178,26 +176,29 @@ END
   (eab/history-dir))
 
 (setq-put eab/history-dir-alist
-	  `(
-	    ("server"        . ,(concat user-emacs-directory "history/"))
-	    ("serverM"       . ,(concat user-emacs-directory "historyM/"))
-	    ("serverP"       . ,(concat user-emacs-directory "historyP/"))
-	    ("microcyclos"   . ,(concat user-emacs-directory "historyMicrocyclos/"))
-	    ("cyclos"        . ,(concat user-emacs-directory "historyCyclos/"))
-	    ("serverC"       . ,(concat user-emacs-directory "historyC/"))
-	    ))
+          `(
+            ("server"        . ,(concat user-emacs-directory "history/"))
+            ("serverM"       . ,(concat user-emacs-directory "historyM/"))
+            ("serverP"       . ,(concat user-emacs-directory "historyP/"))
+            ("microcyclos"   . ,(concat user-emacs-directory "historyMicrocyclos/"))
+            ("cyclos"        . ,(concat user-emacs-directory "historyCyclos/"))
+            ("serverC"       . ,(concat user-emacs-directory "historyC/"))
+            ))
 
 (setq-put eab/emacs-service-alist
-	  `(
-	    ("serverP"       . "docker-compose-emacs")
-	    ("microcyclos"   . "docker-compose-micro")
-	    ("cyclos"        . "cyclos-emacs")
-	    ("serverC"       . "docker-compose-clocksum")
-	  ))
+          `(
+            ("serverP"       . "docker-compose-emacs")
+            ("microcyclos"   . "docker-compose-micro")
+            ("cyclos"        . "cyclos-emacs")
+            ("serverC"       . "docker-compose-clocksum")
+          ))
 
 (cond ((eab/onhost "chronos28")    (setq eab/ssh-host-local eab/ssh-host))
       ((eab/onhost "clocksum-28")  (setq eab/ssh-host-local eab/ssh-host))
-      ((eab/onhost "cyclos-emacs") (setq eab/ssh-host-local "ssh cyclos")))
+      ((eab/onhost "cyclos-emacs") (setq eab/ssh-host-local "ssh cyclos"))
+      (t (setq eab/ssh-host-local eab/ssh-host)))
+
+(setq eab/xdg-open (concat eab/ssh-host-local " DISPLAY=:0 xdg-open"))
 
 (setq eab/gr-command
       (concat eab/ssh-host-local " bash ~/bin/gr status"))
@@ -240,17 +241,17 @@ END
 (setq-put org-ditaa-jar-path "/usr/bin/ditaa")
 
 (setq-put org-link-abbrev-alist
-	  '(("bib" . "~/git/lit/boykov.bib::%s")
-	    ("papers" . "https://share.homew.keenetic.pro/papers/%s.pdf")
-	    ("google" . "http://www.google.com/search?q=")
-	    ))
+          '(("bib" . "~/git/lit/boykov.bib::%s")
+            ("papers" . "https://share.homew.keenetic.pro/papers/%s.pdf")
+            ("google" . "http://www.google.com/search?q=")
+            ))
 ;; See also eab-header in ~/texmf/tex/latex/eab-styles/eab-header.sty
 
 
 (defun eab/wg-update-list-1 (path)
   (let* ((true-path (file-truename path))
-	 (nondir (file-name-nondirectory path))
-	 (name nondir))
+         (nondir (file-name-nondirectory path))
+         (name nondir))
     `(,true-path ,name)))
 
 (setq-put eab/workgroups-save (concat (eab/history-dir) ".emacs_workgroups"))
@@ -295,9 +296,9 @@ END
 ;; TODO auto-save и торможение при C-s
 (defconst emacs-tmp-dir
   (format "%s/%s%s/"
-	  (concat (eab/history-dir) "backup")
-	  (concat "emacs" eab/daemon-name)
-	  (user-uid)))
+          (concat (eab/history-dir) "backup")
+          (concat "emacs" eab/daemon-name)
+          (user-uid)))
 
 (ignore-errors (make-directory emacs-tmp-dir))
 

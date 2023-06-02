@@ -37,9 +37,9 @@
 (setq ring-bell-function 'ignore)
 
 (add-hook 'after-save-hook
-	  (lambda ()
-	    (interactive)
-	    (add-to-list 'eab/recently-saved-files-list buffer-file-name)))
+          (lambda ()
+            (interactive)
+            (add-to-list 'eab/recently-saved-files-list buffer-file-name)))
 
 ;; see eab-compile.el
 (defun colorize-compilation-buffer ()
@@ -75,7 +75,7 @@
                            ,(if (stringp (daemonp)) (daemonp) "")
                            "@"
                            ,(system-name)
-			   " "
+                           " "
                            ;; ": -<{" (:eval (ignore-errors (eab/wg-current-workgroup))) "}>- "
                            (:eval (if (buffer-file-name)
                                       (abbreviate-file-name (buffer-file-name))
@@ -97,16 +97,18 @@
 (add-hook 'org-mode-hook (lambda () (setq indent-tabs-mode nil)))
 (add-hook 'sh-mode-hook (lambda () (setq indent-tabs-mode nil)))
 (add-hook 'go-mode-hook (lambda ()
-			  (setq indent-tabs-mode nil)
-			  (setq-local tab-width 2)
-			  ))
+                          (setq indent-tabs-mode nil)
+                          (setq-local tab-width 2)
+                          ))
 (add-hook 'nxml-mode-hook (lambda ()
-			    (setq indent-tabs-mode nil)
-			    (setq-local nxml-child-indent 4)
-			    ))
+                            (setq indent-tabs-mode nil)
+                            (setq-local nxml-child-indent 4)
+                            ))
 (add-hook 'markdown-mode-hook (lambda () (setq indent-tabs-mode nil)))
 (add-hook 'ansible-vault-mode-hook (lambda () (setq indent-tabs-mode nil)))
 (add-hook 'js-mode-hook (lambda () (setq indent-tabs-mode nil)))
+(add-hook 'emacs-lisp-mode-hook (lambda () (setq indent-tabs-mode nil)))
+
 
 (setq x-select-enable-clipboard t)
 (column-number-mode 1)
@@ -131,7 +133,7 @@
    (concat
     "http://www.google.com/search?ie=utf-8&oe=utf-8&q="
     (url-hexify-string (if mark-active
-			   (buffer-substring (region-beginning) (region-end))
-			 (read-string "Google: "))))))
+                           (buffer-substring (region-beginning) (region-end))
+                         (read-string "Google: "))))))
 
 (provide 'eab-ui)

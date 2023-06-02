@@ -41,15 +41,15 @@
     (cond
      ((eq eab/outline-state 'all)
       (progn
-	(setq-local eab/outline-state '99)
-	(outline-hide-sublevels 99)))
+        (setq-local eab/outline-state '99)
+        (outline-hide-sublevels 99)))
      ((eq eab/outline-state '99)
       (progn
-	(setq-local eab/outline-state 'interactive)
-	(call-interactively 'outline-hide-sublevels)))
+        (setq-local eab/outline-state 'interactive)
+        (call-interactively 'outline-hide-sublevels)))
      ((eq eab/outline-state 'interactive)
       (progn
-	(setq-local eab/outline-state 'all)
-	(call-interactively 'outline-show-all))))))
+        (setq-local eab/outline-state 'all)
+        (call-interactively 'outline-show-all))))))
 
 (provide 'eab-outline)

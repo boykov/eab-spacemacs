@@ -61,10 +61,10 @@
 (defun eab/grep-utf ()
   (interactive)
   (let* ((ss (split-string (car compilation-arguments) "LANG=C "))
-	 (compilation-arguments
-	  (append
-	   (if (> (length ss) 1) (list (cadr ss)) (list (car compilation-arguments)))
-	   (cdr compilation-arguments))))
+         (compilation-arguments
+          (append
+           (if (> (length ss) 1) (list (cadr ss)) (list (car compilation-arguments)))
+           (cdr compilation-arguments))))
     (eab/recompile)))
 
 (defun eab/grep-switch ()
@@ -75,24 +75,24 @@
       (eab/recompile))
   (if (eq eab/grep-switch-cycle '0)
       (progn
-	(eab/grep-switch-0 eab/grep-clock-left eab/grep-clock-right)
-	(setq-local eab/grep-switch-cycle 'full)))
+        (eab/grep-switch-0 eab/grep-clock-left eab/grep-clock-right)
+        (setq-local eab/grep-switch-cycle 'full)))
   (if (eq eab/grep-switch-cycle 'init)
       (progn
-	(eab/grep-switch-0 eab/grep-clock-left-0 eab/grep-clock-right-0)
-	(setq-local eab/grep-switch-cycle '0))))
+        (eab/grep-switch-0 eab/grep-clock-left-0 eab/grep-clock-right-0)
+        (setq-local eab/grep-switch-cycle '0))))
 
 (defun eab/grep-switch-0 (left right)
   "Switch to org-mode aware grep."
   (interactive)
   (let* ((ss-0 (car (split-string (car compilation-arguments) eab/grep-sort)))
-	 (ss-1 (concat (car (split-string ss-0 (eab/grep-command))) (eab/grep-command)))
-	 (ss (cadr (split-string ss-0 (concat " " (eab/grep-command)))))
-	 (compilation-arguments
-	  (append (list (concat ss-1 left
-				(string-trim ss "\"" "\"")
-				right eab/grep-sort))
-		  (cdr compilation-arguments))))
+         (ss-1 (concat (car (split-string ss-0 (eab/grep-command))) (eab/grep-command)))
+         (ss (cadr (split-string ss-0 (concat " " (eab/grep-command)))))
+         (compilation-arguments
+          (append (list (concat ss-1 left
+                                (string-trim ss "\"" "\"")
+                                right eab/grep-sort))
+                  (cdr compilation-arguments))))
     (eab/recompile)))
 
 (defun eab/gz-grep (extension)
@@ -102,61 +102,61 @@
 
 (defun eab/grep-gitmodules (arg)
   (let* ((gitmodules-1 (concat
-			top-level
-			"/.gitmodules"))
-	 (gitmodules (concat
-		      remote-prefix
-		      gitmodules-1))
-	 (grepmoduleignore-1 (concat
-			      top-level
-			      "/.grepmoduleignore"))
-	 (grepmoduleignore (concat
-			    remote-prefix
-			    grepmoduleignore-1)))
+                        top-level
+                        "/.gitmodules"))
+         (gitmodules (concat
+                      remote-prefix
+                      gitmodules-1))
+         (grepmoduleignore-1 (concat
+                              top-level
+                              "/.grepmoduleignore"))
+         (grepmoduleignore (concat
+                            remote-prefix
+                            grepmoduleignore-1)))
     (if (file-exists-p gitmodules)
-	(if (equal arg 2)
-	    (if (file-exists-p grepmoduleignore)
-		eab/grep-ls
-	      eab/grep-ls-recurse)
-	  eab/grep-ls)
+        (if (equal arg 2)
+            (if (file-exists-p grepmoduleignore)
+                eab/grep-ls
+              eab/grep-ls-recurse)
+          eab/grep-ls)
       eab/grep-ls)))
 
 (defun eab/grep (arg)
   (interactive "P")
   (eab/with-git-toplevel
    (let* ((grep-host-defaults-alist nil)
-	  (extension (ignore-errors
-		       (file-name-extension buffer-file-name)))
-	  (grep-with-args (concat (eab/gz-grep extension) eab/grep-command-args))
-	  (target-files (eab/grep-gitmodules arg))
-	  (grep-command-no-list
-	   (if (eab/grep-ls-gitmode?)
-	       (concat target-files eab/grep-xargs grep-with-args)
-	     (concat grep-with-args " *." extension)))
-	  (len-str (1+ (length grep-command-no-list)))
-	  (grep-command-no-list-sort (concat grep-command-no-list eab/grep-sort))
-	  (grep-command
-	   (if grep-history
-	       (cons grep-command-no-list-sort len-str)
-	     grep-command-no-list-sort))
-	  (grep-command-complete
-	   (concat
-	    (substring grep-command-no-list-sort 0 (1- len-str))
-	    (symbol-name (symbol-at-point)) " "
-	    (substring grep-command-no-list-sort len-str))))
+          (extension (ignore-errors
+                       (file-name-extension buffer-file-name)))
+          (grep-with-args (concat (eab/gz-grep extension) eab/grep-command-args))
+          (target-files (eab/grep-gitmodules arg))
+          (grep-command-no-list
+           (if (eab/grep-ls-gitmode?)
+               (concat target-files eab/grep-xargs grep-with-args)
+             (concat grep-with-args " *." extension)))
+          (len-str (1+ (length grep-command-no-list)))
+          (grep-command-no-list-sort (concat grep-command-no-list eab/grep-sort))
+          (grep-command
+           (if grep-history
+               (cons grep-command-no-list-sort len-str)
+             grep-command-no-list-sort))
+          (grep-command-complete
+           (concat
+            (substring grep-command-no-list-sort 0 (1- len-str))
+            (symbol-name (symbol-at-point)) " "
+            (substring grep-command-no-list-sort len-str))))
      (if (or (not arg) (equal arg 2))
-	 (let ((current-prefix-arg nil))
-	   (call-interactively 'grep))
+         (let ((current-prefix-arg nil))
+           (call-interactively 'grep))
        (compilation-start
-	(if (and grep-use-null-device null-device)
-	    (concat  grep-command-complete " " null-device)
-	  grep-command-complete)
-	'grep-mode)))))
+        (if (and grep-use-null-device null-device)
+            (concat  grep-command-complete " " null-device)
+          grep-command-complete)
+        'grep-mode)))))
 
 (defun eab/find-grep ()
   (interactive)
   (let* ((grep-host-defaults-alist nil)
-	(command (concat "find . -iname '**' -type f -print0 | xargs -0 -e " (eab/grep-command) "\"\""))
+        (command (concat "find . -iname '**' -type f -print0 | xargs -0 -e " (eab/grep-command) "\"\""))
         (grep-find-command
          `(, (concat command eab/grep-sort) . ,(length command))))
     (call-interactively 'find-grep)))
@@ -165,7 +165,7 @@
 (defun eab/clock-grep ()
   (interactive)
   (let* ((grep-host-defaults-alist nil)
-	 (command (concat eab/grep-ls eab/grep-xargs (concat "rg" eab/grep-command-args) eab/grep-clock-left-0))
+         (command (concat eab/grep-ls eab/grep-xargs (concat "rg" eab/grep-command-args) eab/grep-clock-left-0))
          (grep-command
           `(, (concat command eab/grep-clock-right-0 eab/grep-sort) . ,(1+ (length command)))))
     (call-interactively 'grep)))
@@ -182,7 +182,7 @@
   (save-excursion
     (eab/switch-grep)
     (if (equal default-directory
-	       "/home/eab/pnt/jaguar/git/org-chronos/")
-	(eab/grep-switch))))
+               "/home/eab/pnt/jaguar/git/org-chronos/")
+        (eab/grep-switch))))
 
 (provide 'eab-grep)

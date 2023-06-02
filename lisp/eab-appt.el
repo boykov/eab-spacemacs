@@ -7,9 +7,9 @@
   (run-at-time nil nil (lambda () (message "%s" "hello")))
   (run-at-time nil 3600 'org-save-all-org-buffers)
   (run-at-time 60 3600 (lambda ()
-			 (interactive)
-			 (if desktop-file-modtime
-			     (desktop-save (eab/desktop-dir))))))
+                         (interactive)
+                         (if desktop-file-modtime
+                             (desktop-save (eab/desktop-dir))))))
 
 ;; TODO too much?
 (setq appt-message-warning-time 12)

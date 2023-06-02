@@ -10,34 +10,34 @@
 
 (defun eab/org-ql-query-buffer (query)
   (concat "*Org QL View: "
-	  (prin1-to-string query) "*"))
+          (prin1-to-string query) "*"))
 
 (defun eab/org-ql-switch (query)
   (let* ((buffer-name (eab/org-ql-query-buffer query))
-	 (window (get-buffer-window buffer-name)))
+         (window (get-buffer-window buffer-name)))
     (if window
-	(select-window window)
+        (select-window window)
       (switch-to-buffer buffer-name))
     (when (or (not (boundp 'eab/org-ql-select-hash))
-	      (not (string= eab/org-ql-select-hash (eab/org-ql-select-md5))))
+              (not (string= eab/org-ql-select-hash (eab/org-ql-select-md5))))
       (eab/org-ql-view-refresh)
       (setq-local eab/org-ql-select-hash (eab/org-ql-select-md5)))))
 
 (defun eab/update-query-on-idle (query)
   (let* ((buffer-name (eab/org-ql-query-buffer query))
-	 (window (get-buffer-window (current-buffer))))
+         (window (get-buffer-window (current-buffer))))
     (if (get-buffer-window buffer-name)
-	(progn
-	  (eab/org-ql-switch query)
-	  (if window
-	      (select-window window)))
+        (progn
+          (eab/org-ql-switch query)
+          (if window
+              (select-window window)))
       (save-window-excursion
-	(eab/org-ql-switch query)))))
+        (eab/org-ql-switch query)))))
 
 (defun eab/org-ql-select-md5 ()
   (let ((results (org-ql-select
-		   org-ql-view-buffers-files
-		   org-ql-view-query
+                   org-ql-view-buffers-files
+                   org-ql-view-query
                    :action 'element-with-markers
                    :narrow org-ql-view-narrow
                    :sort org-ql-view-sort)))
@@ -81,21 +81,21 @@ update search arguments."
     (or (when (search-forward current-string nil t)
           (beginning-of-line))
         (progn
-	  (goto-line (if (eq old-column 0) old-line (1- old-line)))
-	  (move-to-column old-column)))
+          (goto-line (if (eq old-column 0) old-line (1- old-line)))
+          (move-to-column old-column)))
     (message "View refreshed")))
 
 (defun eab/bury-buffer ()
   (interactive)
   (let ((replace? (frame-parameter nil 'eab-replace-bury-buffer)))
     (if replace?
-	(delete-frame)
+        (delete-frame)
       (bury-buffer))))
 
 (defun eab/org-agenda-files ()
   (remove-if
    (lambda (s) (or (string= s (concat org-directory "archive/archive.org"))
-		   ))
+                   ))
    (append
     (file-expand-wildcards (concat org-directory "archive/*.org"))
     (eab/clocktable-scope-1))))
@@ -108,13 +108,13 @@ update search arguments."
 (defun eab/short-name-agenda ()
   (let ((old-name (buffer-name)))
     (if (> (length old-name) 20)
-	(let ((new-name (concat (substring old-name 0 20) ")*")))
-	  ;; (rename-buffer new-name)
-	  (setq-local org-agenda-buffer-name old-name)
-	  ;;  (setq org-agenda-this-buffer-name new-name)
-	  (setq-local mode-line-buffer-identification (propertized-buffer-identification new-name))
-	  (setq-local default-directory (expand-file-name (file-name-as-directory org-directory)))
-	  ))))
+        (let ((new-name (concat (substring old-name 0 20) ")*")))
+          ;; (rename-buffer new-name)
+          (setq-local org-agenda-buffer-name old-name)
+          ;;  (setq org-agenda-this-buffer-name new-name)
+          (setq-local mode-line-buffer-identification (propertized-buffer-identification new-name))
+          (setq-local default-directory (expand-file-name (file-name-as-directory org-directory)))
+          ))))
 
 (defun eab/fix-agenda-buffer-name ()
   (setq-local org-agenda-buffer-name (buffer-name)))

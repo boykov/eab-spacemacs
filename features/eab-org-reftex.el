@@ -4,15 +4,15 @@
   (load-library "reftex")
   (and (buffer-file-name) (file-exists-p (buffer-file-name))
        (progn
-	 (reftex-parse-all)
-					;add a custom reftex cite format to insert links
-	 (reftex-set-cite-format
-	  '((?b . "[[bib:%l][%l-bib]]")
-	    (?n . "[[contents:%l][%l-contents]]")
-	    (?p . "[[papers:%l][%l-paper]]")
-	    (?t . "%t")
-	    (?h . "* %t\n  :PROPERTIES:\n  :Custom_BIB: %l\n  :END:\n  [[papers:%l][%l-paper]]")
-	    (?d . "* %t\n  :PROPERTIES:\n  :Custom_BIB: %l\n  :END:\n  [[djvu:%l][%l-djvu]]")))))
+         (reftex-parse-all)
+                                        ;add a custom reftex cite format to insert links
+         (reftex-set-cite-format
+          '((?b . "[[bib:%l][%l-bib]]")
+            (?n . "[[contents:%l][%l-contents]]")
+            (?p . "[[papers:%l][%l-paper]]")
+            (?t . "%t")
+            (?h . "* %t\n  :PROPERTIES:\n  :Custom_BIB: %l\n  :END:\n  [[papers:%l][%l-paper]]")
+            (?d . "* %t\n  :PROPERTIES:\n  :Custom_BIB: %l\n  :END:\n  [[djvu:%l][%l-djvu]]")))))
   (define-key org-mode-map (kbd "C-c )") 'reftex-citation)
   (define-key org-mode-map (kbd "C-c (") 'org-mode-reftex-search))
 

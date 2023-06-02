@@ -19,18 +19,18 @@
 
 (defun eab/run-ansi (kind prog sym)
   (let* ((buf (concat "ansi-term" sym))
-	 (buffer (get-buffer (concat "*" buf "*")))
-	 (default-directory
-	   (if (file-remote-p default-directory)
-	       "~/"
-	     default-directory)))
+         (buffer (get-buffer (concat "*" buf "*")))
+         (default-directory
+           (if (file-remote-p default-directory)
+               "~/"
+             default-directory)))
     (if buffer
         (switch-to-buffer-other-window buffer)
       (progn
-	(if (string= kind "ansi")
-	    (ansi-term prog buf))
-	(if (string= kind "eat")
-	    (eat prog (string-to-number sym)))))))
+        (if (string= kind "ansi")
+            (ansi-term prog buf))
+        (if (string= kind "eat")
+            (eat prog (string-to-number sym)))))))
 
 (defun eepitch-ansi-term (sym)
   (interactive)
@@ -78,27 +78,27 @@
   (let* ((prepare (eab/this-line (buffer-substring (ee-bol) (ee-eol))))
          (line (concat (car prepare) "\n")))
     (if (cadr prepare)
-	(eab/wrap-eepitch-this line))
+        (eab/wrap-eepitch-this line))
     (ee-next-line 1)))
 
 (defun eab/eepitch-paragraph ()
   (interactive)
   (flet ((forward ()
-		  (search-forward-regexp "^ *$"))
-	 (backward ()
-		   (backward-char)
-		   (search-backward-regexp "^ *$")))
+                  (search-forward-regexp "^ *$"))
+         (backward ()
+                   (backward-char)
+                   (search-backward-regexp "^ *$")))
     (let ((region
-	   (save-excursion
-	     (forward)
-	     (let ((st (point)))
-	       (backward)
-	       (let ((en (point)))
-		 (ee-se-to-string st en))))))
+           (save-excursion
+             (forward)
+             (let ((st (point)))
+               (backward)
+               (let ((en (point)))
+                 (ee-se-to-string st en))))))
       (eab/eepitch-buffer-end)
       (eechannel-send nil region)
       (forward)
       (if (eq major-mode 'python-mode)
-	  (eab/eepitch-this-line)))))
+          (eab/eepitch-this-line)))))
 
 (provide 'eab-eepitch)

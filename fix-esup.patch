@@ -46,10 +46,10 @@ index d62dfb7..7c12a29 100644
 -       (require 'dired-aux)
 -       (require 'dired-x)
 -       (add-to-list
--	'load-path
--	,(file-name-directory
--	  (buffer-file-name
--	   (car (find-function-noselect 'docker-tramp-add-method)))))
+-       'load-path
+-       ,(file-name-directory
+-         (buffer-file-name
+-          (car (find-function-noselect 'docker-tramp-add-method)))))
 -       (require 'tramp)
 -       (add-to-list 'tramp-methods ',eab/sussh)
 -       (require 'docker-tramp)))) 't)
@@ -63,10 +63,10 @@ index d62dfb7..7c12a29 100644
 +;;        (require 'dired-aux)
 +;;        (require 'dired-x)
 +;;        (add-to-list
-+;; 	'load-path
-+;; 	,(file-name-directory
-+;; 	  (buffer-file-name
-+;; 	   (car (find-function-noselect 'docker-tramp-add-method)))))
++;;     'load-path
++;;     ,(file-name-directory
++;;       (buffer-file-name
++;;        (car (find-function-noselect 'docker-tramp-add-method)))))
 +;;        (require 'tramp)
 +;;        (add-to-list 'tramp-methods ',eab/sussh)
 +;;        (require 'docker-tramp)))) 't)

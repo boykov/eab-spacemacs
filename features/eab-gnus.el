@@ -43,10 +43,10 @@
 
 ;; Dovecot
 (add-to-list 'gnus-secondary-select-methods '(nnimap "Dovecot"
-						     (nnimap-address "localhost")
-						     (nnimap-server-port 143)
-						     (nnimap-stream network)
-						     (nnimap-authenticator login)))
+                                                     (nnimap-address "localhost")
+                                                     (nnimap-server-port 143)
+                                                     (nnimap-stream network)
+                                                     (nnimap-authenticator login)))
 
 (setq gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
 (setq imap-ssl-program "gnutls-cli --port %p %s")
@@ -78,10 +78,10 @@
   (let ((mail-buffer (current-buffer)))
     (message-bury mail-buffer)
     (run-with-idle-timer 2 nil
-			 `(lambda ()
-			    (save-window-excursion
-			      (switch-to-buffer ,mail-buffer)
-			      (call-interactively 'message-send-and-exit))))))
+                         `(lambda ()
+                            (save-window-excursion
+                              (switch-to-buffer ,mail-buffer)
+                              (call-interactively 'message-send-and-exit))))))
   
 (defun eab/gnus-inbox ()
   (interactive)

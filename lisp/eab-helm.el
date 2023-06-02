@@ -30,20 +30,20 @@
 (setq helm-candidate-number-limit 100)
 
 (setq helm-sources '(helm-source-buffers-list
-		     helm-source-file-name-history
-		     helm-source-files-in-current-dir
-		     helm-source-complex-command-history
-		     ))
+                     helm-source-file-name-history
+                     helm-source-files-in-current-dir
+                     helm-source-complex-command-history
+                     ))
 
 (defun eab/helm-org-agenda-files-headings (&optional arg)
   "Preconfigured helm for org files headings."
   (interactive "P")
   (load eab/org-file nil 't)
   (let ((files eab/clocktable-scope)
-	(timestamp (eab/hron-current-time-stamp)))
+        (timestamp (eab/hron-current-time-stamp)))
     (helm :sources
-	   (eab/helm-org-build-sources files nil arg)
-	  :prompt (concat timestamp " pattern: ")
+           (eab/helm-org-build-sources files nil arg)
+          :prompt (concat timestamp " pattern: ")
           :truncate-lines helm-org-truncate-lines
           :buffer "*helm org headings*")))
 
@@ -56,13 +56,13 @@
                collect
                (helm-build-sync-source (format "Org headings (%s)" name)
                  :candidates (helm-dynamic-completion
-			      (remove-if
-			       (lambda (s) (string-match ".*:nohelm:.*" s))
+                              (remove-if
+                               (lambda (s) (string-match ".*:nohelm:.*" s))
                                (helm-org--get-candidates-in-file
-				file
-				helm-org-headings-fontify
-				t
-				parents (or force-refresh
+                                file
+                                helm-org-headings-fontify
+                                t
+                                parents (or force-refresh
                                             helm-org--force-refresh)))
                               'stringp
                               nil '(metadata (display-sort-function
