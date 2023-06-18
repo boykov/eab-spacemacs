@@ -1,5 +1,16 @@
 # Changelog
 
+### 0.2.5
+
+Fix missed `helm-org-ql` request.
+Init `k8s-mode`.
+Move `plotclock` to `batch-publish`.
+Use `podman exec` for `eab-utils`.
+Rm legacy `bat-mode`.
+Add `kairosC` and `eab/target-C`.
+Fix `29.0.92` org-ql transient commands,
+`libgit` libssl 20.04, legacy `dired-pop-to-buffer`.
+
 ### 0.2.4
 
 Improve `dictionary-search` keybinds.

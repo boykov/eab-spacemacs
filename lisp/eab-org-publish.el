@@ -79,7 +79,7 @@
      nil)
     (shell-command
      (concat eab/ssh-host " <<'END'
-docker exec eab-utils bash -c \"cd ~/git/eab-kb/js && node update-client.js\"
+sudo podman exec eab-utils bash -c \"cd ~/git/eab-kb/js && node update-client.js\"
 END"))
     (if (equal
          (file-truename (buffer-file-name (buffer-base-buffer)))

@@ -15,8 +15,10 @@
 (defvar eab/ssh-host "ssh chronos" "current host")
 
 '((let ((server-use-tcp server-C-use-tcp))
-    (list (server-eval-at (eab/server-C) 'eab/gotify-token)
-          (server-eval-at (eab/server-C) 'eab/gotify-client-token)))
+    (list (server-eval-at "serverC" 'eab/gotify-token)
+          (server-eval-at "serverC" 'eab/gotify-client-token)
+          (server-eval-at "kairosC" 'eab/gotify-token)
+          (server-eval-at "kairosC" 'eab/gotify-client-token)))
   )
 
 (setq eab/gotify-token
@@ -78,7 +80,13 @@ END
           eab/daemon-name))
 
 (defun eab/server-C ()
+  (if (or (eab/ondaemon "serverC")
+          (eab/ondaemon "kairosC"))
+      eab/daemon-name))
+
+(defun eab/target-C ()
   "serverC")
+
 (setq server-C-use-tcp 't)
 '((setq org-fold-core-style 'overlays))
 
@@ -183,6 +191,7 @@ END
             ("microcyclos"   . ,(concat user-emacs-directory "historyMicrocyclos/"))
             ("cyclos"        . ,(concat user-emacs-directory "historyCyclos/"))
             ("serverC"       . ,(concat user-emacs-directory "historyC/"))
+            ("kairosC"       . ,(concat user-emacs-directory "kairosC/"))
             ))
 
 (setq-put eab/emacs-service-alist
@@ -227,7 +236,7 @@ END
 
 (defun eab/rsync-org-directory ()
   (shell-command
-   (concat eab/ssh-host " rsync --delete -avzl --exclude \"gen\" ~/git/org-chronos/ " org-directory)))
+   (concat (if (eab/ondaemon "kairosC") "ssh kairos" eab/ssh-host) " rsync --delete -avzl --exclude \"gen\" ~/git/org-chronos/ " org-directory)))
 
 (setq eab/batch-publish-command
       (concat eab/ssh-host " " (eab/get-path 'org-directory) "misc/batch-publish.sh"))

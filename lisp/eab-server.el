@@ -31,7 +31,15 @@
   (interactive)
   (let ((sexp (call-interactively (lambda () (interactive) (preceding-sexp)))))
     (let ((server-use-tcp server-C-use-tcp))
-      (message "%s" (server-eval-at (eab/server-C)
+      (message "%s" (server-eval-at "serverC"
+                                    `(eval ',sexp))))))
+
+(defun eab/eval-last-sexp-kairos-C ()
+  "Evaluate sexp before point on server-C; print value in minibuffer."
+  (interactive)
+  (let ((sexp (call-interactively (lambda () (interactive) (preceding-sexp)))))
+    (let ((server-use-tcp server-C-use-tcp))
+      (message "%s" (server-eval-at "kairosC"
                                     `(eval ',sexp))))))
 
 ;; TODO обобщить формирование body и выполнение remote
@@ -41,7 +49,7 @@
          (body `(lambda ()
                   (require 'server)
                   (let ((server-use-tcp ,server-C-use-tcp))
-                    (server-eval-at ,(eab/server-C) '(progn
+                    (server-eval-at ,(eab/target-C) '(progn
                                                        (shell-command (concat "cd " org-directory))
                                                        (eab/rsync-org-directory)
                                                        (revert-all-buffers)
@@ -58,11 +66,12 @@
                (lambda ()
                  (require 'server)
                  (let ((server-use-tcp ,server-C-use-tcp))
-                   (server-eval-at ,(eab/server-C) '(eab/shell-translate ,phrase 't))))
+                   (server-eval-at ,(eab/target-C) '(eab/shell-translate ,phrase 't))))
                (lambda (result)
                  (message "async result: <%s>" result)
                  (define-abbrev eab-abbrev-table ,phrase result))))))
 
+;; not used
 (defun eab/org-publish-html ()
   (interactive)
   (org-publish-remove-all-timestamps)
@@ -70,7 +79,7 @@
    (lambda ()
      (require 'server)
      (let ((server-use-tcp ,server-C-use-tcp))
-       (server-eval-at ,(eab/server-C) '(progn
+       (server-eval-at ,(eab/target-C) '(progn
                                           (org-publish-project "html-base" 't)
                                           (org-publish-project "html-scale" 't)
                                           (org-publish-project "html-clock" 't)))))

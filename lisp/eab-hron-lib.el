@@ -399,6 +399,11 @@
   (shell-command (concat org-directory "misc/create-" "nightly" ".sh"))
   )
 
+(defun eab/update-plotclock ()
+  (interactive)
+  (shell-command (concat org-directory "misc/update-" "plotclock" ".sh"))
+  )
+
 (defun eab/delete-nightly ()
   (interactive)
   (let ((pattern (concat org-directory "gen/nightly/*")))
@@ -427,7 +432,8 @@
   (save-buffer)
   (org-publish-project "html-gen" t)
   (ignore-errors (kill-buffer "time-reports-nightly.org"))
-  (eab/delete-nightly))
+  (eab/delete-nightly)
+  (eab/update-plotclock))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;              ____
@@ -507,7 +513,10 @@
       (let ((server-use-tcp 't))
         (server-eval-at "cyclos" '(eab/renew-agenda-files-1)))
       (let ((server-use-tcp server-C-use-tcp))
-        (server-eval-at (eab/server-C) '(progn
+        (server-eval-at "serverC" '(progn
+                                          (eab/rsync-org-directory)
+                                          (eab/renew-agenda-files-1)))
+        (server-eval-at "kairosC" '(progn
                                           (eab/rsync-org-directory)
                                           (eab/renew-agenda-files-1))))
       (let ((server-use-tcp 't))
@@ -673,7 +682,7 @@
                      (require 'server)
                      (sleep-for 1)
                      (let ((server-use-tcp ,server-C-use-tcp))
-                       (server-eval-at ,(eab/server-C) '(progn
+                       (server-eval-at ,(eab/target-C) '(progn
                                                           (shell-command (concat "cd " org-directory))
                                                           (eab/rsync-org-directory)
                                                           (revert-all-buffers)

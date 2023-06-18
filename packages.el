@@ -115,6 +115,7 @@
     groovy-mode
     terraform-mode
     so-long
+    k8s-mode
 
     restclient
     request
@@ -210,6 +211,9 @@ which require an initialization must be listed explicitly in the list.")
 
 (defun eab-spacemacs/init-terraform-mode ()
   (use-package terraform-mode))
+
+(defun eab-spacemacs/init-k8s-mode ()
+  (use-package k8s-mode))
 
 (defun eab-spacemacs/init-so-long ()
   ;; + manual using so-long-minor-mode
@@ -570,7 +574,10 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
 (defun eab-spacemacs/init-diff-hl nil
   (require 'diff-hl))
 (defun eab-spacemacs/init-libgit nil
-  (require 'libgit))
+  (use-package libgit
+    :init
+    ;; build28 bad name: libssl ubuntu 20.04
+    (when (string= (daemonp) "serverP") (defvar libgit--build-dir (expand-file-name "build28" libgit--root)))))
 (defun eab-spacemacs/init-vterm nil
     (setq vterm-keymap-exceptions '("C-c" "C-x" "C-u" "C-g" "C-h" "C-l" "M-x" "M-o" "C-v" "M-v" "C-y" "M-y" "M-s" "M-a" "M-i" "M-k" "M-j" "M-l" "C-a" "M-c" "M-p")))
 (defun eab-spacemacs/init-emacs-eat nil
@@ -864,7 +871,7 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
     (setq org-link-parameters (remove '("org-ql-search" :follow org-ql-view--link-follow :store org-ql-view--link-store) org-link-parameters))
     )
   (use-package helm-org-ql
-    :defer
+    :after (org-ql)
     :config
     (add-to-list 'helm-org-ql-actions '("eab/hron-todo" . eab/helm-hron-todo))))
 (defun eab-spacemacs/init-org-mode/lisp nil
