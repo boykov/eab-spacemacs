@@ -27,7 +27,7 @@
            (require 'docker-tramp))))))
  :lexical 't)
 
-(dired-async-mode)
+(dired-async-mode 0)
 (dired-async--modeline-mode 0)
 (setq dired-dwim-target 't)
 

@@ -18,8 +18,8 @@
     auto-dictionary ;; switcher for flyspell
     howdoi
 
-    ,(when (or (string= (daemonp) "serverC") noninteractive) '(org-mode-fix/lisp :location local))
-    ,(unless (or (string= (daemonp) "serverC") noninteractive) '(org-mode/lisp :location local))
+    ,(when (or (string= (daemonp) "serverC") (string= (daemonp) "kairosC") noninteractive) '(org-mode-fix/lisp :location local))
+    ,(unless (or (string= (daemonp) "serverC") (string= (daemonp) "kairosC") noninteractive) '(org-mode/lisp :location local))
     ;; (org-mode/lisp :location local)
     ,(when (not (string-match-p "^25" emacs-version)) 'org-roam)
     deft

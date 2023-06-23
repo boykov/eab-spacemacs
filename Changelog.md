@@ -1,5 +1,12 @@
 # Changelog
 
+### 0.2.6
+
+Use `notify.homew.keenetic.pro`.
+Disable broken `dired-async`.
+Move `gotify` to `kairos`.
+Fix `kairosC` org-mode.
+
 ### 0.2.5
 
 Fix missed `helm-org-ql` request.

@@ -28,7 +28,7 @@ END
 " )) 0 -1))
 (defun eab/gotify (title message priority)
   (shell-command
-   (concat "curl \"http://192.168.2.18:8085/message?token=" eab/gotify-token "\" "
+   (concat "curl \"https://notify.homew.keenetic.pro/message?token=" eab/gotify-token "\" "
            "-F \"title=" title
            "\" -F \"message=" message
            "\" -F \"priority=" (number-to-string priority) "\"")))
@@ -37,9 +37,9 @@ END
 ~/git/auto/keepass.sh \"portal/gotify\" -a client-token
 END
 " )) 0 -1))
-(setq eab/gotify-ws (concat "ws://192.168.2.18:8085/stream?token=" eab/gotify-client-token))
+(setq eab/gotify-ws (concat "wss://notify.homew.keenetic.pro/stream?token=" eab/gotify-client-token))
 (setq eab/gotify-command
-      (concat eab/ssh-host " 'sqlite3 -column /var/gotify/data/gotify.db \"select datetime(date,\\\"localtime\\\"),title,message from messages order by date desc limit 10;\"'"))
+      (concat "ssh kairos" " 'sqlite3 -column /var/gotify/data/gotify.db \"select datetime(date,\\\"localtime\\\"),title,message from messages order by date desc limit 10;\"'"))
 
 (setq eab/test-dotemacs-command
       (concat eab/ssh-host " ~/git/auto/test-dotemacs.sh"))
