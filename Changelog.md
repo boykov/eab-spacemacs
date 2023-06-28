@@ -1,5 +1,11 @@
 # Changelog
 
+### 0.2.7
+
+Switch `serverC` to `28.1` emacs.
+Move `all` to `kairos`.
+Switch back from `localhost:3001/org/mock`, disable `node update-client.js`.
+
 ### 0.2.6
 
 Use `notify.homew.keenetic.pro`.

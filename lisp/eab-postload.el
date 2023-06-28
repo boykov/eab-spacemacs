@@ -56,7 +56,7 @@
   (require 'eab-helm)
   (set-face-attribute 'default nil
                     :family "Source Code Pro"
-                    :height 130
+                    :height 150
                     :weight 'normal
                     :width 'normal)
   )

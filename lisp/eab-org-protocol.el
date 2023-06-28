@@ -45,7 +45,7 @@
   (let* ((fname (file-name-nondirectory (buffer-file-name)))
          (id (cl-find-if (lambda (x) (if (string= "ID" (car x)) 't nil)) (org-entry-properties nil 'standard))))
     (browse-url
-     (concat "http://localhost:3001/org/mock/" (replace-regexp-in-string "\.org$" ".html" fname) "#ID-" (cdr id)))))
+     (concat "https://portal.homew.keenetic.pro/org/clock/" (replace-regexp-in-string "\.org$" ".html" fname) "#ID-" (cdr id)))))
 
 (defun eab/open-corresponding-html ()
   (interactive)

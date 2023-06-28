@@ -77,10 +77,10 @@
     (org-publish-file
      (file-truename (buffer-file-name (buffer-base-buffer)))
      nil)
-    (shell-command
-     (concat eab/ssh-host " <<'END'
-sudo podman exec eab-utils bash -c \"cd ~/git/eab-kb/js && node update-client.js\"
-END"))
+    ;; (shell-command
+;;      (concat eab/ssh-host " <<'END'
+;; sudo podman exec eab-utils bash -c \"cd ~/git/eab-kb/js && node update-client.js\"
+;; END"))
     (if (equal
          (file-truename (buffer-file-name (buffer-base-buffer)))
          "/home/eab/pnt/jaguar/git/org-chronos/clock/w1c-plan-vacancy.org")

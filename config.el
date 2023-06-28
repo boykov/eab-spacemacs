@@ -12,7 +12,7 @@
 (add-to-list 'load-path (concat eab-spacemacs-path "features"))
 
 (defvar eab/first-emacsclient 't "nil if run again")
-(defvar eab/ssh-host "ssh chronos" "current host")
+(defvar eab/ssh-host "ssh kairos" "current host")
 
 '((let ((server-use-tcp server-C-use-tcp))
     (list (server-eval-at "serverC" 'eab/gotify-token)
@@ -42,7 +42,7 @@ END
       (concat "ssh kairos" " 'sqlite3 -column /var/gotify/data/gotify.db \"select datetime(date,\\\"localtime\\\"),title,message from messages order by date desc limit 10;\"'"))
 
 (setq eab/test-dotemacs-command
-      (concat eab/ssh-host " ~/git/auto/test-dotemacs.sh"))
+      (concat "ssh kairos" " ~/git/auto/test-dotemacs.sh"))
 
 (defun eab/loaded-ok ()
   (if configuration-layer-error-count
@@ -242,7 +242,7 @@ END
       (concat eab/ssh-host " " (eab/get-path 'org-directory) "misc/batch-publish.sh"))
 
 (if (eab/ondaemon (eab/server-P))
-    (setq-put eab/org-publish-directory "/ssh:chronos:/home/eab/pub/org/")
+    (setq-put eab/org-publish-directory "/home/eab/pub/org/")
   (setq-put eab/org-publish-directory "~/pub/org/"))
 
 (setq-put eab/org-publish-directory-file "file:///home/eab/pub/org/")

@@ -577,7 +577,7 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
   (use-package libgit
     :init
     ;; build28 bad name: libssl ubuntu 20.04
-    (when (string= (daemonp) "serverP") (defvar libgit--build-dir (expand-file-name "build28" libgit--root)))))
+    (when (string= (daemonp) "serverC") (defvar libgit--build-dir (expand-file-name "build28" libgit--root)))))
 (defun eab-spacemacs/init-vterm nil
     (setq vterm-keymap-exceptions '("C-c" "C-x" "C-u" "C-g" "C-h" "C-l" "M-x" "M-o" "C-v" "M-v" "C-y" "M-y" "M-s" "M-a" "M-i" "M-k" "M-j" "M-l" "C-a" "M-c" "M-p")))
 (defun eab-spacemacs/init-emacs-eat nil
