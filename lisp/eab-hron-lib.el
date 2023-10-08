@@ -323,9 +323,7 @@
           (setq eab/helm-org-marker
                 (with-current-buffer (get-buffer "timeline-time-mining.org")
                   (org-cycle '(64))
-                  (end-of-buffer)
-                  (previous-line)
-                  (previous-line)
+                  (goto-line 86)
                   (point-marker))))
       (if (> (length markers) 1)
           (progn

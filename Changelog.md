@@ -1,5 +1,11 @@
 # Changelog
 
+### 0.2.8
+
+Fix `eab/xdg-open` for filename with spaces.
+Fix `eab/helm-org-marker`.
+Fix xml `make push` path.
+
 ### 0.2.7
 
 Switch `serverC` to `28.1` emacs.

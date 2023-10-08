@@ -11,7 +11,7 @@
 
 (defun eab/over-bash (comhead comstr)
   "Run comhead with comstr over bash -i -c."
-  (concat "bash -i -c \"" comhead " '" (expand-file-name comstr) "'&\""))
+  (concat "bash -i -c \"" comhead " \\\"" (expand-file-name comstr) "\\\"'&\""))
 
 (defun eab/sh-over-bash (com fname &optional async)
   "Run com with fname over bash -i -c."

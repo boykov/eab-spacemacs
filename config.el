@@ -207,7 +207,7 @@ END
       ((eab/onhost "cyclos-emacs") (setq eab/ssh-host-local "ssh cyclos"))
       (t (setq eab/ssh-host-local eab/ssh-host)))
 
-(setq eab/xdg-open (concat eab/ssh-host-local " DISPLAY=:0 xdg-open"))
+(setq eab/xdg-open (concat eab/ssh-host-local " 'DISPLAY=:0 xdg-open"))
 
 (setq eab/gr-command
       (concat eab/ssh-host-local " bash ~/bin/gr status"))
@@ -221,7 +221,7 @@ END
 (setq eab/emacs-service-command
       (concat
        eab/ssh-host-local
-       " sudo systemctl restart "
+       " 'sudo systemctl restart "
        (cdr (assoc eab/daemon-name (gethash 'eab/emacs-service-alist eab/paths-hash)))))
 
 ;; TODO можно ли подобные настройки не считать "путями" и убрать из path?
