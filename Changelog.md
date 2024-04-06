@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.2.9
+
+Add `eab/ergoemacs-new-empty-buffer`.
+
 ### 0.2.8
 
 Fix `eab/xdg-open` for filename with spaces.

@@ -153,7 +153,7 @@
  "s-a"          'append-to-buffer)
 
 (general-define-key
- "C-n"  'ergoemacs-new-empty-buffer
+ "C-n"  'eab/ergoemacs-new-empty-buffer
  "C-w"  'eab/ergoemacs-compact-uncompact-block
  "M-G"  'ergoemacs-kill-line-backward
  "M-Q"  'ergoemacs-close-current-buffer
