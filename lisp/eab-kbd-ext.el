@@ -30,16 +30,20 @@
   (if (eq major-mode 'org-mode)
       (org-in-src-block-p)))
 
-(defun eab/ergoemacs-new-empty-buffer ()
-  (interactive)
+(defun eab/ergoemacs-new-empty-buffer (&optional arg)
+  (interactive "p")
   (ergoemacs-new-empty-buffer)
   (let ((new-buffer (buffer-name (current-buffer))))
-    (write-file (concat
-                 (eab/history-dir)
-                 "/backup/"
-                 new-buffer
-                 (substring (shell-command-to-string "date +%F_%T") 0 -1)))
-    (rename-buffer new-buffer)))
+    (if (not (eq arg 4))
+        (progn
+          (write-file (concat
+                       (eab/history-dir)
+                       "/backup/"
+                       new-buffer
+                       (substring
+                        (shell-command-to-string "date +%F_%T")
+                        0 -1)))
+          (rename-buffer new-buffer)))))
 
 (defun eab/ergoemacs-compact-uncompact-block ()
   (interactive)

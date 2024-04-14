@@ -1,5 +1,11 @@
 # Changelog
 
+### 0.2.10
+
+Improve `eab/ergoemacs-new-empty-buffer`.
+Add kairos ssh timeout.
+Don't use `notify.homew.keenetic.pro`.
+
 ### 0.2.9
 
 Add `eab/ergoemacs-new-empty-buffer`.

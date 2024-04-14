@@ -12,7 +12,7 @@
 (add-to-list 'load-path (concat eab-spacemacs-path "features"))
 
 (defvar eab/first-emacsclient 't "nil if run again")
-(defvar eab/ssh-host "ssh kairos" "current host")
+(defvar eab/ssh-host "ssh -o ConnectTimeout=10 kairos" "current host")
 
 '((let ((server-use-tcp server-C-use-tcp))
     (list (server-eval-at "serverC" 'eab/gotify-token)
@@ -28,7 +28,7 @@ END
 " )) 0 -1))
 (defun eab/gotify (title message priority)
   (shell-command
-   (concat "curl \"https://notify.homew.keenetic.pro/message?token=" eab/gotify-token "\" "
+   (concat "curl \"http://172.16.82.6:8085/message?token=" eab/gotify-token "\" "
            "-F \"title=" title
            "\" -F \"message=" message
            "\" -F \"priority=" (number-to-string priority) "\"")))
@@ -37,7 +37,7 @@ END
 ~/git/auto/keepass.sh \"portal/gotify\" -a client-token
 END
 " )) 0 -1))
-(setq eab/gotify-ws (concat "wss://notify.homew.keenetic.pro/stream?token=" eab/gotify-client-token))
+(setq eab/gotify-ws (concat "ws://172.16.82.6:8085/stream?token=" eab/gotify-client-token))
 (setq eab/gotify-command
       (concat "ssh kairos" " 'sqlite3 -column /var/gotify/data/gotify.db \"select datetime(date,\\\"localtime\\\"),title,message from messages order by date desc limit 10;\"'"))
 
