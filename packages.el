@@ -301,6 +301,9 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
           ".bzr"        ; Bazaar VCS root dir
           "_darcs"      ; Darcs VCS root dir
           ))
+  (ring-insert
+   (projectile--get-command-history "/home/eab/git/eab-system/portal/")
+   "make deploy-config li=\"--limit chronos,cyclos\"")
   )
 (defun eab-spacemacs/init-ldap-mode nil)
 

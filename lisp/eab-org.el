@@ -134,6 +134,7 @@
 (setq org-archive-default-command 'org-archive-set-tag)
 
 (setq org-tags-exclude-from-inheritance (quote ("crypt")))
+(setq org-tags-column -72)
 ;; (org-crypt-use-before-save-magic)
 (setq org-crypt-key nil)
 

@@ -1,5 +1,11 @@
 # Changelog
 
+### 0.2.11
+
+Add `chronosP`.
+Decrease `org-tags-column`.
+Init projectile portal command.
+
 ### 0.2.10
 
 Improve `eab/ergoemacs-new-empty-buffer`.
