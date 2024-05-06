@@ -45,7 +45,7 @@
   (let* ((fname (file-name-nondirectory (buffer-file-name)))
          (id (cl-find-if (lambda (x) (if (string= "ID" (car x)) 't nil)) (org-entry-properties nil 'standard))))
     (browse-url
-     (concat "https://portal.homew.keenetic.pro/org/clock/" (replace-regexp-in-string "\.org$" ".html" fname) "#ID-" (cdr id)))))
+     (concat "https://portal.0508cd55.nip.io/org/clock/" (replace-regexp-in-string "\.org$" ".html" fname) "#ID-" (cdr id)))))
 
 (defun eab/open-corresponding-html ()
   (interactive)
@@ -56,13 +56,13 @@
   (interactive)
   (browse-url
    (concat
-    "https://share.homew.keenetic.pro/papers/"
+    "https://share.0508cd55.nip.io/papers/"
     (org-entry-get nil "Custom_BIB") ".pdf")))
 
 (defun eab/browse-paper-1 (word)
   (browse-url
    (concat
-    "https://share.homew.keenetic.pro/papers/"
+    "https://share.0508cd55.nip.io/papers/"
     word ".pdf")))
 
 (provide 'eab-org-protocol)

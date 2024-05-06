@@ -235,11 +235,12 @@ END
 
 (if (eab/ondaemon (eab/server-P))
     (setq-put org-directory "~/git/org-chronos/")
-  (setq-put org-directory "/home/eab/pnt/jaguar/git/org/"))
+  (setq-put org-directory "/home/eab/git/org/"))
 
 (defun eab/rsync-org-directory ()
   (shell-command
-   (concat (if (eab/ondaemon "kairosC") "ssh kairos" eab/ssh-host) " rsync --delete -avzl --exclude \"gen\" ~/git/org-chronos/ " org-directory)))
+   (concat (if (eab/ondaemon "kairosC") "ssh kairos" eab/ssh-host)
+           " rsync --delete -avzl --exclude \".git\" --exclude \"gen\" ~/git/org-chronos/ " org-directory)))
 
 (setq eab/batch-publish-command
       (concat eab/ssh-host " " (eab/get-path 'org-directory) "misc/batch-publish.sh"))
@@ -254,7 +255,7 @@ END
 
 (setq-put org-link-abbrev-alist
           '(("bib" . "~/git/lit/boykov.bib::%s")
-            ("papers" . "https://share.homew.keenetic.pro/papers/%s.pdf")
+            ("papers" . "https://share.0508cd55.nip.io/papers/%s.pdf")
             ("google" . "http://www.google.com/search?q=")
             ))
 ;; See also eab-header in ~/texmf/tex/latex/eab-styles/eab-header.sty

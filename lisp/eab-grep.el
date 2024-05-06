@@ -182,7 +182,7 @@
   (save-excursion
     (eab/switch-grep)
     (if (equal default-directory
-               "/home/eab/pnt/jaguar/git/org-chronos/")
+               "/home/eab/git/org-chronos/")
         (eab/grep-switch))))
 
 (provide 'eab-grep)

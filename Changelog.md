@@ -1,5 +1,11 @@
 # Changelog
 
+### 0.2.12
+
+Mount `~/git/org[-chronos]` from `~/pnt/jaguar/git/org[-chronos]`.
+Fix rsync: exclude `.git`.
+Use `0508cd55.nip.io`.
+
 ### 0.2.11
 
 Add `chronosP`.

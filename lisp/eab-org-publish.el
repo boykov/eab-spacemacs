@@ -83,7 +83,7 @@
 ;; END"))
     (if (equal
          (file-truename (buffer-file-name (buffer-base-buffer)))
-         "/home/eab/pnt/jaguar/git/org-chronos/clock/w1c-plan-vacancy.org")
+         "/home/eab/git/org-chronos/clock/w1c-plan-vacancy.org")
         (progn
           (org-babel-tangle)
           (shell-command
