@@ -1,6 +1,6 @@
 ;;; eab-hron-lib.el --- 
 
-;; Copyright (C) 2010-2023 Evgeny Boykov
+;; Copyright (C) 2010-2024 Evgeny Boykov
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 
@@ -54,9 +54,9 @@
 (add-to-list 'org-publish-project-alist
              `("html-scale"
                :base-directory ,(concat (file-truename org-directory) "scale/")
-               :publishing-directory ,(concat eab/org-publish-directory "clock/")
-               :base-url ,(concat eab/org-publish-directory-file "clock/")
-               :working-directory ,(concat eab/org-publish-directory "clock/")
+               :publishing-directory ,(concat eab/org-publish-directory "scale/")
+               :base-url ,(concat eab/org-publish-directory-file "scale/")
+               :working-directory ,(concat eab/org-publish-directory "scale/")
                :online-suffix ".html"
                :working-suffix ".org"
                :recursive t
@@ -461,6 +461,44 @@
 
 (defun csum-hours ()
   (org-minutes-to-clocksum-string (org-clock-sum-current-item) '(("h") (special . h:mm))))
+
+(defun insert-all-childs ()
+  (let ((head (org-entry-get nil "HEAD")))
+    (if head
+        (mapcar
+         (lambda (x)
+           (concat "[[" "id:" (cadr x) "][" (car x) "]]\n"))
+         (mapcar (lambda (x) (split-string x ".org-:ID:       "))
+                 (let ((default-directory org-directory))
+                   (split-string
+                    (substring
+                     (shell-command-to-string
+                      (concat "rg -A 1 \"^:PRNT: "
+                              head
+                              "$\" | grep :ID: | sort")) 0 -1) "\n")))))))
+
+(defun find-parent ()
+  (save-excursion
+    (switch-to-buffer (get-buffer "root-clock-reports.org"))
+    (beginning-of-buffer)
+    (search-forward-regexp "^:HEAD: w2c$")
+    (org-entry-get nil "ID")))
+
+(defun eab/jump-current-time ()
+  (interactive)
+  (org-occur-in-agenda-files (format-time-string
+                              "%Y-%m-%d %a %H:%M"
+                              (eab/org-parse-current-time)))
+  (call-interactively 'other-window)
+  (end-of-buffer)
+  (backward-char)
+  (occur-mode-goto-occurrence)
+  (backward-char)
+  (sp-forward-sexp)
+  (backward-char)
+  (backward-char)
+  (switch-to-buffer "*Occur*")
+  (kill-buffer-and-window))
 
 (defun csum-file ()
   (org-clock-sum)

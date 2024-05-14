@@ -3,6 +3,7 @@
 (defun eab/replace-in-string (what with in)
   (replace-regexp-in-string (regexp-quote what) with in nil 'literal))
 
+(setq eab/org-ql-T-query '(and (or (not (tags "noagenda")) (tags "agenda")) (not (tags "neveragenda")) (clocked 600) (or (todo) (heading "\\[")) ))
 (setq eab/org-ql-H-query '(and (or (not (tags "noagenda")) (tags "agenda")) (not (tags "neveragenda")) (clocked 600) ))
 (setq eab/org-ql-O-query '(and (or (not (tags "noagenda")) (tags "agenda")) (not (tags "neveragenda")) (clocked 6000) (not (clocked 400))))
 '((setq eab/org-ql-O-query '(clocked)))

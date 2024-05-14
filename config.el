@@ -1,6 +1,6 @@
 ;;; config.el --- Spacemacs Layer configuration File
 ;;
-;; Copyright (C) 2010-2023 Evgeny Boykov
+;; Copyright (C) 2010-2024 Evgeny Boykov
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords:
@@ -28,7 +28,7 @@ END
 " )) 0 -1))
 (defun eab/gotify (title message priority)
   (shell-command
-   (concat "curl \"http://172.16.82.6:8085/message?token=" eab/gotify-token "\" "
+   (concat "curl \"https://notify.0508cd55.nip.io/message?token=" eab/gotify-token "\" "
            "-F \"title=" title
            "\" -F \"message=" message
            "\" -F \"priority=" (number-to-string priority) "\"")))
@@ -37,7 +37,7 @@ END
 ~/git/auto/keepass.sh \"portal/gotify\" -a client-token
 END
 " )) 0 -1))
-(setq eab/gotify-ws (concat "ws://172.16.82.6:8085/stream?token=" eab/gotify-client-token))
+(setq eab/gotify-ws (concat "wss://notify.0508cd55.nip.io/stream?token=" eab/gotify-client-token))
 (setq eab/gotify-command
       (concat "ssh kairos" " 'sqlite3 -column /var/gotify/data/gotify.db \"select datetime(date,\\\"localtime\\\"),title,message from messages order by date desc limit 10;\"'"))
 

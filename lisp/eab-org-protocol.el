@@ -19,9 +19,11 @@
          :function eab-protocol-save-abbrev)
         ))
 
-(defun eab-protocol-open-link (link)
-  (ignore-errors (eab/wg-switch-to-workgroup ":ag:"))
-  (org-open-link-from-string link))
+(defun eab-protocol-open-link (id)
+  (ignore-errors (eab/wg-switch-to-workgroup ":clock:"))
+  (org-open-link-from-string
+   (concat "[[id:"
+           (plist-get (org-protocol-parse-parameters id nil '(:id)) :id) "]]")))
 
 (defun eab-protocol-save-abbrev (word)
   (let ((unhex-word (org-link-unescape word)))

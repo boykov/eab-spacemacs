@@ -1,6 +1,6 @@
 ;;; keybindings.el ---
 
-;; Copyright (C) 2010-2023 Evgeny Boykov
+;; Copyright (C) 2010-2024 Evgeny Boykov
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords:
@@ -404,7 +404,8 @@
  "C-f"          'eab/gr-status
  "h"            'eab/hron-todo
  "C-h"          'eab/hron-todo
- "M-h"          'eab/send-csum-all-remote
+ "M-h"          'eab/jump-current-time
+ "M-H"          'eab/send-csum-all-remote
  "v"            'eab/org-insert-link-fast
  "V"            'org-insert-link
  "."            (kbd "C-c . RET")
@@ -553,6 +554,8 @@
  ;; DONE по имени буфера: нарушение SPOT!
  "h"            `(,(ilam (eab/org-ql-switch 'eab/org-ql-H-query)) :which-key " ")
  "H"            `(,(ilam (eab/org-ql-search 'eab/org-ql-H-query)) :which-key " ")
+ "t"            `(,(ilam (eab/org-ql-switch 'eab/org-ql-T-query)) :which-key " ")
+ "T"            `(,(ilam (eab/org-ql-search 'eab/org-ql-T-query)) :which-key " ")
  "0"            `(,(ilam (eab/org-ql-switch 'eab/org-ql-O-query)) :which-key " ")
  ")"            `(,(ilam (eab/org-ql-search 'eab/org-ql-O-query)) :which-key " ")
  "w"            `(,(ilam (eab/org-ql-switch 'eab/org-ql-W-query)) :which-key " ")

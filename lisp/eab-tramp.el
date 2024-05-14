@@ -1,6 +1,6 @@
 ;;; eab-tramp.el --- eab tramp extension  -*- lexical-binding: t -*-
 
-;; Copyright (C) 2010-2023 Evgeny Boykov
+;; Copyright (C) 2010-2024 Evgeny Boykov
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 

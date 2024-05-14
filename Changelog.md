@@ -1,5 +1,14 @@
 # Changelog
 
+### 0.2.13
+
+Use `notify.0508cd55.nip.io`.
+Add `eab/org-ql-T-query`.
+Implement `eab-protocol-open-link` new style links.
+Implement `insert-all-childs`, `eab/jump-current-time`.
+Up to 2024 year.
+Use `/scale` in `html-scale`.
+
 ### 0.2.12
 
 Mount `~/git/org[-chronos]` from `~/pnt/jaguar/git/org[-chronos]`.
