@@ -165,7 +165,8 @@
  'insert-showhide
  nil nil
  ""
- "C-l C-k RET M-i s h o TAB M-k M-SPC 2*M-k M-x 2*M-w M-C-o M-v")
+ "RET M-i RET - SPC C-l C-k C-k hfpyjt SPC C-k hid TAB M-k M-h M-SPC M-C-o
+ M-i r 2*SPC RET")
 
 (pm-def-macro
  'mark-timeline
@@ -190,3 +191,9 @@
  M-SPC M-O M-5 C-x 8 <return> 2013 2*RET --- RET ! M-O M-U"
 )
 
+(pm-def-macro
+ 'replace-hid
+ nil nil
+ ""
+ "C-l C-k M-SPC M-p M-X - SPC C-k hfpyjt SPC C-k hid TAB M-l M-SPC M-; end_sh RET
+ M-h M-i r 2*SPC RET M-k M-h M-SPC 2*M-k M-X")

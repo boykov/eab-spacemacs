@@ -136,4 +136,6 @@
                            (buffer-substring (region-beginning) (region-end))
                          (read-string "Google: "))))))
 
+(setq page-delimiter "^$")
+
 (provide 'eab-ui)

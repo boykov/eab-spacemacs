@@ -107,6 +107,7 @@
 (add-hook 'grep-mode-hook 'org-link-minor-mode)
 (add-hook 'ag-mode-hook 'org-link-minor-mode)
 
+(with-eval-after-load 'org-ctags (setq org-open-link-functions nil))
 (setq org-adapt-indentation nil)
 
 ;; DONE не помогает! Надо еще какое-то шаманство, чтобы заработали ID на org-store-link по-умолчанию

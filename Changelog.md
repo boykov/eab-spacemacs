@@ -1,5 +1,13 @@
 # Changelog
 
+### 0.2.14
+
+Add `insert-parent`, `replace-hid`, `hid`.
+Horizontal `insert-all-childs`.
+Fix org-ctags link openning.
+Set page-delimiter for `backward-page`, add hotkeys.
+Add `csum-promille`.
+
 ### 0.2.13
 
 Use `notify.0508cd55.nip.io`.

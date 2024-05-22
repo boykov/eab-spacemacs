@@ -452,6 +452,10 @@
   (format "%0.2f" (* (/ (org-clock-sum-current-item)
                         (eab/total-minutes)) 100)))
 
+(defun csum-promille ()
+  (format "%0.1f" (* (/ (org-clock-sum-current-item)
+                        (eab/total-minutes)) 1000)))
+
 (defun csum-file-percent ()
   (format "%0.2f" (* (/ (org-clock-sum)
      (eab/total-minutes)) 100)))
@@ -467,7 +471,7 @@
     (if head
         (mapcar
          (lambda (x)
-           (concat "[[" "id:" (cadr x) "][" (car x) "]]\n"))
+           (concat "[[" "id:" (cadr x) "][" (car x) "]]"))
          (mapcar (lambda (x) (split-string x ".org-:ID:       "))
                  (let ((default-directory org-directory))
                    (split-string
@@ -477,12 +481,18 @@
                               head
                               "$\" | grep :ID: | sort")) 0 -1) "\n")))))))
 
-(defun find-parent ()
-  (save-excursion
-    (switch-to-buffer (get-buffer "root-clock-reports.org"))
-    (beginning-of-buffer)
-    (search-forward-regexp "^:HEAD: w2c$")
-    (org-entry-get nil "ID")))
+(defun insert-parent ()
+  (let ((head (org-entry-get nil "PRNT")))
+    (if head
+        (concat "[[" "id:" (find-parent head) "][Наверх]]"))))
+
+(defun find-parent (head)
+  (save-window-excursion
+    (save-excursion
+      (switch-to-buffer (get-buffer "root-clock-reports.org"))
+      (beginning-of-buffer)
+      (search-forward-regexp (concat "^:HEAD: " head "$"))
+      (org-entry-get nil "ID"))))
 
 (defun eab/jump-current-time ()
   (interactive)

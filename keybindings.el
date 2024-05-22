@@ -862,6 +862,8 @@
    "M-RET"              (ilam (org-insert-heading nil))
    "M-N"                'org-backward-sentence
    "M-M"                'org-forward-sentence
+   "M-U"                'backward-page
+   "M-O"                'forward-page
    "C-M-u"              'outline-previous-visible-heading
    "C-M-o"              'outline-next-visible-heading
    "s-u"                'org-preview-latex-fragment
