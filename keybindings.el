@@ -368,7 +368,7 @@
  "k"            'org-metadown
  "j"            'org-metaleft
  "l"            'org-metaright
- "<backtab>"    (ilam (org-content 6))
+ "<backtab>"    (ilam (org-content 6) (org-fold-hide-drawer-all))
  "M-k"          'org-shiftdown
  "M-i"          'org-shiftup
  "M-j"          'org-shiftleft
@@ -431,7 +431,7 @@
  "f"            'eab/see-file
  "SPC"          'eab/gr-tag-default-directory
  "M-d"          (ilam (eab/sh-over-bash eab/test-dotemacs-command "" 't))
- "M-b"          (ilam (eab/sh-over-bash eab/batch-publish-command "" 't)))
+ "M-b"          (ilam (call-process-shell-command eab/unlock-chronos-command nil 0)))
 (setq eab/temacs-map (lookup-key global-map (kbd "C-l")))
 
 (defvar eab/compile-map (make-sparse-keymap)
@@ -862,8 +862,8 @@
    "M-RET"              (ilam (org-insert-heading nil))
    "M-N"                'org-backward-sentence
    "M-M"                'org-forward-sentence
-   "M-U"                'backward-page
-   "M-O"                'forward-page
+   "M-U"                'eab/org-backward-page
+   "M-O"                'eab/org-forward-page
    "C-M-u"              'outline-previous-visible-heading
    "C-M-o"              'outline-next-visible-heading
    "s-u"                'org-preview-latex-fragment
@@ -1383,6 +1383,7 @@
      "ш"        'mc/mark-previous-like-this
      "k"        'mc/mark-next-like-this
      "л"        'mc/mark-next-like-this
+     "C-c C-c"  'org-toggle-checkbox
      "m"        'mc/mark-more-like-this-extended)))
 
 (if (and (featurep 'power-macros) (string= (file-name-nondirectory power-macros-file) "eab-pmacros.el")) 

@@ -157,6 +157,7 @@
     (org-return)))
 
 (add-hook 'org-mode-hook (lambda () (toggle-truncate-lines)))
+(add-hook 'org-mode-hook (lambda () (org-fold-hide-drawer-all)))
 
 (setq org-export-default-language "ru")
 (setq org-export-with-broken-links 't)
@@ -249,5 +250,17 @@
          (end (plist-get (cadr el) :end)))
     (when (and begin end)
       (goto-char end))))
+
+(defun eab/org-forward-page ()
+  (interactive)
+  (forward-page)
+  (while (org-in-src-block-p 't)
+    (forward-page)))
+
+(defun eab/org-backward-page ()
+  (interactive)
+  (backward-page)
+  (while (org-in-src-block-p 't)
+    (backward-page)))
 
 (provide 'eab-org)

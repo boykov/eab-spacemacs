@@ -1,5 +1,12 @@
 # Changelog
 
+### 0.2.15
+
+Add `eab/cmp-date-property`.
+Add `eab/unlock-chronos-command`.
+Add `eab/org-forward-page`.
+Use `org-fold-hide-drawer-all`.
+
 ### 0.2.14
 
 Add `insert-parent`, `replace-hid`, `hid`.

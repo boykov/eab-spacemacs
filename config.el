@@ -44,6 +44,9 @@ END
 (setq eab/test-dotemacs-command
       (concat "ssh kairos" " ~/git/auto/test-dotemacs.sh"))
 
+(setq eab/unlock-chronos-command
+      (concat "ssh chronos" " \"sudo loginctl unlock-sessions && sleep 1 && ydotool mousemove --delay 500 0 0\""))
+
 (defun eab/loaded-ok ()
   (if configuration-layer-error-count
       (shell-command "echo > $HOME/dotemacs.error"))

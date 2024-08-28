@@ -52,11 +52,26 @@
     (eval query)
     :super-groups
     '((:auto-dir-name))
-    :sort 'priority
+    :sort (eab/cmp-date-property)
     :buffer (eab/org-ql-query-buffer query))
   (switch-to-buffer
    (eab/org-ql-query-buffer query))
   (setq-local org-agenda-buffer-name (buffer-name)))
+
+(defun eab/cmp-date-property ()
+  "Compare two org-mode headers, `A' and `B', by their :HE_SORT property.
+  If a is before b, return nil, otherwise t."
+  (lambda (a b)
+    (let* ((a1 (org-element-property :HE_SORT a))
+           (b1 (org-element-property :HE_SORT b))
+           (a2 (org-element-property :priority a))
+           (b2 (org-element-property :priority b))
+           )
+      (if (or (and (< (if (not a1) 2000 (string-to-number a1))
+                 (if (not b1) 2000 (string-to-number b1)))
+                   (= (if (not a2) 2000 a2) (if (not b2) 2000 b2)))
+              (< (if (not a2) 2000 a2)
+                 (if (not b2) 2000 b2))) t nil))))
 
 ;; TODO instead of org-ql-view-refresh with wrong rename-buffer
 (defun eab/org-ql-view-refresh (&optional prompt)
