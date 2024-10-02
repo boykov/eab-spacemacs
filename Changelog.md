@@ -1,5 +1,10 @@
 # Changelog
 
+### 0.2.16
+
+Fix org `9.4.1` org-fold-hide-drawer-all check.
+Rm `timeline-time-arch.org`.
+
 ### 0.2.15
 
 Add `eab/cmp-date-property`.

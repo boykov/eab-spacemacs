@@ -157,7 +157,7 @@
     (org-return)))
 
 (add-hook 'org-mode-hook (lambda () (toggle-truncate-lines)))
-(add-hook 'org-mode-hook (lambda () (org-fold-hide-drawer-all)))
+(add-hook 'org-mode-hook (lambda () (if (fboundp 'org-fold-hide-drawer-all) (org-fold-hide-drawer-all))))
 
 (setq org-export-default-language "ru")
 (setq org-export-with-broken-links 't)
