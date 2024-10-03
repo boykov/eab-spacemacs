@@ -18,9 +18,7 @@
     auto-dictionary ;; switcher for flyspell
     howdoi
 
-    ,(when (or (string= (daemonp) "serverC") (string= (daemonp) "kairosC") noninteractive) '(org-mode-fix/lisp :location local))
-    ,(unless (or (string= (daemonp) "serverC") (string= (daemonp) "kairosC") noninteractive) '(org-mode/lisp :location local))
-    ;; (org-mode/lisp :location local)
+    (org-mode/lisp :location local)
     ,(when (not (string-match-p "^25" emacs-version)) 'org-roam)
     deft
     outshine
@@ -612,6 +610,7 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
             (define-key map [?\C-y] #'eat-yank)
             (define-key map [?\M-v] #'eat-yank)
             (define-key map [?\M-y] #'eat-yank-from-kill-ring)
+            (define-key map [?\M-r] (ilam (eab/m-r)))
             (define-key map [?\M-j] (ilam (eat-self-input 1 'left)))
             (define-key map [?\M-l] (ilam (eat-self-input 1 'right)))
             (define-key map [?\M-k] (ilam (eat-self-input 1 'down)))
@@ -643,6 +642,23 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
       "Minor mode for char mode keymap."
       :interactive nil
       :keymap eat-char-mode-map)
+
+    (defun eab/m-r ()
+      (interactive)
+      (execute-kbd-macro (read-kbd-macro "C-]"))
+      (sleep-for 0.2)
+      (eat-emacs-mode)
+      (move-beginning-of-line 1)
+      (call-interactively 'set-mark-command)
+      (re-search-backward "^> EOF")
+      (next-line)
+      (call-interactively 'kill-ring-save)
+      (ergoemacs-move-cursor-previous-pane -1)
+      (yank)
+      (ergoemacs-move-cursor-previous-pane -1)
+      (eat-semi-char-mode)
+      (sleep-for 0.2)
+      (eat-self-input 1 'right))
 
     (eab/patch-this-code
      'eat
@@ -879,7 +895,9 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
     (add-to-list 'helm-org-ql-actions '("eab/hron-todo" . eab/helm-hron-todo))))
 (defun eab-spacemacs/init-org-mode/lisp nil
   ;; fix org-element performance degradation
-  (setq org-element--cache-self-verify nil)
+  (setq org-element--cache-self-verify 't)
+  (setq org-element-use-cache 't)
+  (if (string= (daemonp) "kairosC") (setq org-cycle-hide-drawer-startup nil))
   '((setq org-element-cache-persistent nil))
   '((setq org-element-use-cache nil))
   ;; fix 'file is already exist' bug

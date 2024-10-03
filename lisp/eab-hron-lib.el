@@ -425,6 +425,7 @@
   (ignore-errors (kill-buffer "time-reports-nightly.org"))
   (eab/create-nightly)
   (find-file (concat org-directory "gen/time-reports-nightly.org"))
+  (setq after-change-functions '(jit-lock-after-change t))
   (revert-all-buffers)
   (org-update-all-dblocks)
   (save-buffer)

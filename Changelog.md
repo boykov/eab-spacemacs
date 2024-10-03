@@ -1,5 +1,19 @@
 # Changelog
 
+### 0.3.1
+
+Ignore new local repos.
+Switch all to org-mode 9.7.11 (and org-ql 0.8.9).
+Add few batch-publish fixes:
+- use old `org-clock-sum` (without org-element-at-point)
+- use old `org-get-tags` (without org-element-at-point)
+- enable `org-element--cache-self-verify`
+- don't use `org-fold-hide-drawer-all`
+- don't use org-fold in `after-change-functions`
+Init `eab/m-r`.
+Add `eab/explore-map`, improve keybindings.
+Activate `org-element-use-cache` and `org-element--cache-self-verify`.
+
 ### 0.2.16
 
 Fix org `9.4.1` org-fold-hide-drawer-all check.

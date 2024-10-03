@@ -223,6 +223,19 @@
  "<M-kp-equal>" (ilam (shell-command "suspend_until.sh 4:00 &"))
  "<kp-delete>"  (ilam (kill-buffer-and-window)))
 
+(defvar eab/explore-map (make-sparse-keymap)
+  "Keymap for minimal configuration")
+(general-define-key
+ :keymaps 'eab/explore-map
+ "t"          'git-timemachine
+ "a"          'vc-annotate
+ "o"          'org-sort
+ "c"          'clone-indirect-buffer
+ "f"          'magit-status
+ "C-f"        'magit-status
+ "s"          'sort-lines
+ "w"          'whitespace-mode)
+
 (general-define-key
  "M-z"          'undo-tree-undo
  "C-b"          'eab/cxb
@@ -235,7 +248,7 @@
  "C-s"          (ilam (save-some-buffers 't))
  "C-:"          'isearch-moccur
  "C-c t"        'dictionary-search
- "C-f"          'magit-status
+ "C-f"          eab/explore-map
  "C-p"          'er/expand-region
  "C-s-l"        'helm-locate
  "C-x C-k d"    'pm-define
@@ -441,7 +454,9 @@
  :prefix "C-d"
  "q"    'eab/nocommand
  "a"    'eab/compile-helm
+ "e"    eab/explore-map
  "d"    'eab/projectile-compile-project
+ "C-d"    'eab/projectile-compile-project
  "s"    (ilam (smart-compile 4))
  "S"    `(,(ilam (eab/projectile-compile-project-custom "make push_unstaged")) :which-key " ")
  "l"    `(,(ilam (TeX-command "LaTeX"   'TeX-master-file)) :which-key " ")
@@ -729,7 +744,6 @@
    "J"          'magit-commit-amend
    "R"          (kbd "r - A e o r i g i n / m a s t e r RET")
    "N"          (kbd "P o m a s t e r 2*RET")
-   "Q"          (ilam (shell-command "git add CHR250-* LMCR-* GA-* GRP-* CRKO-* SUP* CS-* QB* CHR3-* PRSL-* PLTF-* LIME-* AVD-* CHRR-* PEAR-*"))
    "{"          (ilam (execute-kbd-macro (read-kbd-macro "C-u S ESC A g i t SPC c o 2*m i t SPC - m SPC u p d a t e RET g")))
    "M-n"        'nil
    "M-p"        'nil
@@ -1343,6 +1357,10 @@
      :keymaps 'region-bindings-mode-map
      "u"        'untabify
      "г"        'untabify
+     "s"        'sort-lines
+     "ы"        'sort-lines
+     "o"        'org-sort
+     "щ"        'org-sort
      "c"        'copy-rectangle-as-kill
      "с"        'copy-rectangle-as-kill
      "v"        'yank-rectangle

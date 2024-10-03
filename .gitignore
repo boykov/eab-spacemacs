@@ -1,2 +1,4 @@
 *.elc
 local/org-mode-fix
+local/org-mode-new
+local/org-ql-new
