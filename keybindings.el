@@ -230,10 +230,13 @@
  "t"          'git-timemachine
  "a"          'vc-annotate
  "o"          'org-sort
+ "e"          'ediff-buffers
  "c"          'clone-indirect-buffer
  "f"          'magit-status
  "C-f"        'magit-status
  "s"          'sort-lines
+ "u"          'untabify
+ "C-w"        'whitespace-mode
  "w"          'whitespace-mode)
 
 (general-define-key

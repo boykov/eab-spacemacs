@@ -1,5 +1,10 @@
 # Changelog
 
+### 0.3.2
+
+0508cd55.nip.io -> eab.su
+Update `expand-region-20240919`.
+
 ### 0.3.1
 
 Ignore new local repos.

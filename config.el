@@ -28,7 +28,7 @@ END
 " )) 0 -1))
 (defun eab/gotify (title message priority)
   (shell-command
-   (concat "curl \"https://notify.0508cd55.nip.io/message?token=" eab/gotify-token "\" "
+   (concat "curl \"https://notify.eab.su/message?token=" eab/gotify-token "\" "
            "-F \"title=" title
            "\" -F \"message=" message
            "\" -F \"priority=" (number-to-string priority) "\"")))
@@ -37,7 +37,7 @@ END
 ~/git/auto/keepass.sh \"portal/gotify\" -a client-token
 END
 " )) 0 -1))
-(setq eab/gotify-ws (concat "wss://notify.0508cd55.nip.io/stream?token=" eab/gotify-client-token))
+(setq eab/gotify-ws (concat "wss://notify.eab.su/stream?token=" eab/gotify-client-token))
 (setq eab/gotify-command
       (concat "ssh kairos" " 'sqlite3 -column /var/gotify/data/gotify.db \"select datetime(date,\\\"localtime\\\"),title,message from messages order by date desc limit 10;\"'"))
 
@@ -258,7 +258,7 @@ END
 
 (setq-put org-link-abbrev-alist
           '(("bib" . "~/git/lit/boykov.bib::%s")
-            ("papers" . "https://share.0508cd55.nip.io/papers/%s.pdf")
+            ("papers" . "https://share.eab.su/papers/%s.pdf")
             ("google" . "http://www.google.com/search?q=")
             ))
 ;; See also eab-header in ~/texmf/tex/latex/eab-styles/eab-header.sty
