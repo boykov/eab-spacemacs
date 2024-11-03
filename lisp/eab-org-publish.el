@@ -73,10 +73,9 @@
 (defun eab/org-publish-current-file ()
   (interactive)
   (let ((org-publish-use-timestamps-flag nil)
-        (default-directory (concat (file-truename org-directory) "clock/")))
+        (fold (cadr (reverse (split-string (buffer-file-name (buffer-base-buffer)) "/" t)))))
     (org-publish-file
-     (file-truename (buffer-file-name (buffer-base-buffer)))
-     nil)
+     (file-truename (buffer-file-name (buffer-base-buffer))))
     ;; (shell-command
 ;;      (concat eab/ssh-host " <<'END'
 ;; sudo podman exec eab-utils bash -c \"cd ~/git/eab-kb/js && node update-client.js\"

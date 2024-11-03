@@ -1,5 +1,16 @@
 # Changelog
 
+### 0.3.3
+
+Add `eab/helm-note-todo`. 
+Fix `eab/org-publish-current-file-remote`: buffer-name vs
+buffer-file-name, kairos vs chronos.
+Improve `eab/org-backward-page`.
+Add `eab/sync-zfs-command`.
+Convert `eab/gotify-token` and `eab/gotify-client-token` to function
+with cache.
+Fix `eab/org-publish-current-file`.
+
 ### 0.3.2
 
 0508cd55.nip.io -> eab.su
@@ -295,8 +306,6 @@ Don't comment `eab/gotify-token` check.
 Add `ido-better-flex`.
 Use `(set-input-method nil)` for `C-l C-k`.
 Add `insert-showhide` pm macro.
-
-TODO serverC eab/gotify-token is defined unstable.
 
 ### 0.1.28
 

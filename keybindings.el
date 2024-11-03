@@ -447,7 +447,8 @@
  "f"            'eab/see-file
  "SPC"          'eab/gr-tag-default-directory
  "M-d"          (ilam (eab/sh-over-bash eab/test-dotemacs-command "" 't))
- "M-b"          (ilam (call-process-shell-command eab/unlock-chronos-command nil 0)))
+ "M-b"          (ilam (call-process-shell-command eab/unlock-chronos-command nil 0))
+ "M-s"          (ilam (call-process-shell-command eab/sync-zfs-command nil 0)))
 (setq eab/temacs-map (lookup-key global-map (kbd "C-l")))
 
 (defvar eab/compile-map (make-sparse-keymap)
@@ -570,6 +571,7 @@
  ;;  "s"        'bmkp-cycle ;; TODO сделать обертку, выбирающую navlist в соответствии с группой
  ;;  "t"        `(,(ilam (bmkp-choose-navlist-of-type "any")) :which-key " ")
  ;; DONE по имени буфера: нарушение SPOT!
+ "M-h"          'eab/helm-org-agenda-files-headings
  "h"            `(,(ilam (eab/org-ql-switch 'eab/org-ql-H-query)) :which-key " ")
  "H"            `(,(ilam (eab/org-ql-search 'eab/org-ql-H-query)) :which-key " ")
  "t"            `(,(ilam (eab/org-ql-switch 'eab/org-ql-T-query)) :which-key " ")

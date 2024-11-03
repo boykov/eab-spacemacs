@@ -128,7 +128,7 @@
     (unless (websocket-openp eab/gotify-websocket)
       (setq eab/gotify-websocket
             (websocket-open
-             eab/gotify-ws
+             (concat "wss://notify.eab.su/stream?token=" (eab/gotify-client-token))
              :on-message `(lambda (_websocket frame)
                             (let ((text (websocket-frame-text frame)))
                               (save-window-excursion
@@ -146,7 +146,7 @@
         (setq eab/gotify-ready? 't)
         (switch-to-buffer gotify-buffer nil 't)))))
 
-'((websocket-send-text eab/gotify-websocket "hello from emacs")
+'((eab/gotify "Hello" "from emacs" 0)
   (websocket-close eab/gotify-websocket)
   (websocket-openp eab/gotify-websocket)
   )

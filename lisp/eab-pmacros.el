@@ -197,3 +197,10 @@
  ""
  "C-l C-k M-SPC M-p M-X - SPC C-k hfpyjt SPC C-k hid TAB M-l M-SPC M-; end_sh RET
  M-h M-i r 2*SPC RET M-k M-h M-SPC 2*M-k M-X")
+
+(pm-def-macro
+ 'replace-abstract
+ nil nil
+ ""
+ "C-l C-k M-; _abstr RET M-h RET M-SPC M-k M-X M-; _abs RET M-h M-SPC M-k M-X M-w
+ C-l L")

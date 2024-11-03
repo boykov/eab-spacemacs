@@ -403,6 +403,7 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
   (use-package helm-org
     :after (eab-helm eab-org)
     :config
+    (add-to-list 'helm-org-headings-actions '("eab/helm-note-todo" . eab/helm-note-todo))
     (add-to-list 'helm-org-headings-actions '("eab/helm-org-switch-ql" . eab/helm-org-switch-ql))
     (add-to-list 'helm-org-headings-actions '("eab/hron-todo" . eab/helm-hron-todo)))
   )

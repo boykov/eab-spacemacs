@@ -15,29 +15,34 @@
 (defvar eab/ssh-host "ssh -o ConnectTimeout=10 kairos" "current host")
 
 '((let ((server-use-tcp server-C-use-tcp))
-    (list (server-eval-at "serverC" 'eab/gotify-token)
-          (server-eval-at "serverC" 'eab/gotify-client-token)
-          (server-eval-at "kairosC" 'eab/gotify-token)
-          (server-eval-at "kairosC" 'eab/gotify-client-token)))
+    (list (server-eval-at "serverC" '(eab/gotify-token))
+          (server-eval-at "serverC" '(eab/gotify-client-token))
+          (server-eval-at "kairosC" '(eab/gotify-token))
+          (server-eval-at "kairosC" '(eab/gotify-client-token))))
   )
 
-(setq eab/gotify-token
-      (substring (shell-command-to-string (concat eab/ssh-host " bash <<'END'
+(defvar eab/gotify-token-cache "" "")
+(defun eab/gotify-token ()
+  (if (not (equal (length eab/gotify-token-cache) 15))
+      (setq eab/gotify-token-cache (substring (shell-command-to-string (concat eab/ssh-host " bash <<'END'
 ~/git/auto/keepass.sh \"portal/gotify\" -a app-test-token
 END
-" )) 0 -1))
+" )) 0 -1)))
+  eab/gotify-token-cache)
 (defun eab/gotify (title message priority)
   (shell-command
-   (concat "curl \"https://notify.eab.su/message?token=" eab/gotify-token "\" "
+   (concat "curl \"https://notify.eab.su/message?token=" (eab/gotify-token) "\" "
            "-F \"title=" title
            "\" -F \"message=" message
            "\" -F \"priority=" (number-to-string priority) "\"")))
-(setq eab/gotify-client-token
-      (substring (shell-command-to-string (concat eab/ssh-host " bash <<'END'
+(defvar eab/gotify-client-token-cache "" "")
+(defun eab/gotify-client-token ()
+  (if (not (equal (length eab/gotify-client-token-cache) 15))
+      (setq eab/gotify-client-token-cache (substring (shell-command-to-string (concat eab/ssh-host " bash <<'END'
 ~/git/auto/keepass.sh \"portal/gotify\" -a client-token
 END
-" )) 0 -1))
-(setq eab/gotify-ws (concat "wss://notify.eab.su/stream?token=" eab/gotify-client-token))
+" )) 0 -1)))
+  eab/gotify-client-token-cache)
 (setq eab/gotify-command
       (concat "ssh kairos" " 'sqlite3 -column /var/gotify/data/gotify.db \"select datetime(date,\\\"localtime\\\"),title,message from messages order by date desc limit 10;\"'"))
 
@@ -46,6 +51,9 @@ END
 
 (setq eab/unlock-chronos-command
       (concat "ssh chronos" " \"sudo loginctl unlock-sessions && sleep 1 && ydotool mousemove --delay 500 0 0\""))
+
+(setq eab/sync-zfs-command
+      (concat "ssh cyclos" " screen -d -m bash -c \"echo; syncoid.sh chronos kairos\""))
 
 (defun eab/loaded-ok ()
   (if configuration-layer-error-count
@@ -143,8 +151,8 @@ END
       (setq server-use-tcp 't)))
 
 '((let ((server-use-tcp 't))
-    (list (server-eval-at "serverP" 'eab/gotify-token)
-          (server-eval-at "serverP" 'eab/gotify-client-token)))
+    (list (server-eval-at "serverP" '(eab/gotify-token))
+          (server-eval-at "serverP" '(eab/gotify-client-token))))
   )
 
 

@@ -183,6 +183,7 @@
     (funcall `(lambda () ,body))))
 
 (defvar eab/hron-todo-history nil "`eab/hron-todo' history alist")
+(defvar eab/note-todo-history nil "`eab/note-todo' history alist")
 
 ;; DONE похоже, переключение в другой буфер (и обратно), генерирует
 ;; какие-то маркеры, которые затем нарушают задуманную работу функции
@@ -314,6 +315,37 @@
            eab/hron-todo-bulk-hour
            eab/hron-todo-bulk-minute)))
     (eab/hron-todo-1 eab/hron-todo-bulk-hour eab/hron-todo-bulk-minute arg)))
+
+(defun eab/note-todo (&optional arg)
+  (interactive "p")
+  (eab/note-todo-1 (eab/note-todo-setup)))
+
+(defun eab/note-todo-1 (note)
+  (if (eq major-mode 'org-agenda-mode)
+      (progn
+        (setq eab/agendah-buffer (current-buffer))
+        (setq eab/note-todo-from-agenda 't)
+        (org-agenda-switch-to))
+    (setq eab/note-todo-from-agenda nil))
+  (org-set-property "NOTE" note)
+  (if eab/note-todo-from-agenda
+      (switch-to-buffer eab/agendah-buffer)))
+
+(defun eab/note-todo-setup ()
+  (interactive)
+  (let* ((prompt "Enter")
+         (value (org-entry-get nil "NOTE"))
+         (note (read-from-minibuffer
+                (concat prompt " note ") value nil nil
+                'eab/note-todo-history)))
+    note))
+
+(defun eab/helm-note-todo (marker)
+  (save-window-excursion
+      (helm-org-ql-show-marker marker)
+      (eab/note-todo-1  (eab/note-todo-setup))
+      (save-some-buffers 't))
+    (eab/helm-org-agenda-files-headings))
 
 (defvar eab/helm-org-marker nil)
 (defun eab/helm-hron-todo (marker)
@@ -460,6 +492,10 @@
 (defun csum-file-percent ()
   (format "%0.2f" (* (/ (org-clock-sum)
      (eab/total-minutes)) 100)))
+
+(defun csum-file-promille ()
+  (format "%0.2f" (* (/ (org-clock-sum)
+     (eab/total-minutes)) 1000)))
 
 (defun csum ()
   (org-minutes-to-clocksum-string (org-clock-sum-current-item)))

@@ -254,13 +254,15 @@
 (defun eab/org-forward-page ()
   (interactive)
   (forward-page)
-  (while (org-in-src-block-p 't)
+  (while (or (org-in-src-block-p 't)
+             (org-in-block-p '("quote")))
     (forward-page)))
 
 (defun eab/org-backward-page ()
   (interactive)
   (backward-page)
-  (while (org-in-src-block-p 't)
+  (while (or (org-in-src-block-p 't)
+              (org-in-block-p '("quote")))
     (backward-page)))
 
 (provide 'eab-org)

@@ -45,15 +45,16 @@
 ;; TODO обобщить формирование body и выполнение remote
 (defun eab/org-publish-current-file-remote ()
   (interactive)
-  (let* ((name (buffer-file-name))
+  (let* ((name (buffer-name))
          (body `(lambda ()
                   (require 'server)
                   (let ((server-use-tcp ,server-C-use-tcp))
                     (server-eval-at ,(eab/target-C) '(progn
                                                        (shell-command (concat "cd " org-directory))
-                                                       (eab/rsync-org-directory)
+                                                       (let ((eab/ssh-host "ssh -o ConnectTimeout=10 chronos"))
+                                                         (eab/rsync-org-directory))
                                                        (revert-all-buffers)
-                                                       (org-publish-file ,name))))
+                                                       (org-publish-file (buffer-file-name (get-buffer ,name))))))
                   )))
     (eval `(async-start
                ,body
