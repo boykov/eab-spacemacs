@@ -76,10 +76,7 @@
         (fold (cadr (reverse (split-string (buffer-file-name (buffer-base-buffer)) "/" t)))))
     (org-publish-file
      (file-truename (buffer-file-name (buffer-base-buffer))))
-    ;; (shell-command
-;;      (concat eab/ssh-host " <<'END'
-;; sudo podman exec eab-utils bash -c \"cd ~/git/eab-kb/js && node update-client.js\"
-;; END"))
+    (eab/update-site)
     (if (equal
          (file-truename (buffer-file-name (buffer-base-buffer)))
          "/home/eab/git/org-chronos/clock/w1c-plan-vacancy.org")

@@ -123,6 +123,7 @@
     (org-publish-project "html-clock" (not fast))
     (org-publish-project "html-scale" (not fast))
     ;; (eab/shell-command "git stash save batch")
+    (eab/update-site)
     (if fast
         (eab/gotify "...fast finished" "success" 0)
       (eab/gotify "...finished" "success" 0)
@@ -595,6 +596,8 @@
     (progn
       (let ((server-use-tcp 't))
         (server-eval-at "cyclos" '(eab/renew-agenda-files-1)))
+      (let ((server-use-tcp 't))
+        (server-eval-at "chronosP" '(eab/renew-agenda-files-1)))
       (let ((server-use-tcp server-C-use-tcp))
         (server-eval-at "serverC" '(progn
                                           (eab/rsync-org-directory)

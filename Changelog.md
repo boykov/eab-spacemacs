@@ -1,5 +1,10 @@
 # Changelog
 
+### 0.3.4
+
+Fix `eab/sync-zfs-command` chronos case.
+Add `eab/update-site`.
+
 ### 0.3.3
 
 Add `eab/helm-note-todo`. 

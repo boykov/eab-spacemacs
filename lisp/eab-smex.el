@@ -24,7 +24,7 @@
   "Command used instead `execute-extended-command'"
   (interactive)
   (let ((commands (append (nthcar 10 smex-ido-cache) extended-command-history))) ;; smex-ido-cache))
-    (delete-dups commands)
+    (delq nil (delete-dups commands))
     (smex-read-and-run commands)))
 
 ;; DONE remove from extended-command-history all that not in obarray

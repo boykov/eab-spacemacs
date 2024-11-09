@@ -54,7 +54,8 @@
                                                        (let ((eab/ssh-host "ssh -o ConnectTimeout=10 chronos"))
                                                          (eab/rsync-org-directory))
                                                        (revert-all-buffers)
-                                                       (org-publish-file (buffer-file-name (get-buffer ,name))))))
+                                                       (org-publish-file (buffer-file-name (get-buffer ,name)))
+                                                       (eab/update-site))))
                   )))
     (eval `(async-start
                ,body

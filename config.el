@@ -52,13 +52,16 @@ END
 (setq eab/unlock-chronos-command
       (concat "ssh chronos" " \"sudo loginctl unlock-sessions && sleep 1 && ydotool mousemove --delay 500 0 0\""))
 
-(setq eab/sync-zfs-command
-      (concat "ssh cyclos" " screen -d -m bash -c \"echo; syncoid.sh chronos kairos\""))
-
 (defun eab/loaded-ok ()
   (if configuration-layer-error-count
       (shell-command "echo > $HOME/dotemacs.error"))
   (kill-emacs))
+
+(defun eab/update-site ()
+  (shell-command
+   (concat "ssh chronos" " <<'END'
+sudo docker exec eab-node bash -c \"cd ~/pub/eab-kb/js && node update-client.js\"
+END")))
 
 (defun eab/test-dotemacs ()
   (if configuration-layer-error-count
@@ -140,6 +143,14 @@ END
         (revert-buffer t t t))))
   (message "Refreshed open files."))
 
+(if (eab/ondaemon "cyclos")
+    (setq eab/sync-zfs-command
+          (concat "ssh cyclos" " screen -d -m bash -c \"echo; syncoid.sh chronos kairos\"")))
+
+(if (eab/ondaemon "chronosP")
+    (setq eab/sync-zfs-command
+          (concat "ssh chronos" " screen -d -m bash -c \"echo; syncoid.sh cyclos kairos\"")))
+
 (if (eab/ondaemon (eab/server-C))
     (progn
       (setq server-port 5001)
@@ -218,6 +229,7 @@ END
 
 (cond ((eab/onhost "chronos28")    (setq eab/ssh-host-local eab/ssh-host))
       ((eab/onhost "clocksum-28")  (setq eab/ssh-host-local eab/ssh-host))
+      ((eab/onhost "chronos-emacs")(setq eab/ssh-host-local "ssh chronos"))
       ((eab/onhost "cyclos-emacs") (setq eab/ssh-host-local "ssh cyclos"))
       (t (setq eab/ssh-host-local eab/ssh-host)))
 
@@ -309,6 +321,7 @@ END
       ((eab/onhost "kairos")       (setq-put source-directory "~/data/github/emacs/src"))
       ((eab/onhost "chronos")      (setq-put source-directory "~/data/github/emacs/src"))
       ((eab/onhost "chronos28")    (setq-put source-directory "~/data/github/emacs/src"))
+      ((eab/onhost "chronos-emacs")(setq-put source-directory "~/data/github/emacs/src"))
       ((eab/onhost "cyclos-emacs") (setq-put source-directory "~/data/github/emacs/src")))
 
 
