@@ -131,6 +131,7 @@
     wgrep
     ag
     wgrep-ag
+    rg
 
     (eab-misc :location local)
     ace-window
@@ -144,6 +145,7 @@
     helm-descbinds
     helm-helm-commands
     helm-org
+    helm-org-rifle
     smex ;; ido for M-x
     ido-at-point
     ido-vertical-mode
@@ -395,8 +397,8 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
     )
   )
 (defun eab-spacemacs/init-helm-descbinds nil
-  (require 'helm-descbinds)
-  (helm-descbinds-mode)
+  ;; (require 'helm-descbinds)
+  ;; (helm-descbinds-mode)
   )
 (defun eab-spacemacs/init-helm-helm-commands nil)
 (defun eab-spacemacs/init-helm-org nil
@@ -406,6 +408,24 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
     (add-to-list 'helm-org-headings-actions '("eab/helm-note-todo" . eab/helm-note-todo))
     (add-to-list 'helm-org-headings-actions '("eab/helm-org-switch-ql" . eab/helm-org-switch-ql))
     (add-to-list 'helm-org-headings-actions '("eab/hron-todo" . eab/helm-hron-todo)))
+  )
+(defun eab-spacemacs/init-helm-org-rifle nil
+  (use-package helm-org-rifle
+    :after (eab-helm eab-org)
+    :config
+    (general-define-key
+     :keymaps 'helm-org-rifle-map
+     "C-k"        'toggle-input-method
+     "M-k"        'helm-next-line
+     "C-n"        'next-history-element
+     "M-K"        'helm-next-page
+     "M-J"        'helm-beginning-of-buffer
+     "C-p"        'previous-history-element
+     "M-i"        'helm-previous-line
+     )
+    (setq helm-org-rifle-ellipsis-string "\n")
+    (setq helm-org-rifle-context-characters 200)
+    )
   )
 (defun eab-spacemacs/init-smart-compile nil
   (require 'smart-compile)
@@ -739,6 +759,9 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
 (defun eab-spacemacs/init-wgrep nil
   (use-package wgrep))
 (defun eab-spacemacs/init-ag nil)
+(defun eab-spacemacs/init-rg nil
+    (use-package rg)
+    )
 (defun eab-spacemacs/init-wgrep-ag nil)
 (defun eab-spacemacs/init-undo-tree nil
   (require 'undo-tree)

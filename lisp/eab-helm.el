@@ -10,7 +10,6 @@
 (use-package helm) ;; fix boundp helm-map
 (use-package helm-elisp)
 (use-package helm-locate)
-(use-package helm-config)
 (use-package helm-multi-match)
 ;;(require 'helm-match-plugin)
 ;; (helm-match-plugin-mode 0) ;; bug in terminal mode

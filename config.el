@@ -262,8 +262,8 @@ END")))
 
 (defun eab/rsync-org-directory ()
   (shell-command
-   (concat (if (eab/ondaemon "kairosC") "ssh kairos" eab/ssh-host)
-           " rsync --delete -avzl --exclude \".git\" --exclude \"gen\" ~/git/org-chronos/ " org-directory)))
+   (concat (if (eab/ondaemon "serverC") "ssh chronos" eab/ssh-host)
+           " rsync --delete -avzl --exclude-from=\\<\\(find ~/git/org-chronos/ -type l\\) --exclude \".git\" --exclude \"gen\" ~/git/org-chronos/ " org-directory)))
 
 (setq eab/batch-publish-command
       (concat eab/ssh-host " " (eab/get-path 'org-directory) "misc/batch-publish.sh"))
