@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.6
+
+Disable onboot csum for `clocksum` instances.
+Use `.stat` class for statistics-cookie.
+Add `html-heads`.
+Improve `checkbox`.
+Replace `helm-org--get-candidates-in-file` by `org-ql`.
+Add `eab/helm-org-setup`.
+
 ## 0.3.5
 
 Always publish w2c-improve-english forcedly.

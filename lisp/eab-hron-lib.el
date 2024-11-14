@@ -8,6 +8,44 @@
 ;; Status: not intended to be distributed yet
 
 (add-to-list 'org-publish-project-alist
+             `("html-heads"
+               :base-directory ,(concat org-directory "gen/heads")
+               :publishing-directory ,(concat eab/org-publish-directory "heads/")
+               :base-url ,(concat eab/org-publish-directory-file "heads/")
+               :working-directory ,(concat eab/org-publish-directory "heads/")
+               :online-suffix ".html"
+               :working-suffix ".org"
+               ;; :recursive t
+               :with-drawers ("CLOCK")
+               :section_numbers nil
+               :table-of-contents nil
+               :base-extension "org"
+               :publishing-function org-html-publish-to-html
+               :auto-sitemap t                ; Generate sitemap.org automagically...
+               :auto-sitemap t                ; Generate sitemap.org automagically...
+               :sitemap-filename "sitemap.org"  ; ... call it sitemap.org (it's the default)...
+               :sitemap-title "Sitemap"         ; ... with title 'Sitemap'.
+               :style-include-default t
+               :author-info nil
+               :creator-info nil))
+
+;; sed -i "s/(insert-all-childs)//g" *.org
+;; sed -i -E "s/stub.html#ID-([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})/\1.html/g" *.html
+;; sed -i -E "s|../../clock/[^#]*#ID-([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})|\1.html|g" *.html
+
+;; (setq org-directory "~/git/org/")
+;; (eab/rsync-org-directory)
+;; (eab/create-nightly)
+
+;; (setq org-directory "~/git/org/gen/heads")
+;; (setq org-agenda-files '(~/git/org/clock/"w2c-plan-kb.org" "~/git/org/gen/heads/stub.org"))
+;; (org-agenda-files t t)
+;; (setq org-id-locations nil)
+;; (setq org-id-files nil)
+;; (org-id-update-id-locations)
+;; (org-publish-project "html-heads")
+
+(add-to-list 'org-publish-project-alist
              `("html-base"
                :base-directory ,(concat org-directory "archive/")
                :exclude "timeline.org"
@@ -350,6 +388,15 @@
       (eab/note-todo-1  (eab/note-todo-setup))
       (save-some-buffers 't))
     (eab/helm-org-agenda-files-headings))
+
+(defun eab/helm-org-goto-marker (marker)
+  "Go to MARKER in org buffer."
+  (setq eab/helm-org-goto-flag 't)
+  (switch-to-buffer (marker-buffer marker))
+  (goto-char (marker-position marker))
+  (org-show-context)
+  (org-show-entry)
+  (org-show-children))
 
 (defvar eab/helm-org-marker nil)
 (defun eab/helm-hron-todo (marker)

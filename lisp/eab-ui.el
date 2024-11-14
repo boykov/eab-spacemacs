@@ -123,6 +123,18 @@
   (define-key arrow-keys-map "C" 'forward-char)
   (define-key arrow-keys-map "D" 'backward-char))
 
+(defun eab/helm-org-setup ()
+  (progn
+    (setq eab/helm-org-goto-flag nil)
+    (remove-hook 'org-mode-hook 'eab/org-hook)
+    (ergoemacs-fix-arrow-keys global-map)
+    (ergoemacs-fix-arrow-keys org-mode-map)
+    (let ((helm-full-frame 't))
+      (eab/helm-org-agenda-files-headings))
+    (if (not eab/helm-org-goto-flag)
+        (delete-frame))
+    ))
+
 (setq browse-url-browser-function (quote browse-url-firefox))
 (setq browse-url-firefox-program "/usr/local/bin/browser-remote")
 

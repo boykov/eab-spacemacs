@@ -93,13 +93,9 @@
                (helm-build-sync-source (format "Org headings (%s)" name)
                  :candidates (helm-dynamic-completion
                               (remove-if
-                               (lambda (s) (string-match ".*:nohelm:.*" s))
-                               (helm-org--get-candidates-in-file
-                                file
-                                helm-org-headings-fontify
-                                t
-                                parents (or force-refresh
-                                            helm-org--force-refresh)))
+                               (lambda (s) (string-match ".*virtual.*" s))
+                               (org-ql-select file '(and (or (not (tags "noagenda")) (tags "agenda")) (not (tags "neveragenda")))
+                                 :action `(eab/helm-org-ql--heading3 100)))
                               'stringp
                               nil '(metadata (display-sort-function
                                               .
@@ -114,6 +110,15 @@
                  :help-message 'helm-org-headings-help-message
                  :keymap helm-org-headings-map
                  :group 'helm-org))
-    (setq helm-org--force-refresh nil)))
+    (setq helm-org--force-refresh 't)))
+
+(defun eab/helm-org-ql--heading3 (window-width)
+  "Return string for Helm for heading at point.
+WINDOW-WIDTH should be the width of the Helm window."
+  (font-lock-ensure (point-at-bol) (point-at-eol))
+  (let* ((prefix (concat (buffer-name) ":"))
+         (width (- window-width (length prefix)))
+         (heading (org-get-heading)))
+    (propertize (concat heading) 'helm-realvalue (point-marker))))
 
 (provide 'eab-helm)

@@ -78,9 +78,17 @@
 (eab/patch-this-code
  'org-html-statistics-cookie
  '(("<code>%s</code>" .
-    "<span class=\\\\\"todo TODO\\\\\">%s</span>"))
+    "<span class=\\\\\"stat\\\\\">%s</span>")
+   ("(org-element-property :value statistics-cookie)" .
+    "(substring (org-element-property :value statistics-cookie) 1 -1)"))
  :lexical 't
  :native 't)
+
+;; (defun org-html-statistics-cookie (statistics-cookie _contents _info)
+;;   "Transcode a STATISTICS-COOKIE object from Org to HTML.
+;; CONTENTS is nil.  INFO is a plist holding contextual information."
+;;   (let ((cookie-value (substring (org-element-property :value statistics-cookie) 1 -1)))
+;;     (format "<span class=\"stat\">%s</span>" cookie-value)))
 
 (eab/bind-path org-directory)
 (eab/bind-path eab/org-publish-directory)

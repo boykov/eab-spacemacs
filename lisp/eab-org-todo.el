@@ -36,4 +36,18 @@
 (setq org-enforce-todo-checkbox-dependencies t)
 (setq org-html-checkbox-type 'html)
 
+(setq org-html-checkbox-types
+      '((unicode
+        (on . "&#x2611;")
+        (off . "&#x2610;")
+        (trans . "&#x2610;"))
+       (ascii
+        (on . "<code>[X]</code>")
+        (off . "<code>[&#xa0;]</code>")
+        (trans . "<code>[-]</code>"))
+       (html
+        (on . "<input type='checkbox' checked='checked' disabled='disabled'/>")
+        (off . "<input type='checkbox' disabled='disabled' />")
+        (trans . "<input type='checkbox' disabled='disabled' />"))))
+
 (provide 'eab-org-todo)

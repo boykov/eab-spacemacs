@@ -30,7 +30,7 @@
 (eab/renew-agenda-files-1)
 
 (when (eab/ondaemon (eab/server-C))
-  (eab/check-csum-day)
+  ;; (eab/check-csum-day)
   (setq system-time-locale "ru_RU.UTF-8"))
 
 (eab/bind-path eab/secrets-path)
