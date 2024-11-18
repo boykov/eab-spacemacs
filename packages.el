@@ -426,6 +426,7 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
      )
     (setq helm-org-rifle-ellipsis-string "\n")
     (setq helm-org-rifle-context-characters 200)
+    (add-to-list 'helm-org-rifle-actions '("eab/hron-todo" . eab/rifle-hron-todo))
     )
   )
 (defun eab-spacemacs/init-smart-compile nil
@@ -598,9 +599,10 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
   (require 'diff-hl))
 (defun eab-spacemacs/init-libgit nil
   (use-package libgit
-    :init
+    ;; :init
     ;; build28 bad name: libssl ubuntu 20.04
-    (when (string= (daemonp) "serverC") (defvar libgit--build-dir (expand-file-name "build28" libgit--root)))))
+    ;; (when (string= (daemonp) "????") (defvar libgit--build-dir (expand-file-name "build28" libgit--root)))
+    ))
 (defun eab-spacemacs/init-vterm nil
     (setq vterm-keymap-exceptions '("C-c" "C-x" "C-u" "C-g" "C-h" "C-l" "M-x" "M-o" "C-v" "M-v" "C-y" "M-y" "M-s" "M-a" "M-i" "M-k" "M-j" "M-l" "C-a" "M-c" "M-p")))
 (defun eab-spacemacs/init-emacs-eat nil

@@ -38,7 +38,6 @@
 
 (defun eab/load-personal ()
   (interactive)
-  (disable-theme 'solarized-light)
   (if (fboundp 'grep-a-lot-clear-stack)
       (grep-a-lot-clear-stack))
   (winner-mode)

@@ -38,7 +38,7 @@
 ;; (eab/create-nightly)
 
 ;; (setq org-directory "~/git/org/gen/heads")
-;; (setq org-agenda-files '(~/git/org/clock/"w2c-plan-kb.org" "~/git/org/gen/heads/stub.org"))
+;; (setq org-agenda-files '("~/git/org/clock/w2c-plan-kb.org" "~/git/org/gen/heads/stub.org"))
 ;; (org-agenda-files t t)
 ;; (setq org-id-locations nil)
 ;; (setq org-id-files nil)
@@ -279,16 +279,24 @@
   (interactive)
   (load eab/org-file nil 't)
   (let* ((prompt (eab/hron-current-time-stamp))
-         (hour (string-to-number
-                (read-from-minibuffer
-                 (concat prompt " hour ") nil nil nil
-                 'eab/hron-todo-history)))
-         (minute (string-to-number
-                  (read-from-minibuffer
-                   (concat prompt " minute ") nil nil nil
-                   'eab/hron-todo-history))))
-    (setq eab/hron-todo-bulk-hour hour)
-    (setq eab/hron-todo-bulk-minute minute)))
+         (str (read-from-minibuffer
+                 (concat prompt " [Hh]M ") nil nil nil
+                 'eab/hron-todo-history))
+         (parsed (split-string str "h"))
+         (hour (if (> (length parsed) 1)
+                   (string-to-number (car parsed))
+                 0))
+         (minute (if (> (length parsed) 1)
+                     (string-to-number (cadr parsed))
+                   (string-to-number (car parsed)))))
+    (if (string= str "0")
+        (progn
+          (message "Use 0h0 for zero clock")
+          (sleep-for 0.4)
+          (eab/hron-todo-setup))
+      (progn
+        (setq eab/hron-todo-bulk-hour hour)
+        (setq eab/hron-todo-bulk-minute minute)))))
 
 (defun eab/hron-todo-bulk ()
   (eab/hron-todo-1 eab/hron-todo-bulk-hour eab/hron-todo-bulk-minute 4))
@@ -426,6 +434,12 @@
                   (sleep-for 0.5)))))
       (save-some-buffers 't))
     (eab/helm-org-agenda-files-headings)))
+
+(defun eab/rifle-hron-todo (candidate)
+  (-let (((buffer . pos) candidate))
+    (switch-to-buffer buffer)
+    (goto-char pos))
+  (point-marker))
 
 (defun eab/org-clock (&optional start-time at-time)
   "Insert clock string in current buffer"
@@ -649,7 +663,7 @@
       (let ((server-use-tcp 't))
         (server-eval-at "chronosP" '(eab/renew-agenda-files-1)))
       (let ((server-use-tcp server-C-use-tcp))
-        (server-eval-at "serverC" '(progn
+        (server-eval-at "chronosC" '(progn
                                           (eab/rsync-org-directory)
                                           (eab/renew-agenda-files-1)))
         (server-eval-at "kairosC" '(progn

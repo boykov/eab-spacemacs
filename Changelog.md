@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.7
+
+Improve `eab/hron-todo-setup`, `eab/helm-org-agenda-files-headings`.
+Use `rifle` in `eab/helm-org-switch-ql`.
+Mv `(eab/load-personal)` to `auto`.
+Rename `serverC` -> `chronosC`.
+Fix `chronosC` libgit.
+Update `eab/ssh-host-local`.
+Use `split-window-right`.
+It seems `eab/sh-over-bash` is broken, use `call-process-shell-command` instead.
+
 ## 0.3.6
 
 Disable onboot csum for `clocksum` instances.

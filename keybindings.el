@@ -232,8 +232,8 @@
  "o"          'org-sort
  "e"          'ediff-buffers
  "c"          'clone-indirect-buffer
- "f"          'magit-status
- "C-f"        'magit-status
+ "f"          'eab/magit-status
+ "C-f"        'eab/magit-status
  "s"          'sort-lines
  "u"          'untabify
  "C-w"        'whitespace-mode
@@ -446,7 +446,7 @@
  ;; shell and shell-utils
  "f"            'eab/see-file
  "SPC"          'eab/gr-tag-default-directory
- "M-d"          (ilam (eab/sh-over-bash eab/test-dotemacs-command "" 't))
+ "M-d"          (ilam (call-process-shell-command eab/test-dotemacs-command nil 0))
  "M-b"          (ilam (call-process-shell-command eab/unlock-chronos-command nil 0))
  "M-s"          (ilam (call-process-shell-command eab/sync-zfs-command nil 0)))
 (setq eab/temacs-map (lookup-key global-map (kbd "C-l")))

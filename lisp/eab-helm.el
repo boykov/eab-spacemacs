@@ -41,7 +41,8 @@
   (eab/helm-org arg))
 
 (defun eab/helm-org-switch-ql (marker)
-  (eab/helm-org-ql))
+  (helm-org-rifle-files (eab/clocktable-scope)))
+  ;; (eab/helm-org-ql))
 
 (defun eab/helm-org (arg)
   (let ((files eab/clocktable-scope)
@@ -83,42 +84,75 @@
     :keymap helm-org-ql-map
     :action helm-org-ql-actions))
 
-(defun eab/helm-org-build-sources (filenames &optional parents force-refresh)
-  (unwind-protect
-      (cl-loop for file in filenames
-               for name = (if (bufferp file)
-                              (buffer-name file)
-                            (helm-basename file))
-               collect
-               (helm-build-sync-source (format "Org headings (%s)" name)
-                 :candidates (helm-dynamic-completion
-                              (remove-if
-                               (lambda (s) (string-match ".*virtual.*" s))
-                               (org-ql-select file '(and (or (not (tags "noagenda")) (tags "agenda")) (not (tags "neveragenda")))
-                                 :action `(eab/helm-org-ql--heading3 100)))
-                              'stringp
-                              nil '(metadata (display-sort-function
-                                              .
-                                              (lambda (candidates)
-                                                (sort candidates
-                                                      #'helm-generic-sort-fn))))
-                              nil helm-org-completion-styles)
-                 :match-dynamic t
-                 :filtered-candidate-transformer
-                 #'helm-org-indent-headings
-                 :action 'helm-org-headings-actions
-                 :help-message 'helm-org-headings-help-message
-                 :keymap helm-org-headings-map
-                 :group 'helm-org))
-    (setq helm-org--force-refresh 't)))
+(defun eab/cmp-helm-property ()
+  "Compare two org-mode headers, `A' and `B', by their :HE_SORT property.
+  If a is before b, return nil, otherwise t."
+  (lambda (a b)
+    (let* ((a1 (get-text-property 0 'sort-he a))
+           (b1 (get-text-property 0 'sort-he b))
+           (a2 (get-text-property 0 'sort-priority a))
+           (b2 (get-text-property 0 'sort-priority b))
+           (a3 (get-text-property 0 'sort-todo a))
+           (b3 (get-text-property 0 'sort-todo b))
+           )
+      (if (or (and (< (if (not a1) 2000 (string-to-number a1))
+                      (if (not b1) 2000 (string-to-number b1)))
+                   (= (if (not a2) 2000 (org-priority-to-value a2))
+                      (if (not b2) 2000 (org-priority-to-value b2)))
+                   (string= (if (not a3) "" a3)
+                            (if (not b3) "" b3)))
+              (and
+               (< (if (not a2) 2000 (org-priority-to-value a2))
+                  (if (not b2) 2000 (org-priority-to-value b2)))
+               (string= (if (not a3) "" a3)
+                        (if (not b3) "" b3)))
+              (string> (if (not a3) "" a3)
+                       (if (not b3) "" b3))) t nil))))
 
-(defun eab/helm-org-ql--heading3 (window-width)
+(defun h-candidate-transformer (candidates)
+  (sort candidates (eab/cmp-helm-property)))
+
+(defun eab/helm-org-build-sources (filenames &optional parents force-refresh)
+  (helm-build-sync-source (format "Org headings (%s)" "eab/clocktable-scope")
+    :candidates (helm-dynamic-completion
+                 (remove-if
+                  (lambda (s) (string-match ".*virtual.*" s))
+                  (org-ql-select eab/clocktable-scope '(not (tags "nohelm"))
+                    :action `(eab/helm-org-ql--heading 100)))
+                 'stringp
+                 nil nil
+                 nil helm-org-completion-styles)
+    ;; :match-dynamic t
+    :candidate-transformer #'h-candidate-transformer
+    :action 'helm-org-headings-actions
+    :help-message 'helm-org-headings-help-message
+    :keymap helm-org-headings-map
+    :group 'helm-org))
+
+;; org-revert-all-org-buffers
+;; (completion-metadata-get
+;;  '(metadata (display-sort-function
+;;              .
+;;              (lambda (candidates)
+;;                (sort candidates
+;;                      (eab/cmp-helm-property))))) 'display-sort-function)
+
+(defun eab/helm-org-ql--heading (window-width)
   "Return string for Helm for heading at point.
 WINDOW-WIDTH should be the width of the Helm window."
   (font-lock-ensure (point-at-bol) (point-at-eol))
   (let* ((prefix (concat (buffer-name) ":"))
          (width (- window-width (length prefix)))
          (heading (org-get-heading)))
-    (propertize (concat heading) 'helm-realvalue (point-marker))))
+    (propertize (concat heading)
+                'sort-he (org-entry-get nil "HE_SORT")
+                'sort-todo (org-entry-get nil "TODO")
+                'helm-realvalue (point-marker)
+                'sort-priority (org-entry-get nil "PRIORITY")
+                )))
+
+;; (get-text-property 0 'sort-he (propertize "str" 'sort-he "test" 'sort-p "test"))
+;; (get-text-property 0 'sort-priority (car (org-ql-select eab/clocktable-scope '(not (tags "nohelm")) :action `(eab/helm-org-ql--heading9 100))))
+;; (get-text-property 0 'sort-he (car (org-ql-select eab/clocktable-scope '(not (tags "nohelm")) :action `(eab/helm-org-ql--heading9 100))))
 
 (provide 'eab-helm)

@@ -15,8 +15,8 @@
 (defvar eab/ssh-host "ssh -o ConnectTimeout=10 kairos" "current host")
 
 '((let ((server-use-tcp server-C-use-tcp))
-    (list (server-eval-at "serverC" '(eab/gotify-token))
-          (server-eval-at "serverC" '(eab/gotify-client-token))
+    (list (server-eval-at "chronosC" '(eab/gotify-token))
+          (server-eval-at "chronosC" '(eab/gotify-client-token))
           (server-eval-at "kairosC" '(eab/gotify-token))
           (server-eval-at "kairosC" '(eab/gotify-client-token))))
   )
@@ -47,7 +47,8 @@ END
       (concat "ssh kairos" " 'sqlite3 -column /var/gotify/data/gotify.db \"select datetime(date,\\\"localtime\\\"),title,message from messages order by date desc limit 10;\"'"))
 
 (setq eab/test-dotemacs-command
-      (concat "ssh kairos" " ~/git/auto/test-dotemacs.sh"))
+      ;; host=`dig test-dotemacs.salmon.eab.su TXT +short | tr -d '"'`
+      (concat "ssh chronos" " ~/git/auto/test-dotemacs.sh"))
 
 (setq eab/unlock-chronos-command
       (concat "ssh chronos" " \"sudo loginctl unlock-sessions && sleep 1 && ydotool mousemove --delay 500 0 0\""))
@@ -95,12 +96,12 @@ END")))
           eab/daemon-name))
 
 (defun eab/server-C ()
-  (if (or (eab/ondaemon "serverC")
+  (if (or (eab/ondaemon "chronosC")
           (eab/ondaemon "kairosC"))
       eab/daemon-name))
 
 (defun eab/target-C ()
-  "serverC")
+  "chronosC")
 
 (setq server-C-use-tcp 't)
 '((setq org-fold-core-style 'overlays))
@@ -214,7 +215,7 @@ END")))
             ("chronosP"      . ,(concat user-emacs-directory "historyChronosP/"))
             ("microcyclos"   . ,(concat user-emacs-directory "historyMicrocyclos/"))
             ("cyclos"        . ,(concat user-emacs-directory "historyCyclos/"))
-            ("serverC"       . ,(concat user-emacs-directory "historyC/"))
+            ("chronosC"       . ,(concat user-emacs-directory "historyChronosC/"))
             ("kairosC"       . ,(concat user-emacs-directory "kairosC/"))
             ))
 
@@ -224,13 +225,14 @@ END")))
             ("chronosP"      . "docker-compose-emacs")
             ("microcyclos"   . "docker-compose-micro")
             ("cyclos"        . "cyclos-emacs")
-            ("serverC"       . "docker-compose-clocksum")
+            ("chronosC"       . "docker-compose-clocksum")
           ))
 
-(cond ((eab/onhost "chronos28")    (setq eab/ssh-host-local eab/ssh-host))
-      ((eab/onhost "clocksum-28")  (setq eab/ssh-host-local eab/ssh-host))
-      ((eab/onhost "chronos-emacs")(setq eab/ssh-host-local "ssh chronos"))
-      ((eab/onhost "cyclos-emacs") (setq eab/ssh-host-local "ssh cyclos"))
+(cond ((eab/onhost "kairos-emacs")    (setq eab/ssh-host-local "ssh -o ConnectTimeout=10 kairos"))
+      ((eab/onhost "kairos-clocksum")  (setq eab/ssh-host-local "ssh -o ConnectTimeout=10 kairos"))
+      ((eab/onhost "chronos-clocksum") (setq eab/ssh-host-local "ssh -o ConnectTimeout=10 chronos"))
+      ((eab/onhost "chronos-emacs")(setq eab/ssh-host-local "ssh -o ConnectTimeout=10 chronos"))
+      ((eab/onhost "cyclos-emacs") (setq eab/ssh-host-local "ssh -o ConnectTimeout=10 cyclos"))
       (t (setq eab/ssh-host-local eab/ssh-host)))
 
 (setq eab/xdg-open (concat eab/ssh-host-local " 'DISPLAY=:0 xdg-open"))
@@ -262,7 +264,7 @@ END")))
 
 (defun eab/rsync-org-directory ()
   (shell-command
-   (concat (if (eab/ondaemon "serverC") "ssh chronos" eab/ssh-host)
+   (concat eab/ssh-host-local
            " rsync --delete -avzl --exclude-from=\\<\\(find ~/git/org-chronos/ -type l\\) --exclude \".git\" --exclude \"gen\" ~/git/org-chronos/ " org-directory)))
 
 (setq eab/batch-publish-command
@@ -320,7 +322,7 @@ END")))
       ((eab/onhost "victory")      (setq-put source-directory "~/src/emacs/"))
       ((eab/onhost "kairos")       (setq-put source-directory "~/data/github/emacs/src"))
       ((eab/onhost "chronos")      (setq-put source-directory "~/data/github/emacs/src"))
-      ((eab/onhost "chronos28")    (setq-put source-directory "~/data/github/emacs/src"))
+      ((eab/onhost "kairos-emacs") (setq-put source-directory "~/data/github/emacs/src"))
       ((eab/onhost "chronos-emacs")(setq-put source-directory "~/data/github/emacs/src"))
       ((eab/onhost "cyclos-emacs") (setq-put source-directory "~/data/github/emacs/src")))
 

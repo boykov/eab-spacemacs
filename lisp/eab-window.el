@@ -45,7 +45,15 @@
 ;; Switch
 
 (defun eab/switch-window (name)
+  (when (= (length (window-list)) 1)
+    (split-window-right))
   (switch-to-buffer-other-window name))
+
+(defun eab/magit-status ()
+  (interactive)
+  (when (= (length (window-list)) 1)
+    (split-window-right))
+  (magit-status))
 
 (defun eab/switch-async () (interactive) (eab/switch-window "*Async Shell Command*"))
 (defun eab/switch-shell () (interactive) (eab/switch-window "*Shell Command Output*"))

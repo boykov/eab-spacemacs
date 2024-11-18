@@ -26,12 +26,12 @@
                     (server-eval-at "serverP"
                                     `(eval ',sexp))))))
 
-(defun eab/eval-last-sexp-server-C ()
+(defun eab/eval-last-sexp-chronos-C ()
   "Evaluate sexp before point on server-C; print value in minibuffer."
   (interactive)
   (let ((sexp (call-interactively (lambda () (interactive) (preceding-sexp)))))
     (let ((server-use-tcp server-C-use-tcp))
-      (message "%s" (server-eval-at "serverC"
+      (message "%s" (server-eval-at "chronosC"
                                     `(eval ',sexp))))))
 
 (defun eab/eval-last-sexp-kairos-C ()
