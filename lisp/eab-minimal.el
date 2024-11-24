@@ -48,6 +48,11 @@
          ,@body
      (call-interactively 'self-insert-command)))
 
+(defun eab/kmacro-end-or-call-macro ()
+  (interactive)
+  (let ((inhibit-redisplay 't))
+    (call-interactively 'kmacro-end-or-call-macro)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (provide 'eab-minimal)

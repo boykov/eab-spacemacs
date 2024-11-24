@@ -26,4 +26,47 @@ This function is made for clock tables."
                         tot))))
         0))))
 
+(defun eab/org-clock-dispersion (func frac range)
+  (let* ((minutes (cl-map 'vector #'org-duration-string-to-minutes range))
+         (len (length minutes))
+         (msum (cl-reduce '+ minutes))
+         (mean (/ msum len))
+         (tmp (cl-map 'vector #'(lambda (x) (- mean x)) minutes))
+         (mmin0 (cl-reduce #'min minutes))
+         (mmax0 (cl-reduce #'max minutes))
+         (mmin (apply func (list mmax0 (abs mmin0))))
+         ;; (mmax (max mmax0 (abs mmin0)))
+         (minresult (* (string-to-number frac) (/ (* (+ msum mmin) len) (* (+ len 1) msum))))
+         ;; (maxresult (* (string-to-number frac) (/ (* (+ msum mmax) len) (* (+ len 1) msum))))
+         ;; (result (vector (/ (round (* minresult 100)) 100.0) (/ (round (* maxresult 100)) 100.0)))
+         (result minresult)
+         )
+    result))
+
+(defvar org-babel-default-header-args:ledger
+  '((:results . "output") (:cmdline . "bal"))
+  "Default arguments to use when evaluating a ledger source block.")
+
+(defun org-babel-execute:ledger (body params)
+  "Execute a block of Ledger entries with org-babel.  This function is
+called by `org-babel-execute-src-block'."
+  (message "executing Ledger source code block")
+  (let ((cmdline (cdr (assq :cmdline params)))
+        (in-file (org-babel-temp-file "ledger-"))
+	(out-file (org-babel-temp-file "ledger-output-")))
+    (with-temp-file in-file (insert body))
+    (message "%s" (concat "ssh chronos /home/eab/.local/bin/hledger -s"
+			  " -f " (org-babel-process-file-name in-file)
+			  " " cmdline))
+    (with-output-to-string
+      (shell-command (concat "ssh chronos /home/eab/.local/bin/hledger -s"
+			     " -f " (org-babel-process-file-name in-file)
+			     " " cmdline
+			     " > " (org-babel-process-file-name out-file))))
+    (with-temp-buffer (insert-file-contents out-file) (buffer-string))))
+
+(defun org-babel-prep-session:ledger (_session _params)
+  (error "Ledger does not support sessions"))
+
+
 (provide 'eab-org-extension)

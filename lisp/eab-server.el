@@ -45,7 +45,7 @@
 ;; TODO обобщить формирование body и выполнение remote
 (defun eab/org-publish-current-file-remote ()
   (interactive)
-  (let* ((name (buffer-name))
+  (let* ((name (replace-regexp-in-string "git/org-chronos" "git/org" (file-truename (buffer-file-name))))
          (body `(lambda ()
                   (require 'server)
                   (let ((server-use-tcp ,server-C-use-tcp))
@@ -54,7 +54,8 @@
                                                        (let ((eab/ssh-host "ssh -o ConnectTimeout=10 chronos"))
                                                          (eab/rsync-org-directory))
                                                        (revert-all-buffers)
-                                                       (org-publish-file (buffer-file-name (get-buffer ,name)))
+                                                       (let ((org-publish-use-timestamps-flag nil))
+                                                         (org-publish-file ,name))
                                                        (eab/update-site))))
                   )))
     (eval `(async-start

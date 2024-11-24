@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.8
+
+Add `eab/org-clock-parent`.
+Fix infinite kmacro loop system hanging (`xdg-desktop-portal-gnome`).
+Add `eab/org-clock-dispersion`.
+Add `org-babel-execute:ledger`.
+Fix `eab/org-publish-current-file-remote`.
+
 ## 0.3.7
 
 Improve `eab/hron-todo-setup`, `eab/helm-org-agenda-files-headings`.

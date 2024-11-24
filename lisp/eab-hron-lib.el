@@ -36,6 +36,10 @@
 ;; (setq org-directory "~/git/org/")
 ;; (eab/rsync-org-directory)
 ;; (eab/create-nightly)
+;; (setq org-sql-files org-agenda-files)
+;; (setq org-sql-db-config '(sqlite :path "/home/eab/.emacs.d/org-sql2.db"))
+;; (org-sql-user-init)
+;; (org-sql-user-push)
 
 ;; (setq org-directory "~/git/org/gen/heads")
 ;; (setq org-agenda-files '("~/git/org/clock/w2c-plan-kb.org" "~/git/org/gen/heads/stub.org"))
@@ -441,9 +445,15 @@
     (goto-char pos))
   (point-marker))
 
+(defun eab/org-clock-parent ()
+  (if (string= (org-entry-get nil "HRON") "parent")
+      't nil))
+
 (defun eab/org-clock (&optional start-time at-time)
   "Insert clock string in current buffer"
   (save-excursion
+    (if (eab/org-clock-parent)
+        (outline-up-heading 1))
     (org-clock-find-position nil)
     (insert-before-markers "\n")
     (backward-char 1)
@@ -473,7 +483,7 @@
                                  "-%2d")
                                 (t
                                  "%2d"))))
-                               (format (concat fh ":%02d") h m))))))
+                       (format (concat fh ":%02d") h m))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                _   _ _       _     _   _

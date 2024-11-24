@@ -102,7 +102,7 @@
  "M-&"          'count-matches
  "M-'"          'comment-dwim
  "M-<"          'kmacro-start-macro
- "M-,"          'kmacro-end-or-call-macro
+ "M-,"          'eab/kmacro-end-or-call-macro
  "C-M-,"        'eab/pm-write-last-kbd-macro
  "M-/"          'dabbrev-expand
  "M-1"          'delete-other-windows
