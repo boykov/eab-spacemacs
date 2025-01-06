@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.9
+
+Fix `eab/rsync-org-directory`.
+Fix `eab/update-gr-status-on-idle` (wrong portal ansible recompilations).
+
 ## 0.3.8
 
 Add `eab/org-clock-parent`.
