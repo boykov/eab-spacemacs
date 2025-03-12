@@ -249,4 +249,60 @@
 (defun eab/wg-base-name (name)
   (car (split-string name "xxx")))
 
+(defun eab/wg-clone-indirect-buffer ()
+  (interactive)
+  (call-interactively 'clone-indirect-buffer)
+  (setq-local wg-buffer-uid nil)
+  (wg-buffer-uid-or-add (current-buffer)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defvar wg-winner-vars nil)
+(defvar wg-winner-hash nil)
+
+(setq wg-winner-vars '(winner-ring-alist
+                       winner-currents
+                       winner-last-command
+                       winner-last-frames
+                       winner-modified-list
+                       winner-point-alist
+                       winner-undo-frame
+                       winner-undone-data
+                       winner-undo-counter
+                       winner-pending-undo-ring))
+
+(setq wg-winner-hash (make-hash-table :test 'equal))
+
+(defun wg-winner-put (winner-name)
+  (let ((wg (ignore-errors (wg-workgroup-name (wg-current-workgroup)))))
+    (if wg
+        (puthash (list wg winner-name) (eval winner-name) wg-winner-hash))))
+
+(defun wg-winner-get (winner-name)
+  (let ((wg (ignore-errors (wg-workgroup-name (wg-current-workgroup)))))
+    (if wg
+        (eval `(setq ,winner-name (gethash '(,wg ,winner-name) wg-winner-hash))))))
+
+(defun wg-winner-save ()
+  (if winner-mode
+      (progn
+        (winner-mode -1)
+        (defun wg-winner-mode-restore ()
+          (winner-mode 1)))
+    (defun wg-winner-mode-restore ()))
+  (mapcar 'wg-winner-put wg-winner-vars))
+
+(defun wg-winner-load ()
+  (mapcar 'wg-winner-get wg-winner-vars)
+  (wg-winner-mode-restore))
+
+(defadvice wg-switch-to-workgroup (before wg-winner-before activate)
+  (wg-winner-save))
+
+(defadvice wg-switch-to-workgroup (after wg-winner-after activate)
+  (wg-winner-load))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
 (provide 'eab-workgroups2)

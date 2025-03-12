@@ -4,7 +4,7 @@
   (replace-regexp-in-string (regexp-quote what) with in nil 'literal))
 
 (setq eab/org-ql-T-query '(and (or (not (tags "noagenda")) (tags "agenda")) (not (tags "neveragenda")) (clocked 600) (or (todo) (heading "\\[")) ))
-(setq eab/org-ql-H-query '(and (or (not (tags "noagenda")) (tags "agenda")) (not (tags "neveragenda")) (clocked 600) ))
+(setq eab/org-ql-H-query '(or (and (or (not (tags "noagenda")) (tags "agenda")) (not (tags "neveragenda")) (clocked 600) ) (and (tags "parent") (tags "agenda"))))
 '((setq eab/org-ql-H-query '(and (or (not (tags "noagenda")) (tags "agenda")) (not (tags "neveragenda")) (or (todo) (clocked 600)) (or (clocked 600) (heading "\\[")))))
 
 (setq eab/org-ql-O-query '(and (or (not (tags "noagenda")) (tags "agenda")) (not (tags "neveragenda")) (clocked 6000) (not (clocked 400))))

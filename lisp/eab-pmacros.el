@@ -179,7 +179,7 @@
  'org-align-list-item
  nil nil
  ""
- "M-U M-j M-h M-SPC M-; - RET M-j M-c M-p M-l M-SPC M-O r M-v 2*SPC
+ "C-M-S-u M-j M-h M-SPC M-; - RET M-j M-c M-p M-l M-SPC C-M-S-o r M-v 2*SPC
  RET M-SPC M-h M-X M-i 2*C-w")
 
 (pm-def-macro

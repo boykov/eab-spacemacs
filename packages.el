@@ -126,6 +126,7 @@
     f
     s
     auto-install
+    compat
 
     grep-a-lot
     wgrep
@@ -801,6 +802,7 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
   (use-package docker-tramp
     :defer))
 
+(defun eab-spacemacs/init-compat nil)
 (defun eab-spacemacs/init-elpa-mirror nil)
 (defun eab-spacemacs/init-ace-window nil)
 (defun eab-spacemacs/init-ace-jump-buffer nil)

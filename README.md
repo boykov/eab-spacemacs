@@ -22,3 +22,4 @@ It consists of subsystems:
 
     cd ~/.emacs.d/
     ln -s private/eab-spacemacs/local/spacemacs/init.el init.el
+    ln -s private/eab-spacemacs/local/spacemacs/early-init.el early-init.el

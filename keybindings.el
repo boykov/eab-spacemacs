@@ -231,7 +231,7 @@
  "a"          'vc-annotate
  "o"          'org-sort
  "e"          'ediff-buffers
- "c"          'clone-indirect-buffer
+ "c"          'eab/wg-clone-indirect-buffer
  "f"          'eab/magit-status
  "C-f"        'eab/magit-status
  "s"          'sort-lines
@@ -560,9 +560,9 @@
  ;;  "S"        'eab/eab-wg-save
  ;;  "L"        'eab/eab-wg-load
  ;; TODO wg-make-workgroups-mode-map
- "z"            'wg-undo-wconfig-change
- "C-z"          'wg-undo-wconfig-change
- "Z"            'wg-redo-wconfig-change
+ "z"            'winner-undo
+ "C-z"          'winner-undo
+ "Z"            'winner-redo
  "n"            'eab/wg-create-workgroup-xxx ;; +
  "N"            'wg-create-workgroup ;; +
  "k"            'wg-kill-workgroup ;; +
@@ -883,6 +883,8 @@
    "M-M"                'org-forward-sentence
    "M-U"                'eab/org-backward-page
    "M-O"                'eab/org-forward-page
+   "C-M-S-u"            'org-backward-paragraph
+   "C-M-S-o"            'org-forward-paragraph
    "C-M-u"              'outline-previous-visible-heading
    "C-M-o"              'outline-next-visible-heading
    "s-u"                'org-preview-latex-fragment

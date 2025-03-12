@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.4.1
+
+Fix `org-align-list-item` and org `C-w`.
+Add `parent` agenda.
+Add `eab/wg-clone-indirect-buffer`: fix wrong uid.
+Use `eab/ssh-host-local` for locate.
+Fix after restart batch-publish bug: `org-publish-use-timestamps-flag`
+after `org-publish-project`.
+Update to `30.1`.
+Fix spacemacs for `30.1` used hardcoded `compat-28.1.2.2`.
+Add `compat` info to packages.el
+Fix workgroups2 undo with `wg-winner`.
+Fix `eln-cache` paths.
+
 ## 0.3.9
 
 Fix `eab/rsync-org-directory`.

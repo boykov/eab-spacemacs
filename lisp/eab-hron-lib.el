@@ -161,11 +161,12 @@
       ;; DONE it seems to hangs up `eab/update-reports-nightly'
       (eab/update-reports-nightly)
       (org-publish-remove-all-timestamps))
-    (let ((org-publish-use-timestamps-flag nil))
-      (org-publish-file (concat org-directory "clock/w2c-improve-english.org")))
     (org-publish-project "html-base" (not fast))
     (org-publish-project "html-clock" (not fast))
     (org-publish-project "html-scale" (not fast))
+    ;; TODO fix kairos reboot bug
+    (let ((org-publish-use-timestamps-flag nil))
+      (org-publish-file (concat org-directory "clock/w2c-improve-english.org")))
     ;; (eab/shell-command "git stash save batch")
     (sleep-for 2)
     (eab/update-site)
