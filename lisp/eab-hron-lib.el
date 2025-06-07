@@ -555,7 +555,7 @@
 ;; See `eab/clocktable-scope' in eab-path-org.el
 
 (defun eab/total-minutes ()
-  (* (- (org-time-stamp-to-now "<2007-01-01 Пн. 00:00>")) 1.12 24 60))
+  (* (- (org-time-stamp-to-now "<2007-01-01 Пн. 00:00>")) 1.1236 24 60))
 
 (defun csum-percent ()
   (format "%0.2f" (* (/ (org-clock-sum-current-item)

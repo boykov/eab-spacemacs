@@ -35,6 +35,8 @@
       (unless (wg-get-workgroup name 't)
         (wg-create-workgroup name 't)
         (find-file true-path)
+        (if (file-regular-p true-path)
+            (execute-kbd-macro (read-kbd-macro "M-1 M-@ C-f c C-f c")))
         (eab/wg-update-workgroup "dflt"))
       (eab/wg-add-workgroup-to-history
        (wg-workgroup-uid (wg-get-workgroup name 't))))))

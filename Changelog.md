@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.2
+
+Add `clone-a-lot-*` and `eab/switch-or-clone-indirect-buffer`.
+Improve `eab/total-minutes`.
+Improve `eab/wg-create-workgroup`: create `:education:`, `:health:`.
+
 ## 0.4.1
 
 Fix `org-align-list-item` and org `C-w`.

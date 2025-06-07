@@ -262,6 +262,7 @@ END")))
     (setq-put org-directory "~/git/org-chronos/")
   (setq-put org-directory "/home/eab/git/org/"))
 
+;; TODO почему не срабатывает exclude для ссылок?
 (defun eab/rsync-org-directory ()
   (shell-command
    (concat eab/ssh-host-local

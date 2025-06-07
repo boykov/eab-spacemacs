@@ -231,7 +231,7 @@
  "a"          'vc-annotate
  "o"          'org-sort
  "e"          'ediff-buffers
- "c"          'eab/wg-clone-indirect-buffer
+ "c"          'eab/switch-or-clone-indirect-buffer
  "f"          'eab/magit-status
  "C-f"        'eab/magit-status
  "s"          'sort-lines
