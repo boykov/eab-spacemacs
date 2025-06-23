@@ -54,10 +54,10 @@
   (require 'org-sql)
   (require 'eab-helm)
   (set-face-attribute 'default nil
-                    :family "Source Code Pro"
-                    :height 150
-                    :weight 'normal
-                    :width 'normal)
+                      :family "Source Code Pro"
+                      :height (if (eq (display-pixel-width) 1680) 130 150)
+                      :weight 'normal
+                      :width 'normal)
   )
 
 (setq default-input-method "russian-computer")

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.3
+
+Add `rust-mode`.
+Fix font size for 1680x1050.
+
 ## 0.4.2
 
 Add `clone-a-lot-*` and `eab/switch-or-clone-indirect-buffer`.

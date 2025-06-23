@@ -114,6 +114,7 @@
     terraform-mode
     so-long
     k8s-mode
+    rust-mode
 
     restclient
     request
@@ -215,6 +216,9 @@ which require an initialization must be listed explicitly in the list.")
 
 (defun eab-spacemacs/init-k8s-mode ()
   (use-package k8s-mode))
+
+(defun eab-spacemacs/init-rust-mode ()
+  (use-package rust-mode))
 
 (defun eab-spacemacs/init-so-long ()
   ;; + manual using so-long-minor-mode
