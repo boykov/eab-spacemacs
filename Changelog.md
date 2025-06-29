@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.4
+
+Try to use emacs inside nomachine.
+Add `wmctrl` to unlock-chronos.
+Update `projectile`.
+Use `projectile-per-project-compilation-buffer`
+and fix compilation buffer names.
+
 ## 0.4.3
 
 Add `rust-mode`.

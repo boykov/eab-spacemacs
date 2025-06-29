@@ -130,7 +130,7 @@
   (interactive)
   (unless (websocket-openp eab/gotify-websocket)
     (eab/gotify-create))
-  (let ((gotify-buffer "*compilation: gotify*"))
+  (let ((gotify-buffer "*compilation*<gotify>"))
     (if eab/gotify-ready?
         (progn
           (if (not (eab/gotify-check))
@@ -155,7 +155,7 @@
   )
 
 (defun eab/gotify-create ()
-  (let ((gotify-buffer "*compilation: gotify*"))
+  (let ((gotify-buffer "*compilation*<gotify>"))
     (setq eab/gotify-websocket
           (websocket-open
            (concat "wss://notify.eab.su/stream?token=" (eab/gotify-client-token))
@@ -172,7 +172,7 @@
   (let ((event (car
                 (split-string
                  (shell-command-to-string eab/gotify-command) "         "))))
-    (with-current-buffer "*compilation: gotify*"
+    (with-current-buffer "*compilation*<gotify>"
       (s-contains? event
                    (buffer-substring-no-properties (point-min) (point-max))))))
 

@@ -62,7 +62,7 @@
 (defun eab/switch-compile (&optional arg)
   (interactive)
   (eab/with-git-toplevel
-   (eab/switch-window (concat "*compilation: " (projectile-project-name) "*")))
+   (eab/switch-window (concat "*compilation*<" (projectile-project-name) ">")))
   (unless (eq major-mode 'compilation-mode)
     (compilation-mode)))
 
@@ -165,7 +165,7 @@ Actually calls `clone-a-lot-next-buffer'."
 
 ;;;;;;;;;;;;;;;;;
 
-(defconst compilation-a-lot-buffer-name-regexp "^\\*compilation: \\(.+\\)*$"
+(defconst compilation-a-lot-buffer-name-regexp "^\\*compilation*<\\(.+\\)>$"
   "Buffer name regular expression for extracting `projectile-project-name' name.")
 
 (defun compilation-a-lot-buffer-p (&optional buffer)

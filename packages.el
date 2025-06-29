@@ -297,6 +297,7 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
 (defun eab-spacemacs/init-projectile nil
   (require 'projectile)
   (setq projectile-require-project-root t)
+  (setq projectile-per-project-compilation-buffer t)
   (eab/bind-path projectile-known-projects-file)
   (setq projectile-project-root-files-bottom-up
         '(".git"        ; Git VCS root dir
@@ -306,6 +307,9 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
           ".bzr"        ; Bazaar VCS root dir
           "_darcs"      ; Darcs VCS root dir
           ))
+  (puthash "/home/eab/git/eab-system/portal/"
+           (make-ring 256)
+           projectile-project-command-history)
   (ring-insert
    (projectile--get-command-history "/home/eab/git/eab-system/portal/")
    "make deploy-config li=\"--limit chronos,cyclos\"")
@@ -1194,9 +1198,6 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
   (use-package eab-compile
     :init
     (setq compile-command "make ")
-    (setq compilation-buffer-name-function
-          (lambda (mode)
-            (concat "*" (downcase mode) ": " (projectile-project-name) "*")))
     (setq compilation-exit-message-function 'compilation-exit-autoclose)
     (setq compilation-exit-message-function nil)
     (setq compilation-scroll-output 't)

@@ -373,8 +373,8 @@
 (general-define-key
  :prefix "C-l"
  "C-k"          (ilam (set-input-method nil) (setq default-input-method "russian-computer")) ;; "C-S-k" Disabled, bug
- "H"            'org-clock-in
- "C-h"          'org-clock-out
+ "H"            'nil
+ "C-h"          'nil
  "c"            'org-store-link
  "M-c"          'org-copy-special
  "M-x"          'org-cut-special
@@ -447,7 +447,8 @@
  "f"            'eab/see-file
  "SPC"          'eab/gr-tag-default-directory
  "M-d"          (ilam (call-process-shell-command eab/test-dotemacs-command nil 0))
- "M-b"          (ilam (call-process-shell-command eab/unlock-chronos-command nil 0))
+ "M-b"          (ilam (call-process-shell-command eab/unlock-chronos-command nil 0)
+                      (call-process-shell-command "ssh cyclos \"DISPLAY=:0 wmctrl -a 'NoMachine -'\""))
  "M-s"          (ilam (call-process-shell-command eab/sync-zfs-command nil 0)))
 (setq eab/temacs-map (lookup-key global-map (kbd "C-l")))
 
