@@ -1,6 +1,6 @@
 ;;; eab-dired.el --- eab dired extension
 
-;; Copyright (C) 2010-2024 Evgeny Boykov
+;; Copyright (C) 2010-2025 Evgeny Boykov
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 
@@ -17,14 +17,9 @@
            (require 'cl-lib)
            (require 'dired-aux)
            (require 'dired-x)
-           (add-to-list
-            'load-path
-            ,(file-name-directory
-              (buffer-file-name
-               (car (find-function-noselect 'docker-tramp-add-method)))))
            (require 'tramp)
-           (add-to-list 'tramp-methods ',eab/sussh)
-           (require 'docker-tramp))))))
+           (require 'tramp-container)
+           (add-to-list 'tramp-methods ',eab/sussh))))))
  :lexical 't)
 
 (dired-async-mode 0)

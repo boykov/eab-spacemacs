@@ -1,6 +1,6 @@
 ;;; packages.el --- eab Layer packages File for Spacemacs
 ;;
-;; Copyright (C) 2010-2024 Evgeny Boykov
+;; Copyright (C) 2010-2025 Evgeny Boykov
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords:
@@ -50,8 +50,6 @@
     git-timemachine
     git-wip-timemachine
     libgit
-    magit-annex
-    git-annex
     magit
     forge
     orgit
@@ -171,7 +169,6 @@
     vagrant
     vagrant-tramp
     docker
-    docker-tramp
     websocket
     daemons
     kubernetes
@@ -563,11 +560,6 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
   ;; (put 'magit-status-mode 'magit-diff-default-arguments
   ;;     '("--submodule=diff"))
   )
-(defun eab-spacemacs/init-magit-annex nil
-  (use-package magit-annex
-    :after (magit))
-  )
-(defun eab-spacemacs/init-git-annex nil)
 (defun eab-spacemacs/init-git-commit nil)
 (defun eab-spacemacs/init-forge nil
   ;; (require 'forge)
@@ -806,10 +798,6 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
                      (docker-utils-select-if-empty)
                      (docker-utils-get-marked-items-ids))) ":")))))
 
-(defun eab-spacemacs/init-docker-tramp ()
-  (use-package docker-tramp
-    :defer))
-
 (defun eab-spacemacs/init-compat nil)
 (defun eab-spacemacs/init-elpa-mirror nil)
 (defun eab-spacemacs/init-ace-window nil)
@@ -1023,7 +1011,6 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
                 (define-key yas-keymap [tab] 'yas-next-field))))
   )
 (defun eab-spacemacs/init-kv nil)
-(defun eab-spacemacs/init-jira nil)
 (defun eab-spacemacs/init-ignoramus nil
   (require 'ignoramus)
   (ignoramus-setup)
@@ -1172,7 +1159,6 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
     :config
     (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
     (add-to-list 'tramp-methods eab/sussh)
-    (add-to-list 'tramp-methods eab/sudo)
     (add-to-list 'tramp-methods (eab/singularity "`pwd`/"))
     )
   )
@@ -1213,7 +1199,7 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
   (use-package dired-async)
   (use-package dired-x)
   (use-package eab-dired
-    :after (docker-tramp eab-tramp))
+    :after (eab-tramp))
   )
 
 (defun eab-spacemacs/init-ido nil

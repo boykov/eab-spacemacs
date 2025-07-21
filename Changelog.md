@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.4.5
+
+Fix transient `wrong-type-argument consp nil`.
+Rm annex.
+Fix system-time-locale ru_RU.UTF-8 -> ru_RU.utf8.
+Use `recentf-list`.
+Add `eab/recentf-eabpool`.
+Write file `recentf-eabpool-git`.
+Use `tramp-container` instead of `docker-tramp`.
+Use builtin `sudo`, rm `eab/sudo`.
+
 ## 0.4.4
 
 Try to use emacs inside nomachine.

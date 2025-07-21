@@ -1,6 +1,6 @@
 ;;; eab-workflow.el ---  eab workflow extension
 
-;; Copyright (C) 2010-2024 Evgeny Boykov
+;; Copyright (C) 2010-2025 Evgeny Boykov
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 

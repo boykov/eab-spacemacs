@@ -1,6 +1,6 @@
 ;;; config.el --- Spacemacs Layer configuration File
 ;;
-;; Copyright (C) 2010-2024 Evgeny Boykov
+;; Copyright (C) 2010-2025 Evgeny Boykov
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords:

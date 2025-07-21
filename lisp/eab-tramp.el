@@ -1,21 +1,13 @@
 ;;; eab-tramp.el --- eab tramp extension  -*- lexical-binding: t -*-
 
-;; Copyright (C) 2010-2024 Evgeny Boykov
+;; Copyright (C) 2010-2025 Evgeny Boykov
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 
 ;; Requirements: 
 ;; Status: not intended to be distributed yet
 
-(setq eab/sudo
-      '("sudo"
-        (tramp-login-program        "sudo")
-        (tramp-login-args           (("-u" "%u") ("-i") ("-H") ("-p" "Password:")))
-        ;; Local $SHELL could be a nasty one, like zsh or fish.  Let's override it.
-        (tramp-login-env            (("SHELL") ("/bin/sh")))
-        (tramp-remote-shell         "/bin/sh")
-        (tramp-remote-shell-args    ("-c"))
-        (tramp-connection-timeout   10)))
+(setq tramp-show-ad-hoc-proxies 't)
 
 (setq eab/sussh
       '("sussh"
