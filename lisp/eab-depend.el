@@ -13,33 +13,20 @@
 (require 'log-edit)
 (require 'top-mode)
 
-
 (eab/bind-path savehist-file)
 (savehist-mode 1)
 
-
 (setq which-key-idle-delay 2)
 (which-key-mode)
-(if (and (assq 'which-key-mode spacemacs--diminished-minor-modes)
-         (eq (length spacemacs--diminished-minor-modes) 1))
-    (setq spacemacs--diminished-minor-modes nil))
 (require 'diminish)
 (diminish 'which-key-mode "WK")
 
 (setq uniquify-buffer-name-style 'forward)
 
-
 (setq ibuffer-formats '((mark modified read-only " "
                               (name 18 18 :left :elide))
                         (mark modified read-only " " (name 18 18 :left :elide) " "
                               (size 9 -1 :right) " " (mode 16 16 :left :elide) " " filename-and-process)))
-
-;; (require 'el-expectations) ;; DONE devel minimalist unit testing framework
-;; (setq exps-last-testcase nil)
-
-
-
-;; (setq eshell-rc-script nil)
 
 (eab/bind-path eshell-history-file-name)
 
@@ -54,15 +41,6 @@
 (setq max-lisp-eval-depth 10000)
 (setq max-specpdl-size 10000)
 
-(setq slime-lisp-implementations '((sbcl ("sbcl"))))
-;; (require 'slime) ;; DONE возможно, из-за elpa, не нужно прописывать, как это было с jabber
-(setq slime-net-coding-system 'utf-8-unix)
-;; (slime-setup)
-;; (slime-setup '(slime-fancy))
-(setq slime-enable-evaluate-in-emacs t)
-;; (setq slime-net-coding-system 'utf-8-unix)
-
-
 (require 'epa)
 (require 'epg)
 (require 'epa-file)
@@ -74,10 +52,8 @@
 
 (require 'comint)
 
-
 (setq explicit-bash-args '("--noediting" "-i"))
 (if (file-exists-p "/bin/bash") (setq shell-file-name "/bin/bash"))
-
 
 (require 'nnir)
 
@@ -85,9 +61,6 @@
 
 (require 'ps-print)
 (require 'ps-mule)
-
-;; (require 'dictem)
-;; (setq dictem-server "localhost")
 
 (setq ispell-dictionary "english")
 (setq ispell-local-dictionary "english")
@@ -149,7 +122,6 @@
 
 (autoload 'rtf-mode "rtf-mode" "RTF" t)
 (autoload 'ahk-mode "ahk-mode")
-(autoload 'anchored-transpose "anchored-transpose" nil t)
 (autoload 'bat-mode "bat-mode" "DOS and WIndows BAT files" t)
 (autoload 'cmaple "maplev" "Start maple process" t)
 (autoload 'ebib "ebib" "Ebib, a BibTeX database manager." t)
@@ -174,12 +146,6 @@
 (add-hook 'ielm-mode-hook (lambda () (setq comint-process-echoes nil)))
 (add-hook 'comint-mode-hook (lambda () (setq comint-process-echoes t)))
 (add-hook 'gnus-summary-prepared-hook 'gnus-summary-hide-all-threads)
-;; (add-hook 'gnus-summary-prepared-hook 'gnus-summary-insert-old-articles)
-;; (add-hook 'gnus-summary-prepared-hook
-;;        (lambda () (interactive) (gnus-summary-insert-old-articles 100))) ;; don't need add old articles for dovecot?
 (add-hook 'gnus-summary-prepare-hook 'gnus-summary-sort-by-most-recent-date)
-
-;; (add-hook 'text-mode-hook 'dictionary-tooltip-mode) ; activate for all text-based modes
-;; (add-hook 'cisco-mode-hook 'turn-on-font-lock)
 
 (provide 'eab-depend)

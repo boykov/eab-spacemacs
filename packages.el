@@ -18,11 +18,7 @@
     auto-dictionary ;; switcher for flyspell
     howdoi
 
-    (org-mode/lisp :location local)
-    ,(when (not (string-match-p "^25" emacs-version)) 'org-roam)
-    deft
-    outshine
-    outorg
+    (org :location local)
     bibretrieve
     ebib
     parsebib
@@ -34,9 +30,6 @@
     auctex
     (org-link-minor-mode :location local)
     org-agenda-property
-    org-jekyll
-    org-redmine
-    ;; org-plus-contrib
     (bbdb/lisp :location local)
     ov
     org-super-agenda
@@ -69,7 +62,7 @@
     ;; auto-complete-emacs-lisp ;; no melpa depend auto-complete
     idle-highlight-mode ;; + no melpa
     highlight ;; dired+
-    string-edit
+    string-edit-at-point
     smart-compile
     general
     xterm-color
@@ -77,7 +70,6 @@
     smartparens
     key-chord
     region-bindings-mode
-    anchored-transpose
     multiple-cursors
     expand-region
     paredit
@@ -118,14 +110,12 @@
     request
     pkg-info
     epl
-    el-mock
     el-patch
     elpa-mirror
     anaphora
     f
     s
     auto-install
-    compat
 
     grep-a-lot
     wgrep
@@ -148,11 +138,10 @@
     helm-org-rifle
     smex ;; ido for M-x
     ido-at-point
-    ido-vertical-mode
     flx
     flx-ido
     flx-isearch
-    workgroups2
+    (workgroups2/src :location local)
     projectile
 
     popwin
@@ -174,6 +163,7 @@
     kubernetes
 
     ;; built-in
+    (compat :location built-in)
     (gnus :location built-in)
     (tramp :location built-in)
     (outline :location built-in)
@@ -511,7 +501,7 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
   (flx-isearch-mode 0)
   (setq isearch-search-fun-function 'isearch-search-fun-default))
 
-(defun eab-spacemacs/init-workgroups2 ()
+(defun eab-spacemacs/init-workgroups2/src ()
   (use-package workgroups2
     :config
     (progn
@@ -823,8 +813,6 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
 (defun eab-spacemacs/init-help+ nil)
 (defun eab-spacemacs/init-help-mode+ nil)
 (defun eab-spacemacs/init-fuzzy nil)
-(defun eab-spacemacs/init-el-mock nil)
-(defun eab-spacemacs/init-anchored-transpose nil)
 (defun eab-spacemacs/init-bookmark+ nil
   (require 'bookmark+)
   (eab/bind-path bmkp-last-as-first-bookmark-file)
@@ -842,16 +830,9 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
   (eab/bind-path ebib-preload-bib-files)
   )
 (defun eab-spacemacs/init-dockerfile-mode nil)
-(defun eab-spacemacs/init-deft nil)
-(defun eab-spacemacs/init-org-roam nil
-  ;; (use-package org-roam)
-  ;; (setq org-roam-directory (concat org-directory "clock"))
-  ;; (org-roam-db-autosync-mode 0)
-  )
 (defun eab-spacemacs/init-ewmctrl nil)
 (defun eab-spacemacs/init-anaphora nil)
 (defun eab-spacemacs/init-connection nil)
-(defun eab-spacemacs/init-ido-vertical-mode nil)
 (defun eab-spacemacs/init-link nil)
 (defun eab-spacemacs/init-oneonone nil
   (require 'oneonone)
@@ -873,8 +854,6 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
           ("G" . "C-M-")))
   )
 (defun eab-spacemacs/init-fancy-narrow nil)
-(defun eab-spacemacs/init-outshine nil)
-(defun eab-spacemacs/init-outorg nil)
 (defun eab-spacemacs/init-goto-chg nil)
 (defun eab-spacemacs/init-epc nil)
 (defun eab-spacemacs/init-ctable nil)
@@ -884,11 +863,6 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
 (defun eab-spacemacs/init-bibretrieve nil)
 (defun eab-spacemacs/init-websocket nil
   (use-package websocket))
-(defun eab-spacemacs/init-org-jekyll nil)
-
-(defun eab-spacemacs/init-org-redmine ()
-  ;; (use-package org-redmine)
-  )
 
 (defun eab-spacemacs/init-pkg-info nil)
 (defun eab-spacemacs/init-epl nil)
@@ -918,7 +892,7 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
     :after (org-ql)
     :config
     (add-to-list 'helm-org-ql-actions '("eab/hron-todo" . eab/helm-hron-todo))))
-(defun eab-spacemacs/init-org-mode/lisp nil
+(defun eab-spacemacs/init-org nil
   ;; fix org-element performance degradation
   (setq org-element--cache-self-verify 't)
   (setq org-element-use-cache 't)
@@ -958,14 +932,13 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
   )
 (defun eab-spacemacs/init-xml-rpc nil)
 (defun eab-spacemacs/init-web nil)
-(defun eab-spacemacs/init-string-edit nil
-  (require 'string-edit)
+(defun eab-spacemacs/init-string-edit-at-point nil
+  (use-package string-edit-at-point)
   )
 (defun eab-spacemacs/init-redo+ nil
   (require 'redo+)
   )
 (defun eab-spacemacs/init-pcache nil)
-(defun eab-spacemacs/init-org-plus-contrib nil)
 (defun eab-spacemacs/init-org-ehtml nil)
 (defun eab-spacemacs/init-noflet nil)
 (defun eab-spacemacs/init-minimap nil)

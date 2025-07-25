@@ -35,7 +35,6 @@
       (list ac-source-dabbrev
             ))
 
-
 (setq ac-source-american-english
       '((candidates
          . (lambda ()
@@ -74,32 +73,3 @@
                   '(ac-source-words-in-buffer ac-source-american-english ac-source-symbols))))
 
 (provide 'eab-auto-complete)
-
-;; emacs auto-complete-dictionary
-
-;; (ac-define-source words-in-f90-buffers
-;;   '((init . ac-update-word-index)
-;;    (candidates ac-word-candidates
-;;             (lambda
-;;               (buffer)
-;;               (derived-mode-p
-;;                (buffer-local-value 'major-mode buffer))))))
-;; create variable ac-source-words-in-f90-buffers
-;; and function ac-complete-words-in-f90-buffers
-;; see words-in-same-mode-buffers
-
-;; (defadvice ac-inline-show (after eab-ac-expand activate)
-;;   (if (> (length ac-candidates) 1)
-;;       (let ((ac-common-part (try-completion ac-prefix ac-candidates)))
-;;      (ac-expand-common))
-;;     (progn
-;;       (ac-expand-string ac-common-part)
-;;       (ac-inline-hide)))
-;;   (setq eab-last-selected-candidate ac-selected-candidate))
-
-;; (ad-remove-advice 'ac-inline-show 'after 'eab-ac-expand)
-;; (ad-deactivate 'ac-inline-show)
-
-;; (ad-remove-advice 'ac-inline-show 'after 'eab-ac-expand)
-;; (ad-deactivate 'ac-inline-show)
-;; (ad-activate 'ac-inline-show)

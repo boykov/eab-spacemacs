@@ -955,18 +955,6 @@
    "C-j"        'nil
    "C-d"        eab/compile-map))
 
-(eab/add-hook slime-repl-mode-hook eab/slime-repl-hook
-  (general-define-key
-   :keymaps 'slime-repl-mode-map
-   "M-n"        'nil
-   "M-p"        'nil
-   "M-r"        'nil
-   "M-s"        'nil
-   "C-a"        'nil
-   "C-A"        'nil
-   "C-l M-p"    'slime-repl-previous-input
-   "C-l M-n"    'slime-repl-next-input))
-
 (eab/add-hook maxima-mode-hook eab/maxima-hook
   (general-define-key
    :keymaps 'maxima-mode-map
@@ -977,12 +965,6 @@
    "M-;"        'nil
    "C-d"        eab/compile-map
    "M-h"        'nil))
-
-(eab/add-hook slime-mode-hook eab/slime-hook
-  (general-define-key
-   :keymaps 'slime-mode-map
-   "M-p"        'nil
-   "M-n"        'nil))
 
 (eab/add-hook message-mode-hook eab/message-hook
   (general-define-key
@@ -1384,7 +1366,7 @@
      "/"        (ilam (let ((this-command 'ergoemacs-toggle-letter-case)) (eab/or-self-insert 'ergoemacs-toggle-letter-case)))
      "r"        (ilam (eab/or-self-insert 'string-rectangle))
      "к"        (ilam (eab/or-self-insert 'string-rectangle))
-     "t"        (ilam (eab/or-self-insert 'anchored-transpose))
+     "t"        'nil
      ;; TODO C-g неправильно работает с region-bindings-mode
      ;; "C-g"   (ilam (eab/or-self-insert 'mc/keyboard-quit))
      "g"        (ilam (eab/or-self-insert 'mc/keyboard-quit))

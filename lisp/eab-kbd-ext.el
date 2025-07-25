@@ -138,8 +138,6 @@
                       python-mode-map
                       query-replace-map
                       shell-mode-map
-                      slime-mode-hook
-                      slime-repl-mode-hook
                       term-mode-map
                       vc-annotate-mode-map
                       ))

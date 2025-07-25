@@ -31,3 +31,6 @@
 [submodule "extensions/emacs-eat"]
         path = local/emacs-eat
         url = https://codeberg.org/akib/emacs-eat
+[submodule "local/workgroups2"]
+	path = local/workgroups2
+	url = https://github.com/boykov/workgroups2.git
