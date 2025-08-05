@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.7
+
+Fix kmacro `with-input-method`.
+Init sql-indent.
+Fix ":" grep-mode `eab/ergoemacs-new-empty-buffer`.
+
 ## 0.4.6
 
 Hide fix-esup.patch, slime.

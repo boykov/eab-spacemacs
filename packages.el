@@ -105,6 +105,7 @@
     so-long
     k8s-mode
     rust-mode
+    sql-indent
 
     restclient
     request
@@ -658,6 +659,7 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
       :interactive nil
       :keymap eat-char-mode-map)
 
+     ;; bind '"\C-]":"\C-e\C-u cat <<"EOF"\n\C-y\nEOF\n"'
     (defun eab/m-r ()
       (interactive)
       (execute-kbd-macro (read-kbd-macro "C-]"))

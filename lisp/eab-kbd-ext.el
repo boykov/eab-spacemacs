@@ -41,7 +41,8 @@
                        "/backup/"
                        new-buffer
                        (substring
-                        (shell-command-to-string "date +%F_%T")
+                        (replace-regexp-in-string
+                         ":" "" (shell-command-to-string "date +%F_%T"))
                         0 -1)))
           (rename-buffer new-buffer)))))
 
