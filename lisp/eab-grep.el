@@ -36,8 +36,8 @@
 (setq eab/grep-sort " | LC_ALL=C sort -t ':' -k1,1 -k2n")
 (setq eab/grep-xargs " | xargs -d '\\n' ")
 (defun eab/grep-ls-gitmode? ()
-  (or (file-exists-p (concat default-directory "/.gitignore"))
-      (string= (shell-command-to-string "git clean -n `pwd` | wc -l") "0\n")))
+  (let ((arg nil))
+    (eab/with-git-toplevel (not fatal-toplevel))))
 
 
 (defun eab/grep-align ()

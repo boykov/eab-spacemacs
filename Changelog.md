@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.8
+
+Fix `eab/grep-ls-gitmode?`.
+Add llm, ellama, yandexgpt.
+Disable blocked `mepla`.
+
 ## 0.4.7
 
 Fix kmacro `with-input-method`.

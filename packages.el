@@ -38,6 +38,7 @@
     org-special-block-extras
     org-sql
     org-transclusion
+    ox-pandoc
 
     git-commit
     git-timemachine
@@ -162,6 +163,9 @@
     websocket
     daemons
     kubernetes
+    llm
+    ellama
+    elisa
 
     ;; built-in
     (compat :location built-in)
@@ -182,6 +186,23 @@ which require an initialization must be listed explicitly in the list.")
 (defvar eab-spacemacs-excluded-packages '()
   "List of packages to exclude.")
 
+(defun eab-spacemacs/init-ox-pandoc nil)
+(defun eab-spacemacs/init-elisa nil)
+(defun eab-spacemacs/init-llm ()
+  (use-package llm)
+  (use-package llm-openai))
+(defun eab-spacemacs/init-ellama ()
+  (use-package ellama
+    :after (llm llm-openai)
+    :config
+    (setq eab-llm (make-llm-openai-compatible
+                   :url "https://llm.api.cloud.yandex.net/v1"
+                   :chat-model (concat "gpt://" (eab/yc-id) "/yandexgpt/rc")
+                   :key (eab/ycai-token)))
+    (setopt ellama-language "Russian")
+    (setopt ellama-provider eab-llm)
+    (setopt ellama-coding-provider eab-llm)
+    ))
 (defun eab-spacemacs/init-kubernetes nil)
 (defun eab-spacemacs/init-daemons nil
   (use-package daemons
@@ -433,7 +454,7 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
   (add-to-list 'smart-compile-alist '(graphviz-dot-mode . "xdot.py %F"))
   (add-to-list 'smart-compile-alist '(python-mode . "python %F"))
   (add-to-list 'smart-compile-alist '(textile-mode . "make push id=%f"))
-  (add-to-list 'smart-compile-alist '("\\.xml\\'" . "cd ../.. && make push id=%F"))
+  (add-to-list 'smart-compile-alist '("\\.xml\\'" . "cd `git rev-parse --show-toplevel` && make push id=%F"))
   (add-to-list 'smart-compile-alist '("\\.jira\\'" . "make push id=%n"))
   (add-to-list 'smart-compile-alist '("\\.html\\'" . "make push id=%n"))
   )

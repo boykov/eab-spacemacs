@@ -8,6 +8,7 @@
 ;; Status: not intended to be distributed yet
 
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+;; melpa.org is blocked
 (add-to-list 'load-path (concat eab-spacemacs-path "lisp"))
 (add-to-list 'load-path (concat eab-spacemacs-path "features"))
 
@@ -21,6 +22,22 @@
           (server-eval-at "kairosC" '(eab/gotify-client-token))))
   )
 
+(defvar eab/ycai-token-cache "" "")
+(defun eab/ycai-token ()
+  (if (not (equal (length eab/ycai-token-cache) 40))
+      (setq eab/ycai-token-cache (substring (shell-command-to-string (concat eab/ssh-host " bash <<'END'
+~/git/auto/keepass.sh \"portal/yandex cloud\" -a yc-ai-api-key
+END
+" )) 0 -1)))
+  eab/ycai-token-cache)
+(defvar eab/yc-id-cache "" "")
+(defun eab/yc-id ()
+  (if (not (equal (length eab/yc-id-cache) 20))
+      (setq eab/yc-id-cache (substring (shell-command-to-string (concat eab/ssh-host " bash <<'END'
+~/git/auto/keepass.sh \"portal/yandex cloud\" -a yc-id
+END
+" )) 0 -1)))
+  eab/yc-id-cache)
 (defvar eab/gotify-token-cache "" "")
 (defun eab/gotify-token ()
   (if (not (equal (length eab/gotify-token-cache) 15))
