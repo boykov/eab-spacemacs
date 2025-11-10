@@ -173,5 +173,7 @@
                          (read-string "Google: "))))))
 
 (setq page-delimiter "^$")
+;; (setq paragraph-start ...)
+;; (setq paragraph-separate ...)
 
 (provide 'eab-ui)

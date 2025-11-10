@@ -8,6 +8,7 @@
 ;; Status: not intended to be distributed yet
 
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 ;; melpa.org is blocked
 (add-to-list 'load-path (concat eab-spacemacs-path "lisp"))
 (add-to-list 'load-path (concat eab-spacemacs-path "features"))

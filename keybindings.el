@@ -882,8 +882,10 @@
    "M-RET"              (ilam (org-insert-heading nil))
    "M-N"                'org-backward-sentence
    "M-M"                'org-forward-sentence
-   "M-U"                'eab/org-backward-page
-   "M-O"                'eab/org-forward-page
+   "M-U"                'eab/org-backward-paragraph
+   "M-O"                'eab/org-forward-paragraph
+   "M-u"                'eab/org-backward-page
+   "M-o"                'eab/org-forward-page
    "C-M-S-u"            'org-backward-paragraph
    "C-M-S-o"            'org-forward-paragraph
    "C-M-u"              'outline-previous-visible-heading

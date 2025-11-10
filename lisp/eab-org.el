@@ -261,12 +261,28 @@
 
 (defun eab/org-forward-page ()
   (interactive)
+  (let ((page-delimiter "^"))
+    (forward-page)
+    (while (or (org-in-src-block-p 't)
+               (org-in-block-p '("quote")))
+      (forward-page))))
+
+(defun eab/org-backward-page ()
+  (interactive)
+  (let ((page-delimiter "^"))
+    (backward-page)
+    (while (or (org-in-src-block-p 't)
+               (org-in-block-p '("quote")))
+      (backward-page))))
+
+(defun eab/org-forward-paragraph ()
+  (interactive)
   (forward-page)
   (while (or (org-in-src-block-p 't)
              (org-in-block-p '("quote")))
     (forward-page)))
 
-(defun eab/org-backward-page ()
+(defun eab/org-backward-paragraph ()
   (interactive)
   (backward-page)
   (while (or (org-in-src-block-p 't)

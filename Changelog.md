@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.9
+
+Fix melpa https.
+Add `eab/org-forward-paragraph`, replace `eab/org-forward-page`.
+
 ## 0.4.8
 
 Fix `eab/grep-ls-gitmode?`.
