@@ -7,7 +7,7 @@
 ;; Requirements:
 ;; Status: not intended to be distributed yet
 
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 ;; melpa.org is blocked
 (add-to-list 'load-path (concat eab-spacemacs-path "lisp"))
@@ -281,10 +281,13 @@ END")))
   (setq-put org-directory "/home/eab/git/org/"))
 
 ;; TODO почему не срабатывает exclude для ссылок?
-(defun eab/rsync-org-directory ()
+;; из-за распределенности? копируется не оттуда, откуда ожидаю? задержка st?
+(defun eab/rsync-org-directory (&optional from-host)
+  (unless from-host
+    (setq from-host ""))
   (shell-command
    (concat eab/ssh-host-local
-           " rsync --delete -avzl --exclude-from=\\<\\(cd ~/git/org-chronos/ \\&\\& find . -type l\\) --exclude \".git\" --exclude \"gen\" ~/git/org-chronos/ " org-directory)))
+           " rsync --delete -avzl --no-links --exclude \".git\" --exclude \"gen\" " from-host "~/git/org-chronos/ " org-directory)))
 
 (setq eab/batch-publish-command
       (concat eab/ssh-host " " (eab/get-path 'org-directory) "misc/batch-publish.sh"))
@@ -300,7 +303,7 @@ END")))
 (setq-put org-link-abbrev-alist
           '(("bib" . "~/git/lit/boykov.bib::%s")
             ("papers" . "https://share.eab.su/papers/%s.pdf")
-            ("google" . "http://www.google.com/search?q=")
+            ("google" . "https://www.google.com/search?q=")
             ))
 ;; See also eab-header in ~/texmf/tex/latex/eab-styles/eab-header.sty
 

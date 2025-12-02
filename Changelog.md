@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.10
+
+Add `csum-promille-head`.
+Add `insert-all-childs-put`.
+Improve `eab/rsync-org-directory`.
+Use `--no-links` instead of `--exclude-from`.
+
 ## 0.4.9
 
 Fix melpa https.

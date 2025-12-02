@@ -9,6 +9,7 @@
 
 (setq eab/org-ql-O-query '(and (or (not (tags "noagenda")) (tags "agenda")) (not (tags "neveragenda")) (clocked 6000) (not (clocked 400))))
 '((setq eab/org-ql-O-query '(clocked)))
+;; TODO w1c tag ???
 (setq eab/org-ql-W-query '(and (and (or (tags "w1c") (tags "fz")) (or (not (tags "noagenda")) (tags "agenda")) (not (tags "neveragenda"))) (clocked 560)))
 
 (defun eab/org-ql-query-buffer (query)

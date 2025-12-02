@@ -261,7 +261,7 @@
 
 (defun eab/org-forward-page ()
   (interactive)
-  (let ((page-delimiter "^"))
+  (let ((page-delimiter "⚓"))
     (forward-page)
     (while (or (org-in-src-block-p 't)
                (org-in-block-p '("quote")))
@@ -269,7 +269,7 @@
 
 (defun eab/org-backward-page ()
   (interactive)
-  (let ((page-delimiter "^"))
+  (let ((page-delimiter "⚓"))
     (backward-page)
     (while (or (org-in-src-block-p 't)
                (org-in-block-p '("quote")))

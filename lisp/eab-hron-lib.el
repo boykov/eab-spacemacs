@@ -565,9 +565,14 @@
   (format "%0.1f" (* (/ (org-clock-sum-current-item)
                         (eab/total-minutes)) 1000)))
 
+(defun csum-promille-head ()
+  (concat "@@html:<i class=\"kb_head\" style=\"display: none;\">"
+          (csum-promille)
+          "</i>@@"))
+
 (defun csum-file-percent ()
   (format "%0.2f" (* (/ (org-clock-sum)
-     (eab/total-minutes)) 100)))
+                        (eab/total-minutes)) 100)))
 
 (defun csum-file-promille ()
   (format "%0.2f" (* (/ (org-clock-sum)
@@ -578,6 +583,15 @@
 
 (defun csum-hours ()
   (org-minutes-to-clocksum-string (org-clock-sum-current-item) '(("h") (special . h:mm))))
+
+(defun insert-all-childs-put ()
+  (org-entry-put
+   nil "CHILDS"
+   (replace-regexp-in-string
+    "(" ""
+    (replace-regexp-in-string
+     ")" ""
+     (format "%s" (insert-all-childs))))))
 
 (defun insert-all-childs ()
   (let ((head (org-entry-get nil "HEAD")))
@@ -593,6 +607,21 @@
                       (concat "rg -A 1 \"^:PRNT: "
                               head
                               "$\" | grep :ID: | sort")) 0 -1) "\n")))))))
+
+(defun insert-all-childs-0 ()
+  (let ((head (org-entry-get nil "HEAD")))
+    (if head
+        (mapcar
+         (lambda (x)
+           (concat "[[" "id:" (car x) "][" (cadr x) "]]"))
+         (mapcar (lambda (x) (split-string x ".org-\\#\\+TITLE: "))
+                 (let ((default-directory org-directory))
+                   (split-string
+                    (substring
+                     (shell-command-to-string
+                      (concat "rg -B 20 \"^:PRNT: "
+                              head
+                              "$\" | grep \\#\\+TITLE: | sort")) 0 -1) "\n")))))))
 
 (defun insert-parent ()
   (let ((head (org-entry-get nil "PRNT")))

@@ -73,7 +73,9 @@
 (defun eab/org-publish-current-file ()
   (interactive)
   (let ((org-publish-use-timestamps-flag nil)
-        (fold (cadr (reverse (split-string (buffer-file-name (buffer-base-buffer)) "/" t)))))
+        (fold (cadr
+               (reverse
+                (split-string (buffer-file-name (buffer-base-buffer)) "/" t)))))
     (org-publish-file
      (file-truename (buffer-file-name (buffer-base-buffer))))
     (eab/update-site)

@@ -101,9 +101,6 @@ process: e.g. nautilus or gnome-terminals"
                         1 (length (minibuffer-contents)))) 't)
     (abort-recursive-edit)))
 
-(defun eab/add-drop (name)
-  (concat "http://dl.getdropbox.com/u/1897885/" name))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; TODO баг: зацикливание (много bash процессов) trying with detected language
