@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.11
+
+Add items to `org-tags-exclude-from-inheritance`.
+
 ## 0.4.10
 
 Add `csum-promille-head`.

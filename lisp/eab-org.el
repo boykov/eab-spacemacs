@@ -1,6 +1,6 @@
 ;;; eab-org.el --- 
 
-;; Copyright (C) 2010-2025 Evgeny Boykov
+;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 
@@ -142,7 +142,7 @@
 (setq org-archive-mark-done nil)
 (setq org-archive-default-command 'org-archive-set-tag)
 
-(setq org-tags-exclude-from-inheritance (quote ("crypt")))
+(setq org-tags-exclude-from-inheritance (quote ("crypt" "ignore" "notimereport")))
 (setq org-tags-column -72)
 ;; (org-crypt-use-before-save-magic)
 (setq org-crypt-key nil)

@@ -1,6 +1,6 @@
 ;;; config.el --- Spacemacs Layer configuration File
 ;;
-;; Copyright (C) 2010-2025 Evgeny Boykov
+;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords:
@@ -62,7 +62,7 @@ END
 " )) 0 -1)))
   eab/gotify-client-token-cache)
 (setq eab/gotify-command
-      (concat "ssh kairos" " 'sqlite3 -column /var/gotify/data/gotify.db \"select datetime(date,\\\"localtime\\\"),title,message from messages order by date desc limit 10;\"'"))
+      (concat "ssh kairos" " 'sqlite3 -column /var/gotify/data/gotify.db \"select datetime(date,\\\"localtime\\\"),title,message from messages order by date desc limit 20;\"'"))
 
 (setq eab/test-dotemacs-command
       ;; host=`dig test-dotemacs.salmon.eab.su TXT +short | tr -d '"'`

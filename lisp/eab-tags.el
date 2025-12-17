@@ -1,6 +1,6 @@
 ;;; eab-tags.el --- eab tags extension
 
-;; Copyright (C) 2010-2025 Evgeny Boykov
+;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 

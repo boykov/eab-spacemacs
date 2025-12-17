@@ -1,6 +1,6 @@
 ;;; eab-window.el ---  eab window extension
 
-;; Copyright (C) 2010-2025 Evgeny Boykov
+;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 
