@@ -631,7 +631,13 @@
 (defun find-parent (head)
   (save-window-excursion
     (save-excursion
-      (switch-to-buffer (get-buffer "root-clock-reports.org"))
+      (let ((b (get-buffer "root-clock-reports.org")))
+        (if (not b)
+            (find-file
+             (car (remove-if
+                   (lambda (x) (not (string-match-p "root-clock-reports" x)))
+                   org-agenda-files)))
+          (switch-to-buffer b)))
       (beginning-of-buffer)
       (search-forward-regexp (concat "^:HEAD: " head "$"))
       (org-entry-get nil "ID"))))

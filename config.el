@@ -48,21 +48,28 @@ END
 " )) 0 -1)))
   eab/gotify-token-cache)
 (defun eab/gotify (title message priority)
-  (shell-command
-   (concat "curl \"https://notify.eab.su/message?token=" (eab/gotify-token) "\" "
-           "-F \"title=" title
-           "\" -F \"message=" message
-           "\" -F \"priority=" (number-to-string priority) "\"")))
+  (async-start
+   `(lambda ()
+      (call-process-shell-command
+       (concat
+        "/home/eab/git/auto/notify.sh -a " ,(eab/gotify-token)
+        " -t \"" ,title "\""
+        " -m \"" ,message "\""
+        " -p " ,(number-to-string priority))) nil 0)))
 (defvar eab/gotify-client-token-cache "" "")
 (defun eab/gotify-client-token ()
   (if (not (equal (length eab/gotify-client-token-cache) 15))
-      (setq eab/gotify-client-token-cache (substring (shell-command-to-string (concat eab/ssh-host " bash <<'END'
+      (setq eab/gotify-client-token-cache
+            (substring
+             (shell-command-to-string
+              (concat eab/ssh-host " bash <<'END'
 ~/git/auto/keepass.sh \"portal/gotify\" -a client-token
 END
 " )) 0 -1)))
   eab/gotify-client-token-cache)
 (setq eab/gotify-command
       (concat "ssh kairos" " 'sqlite3 -column /var/gotify/data/gotify.db \"select datetime(date,\\\"localtime\\\"),title,message from messages order by date desc limit 20;\"'"))
+;; (eab/gotify "test" "test" 0)
 
 (setq eab/test-dotemacs-command
       ;; host=`dig test-dotemacs.salmon.eab.su TXT +short | tr -d '"'`
@@ -84,8 +91,8 @@ END")))
 
 (defun eab/test-dotemacs ()
   (if configuration-layer-error-count
-      (eab/gotify "bad dotemacs" "Dotemacs is failed!" 5)
-    (eab/gotify "ok expectations" "OK Dotemacs is loaded! Expectations OK!" 0))
+      (eab/gotify "test-dotemacs" "bad" 5)
+    (eab/gotify "test-dotemacs" "OK" 0))
   (kill-emacs))
 
 (defun display-startup-echo-area-message ()

@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.4.12
+
+Use `notify.sh` in eab/gotify over `async-start`.
+Fix `eab/org-ql-T-query`.
+Fix eab/org-forward-page symbol.
+Add `sort-deadline`, use it in agenda.
+Debug compiled eab/`helm-org-ql--heading`.
+Fix `eab/cmp-helm-property` and `eab/helm-org-ql--heading`.
+Fix `find-parent` root-clock-reports.
+
 ## 0.4.11
 
 Add items to `org-tags-exclude-from-inheritance`.

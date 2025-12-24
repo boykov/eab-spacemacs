@@ -94,20 +94,23 @@
            (b2 (get-text-property 0 'sort-priority b))
            (a3 (get-text-property 0 'sort-todo a))
            (b3 (get-text-property 0 'sort-todo b))
+           (a4 (get-text-property 0 'sort-deadline a))
+           (b4 (get-text-property 0 'sort-deadline b))
            )
-      (if (or (and (< (if (not a1) 2000 (string-to-number a1))
-                      (if (not b1) 2000 (string-to-number b1)))
-                   (= (if (not a2) 2000 (org-priority-to-value a2))
-                      (if (not b2) 2000 (org-priority-to-value b2)))
-                   (string= (if (not a3) "" a3)
-                            (if (not b3) "" b3)))
-              (and
-               (< (if (not a2) 2000 (org-priority-to-value a2))
-                  (if (not b2) 2000 (org-priority-to-value b2)))
-               (string= (if (not a3) "" a3)
-                        (if (not b3) "" b3)))
-              (string> (if (not a3) "" a3)
-                       (if (not b3) "" b3))) t nil))))
+      (if (or
+           (and (< (if (not a1) 2000 (string-to-number a1))
+                   (if (not b1) 2000 (string-to-number b1)))
+                (= (if (not a2) 2000 a2)
+                   (if (not b2) 2000 b2))
+                (= a4 b4)
+                )
+           (and
+            (< (if (not a2) 2000 a2)
+               (if (not b2) 2000 b2))
+            (= a4 b4)
+            )
+           (< a4 b4)
+           ) t nil))))
 
 (defun h-candidate-transformer (candidates)
   (sort candidates (eab/cmp-helm-property)))
@@ -118,7 +121,8 @@
                  (remove-if
                   (lambda (s) (string-match ".*virtual.*" s))
                   (org-ql-select eab/clocktable-scope '(not (tags "nohelm"))
-                    :action `(eab/helm-org-ql--heading 100)))
+                    :action `(eab/helm-org-ql--heading 100 (random))))
+                 ;; Чтобы перекомпилировать во время отладки ,(random)
                  'stringp
                  nil nil
                  nil helm-org-completion-styles)
@@ -137,7 +141,7 @@
 ;;                (sort candidates
 ;;                      (eab/cmp-helm-property))))) 'display-sort-function)
 
-(defun eab/helm-org-ql--heading (window-width)
+(defun eab/helm-org-ql--heading (window-width &optional pseudo)
   "Return string for Helm for heading at point.
 WINDOW-WIDTH should be the width of the Helm window."
   (font-lock-ensure (point-at-bol) (point-at-eol))
@@ -145,10 +149,12 @@ WINDOW-WIDTH should be the width of the Helm window."
          (width (- window-width (length prefix)))
          (heading (org-get-heading)))
     (propertize (concat heading)
-                'sort-he (org-entry-get nil "HE_SORT")
-                'sort-todo (org-entry-get nil "TODO")
+                'sort-he (org-element-property :HE_SORT (org-element-context))
+                'sort-deadline (let ((a40 (org-element-property :deadline (org-element-context))))
+                                 (if (not a40) 2000 (org-time-stamp-to-now (org-timestamp-format a40 "%Y-%m-%d"))))
+                'sort-todo (org-element-property :TODO (org-element-context))
                 'helm-realvalue (point-marker)
-                'sort-priority (org-entry-get nil "PRIORITY")
+                'sort-priority (org-element-property :priority (org-element-context))
                 )))
 
 ;; (get-text-property 0 'sort-he (propertize "str" 'sort-he "test" 'sort-p "test"))

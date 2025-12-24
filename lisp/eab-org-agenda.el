@@ -3,14 +3,71 @@
 (defun eab/replace-in-string (what with in)
   (replace-regexp-in-string (regexp-quote what) with in nil 'literal))
 
-(setq eab/org-ql-T-query '(and (or (not (tags "noagenda")) (tags "agenda")) (not (tags "neveragenda")) (clocked 600) (or (todo) (heading "\\[")) ))
-(setq eab/org-ql-H-query '(or (and (or (not (tags "noagenda")) (tags "agenda")) (not (tags "neveragenda")) (clocked 600) ) (and (tags "parent") (tags "agenda"))))
-'((setq eab/org-ql-H-query '(and (or (not (tags "noagenda")) (tags "agenda")) (not (tags "neveragenda")) (or (todo) (clocked 600)) (or (clocked 600) (heading "\\[")))))
+(setq eab/org-ql-T-query
+      '(and
+        (or
+         (not (tags "noagenda"))
+         (tags "agenda"))
+        (not (tags "neveragenda"))
+        (clocked 600)
+        (and
+         (or
+          (deadline)
+          (todo)
+          (heading "\["))
+         (not (or
+               (heading "1/1")
+               (heading "2/2")
+               (heading "3/3"))))))
 
-(setq eab/org-ql-O-query '(and (or (not (tags "noagenda")) (tags "agenda")) (not (tags "neveragenda")) (clocked 6000) (not (clocked 400))))
+(setq eab/org-ql-H-query
+      '(or
+        (and
+         (or
+          (not (tags "noagenda"))
+          (tags "agenda"))
+         (not (tags "neveragenda"))
+         (clocked 600))
+        (and
+         (tags "parent")
+         (tags "agenda"))))
+
+'((setq eab/org-ql-H-query
+        '(and
+          (or
+           (not (tags "noagenda"))
+           (tags "agenda"))
+          (not (tags "neveragenda"))
+          (or
+           (todo)
+           (clocked 600))
+          (or
+           (clocked 600)
+           (heading "\[")))))
+
+(setq eab/org-ql-O-query
+      '(and
+        (or
+         (not (tags "noagenda"))
+         (tags "agenda"))
+        (not (tags "neveragenda"))
+        (clocked 6000)
+        (not (clocked 400))))
+
 '((setq eab/org-ql-O-query '(clocked)))
+
 ;; TODO w1c tag ???
-(setq eab/org-ql-W-query '(and (and (or (tags "w1c") (tags "fz")) (or (not (tags "noagenda")) (tags "agenda")) (not (tags "neveragenda"))) (clocked 560)))
+(setq eab/org-ql-W-query
+      '(and
+        (and
+         (or
+          (tags "w1c")
+          (tags "fz"))
+         (or
+          (not (tags "noagenda"))
+          (tags "agenda"))
+         (not (tags "neveragenda")))
+        (clocked 560)))
 
 (defun eab/org-ql-query-buffer (query)
   (concat "*Org QL View: "
@@ -67,12 +124,27 @@
            (b1 (org-element-property :HE_SORT b))
            (a2 (org-element-property :priority a))
            (b2 (org-element-property :priority b))
+           (a3 (org-element-property :TODO a))
+           (b3 (org-element-property :TODO b))
+           (a40 (org-element-property :deadline a))
+           (b40 (org-element-property :deadline b))
+           (a4 (if (not a40) 2000 (org-time-stamp-to-now (org-timestamp-format a40 "%Y-%m-%d"))))
+           (b4 (if (not b40) 2000 (org-time-stamp-to-now (org-timestamp-format b40 "%Y-%m-%d"))))
            )
-      (if (or (and (< (if (not a1) 2000 (string-to-number a1))
-                 (if (not b1) 2000 (string-to-number b1)))
-                   (= (if (not a2) 2000 a2) (if (not b2) 2000 b2)))
-              (< (if (not a2) 2000 a2)
-                 (if (not b2) 2000 b2))) t nil))))
+      (if (or
+           (and (< (if (not a1) 2000 (string-to-number a1))
+                   (if (not b1) 2000 (string-to-number b1)))
+                (= (if (not a2) 2000 a2)
+                   (if (not b2) 2000 b2))
+                (= a4 b4)
+                )
+           (and
+            (< (if (not a2) 2000 a2)
+               (if (not b2) 2000 b2))
+            (= a4 b4)
+            )
+           (< a4 b4)
+           ) t nil))))
 
 ;; TODO instead of org-ql-view-refresh with wrong rename-buffer
 (defun eab/org-ql-view-refresh (&optional prompt)
