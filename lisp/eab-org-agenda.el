@@ -12,7 +12,7 @@
         (clocked 600)
         (and
          (or
-          (deadline)
+          (deadline auto)
           (todo)
           (heading "\["))
          (not (or
@@ -116,6 +116,8 @@
    (eab/org-ql-query-buffer query))
   (setq-local org-agenda-buffer-name (buffer-name)))
 
+;; (eab/org-ql-search ''(clocked :from (ts-parse "2025-01-28") :to (ts-parse "2025-01-29")))
+
 (defun eab/cmp-date-property ()
   "Compare two org-mode headers, `A' and `B', by their :HE_SORT property.
   If a is before b, return nil, otherwise t."
@@ -128,8 +130,8 @@
            (b3 (org-element-property :TODO b))
            (a40 (org-element-property :deadline a))
            (b40 (org-element-property :deadline b))
-           (a4 (if (not a40) 2000 (org-time-stamp-to-now (org-timestamp-format a40 "%Y-%m-%d"))))
-           (b4 (if (not b40) 2000 (org-time-stamp-to-now (org-timestamp-format b40 "%Y-%m-%d"))))
+           (a4 (if (not a40) org-deadline-warning-days (org-time-stamp-to-now (org-timestamp-format a40 "%Y-%m-%d"))))
+           (b4 (if (not b40) org-deadline-warning-days (org-time-stamp-to-now (org-timestamp-format b40 "%Y-%m-%d"))))
            )
       (if (or
            (and (< (if (not a1) 2000 (string-to-number a1))

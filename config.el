@@ -93,6 +93,7 @@ END")))
   (if configuration-layer-error-count
       (eab/gotify "test-dotemacs" "bad" 5)
     (eab/gotify "test-dotemacs" "OK" 0))
+  (sleep-for 0.5)
   (kill-emacs))
 
 (defun display-startup-echo-area-message ()

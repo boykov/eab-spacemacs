@@ -20,7 +20,10 @@
 
 ;; DONE похоже, переменная server-name здесь еще не становится server-C
 
-(if (and (or (eab/ondaemon (eab/server-P)) (eab/ondaemon "server")) (not noninteractive))
+(if (and (or
+          (eab/ondaemon (eab/server-P))
+          (eab/ondaemon "server"))
+         (not noninteractive))
     (load-theme 'spacemacs-dark 't))
 
 (setq eab/org-file (concat org-directory "clock/current-time.el"))
@@ -45,12 +48,14 @@
   (wg-change-modeline)
   (require 'cl-macs)
   (cl-assert
-   (equal (ido-completing-read-silent "prompt: " '("one" "two" "three" "four" "five") "t")
+   (equal (ido-completing-read-silent
+           "prompt: " '("one" "two" "three" "four" "five") "t")
           '("two" "three")))
   (global-eldoc-mode 0)
   (require 'yasnippet)
   (yas-reload-all)
   (require 'org-ql-search)
+  (require 'org-depend)
   (require 'org-sql)
   (require 'eab-helm)
   (set-face-attribute 'default nil

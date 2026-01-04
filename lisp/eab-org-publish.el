@@ -75,7 +75,8 @@
   (let ((org-publish-use-timestamps-flag nil)
         (fold (cadr
                (reverse
-                (split-string (buffer-file-name (buffer-base-buffer)) "/" t)))))
+                (split-string (buffer-file-name (buffer-base-buffer)) "/" t))))
+        (org-confirm-babel-evaluate nil))
     (org-publish-file
      (file-truename (buffer-file-name (buffer-base-buffer))))
     (eab/update-site)
@@ -90,5 +91,7 @@ screen -d -m bash -c \"cd ~/git/eabmisc/eablatex && make resume\"
 END"))))))
 
 (setq org-html-head-include-default-style nil)
+
+(defun org-dblock-write:dynamic (params))
 
 (provide 'eab-org-publish)

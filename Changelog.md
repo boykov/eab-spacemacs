@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.4.13
+
+Deadline org-deadline-warning-days.
+Add `org-depend.el`.
+Add `eab/clock-sum-last-year`.
+Add `wc -l` to `region-bindings-mode-map`.
+Improve `eab/grep-clock-right` with `^- `.
+Add `C-x G s` for fast `eab/grep-switch`.
+Debug `grep-mode`.
+Add missed `org-dblock-write:dynamic`.
+Find `eab/org-ql-search` syntax for timestamps.
+Fix `helm-org-rifle-input-idle-delay`.
+Set `org-confirm-babel-evaluate`.
+Fix `daemons` using tramp.
+Fix `daemons-systemd-toggle-user` with default-directory.
+Fix `eab/test-dotemacs` timeout.
+Init `eab/daemons-restart`.
+
 ## 0.4.12
 
 Use `notify.sh` in eab/gotify over `async-start`.

@@ -58,7 +58,8 @@
                         (shell-command (concat "cd " org-directory))
                         (eab/rsync-org-directory "cyclos:")
                         (revert-all-buffers)
-                        (let ((org-publish-use-timestamps-flag nil))
+                        (let ((org-publish-use-timestamps-flag nil)
+                              (org-confirm-babel-evaluate nil))
                           (org-publish-file ,name))
                         (eab/update-site))))
                   )))
@@ -68,15 +69,17 @@
 
 (defun eab/shell-translate-remote (phrase)
   (interactive)
-  (funcall `(lambda ()
-              (async-start
-               (lambda ()
-                 (require 'server)
-                 (let ((server-use-tcp ,server-C-use-tcp))
-                   (server-eval-at ,(eab/target-C) '(eab/shell-translate ,phrase 't))))
-               (lambda (result)
-                 (message "async result: <%s>" result)
-                 (define-abbrev eab-abbrev-table ,phrase result))))))
+  (funcall
+   `(lambda ()
+      (async-start
+       (lambda ()
+         (require 'server)
+         (let ((server-use-tcp ,server-C-use-tcp))
+           (server-eval-at ,(eab/target-C)
+                           '(eab/shell-translate ,phrase 't))))
+       (lambda (result)
+         (message "async result: <%s>" result)
+         (define-abbrev eab-abbrev-table ,phrase result))))))
 
 ;; not used
 (defun eab/org-publish-html ()
@@ -86,10 +89,14 @@
    (lambda ()
      (require 'server)
      (let ((server-use-tcp ,server-C-use-tcp))
-       (server-eval-at ,(eab/target-C) '(progn
-                                          (org-publish-project "html-base" 't)
-                                          (org-publish-project "html-scale" 't)
-                                          (org-publish-project "html-clock" 't)))))
-   (lambda (result) (eab/gotify "eab/org-publish-html" (concat "async result: <" result ">") 0))))
+       (server-eval-at ,(eab/target-C)
+                       '(progn
+                          (let ((org-confirm-babel-evaluate nil))
+                            (org-publish-project "html-base" 't)
+                            (org-publish-project "html-scale" 't)
+                            (org-publish-project "html-clock" 't))))))
+   (lambda (result)
+     (eab/gotify "eab/org-publish-html"
+                 (concat "async result: <" result ">") 0))))
 
 (provide 'eab-server)

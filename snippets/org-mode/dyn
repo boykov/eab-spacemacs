@@ -1,0 +1,6 @@
+# -*- coding: utf-8 -*-
+# name: dyn
+# --
+#+begin: dynamic
+$0
+#+end:

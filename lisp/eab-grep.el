@@ -20,6 +20,7 @@
 (setcar (car grep-regexp-alist) "^\\(.+?\\):[ \t]*\\([1-9][0-9]*\\)[ \t]*:")
 
 (setq grep-highlight-matches 'auto-detect)
+;; (add-hook 'grep-mode-hook (lambda () (font-lock-mode -1)))
 
 ;; DONE fixed bug (grep-compute-defaults): if grep-history is empty than
 ;; grep-command isn't parsed correctly
@@ -30,7 +31,7 @@
 (setq eab/grep-ls "git ls-files `git rev-parse --show-toplevel`")
 (setq eab/grep-ls-recurse "git ls-files --recurse-submodules `git rev-parse --show-toplevel`")
 (setq eab/grep-clock-left "\"(^- |- <20|- \\[X|- \\[ |^\\*\\*\\*\\*\\*\\* )(?:(?!(^- |- <20|- \\[X|- \\[ |^\\*+ ))(.|\\n))*?")
-(setq eab/grep-clock-right "(\\n|.)*?((?= *- \\[X)|(?= *- \\[ )|(?= *- <)|(?=\\n\\*+ )|(?=\\Z))\"")
+(setq eab/grep-clock-right "(\\n|.)*?((?= *- \\[X)|(?= *- \\[ )|(?= *- <)|(?=^- )|(?=\\n\\*+ )|(?=\\Z))\"")
 (setq eab/grep-clock-left-0 "\"(^ *- |- \\[ |^\\*\\*\\*\\*\\*\\* )(?:(?!(^ *- |^\\*+ ))(.|\\n))*?")
 (setq eab/grep-clock-right-0 "(\\n|.)*?((?=^ *- )|(?= *- <)|(?=\\n\\*+ )|(?=\\Z))\"")
 (setq eab/grep-sort " | LC_ALL=C sort -t ':' -k1,1 -k2n")
@@ -67,7 +68,7 @@
            (cdr compilation-arguments))))
     (eab/recompile)))
 
-(defun eab/grep-switch ()
+(defun eab/grep-switch-3 ()
   (interactive)
   (if (not (boundp 'eab/grep-switch-cycle))
       (setq-local eab/grep-switch-cycle 'init))
@@ -82,11 +83,24 @@
         (eab/grep-switch-0 eab/grep-clock-left-0 eab/grep-clock-right-0)
         (setq-local eab/grep-switch-cycle '0))))
 
+(defun eab/grep-switch ()
+  (interactive)
+  (if (not (boundp 'eab/grep-switch-cycle))
+      (setq-local eab/grep-switch-cycle 'init))
+  (if (eq eab/grep-switch-cycle 'full)
+      (eab/recompile))
+  (if (eq eab/grep-switch-cycle 'init)
+      (progn
+        (eab/grep-switch-0 eab/grep-clock-left eab/grep-clock-right)
+        (setq-local eab/grep-switch-cycle 'full))))
+
 (defun eab/grep-switch-0 (left right)
   "Switch to org-mode aware grep."
   (interactive)
   (let* ((ss-0 (car (split-string (car compilation-arguments) eab/grep-sort)))
-         (ss-1 (concat (car (split-string ss-0 (eab/grep-command))) (eab/grep-command)))
+         (ss-1 (concat
+                (car (split-string ss-0 (eab/grep-command)))
+                (eab/grep-command)))
          (ss (cadr (split-string ss-0 (concat " " (eab/grep-command)))))
          (compilation-arguments
           (append (list (concat ss-1 left

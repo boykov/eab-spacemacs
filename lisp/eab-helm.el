@@ -151,7 +151,9 @@ WINDOW-WIDTH should be the width of the Helm window."
     (propertize (concat heading)
                 'sort-he (org-element-property :HE_SORT (org-element-context))
                 'sort-deadline (let ((a40 (org-element-property :deadline (org-element-context))))
-                                 (if (not a40) 2000 (org-time-stamp-to-now (org-timestamp-format a40 "%Y-%m-%d"))))
+                                 (if (not a40)
+                                     org-deadline-warning-days
+                                   (org-time-stamp-to-now (org-timestamp-format a40 "%Y-%m-%d"))))
                 'sort-todo (org-element-property :TODO (org-element-context))
                 'helm-realvalue (point-marker)
                 'sort-priority (org-element-property :priority (org-element-context))

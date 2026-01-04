@@ -250,6 +250,7 @@
  "s-k"          (ilam (if (equal current-input-method "TeX") (set-input-method "russian-computer") (set-input-method "TeX")) (setq default-input-method "russian-computer"))
  "C-s"          (ilam (save-some-buffers 't))
  "C-:"          'isearch-moccur
+ "C-c g"        'google
  "C-c t"        'dictionary-search
  "C-f"          eab/explore-map
  "C-p"          'er/expand-region
@@ -481,6 +482,14 @@
  "f"    'eab/find-grep
  "g"    'eab/find-grep
  "c"    'eab/clock-grep
+ "s"    (ilam
+         (call-interactively 'eab/grep)
+         (call-interactively 'eab/switch-grep)
+         ;; (setq-local eab/grep-switch-cycle 'full)
+         (sleep-for 0.4)
+         (progn
+           (eab/grep-switch-0 eab/grep-clock-left eab/grep-clock-right)
+           (setq-local eab/grep-switch-cycle 'full)))
  "G"    'eab/clock-grep)
 (setq eab/grep-map (lookup-key global-map (kbd "C-x G")))
 
@@ -739,6 +748,8 @@
    "C-d"        'nil)
   (general-define-key
    :keymaps 'magit-revision-mode-map
+   "C-j"        'magit-diff-visit-file
+   "RET"        'magit-diff-visit-worktree-file
    "C-d"        'nil)
   (general-define-key
    :keymaps 'magit-status-mode-map
@@ -1347,6 +1358,8 @@
     (setq region-bindings-mode-disabled-modes '(magit-status-mode magit-diff-mode))
     (general-define-key
      :keymaps 'region-bindings-mode-map
+     "w"        (ilam (shell-command-on-region (region-beginning) (region-end) "wc -l"))
+     "ц"        (ilam (shell-command-on-region (region-beginning) (region-end) "wc -l"))
      "u"        'untabify
      "г"        'untabify
      "s"        'sort-lines
@@ -1373,8 +1386,8 @@
      ;; "C-g"   (ilam (eab/or-self-insert 'mc/keyboard-quit))
      "g"        (ilam (eab/or-self-insert 'mc/keyboard-quit))
      "п"        (ilam (eab/or-self-insert 'mc/keyboard-quit))
-     "G"        (ilam (eab/or-self-insert 'google))
-     "П"        (ilam (eab/or-self-insert 'google))
+     "G"        (ilam (eab/or-self-insert 'google) (eab/or-self-insert 'mc/keyboard-quit))
+     "П"        (ilam (eab/or-self-insert 'google) (eab/or-self-insert 'mc/keyboard-quit))
      "l"        (ilam (eab/or-self-insert 'eab/replace-selection))
      "д"        (ilam (eab/or-self-insert 'eab/replace-selection))
      "e"        'mc/edit-lines
@@ -1396,6 +1409,8 @@
      "C-c C-c"  'org-toggle-checkbox
      "m"        'mc/mark-more-like-this-extended)))
 
-(if (and (featurep 'power-macros) (string= (file-name-nondirectory power-macros-file) "eab-pmacros.el")) 
+(if (and
+     (featurep 'power-macros)
+     (string= (file-name-nondirectory power-macros-file) "eab-pmacros.el"))
     (if (file-exists-p power-macros-file)
         (load power-macros-file)))

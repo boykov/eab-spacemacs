@@ -47,7 +47,7 @@
 ;; (setq org-id-locations nil)
 ;; (setq org-id-files nil)
 ;; (org-id-update-id-locations)
-;; (org-publish-project "html-heads")
+;; (let ((org-confirm-babel-evaluate nil)) (org-publish-project "html-heads"))
 
 (add-to-list 'org-publish-project-alist
              `("html-base"
@@ -161,11 +161,13 @@
       ;; DONE it seems to hangs up `eab/update-reports-nightly'
       (eab/update-reports-nightly)
       (org-publish-remove-all-timestamps))
-    (org-publish-project "html-base" (not fast))
-    (org-publish-project "html-clock" (not fast))
-    (org-publish-project "html-scale" (not fast))
+    (let ((org-confirm-babel-evaluate nil))
+      (org-publish-project "html-base" (not fast))
+      (org-publish-project "html-clock" (not fast))
+      (org-publish-project "html-scale" (not fast)))
     ;; TODO fix kairos reboot bug
-    (let ((org-publish-use-timestamps-flag nil))
+    (let ((org-publish-use-timestamps-flag nil)
+          (org-confirm-babel-evaluate nil))
       (org-publish-file (concat org-directory "clock/w2c-improve-english.org")))
     ;; (eab/shell-command "git stash save batch")
     (sleep-for 2)
@@ -537,7 +539,7 @@
   (revert-all-buffers)
   (org-update-all-dblocks)
   (save-buffer)
-  (org-publish-project "html-gen" t)
+  (let ((org-confirm-babel-evaluate nil)) (org-publish-project "html-gen" t))
   (ignore-errors (kill-buffer "time-reports-nightly.org"))
   (eab/delete-nightly)
   (eab/update-plotclock))
@@ -661,6 +663,20 @@
 (defun csum-file ()
   (org-clock-sum)
   (org-minutes-to-clocksum-string org-clock-file-total-minutes))
+
+(defun eab/clock-sum-last-year (&optional headline-filter)
+  (interactive)
+  (let ((range (org-clock-special-range 'lastyear)))
+    (save-excursion
+      (save-restriction
+        (if (and (featurep 'org-inlinetask)
+	         (or (org-inlinetask-at-task-p)
+		     (org-inlinetask-in-task-p)))
+	    (narrow-to-region (save-excursion (org-inlinetask-goto-beginning) (point))
+			      (save-excursion (org-inlinetask-goto-end) (point)))
+	  (org-narrow-to-subtree))
+        (org-clock-sum (car range) (cadr range))
+        (/ org-clock-file-total-minutes 5)))))
 
 (defun csum-file-hours ()
   (org-clock-sum)

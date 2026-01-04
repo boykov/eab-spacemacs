@@ -80,6 +80,7 @@
 
 ;; Specify my function (maybe I should have done a lambda function)
 
+;; TODO grep-mode slow
 (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
 ;; (add-hook 'compilation-mode-hook 'rename-uniquely)
 

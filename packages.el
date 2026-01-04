@@ -162,6 +162,7 @@
     docker
     websocket
     daemons
+    prodigy
     kubernetes
     llm
     ellama
@@ -204,12 +205,37 @@ which require an initialization must be listed explicitly in the list.")
     (setopt ellama-coding-provider eab-llm)
     ))
 (defun eab-spacemacs/init-kubernetes nil)
+(defun eab-spacemacs/init-prodigy nil
+  (use-package prodigy))
 (defun eab-spacemacs/init-daemons nil
   (use-package daemons
     :init
     (setq daemons-init-system-submodules '(daemons-systemd))
     (require 'daemons-systemd)
-    (defun daemons-systemd--cmd () (concat eab/ssh-host " sudo systemctl"))))
+    (defun daemons-systemd-toggle-user ()
+      "Toggle showing of user services"
+      (interactive)
+      (setq daemons-systemd-is-user (not daemons-systemd-is-user))
+      (if daemons-systemd-is-user
+          (setq default-directory "/ssh:kairos:/home/eab/"))
+      (if (not daemons-systemd-is-user)
+          (setq default-directory "/ssh:kairos|sudo:root@kairos:/home/eab/"))
+      (revert-buffer))
+    (defun eab/daemons-restart ()
+      (async-start
+       (lambda ()
+         (add-to-list 'load-path "/home/eab/.emacs.d/elpa/daemons-20250514.1107")
+         (require 'daemons)
+         (setq daemons-init-system-submodules '(daemons-systemd))
+         (require 'daemons-systemd)
+         (with-output-to-string
+           (let ((default-directory "/ssh:kairos|sudo:root@kairos:/home/eab/")
+                 (daemons-systemd-is-user nil))
+             (daemons--run 'restart "docker-compose-emacs"))))
+       (lambda (result))))
+    ;; (let ((default-directory "/ssh:kairos|sudo:root@kairos:/home/eab/") (daemons-systemd-is-user nil)) (daemons))
+    ;; (let ((default-directory "/ssh:kairos:/home/eab/")) (daemons))
+    ))
 
 (defun eab-spacemacs/init-solarized-theme nil)
 (defun eab-spacemacs/init-s ()
@@ -401,6 +427,7 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
 (defun eab-spacemacs/init-helm nil
   (use-package eab-helm
     :defer
+    :after (eab-org)
     :init
     (defvar browse-url-galeon-program nil)
     (defun browse-url-galeon nil)
@@ -444,6 +471,7 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
      )
     (setq helm-org-rifle-ellipsis-string "\n")
     (setq helm-org-rifle-context-characters 200)
+    (setq helm-org-rifle-input-idle-delay 0.5)
     (add-to-list 'helm-org-rifle-actions '("eab/hron-todo" . eab/rifle-hron-todo))
     )
   )
