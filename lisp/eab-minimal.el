@@ -56,6 +56,9 @@
   (let ((inhibit-redisplay 't))
     (call-interactively 'kmacro-end-or-call-macro)))
 
+(defun eab/replace-in-string (what with in)
+  (replace-regexp-in-string (regexp-quote what) with in nil 'literal))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (provide 'eab-minimal)

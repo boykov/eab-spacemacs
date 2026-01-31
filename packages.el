@@ -51,7 +51,6 @@
 
     help+
     help-mode+
-    bookmark+
     keyfreq
     achievements
     god-mode
@@ -180,6 +179,7 @@
     (grep :location built-in)
     (dired :location built-in)
     (ido :location built-in)
+    (bookmark :location built-in)
     )
   "List of all packages to install and/or initialize. Built-in packages
 which require an initialization must be listed explicitly in the list.")
@@ -212,29 +212,47 @@ which require an initialization must be listed explicitly in the list.")
     :init
     (setq daemons-init-system-submodules '(daemons-systemd))
     (require 'daemons-systemd)
+    (defun daemons-systemd--cmd ()
+      "Appends `--user' to the `systemctl' call if `daemons-systemd-is-user' is set"
+      (if daemons-systemd-is-user
+          ". /tmp/lib.sh; cache_cmd 30000 systemctl --user"
+        ". /tmp/lib.sh; cache_cmd 30000 systemctl"))
     (defun daemons-systemd-toggle-user ()
       "Toggle showing of user services"
       (interactive)
       (setq daemons-systemd-is-user (not daemons-systemd-is-user))
       (if daemons-systemd-is-user
-          (setq default-directory "/ssh:kairos:/home/eab/"))
+          (setq default-directory
+                (concat "/ssh:" eab/daemons-host ":/home/eab/")))
       (if (not daemons-systemd-is-user)
-          (setq default-directory "/ssh:kairos|sudo:root@kairos:/home/eab/"))
+          (setq default-directory
+                (concat "/ssh:" eab/daemons-host "|sudo:root@" eab/daemons-host ":/home/eab/")))
       (revert-buffer))
     (defun eab/daemons-restart ()
-      (async-start
-       (lambda ()
-         (add-to-list 'load-path "/home/eab/.emacs.d/elpa/daemons-20250514.1107")
-         (require 'daemons)
-         (setq daemons-init-system-submodules '(daemons-systemd))
-         (require 'daemons-systemd)
-         (with-output-to-string
-           (let ((default-directory "/ssh:kairos|sudo:root@kairos:/home/eab/")
-                 (daemons-systemd-is-user nil))
-             (daemons--run 'restart "docker-compose-emacs"))))
-       (lambda (result))))
-    ;; (let ((default-directory "/ssh:kairos|sudo:root@kairos:/home/eab/") (daemons-systemd-is-user nil)) (daemons))
-    ;; (let ((default-directory "/ssh:kairos:/home/eab/")) (daemons))
+      (interactive)
+      (let ((name (daemons--daemon-at-point)))
+        (async-start
+          `(lambda ()
+            (add-to-list 'load-path "/home/eab/.emacs.d/elpa/daemons-20250514.1107")
+            (require 'daemons)
+            (setq daemons-init-system-submodules '(daemons-systemd))
+            (require 'daemons-systemd)
+            (with-output-to-string
+              (let ((default-directory ,default-directory)
+                    (daemons-systemd-is-user ,daemons-systemd-is-user))
+                  (daemons--run 'restart ,name))))
+          (lambda (result)))))
+    (define-key daemons-mode-map (kbd "R") 'eab/daemons-restart)
+    (defun eab/daemons ()
+      (interactive)
+      (shell-command (concat "scp ~/git/auto/lib.sh " eab/daemons-host ":/tmp/lib.sh"))
+      (let* ((default-directory
+              (concat "/ssh:" eab/daemons-host "|sudo:root@" eab/daemons-host ":/home/eab/")))
+        (progn
+          (setq daemons-systemd-is-user nil)
+          (daemons))))
+    ;; (let* ((eab/daemons-host "chronos") (default-directory (concat "/ssh:" eab/daemons-host "|sudo:root@" eab/daemons-host ":/home/eab/"))) (progn (setq daemons-systemd-is-user nil) (daemons)))
+    ;; (let* ((eab/daemons-host "chronos") (default-directory (concat "/ssh:" eab/daemons-host ":/home/eab/"))) (progn (setq daemons-systemd-is-user 't) (daemons)))
     ))
 
 (defun eab-spacemacs/init-solarized-theme nil)
@@ -548,6 +566,7 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
                                          org-self-insert-command)))
   )
 (defun eab-spacemacs/init-flx-isearch ()
+  ;; TODO поробовать разрешить в agenda?
   (flx-isearch-mode 0)
   (setq isearch-search-fun-function 'isearch-search-fun-default))
 
@@ -599,6 +618,10 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
   ;;    ("-S" "Submodule diff"                 ("-S" "--submodule=diff"))
   ;; (put 'magit-status-mode 'magit-diff-default-arguments
   ;;     '("--submodule=diff"))
+  (defun eab/magit-amend-modified ()
+    (interactive)
+    (magit-stage-modified)
+    (call-interactively 'magit-commit-amend))
   )
 (defun eab-spacemacs/init-git-commit nil)
 (defun eab-spacemacs/init-forge nil
@@ -864,11 +887,6 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
 (defun eab-spacemacs/init-help+ nil)
 (defun eab-spacemacs/init-help-mode+ nil)
 (defun eab-spacemacs/init-fuzzy nil)
-(defun eab-spacemacs/init-bookmark+ nil
-  (require 'bookmark+)
-  (eab/bind-path bmkp-last-as-first-bookmark-file)
-  (eab/bind-path bookmark-default-file)
-  )
 (defun eab-spacemacs/init-buffer-move nil
   (require 'buffer-move)
   )
@@ -1229,6 +1247,11 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
 (defun eab-spacemacs/init-ido nil
   (use-package eab-ido
     :after (flx-ido projectile))
+  )
+(defun eab-spacemacs/init-bookmark nil
+  (require 'bookmark)
+  (use-package eab-bookmark
+    :after (eab-minimal eab-workgroups2))
   )
 
 (defun eab-spacemacs/init-eab-ace-jump-mode ()

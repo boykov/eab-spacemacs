@@ -55,7 +55,17 @@
         (org-edit-src-exit))
     (if (eab/org-at-paragraph-item-p)
         (execute-kbd-macro 'org-align-list-item)
-      (ergoemacs-compact-uncompact-block))))
+      (ergoemacs-compact-uncompact-block)))
+  (if (and (eq major-mode 'org-mode)
+           (string= (org-get-heading) "yegge: vibe coding"))
+      (progn
+        (move-end-of-line nil)
+        (call-interactively 'eab/fix-pasted-text)))
+    (if (and (eq major-mode 'org-mode)
+           (not (string= (org-get-heading) "yegge: vibe coding")))
+      (progn
+        (move-end-of-line nil)
+        (call-interactively 'eab/fix-pasted-text-common))))
 
 ;; TODO сделать backup перед обнулением eab/free-map
 ;; (define-key git-commit-mode-map (kbd "M-n") 'git-commit-next-message)

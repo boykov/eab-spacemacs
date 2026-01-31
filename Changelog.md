@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.4.14
+
+Improve `org-capture-templates`, use `eab-org-protocol-capture` for (here).
+Improve `eab/jump-current-time`, don't use `eab/org-parse-current-time`.
+Init `eab/org-in-block-p`.
+Init `eab/replace-newline-by-space`.
+Improve `eab/wg-update-workgroup` and `eab/wg-create-workgroup-xxx`.
+Add `eab/daemons`, improve `eab/daemons-restart`.
+Use `cache_cmd` in `daemons-systemd--cmd`.
+Add `eab/bookmark-jump`, `eab/bookmark-set`.
+Use `bookmark.el` only, don't use `bookmark+.el`.
+Add `eab/magit-amend-modified`.
+
+## 0.4.13.1
+
+HIDE unused functionality.
+
 ## 0.4.13
 
 Deadline org-deadline-warning-days.

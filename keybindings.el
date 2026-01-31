@@ -233,6 +233,7 @@
  "c"          'eab/switch-or-clone-indirect-buffer
  "f"          'eab/magit-status
  "C-f"        'eab/magit-status
+ "C-j"        'eab/magit-amend-modified
  "s"          'sort-lines
  "u"          'untabify
  "C-w"        'whitespace-mode
@@ -430,7 +431,9 @@
  "D"            'toggle-window-dedicated
  "<tab>"        (ilam (progn (show-all) (run-hook-with-args 'org-cycle-hook 'all)))
  "z"            'org-archive-set-tag
- "b"            'bookmark-set
+ "b"            'eab/bookmark-set
+ "B"            'eab/bookmark-delete
+ "C-b"          'eab/bookmark-jump
  "n SPC"        'dash-to-space3
  "nf"           'eab/pm-write-last-kbd-macro
  "nd"           'delete-end-clock
@@ -510,8 +513,10 @@
  "8"    `(,(ilam (eepitch-ansi-term "8")) :which-key " ")
  "9"    `(,(ilam (eepitch-ansi-term "9")) :which-key " ")
  "c"    'eab/switch-compile
+ "d c"  `(,(ilam (setq eab/daemons-host "chronos") (call-interactively 'eab/daemons)) :which-key "(c)hronos")
+ "d k"  `(,(ilam (setq eab/daemons-host "kairos") (call-interactively 'eab/daemons))  :which-key "(k)airos")
+ "d y"  `(,(ilam (setq eab/daemons-host "cyclos") (call-interactively 'eab/daemons))  :which-key "c(y)clos")
  "x"    (ilam
-         (desktop-save (eab/desktop-dir))
          (eab/sh-over-bash eab/emacs-service-command "" 't))
  "X"    (ilam
          (desktop-save (eab/desktop-dir))
@@ -577,10 +582,9 @@
  "k"            'wg-kill-workgroup ;; +
  "c"            `(,(ilam (eab/wg-kill-tmp) (wg-clone-workgroup (wg-current-workgroup) ":tmp:")) :which-key " ") ;; +
  "SPC"          'eab/wg-revert-and-update
- ;;  "s"        'bmkp-cycle ;; TODO сделать обертку, выбирающую navlist в соответствии с группой
- ;;  "t"        `(,(ilam (bmkp-choose-navlist-of-type "any")) :which-key " ")
  ;; DONE по имени буфера: нарушение SPOT!
  "M-h"          'eab/helm-org-agenda-files-headings
+ "C-h"          'eab/helm-org-agenda-files-headings
  "h"            `(,(ilam (eab/org-ql-switch 'eab/org-ql-H-query)) :which-key " ")
  "H"            `(,(ilam (eab/org-ql-search 'eab/org-ql-H-query)) :which-key " ")
  "t"            `(,(ilam (eab/org-ql-switch 'eab/org-ql-T-query)) :which-key " ")
@@ -817,30 +821,6 @@
    "M-k"        'ac-next
    "M-i"        'ac-previous))
 
-(eab/add-hook bookmark-bmenu-mode-hook eab/bookmark-bmenu-mode-hook
-  (general-define-key
-   :keymaps 'bookmark-bmenu-mode-map
-   "M-s"        'nil
-   "M-l"        'nil
-   "M-m"        'nil
-   "M-a"        'nil
-   "M-d"        'nil
-   "M-u"        'nil
-   "M-I"        'nil
-   "C-d"        'nil
-   "C-o"        'nil
-   "M-~"        'nil
-   "M-a"        'nil
-   "M-c"        'nil
-   "M-L"        'nil
-   "M-m"        'nil
-   "M-o"        'nil
-   "M-q"        'nil
-   "M-r"        'nil
-   "M-t"        'nil
-   "SPC"        'bmkp-describe-bookmark
-   "M-X"        'nil))
-
 (eab/add-hook moccur-mode eab/moccur-hook
   (general-define-key
    :keymaps 'moccur-mode-map
@@ -890,6 +870,10 @@
    "M-g"                'org-kill-line
    "M-v"                'org-yank
    "M-RET"              (ilam (org-insert-heading nil))
+   "C-M-n"              'org-backward-element
+   "C-M-m"              'org-forward-element
+   "M-n"                'sp-backward-sexp
+   "M-m"                'sp-forward-sexp
    "M-N"                'org-backward-sentence
    "M-M"                'org-forward-sentence
    "M-U"                'eab/org-backward-paragraph
@@ -1389,10 +1373,12 @@
      "П"        (ilam (eab/or-self-insert 'google) (eab/or-self-insert 'mc/keyboard-quit))
      "l"        (ilam (eab/or-self-insert 'eab/replace-selection))
      "д"        (ilam (eab/or-self-insert 'eab/replace-selection))
+     "R"        (ilam (eab/or-self-insert 'eab/replace-newline-by-space))
+     "К"        (ilam (eab/or-self-insert 'eab/replace-newline-by-space))
      "e"        'mc/edit-lines
      "у"        'mc/edit-lines
      "x"        (ilam (eab/or-self-insert 'kill-rectangle))
-     "ч"        (ilam (eab/or-self-insert 'kill-rectangle)) ;; TODO возможные проблемы с раскладками
+     "ч"        (ilam (eab/or-self-insert 'kill-rectangle))
      "A"        (ilam
                  (eab/or-self-insert-body
                   (save-restriction

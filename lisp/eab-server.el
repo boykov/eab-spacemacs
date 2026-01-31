@@ -86,7 +86,7 @@
   (interactive)
   (org-publish-remove-all-timestamps)
   (async-start
-   (lambda ()
+   `(lambda ()
      (require 'server)
      (let ((server-use-tcp ,server-C-use-tcp))
        (server-eval-at ,(eab/target-C)

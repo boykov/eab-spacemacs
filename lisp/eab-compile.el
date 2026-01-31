@@ -122,7 +122,7 @@
   (if (not eab/gr-ready?)
       (progn
         (save-window-excursion (eab/gr-status))
-        (sleep 3)))
+        (sleep-for 3)))
   (eab/async-update-gr :recompile 't :notify 't))
 
 (setq eab/gotify-ready? nil)

@@ -17,12 +17,15 @@
 
 ;; edit timer-idle-list
 (when (eab/ondaemon (eab/server-P))
-  (run-with-idle-timer 15 't (lambda () (interactive) (save-some-buffers 't))))
+  (run-with-idle-timer
+   15 't (lambda () (interactive) (save-some-buffers 't))))
 
 (when (eab/ondaemon (eab/server-P))
-  (run-with-idle-timer 5 't (lambda () (interactive) (eab/update-query-on-idle 'eab/org-ql-H-query))))
+  (run-with-idle-timer
+   5 't (lambda () (interactive) (eab/update-query-on-idle 'eab/org-ql-H-query))))
 
 (when (eab/onhost "chronos-emacs")
-  (run-with-idle-timer 100 't (lambda () (interactive) (eab/update-gr-status-on-idle))))
+  (run-with-idle-timer
+   100 't (lambda () (interactive) (eab/update-gr-status-on-idle))))
 
 (provide 'eab-appt)

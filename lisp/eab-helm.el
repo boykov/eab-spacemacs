@@ -66,16 +66,17 @@
   "Return Helm source named NAME that searches BUFFERS-FILES with `helm-org-ql'."
   ;; Expansion of `helm-build-sync-source' macro.
   (helm-make-source name 'helm-source-sync
-    :candidates (lambda ()
-                  (let* ((query (if (equal helm-pattern "") nil `(regexp ,helm-pattern)))
-                         (window-width (window-width (helm-window))))
-                    (when query
-                      (with-current-buffer (helm-buffer-get)
-                        (setq helm-org-ql-buffers-files buffers-files))
-                      (ignore-errors
-                        ;; Ignore errors that might be caused by partially typed queries.
-                        (org-ql-select buffers-files query
-                          :action `(helm-org-ql--heading ,window-width))))))
+    :candidates
+    (lambda ()
+      (let* ((query (if (equal helm-pattern "") nil `(regexp ,helm-pattern)))
+             (window-width (window-width (helm-window))))
+        (when query
+          (with-current-buffer (helm-buffer-get)
+            (setq helm-org-ql-buffers-files buffers-files))
+          (ignore-errors
+            ;; Ignore errors that might be caused by partially typed queries.
+            (org-ql-select buffers-files query
+              :action `(helm-org-ql--heading ,window-width))))))
     :match #'identity
     :fuzzy-match nil
     :multimatch nil
@@ -115,6 +116,9 @@
 (defun h-candidate-transformer (candidates)
   (sort candidates (eab/cmp-helm-property)))
 
+(defun h-pattern-transformer (pattern)
+  (mapconcat #'(lambda (c) (eab/or-char (char-to-string c))) pattern ""))
+
 (defun eab/helm-org-build-sources (filenames &optional parents force-refresh)
   (helm-build-sync-source (format "Org headings (%s)" "eab/clocktable-scope")
     :candidates (helm-dynamic-completion
@@ -128,6 +132,7 @@
                  nil helm-org-completion-styles)
     ;; :match-dynamic t
     :candidate-transformer #'h-candidate-transformer
+    :pattern-transformer #'h-pattern-transformer
     :action 'helm-org-headings-actions
     :help-message 'helm-org-headings-help-message
     :keymap helm-org-headings-map
@@ -148,16 +153,18 @@ WINDOW-WIDTH should be the width of the Helm window."
   (let* ((prefix (concat (buffer-name) ":"))
          (width (- window-width (length prefix)))
          (heading (org-get-heading)))
-    (propertize (concat heading)
-                'sort-he (org-element-property :HE_SORT (org-element-context))
-                'sort-deadline (let ((a40 (org-element-property :deadline (org-element-context))))
-                                 (if (not a40)
-                                     org-deadline-warning-days
-                                   (org-time-stamp-to-now (org-timestamp-format a40 "%Y-%m-%d"))))
-                'sort-todo (org-element-property :TODO (org-element-context))
-                'helm-realvalue (point-marker)
-                'sort-priority (org-element-property :priority (org-element-context))
-                )))
+    (propertize
+     (concat heading)
+     'sort-he (org-element-property :HE_SORT (org-element-context))
+     'sort-deadline
+     (let ((a40 (org-element-property :deadline (org-element-context))))
+       (if (not a40)
+           org-deadline-warning-days
+         (org-time-stamp-to-now (org-timestamp-format a40 "%Y-%m-%d"))))
+     'sort-todo (org-element-property :TODO (org-element-context))
+     'helm-realvalue (point-marker)
+     'sort-priority (org-element-property :priority (org-element-context))
+     )))
 
 ;; (get-text-property 0 'sort-he (propertize "str" 'sort-he "test" 'sort-p "test"))
 ;; (get-text-property 0 'sort-priority (car (org-ql-select eab/clocktable-scope '(not (tags "nohelm")) :action `(eab/helm-org-ql--heading9 100))))

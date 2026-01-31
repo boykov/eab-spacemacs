@@ -1,8 +1,5 @@
 (require 'org-agenda)
 
-(defun eab/replace-in-string (what with in)
-  (replace-regexp-in-string (regexp-quote what) with in nil 'literal))
-
 (setq eab/org-ql-T-query
       '(and
         (or
@@ -18,7 +15,10 @@
          (not (or
                (heading "1/1")
                (heading "2/2")
-               (heading "3/3"))))))
+               (heading "3/3")
+               (heading "4/4")
+               (heading "5/5")
+               )))))
 
 (setq eab/org-ql-H-query
       '(or

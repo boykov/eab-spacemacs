@@ -108,4 +108,79 @@
           (projectile-cached-buffer-file-name nil))
      ,@body))
 
+(defun eab/fix-pasted-text ()
+  (interactive)
+  (let ((p (point)))
+    (save-restriction
+      (save-excursion
+        (apply fill-forward-paragraph-function (list -1))
+        (narrow-to-region (point) p)
+        (let ((inhibit-message t)
+              (message-log-max nil))
+          (save-excursion (replace-string "" "ft"))
+          (save-excursion (replace-string "" "Th"))
+          (save-excursion (replace-string "" "Th"))
+          (save-excursion (replace-regexp " ve\\b" " five"))
+          (mapcar (lambda (x)
+                    (save-excursion
+                      (let ((s2 (replace-regexp-in-string "fl" "" x)))
+                        (replace-regexp (concat "\\b" s2 "\\b")
+                                        x))))
+                  '("confl︎ict"
+                    "confl︎icts"
+                    "workflow"
+                    "workflows"
+                    "flag"
+                    "flags"
+                    "flow"
+                    "flows"
+                    "floor"
+                    "floors"
+                    "flaw"
+                    "flaws"
+                    ))
+          (mapcar (lambda (x)
+                    (save-excursion
+                      (let ((s2 (replace-regexp-in-string "fi" "" x)))
+                        (replace-regexp (concat "\\b" s2 "\\b")
+                                        x))))
+                  '("verifier"
+                    "verifiers"
+                    "define"
+                    "defines"
+                    "benefit"
+                    "benefits"
+                    "fix"
+                    "fixes"
+                    "file"
+                    "files"
+                    "first"
+                    "finally"
+                    "filing"
+                    "final"
+                    "fine"
+                    "findings"
+                    "finishes"
+                    "finished"
+                    ))
+          (save-excursion (replace-string "-  " "- "))
+          (save-excursion (replace-string "—" " --- ")))
+        )))
+  (recenter nil t))
+
+(defun eab/fix-pasted-text-common ()
+  (interactive)
+  (let ((p (point)))
+    (save-restriction
+      (save-excursion
+        (apply fill-forward-paragraph-function (list -1))
+        (narrow-to-region (point) p)
+        (let ((inhibit-message t)
+              (message-log-max nil))
+          (save-excursion (replace-regexp "‐[[:blank:]\n]*" ""))
+          (save-excursion (replace-string "-  " "- "))
+          (save-excursion (replace-string "—" " --- ")))
+        )))
+  (recenter nil t))
+
 (provide 'eab-workflow)

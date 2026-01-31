@@ -112,12 +112,12 @@
        (wg-workgroup-get-saved-wconfig "dflt")
        workgroup)))
 
-(defun eab/wg-update-workgroup (wg-config)
+(defun eab/wg-update-workgroup (wg-config-name &optional wg-config)
   "Save wg-config for current workgroup"
   (interactive)
   (let* ((workgroup (wg-current-workgroup))
-         (name wg-config)
-         (wconfig (wg-current-wconfig)))
+         (name wg-config-name)
+         (wconfig (if wg-config wg-config (wg-current-wconfig))))
     (setf (wg-wconfig-name wconfig) name)
     (wg-workgroup-save-wconfig wconfig workgroup)
     (wg-fontified-message
@@ -215,7 +215,9 @@
 
 (defun eab/wg-create-workgroup-xxx ()
   (interactive)
-  (wg-create-workgroup (eab/wg-new-default-workgroup-name (eab/wg-current-workgroup))))
+  (let ((wg-config (wg-workgroup-get-saved-wconfig "dflt")))
+    (wg-create-workgroup (eab/wg-new-default-workgroup-name (eab/wg-current-workgroup)))
+    (eab/wg-update-workgroup "dflt" wg-config)))
 
 (defun eab/wg-new-default-workgroup-name (name)
   "Return a new, unique, default workgroup name."

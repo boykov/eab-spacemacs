@@ -150,9 +150,24 @@
 (setq
  org-capture-templates
  `(
-   ("t" "Todo" entry (file ,(concat org-directory "archive/refile.org")) "* TODO %?\n  %u\n  %a\n  %i")
-   ("n" "note" entry (file ,(concat org-directory "archive/refile.org")) "* %?              :NOTE:\n  %u\n  %a\n  %i")
-   ("w" "org-protocol" entry (file ,(concat org-directory "archive/refile.org")) "* Review %c  :NOTE:\n  %U\n  %i" :immediate-finish 1)))
+   ("t" "Todo" entry
+    (file ,(concat org-directory "archive/refile.org"))
+    "* TODO %?\n  %u\n  %a\n  %i")
+   ("n" "note" entry
+    (file ,(concat org-directory "archive/refile.org"))
+    "* %?              :NOTE:\n  %u\n  %a\n  %i")
+   ("w" "org-protocol" plain
+    (here)
+    "  - %t\n    - %L\n      - %i" :immediate-finish 1)))
+
+;; Fix (current-buffer) *server*
+(defadvice org-protocol-capture (before eab-org-protocol-capture activate)
+  (switch-to-buffer (window-buffer (selected-window))))
+
+;; (here) -> (function eab/org-capture-w)
+(defun eab/org-capture-w ()
+  (switch-to-buffer "w2c-improve-developing-prog.org")
+  (point))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -264,6 +279,7 @@
   (let ((page-delimiter "⚓︎"))
     (forward-page)
     (while (or (org-in-src-block-p 't)
+               (eab/org-in-block-p '("dynamic"))
                (org-in-block-p '("quote")))
       (forward-page))))
 
@@ -272,6 +288,7 @@
   (let ((page-delimiter "⚓︎"))
     (backward-page)
     (while (or (org-in-src-block-p 't)
+               (eab/org-in-block-p '("dynamic"))
                (org-in-block-p '("quote")))
       (backward-page))))
 
@@ -279,6 +296,7 @@
   (interactive)
   (forward-page)
   (while (or (org-in-src-block-p 't)
+             (eab/org-in-block-p '("dynamic"))
              (org-in-block-p '("quote")))
     (forward-page)))
 
@@ -286,7 +304,30 @@
   (interactive)
   (backward-page)
   (while (or (org-in-src-block-p 't)
-              (org-in-block-p '("quote")))
+             (eab/org-in-block-p '("dynamic"))
+             (org-in-block-p '("quote")))
     (backward-page)))
+
+(defun eab/org-in-block-p (names)
+  "Non-nil when point belongs to a block whose name belongs to NAMES.
+
+NAMES is a list of strings containing names of blocks.
+
+Return first block name matched, or nil.  Beware that in case of
+nested blocks, the returned name may not belong to the closest
+block from point."
+  (save-match-data
+    (catch 'exit
+      (let ((case-fold-search t)
+	    (lim-up (save-excursion (outline-previous-heading)))
+	    (lim-down (save-excursion (outline-next-heading))))
+	(dolist (name names)
+	  (let ((n (regexp-quote name)))
+	    (when (org-between-regexps-p
+		   (concat "^[ \t]*#\\+begin: " n)
+		   (concat "^[ \t]*#\\+end:")
+		   lim-up lim-down)
+	      (throw 'exit n)))))
+      nil)))
 
 (provide 'eab-org)

@@ -46,4 +46,10 @@
     (delete-region (region-beginning) (region-end))
     (insert link)))
 
+(defun eab/replace-newline-by-space ()
+  (interactive)
+  (let ((query-replace-defaults
+         (append '(("\n" . " ")) query-replace-defaults)))
+    (call-interactively 'replace-regexp)))
+
 (provide 'eab-words)

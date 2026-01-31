@@ -384,14 +384,14 @@
         (setq eab/note-todo-from-agenda 't)
         (org-agenda-switch-to))
     (setq eab/note-todo-from-agenda nil))
-  (org-set-property "NOTE" note)
+  (org-set-property "TODO" note)
   (if eab/note-todo-from-agenda
       (switch-to-buffer eab/agendah-buffer)))
 
 (defun eab/note-todo-setup ()
   (interactive)
   (let* ((prompt "Enter")
-         (value (org-entry-get nil "NOTE"))
+         (value (org-entry-get nil "TODO"))
          (note (read-from-minibuffer
                 (concat prompt " note ") value nil nil
                 'eab/note-todo-history)))
@@ -440,7 +440,8 @@
                   (message "Empty CLOCK entry!")
                   (sleep-for 0.5)))))
       (save-some-buffers 't))
-    (eab/helm-org-agenda-files-headings)))
+    (if (not (eab/onhost "cyclos-emacs"))
+        (eab/helm-org-agenda-files-headings))))
 
 (defun eab/rifle-hron-todo (candidate)
   (-let (((buffer . pos) candidate))
@@ -557,7 +558,10 @@
 ;; See `eab/clocktable-scope' in eab-path-org.el
 
 (defun eab/total-minutes ()
-  (* (- (org-time-stamp-to-now "<2007-01-01 Пн. 00:00>")) 1.1236 24 60))
+  (* (- (org-time-stamp-to-now "<2007-01-01 Пн. 00:00>")) 1.1423 24 60))
+
+;; (let ((m (/ (- (org-time-stamp-to-now "<2007-01-01 Пн. 00:00>" 't)) 60)))
+;;   (/ (+ m (* 2 714935)) (float m)))
 
 (defun csum-percent ()
   (format "%0.2f" (* (/ (org-clock-sum-current-item)
@@ -646,19 +650,28 @@
 
 (defun eab/jump-current-time ()
   (interactive)
-  (org-occur-in-agenda-files (format-time-string
-                              "%Y-%m-%d %a %H:%M"
-                              (eab/org-parse-current-time)))
-  (call-interactively 'other-window)
-  (end-of-buffer)
-  (backward-char)
-  (occur-mode-goto-occurrence)
-  (backward-char)
-  (sp-forward-sexp)
-  (backward-char)
-  (backward-char)
-  (switch-to-buffer "*Occur*")
-  (kill-buffer-and-window))
+  (let* ((current-time (eab/hron-current-time-stamp))
+         (macro-string
+          (replace-regexp-in-string
+           "  " " SPC"
+           (replace-regexp-in-string
+            "" " "
+            current-time))))
+    (execute-kbd-macro
+     (read-kbd-macro
+      (concat "C-a a C-a r C-x g \"" macro-string " \" RET")))
+    (sleep-for 0.1)
+    (execute-kbd-macro
+     (read-kbd-macro
+      "M-s TAB RET"))
+    (sleep-for 0.1)
+    (execute-kbd-macro
+     (read-kbd-macro
+      "M-1"))
+    (sleep-for 0.1)
+    (execute-kbd-macro
+     (read-kbd-macro
+      "C-e G"))))
 
 (defun csum-file ()
   (org-clock-sum)
