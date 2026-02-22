@@ -167,7 +167,6 @@
  "M-8"  'ergoemacs-extend-selection)
 
 (general-define-key
- "<f9>"         'eab/ansible-copy
  "<f10>"        'eab/flyspell-buffer
  "<f12>"        'eab/make-list-paths
  "<f6>"         'eab/revert-buffer

@@ -7,21 +7,6 @@
 ;; Requirements: 
 ;; Status: not intended to be distributed yet
 
-(defun th-evince-sync (file linecol &rest ignored)
-  (let* ((file-name (file-name-nondirectory file))
-         (buf (get-buffer file-name))
-         (line (car linecol))
-         (col (cadr linecol)))
-    (message "th-evince-sync: file-name = %s    file = %s" file-name (substring file 7))
-    (when (null buf)
-      ;; (message "Sorry, %s is not opened..." file-name)
-      (find-file (substring file 7))
-      (setq buf (get-buffer file-name)))
-    (switch-to-buffer buf)
-    (goto-line (car linecol))
-    (unless (= col -1)
-      (move-to-column col))))
-
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 (setq TeX-PDF-mode t)
