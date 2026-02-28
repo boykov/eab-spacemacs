@@ -59,6 +59,12 @@
 (defun eab/replace-in-string (what with in)
   (replace-regexp-in-string (regexp-quote what) with in nil 'literal))
 
+(defun eab/print-0 (body)
+  "Insert value of body in current-buffer."
+  (let ((print-length nil)
+        (eval-expression-print-length nil))
+    (prin1 `,body (current-buffer))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (provide 'eab-minimal)

@@ -62,13 +62,7 @@
 (require 'ps-print)
 (require 'ps-mule)
 
-(setq ispell-dictionary "english")
-(setq ispell-local-dictionary "english")
-(setq flyspell-default-dictionary "english")
-(defun eab/flyspell-buffer (arg)
-  (interactive "P")
-  (let ((ispell-local-dictionary (if arg "en" "ru")))
-    (flyspell-buffer)))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;               __  __           _           
@@ -126,9 +120,6 @@
 (autoload 'cmaple "maplev" "Start maple process" t)
 (autoload 'ebib "ebib" "Ebib, a BibTeX database manager." t)
 (autoload 'emaxima-mode "emaxima" "EMaxima mode" t)
-(autoload 'flyspell-auto-correct-previous-word "flyspell" "Auto correct the first mispelled" t)
-(autoload 'flyspell-delay-command "flyspell" "Delay on command." t)
-(autoload 'flyspell-mode "flyspell" "On-the-fly spelling checker." t)
 (autoload 'maplev-mode "maplev" "Maple editing mode" t)
 (autoload 'maxima "maxima" "Running Maxima interactively" t)
 (autoload 'maxima-mode "maxima" "Maxima editing mode" t)

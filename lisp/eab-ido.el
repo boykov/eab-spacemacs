@@ -120,17 +120,37 @@
             ;;    (switch-to-buffer bufsw))))
             (switch-to-buffer (ido-name (car ido-matches)))))))))
 
+(defun eab/ido-pattern-transformer (pattern)
+  (mapconcat #'(lambda (c)
+                 (let ((cs (char-to-string c)))
+                   (if (string= cs " ") cs
+                     (gethash cs eab/char-en-ru)))) pattern ""))
+
+(defvar eab/bookmark-ido nil "")
 (defun ido-set-matches ()
   "Set `ido-matches' to the list of items matching prompt"
   (when ido-rescan
-    (setq ido-matches
-          (ido-set-matches-1
-           (reverse
-            ;; (if (eq ido-cur-item 'buffer)
-            ;;     (append ido-cur-list (eab/wg-names))
-            ;;   ido-cur-list)
-            ido-cur-list)
-           (not ido-rotate)) ido-rotate nil)))
+    (if (not eab/bookmark-ido)
+        (setq ido-matches
+              (ido-set-matches-1
+               (reverse
+                ;; (if (eq ido-cur-item 'buffer)
+                ;;     (append ido-cur-list (eab/wg-names))
+                ;;   ido-cur-list)
+                ido-cur-list)
+               (not ido-rotate)) ido-rotate nil)
+      (setq ido-matches
+            (cl-remove-duplicates
+             (append
+              (ido-set-matches-1
+               (reverse
+                ido-cur-list)
+               (not ido-rotate))
+              (let ((ido-text (eab/ido-pattern-transformer ido-text)))
+                (ido-set-matches-1
+                 (reverse
+                  ido-cur-list)
+                 (not ido-rotate)))) :test #'string=) ido-rotate nil))))
 
 (defun eab/ido-main ()
   "Select the buffer or file named by the prompt.

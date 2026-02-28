@@ -87,6 +87,7 @@
     (switch-to-buffer buf nil 't))
   (grep-a-lot-set-current-buffer))
 
+;; TODO из 2 в 1, из 3 во 2, обратный ход
 (defun eab/switch-or-clone-indirect-buffer ()
   (interactive)
   (let* ((basename (buffer-name))

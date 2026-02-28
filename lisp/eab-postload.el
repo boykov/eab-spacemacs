@@ -58,12 +58,29 @@
   (require 'org-depend)
   (require 'org-sql)
   (require 'eab-helm)
+  (eab/loaded-ok (concat (daemonp) " dotemacs"))
+  )
+
+;; TODO move to eab-minimal?
+(defun eab/load-gui ()
+  (interactive)
+  (when eab/first-emacsclient
+    (iconify-frame)
+    (disable-theme 'solarized-light)
+    (eab/load-personal)
+    ;; (eab/load-desktop)
+    (eab/create-workgroups)
+    (eab/wg-switch-to-workgroup ":clock:")
+    ;; (toggle-frame-maximized)
+    (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
+    (iconify-frame)
+    (execute-kbd-macro (read-kbd-macro "C-a H"))
+    (setq eab/first-emacsclient nil))
   (set-face-attribute 'default nil
                       :family "Source Code Pro"
                       :height (if (eq (display-pixel-width) 1680) 130 150)
                       :weight 'normal
-                      :width 'normal)
-  )
+                      :width 'normal))
 
 (setq default-input-method "russian-computer")
 
@@ -72,18 +89,5 @@
 ;; (general-define-key
 ;;  :prefix "C-e"
 ;;  "d" docker-command-map)
-(defvar eab/dired-map (make-sparse-keymap)
-  "keymap for fast dired")
-(global-set-key (kbd "C-x d") nil)
-(eab/bind-path eab/downloads-path)
-(general-define-key
- :prefix "C-x d"
- "d" '(ido-dired :which-key "ido-dired")
- "o" `(,(ilam (dired eab/org-publish-directory)) :which-key ,eab/org-publish-directory)
- "h" `(,(ilam (dired "~/desktop")) :which-key "~/desktop")
- "s" `(,(ilam (dired "~/share")) :which-key "~/share")
- "p" `(,(ilam (dired eab/downloads-path)) :which-key ,eab/downloads-path)
- "t" `(,(ilam (dired "~/tmp")) :which-key "~/tmp"))
-(setq eab/dired-map (lookup-key global-map (kbd "C-x d")))
 
 (provide 'eab-postload)

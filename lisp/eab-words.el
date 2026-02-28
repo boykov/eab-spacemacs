@@ -7,8 +7,6 @@
 ;; Requirements: edit-list abbrev dictionary
 ;; Status: ready
 
-(require 'abbrev)
-
 (defmacro eab/search-word (funcname name function &optional funargs)
   "Wrapper for search word interface."
   `(defun ,funcname (&optional arg)

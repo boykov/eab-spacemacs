@@ -117,7 +117,10 @@
   (sort candidates (eab/cmp-helm-property)))
 
 (defun h-pattern-transformer (pattern)
-  (mapconcat #'(lambda (c) (eab/or-char (char-to-string c))) pattern ""))
+  (mapconcat #'(lambda (c)
+                 (let ((cs (char-to-string c)))
+                   (if (string= cs " ") cs
+                     (eab/or-char cs)))) pattern ""))
 
 (defun eab/helm-org-build-sources (filenames &optional parents force-refresh)
   (helm-build-sync-source (format "Org headings (%s)" "eab/clocktable-scope")
@@ -169,5 +172,13 @@ WINDOW-WIDTH should be the width of the Helm window."
 ;; (get-text-property 0 'sort-he (propertize "str" 'sort-he "test" 'sort-p "test"))
 ;; (get-text-property 0 'sort-priority (car (org-ql-select eab/clocktable-scope '(not (tags "nohelm")) :action `(eab/helm-org-ql--heading9 100))))
 ;; (get-text-property 0 'sort-he (car (org-ql-select eab/clocktable-scope '(not (tags "nohelm")) :action `(eab/helm-org-ql--heading9 100))))
+
+(defun eab/helm-toggle-visible-mark ()
+  (interactive)
+  (call-interactively 'helm-toggle-visible-mark)
+  (call-interactively 'helm-delete-minibuffer-contents)
+  (if (eq (length (helm-marked-candidates :all-sources 't)) 2)
+      (with-helm-alive-p
+        (helm-exit-and-execute-action 'eab/helm-hron-todo))))
 
 (provide 'eab-helm)

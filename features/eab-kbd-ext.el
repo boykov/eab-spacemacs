@@ -7,65 +7,20 @@
 ;; Requirements:
 ;; Status: not intended to be distributed yet
 
-(defun eab/wrap-tab ()
-  (interactive)
-  (term-char-mode)
-  (execute-kbd-macro (kbd "<tab>"))
-  (term-line-mode))
+;; DONE это ведь то же самое, что просто вызов (eab/free-map git-commit-mode-map)
+(eab/add-hook git-commit-mode-hook eab/git-commit-hook
+  (eab/free-map git-commit-mode-map))
 
-(defun eab/org-at-paragraph-item-p ()
-  (if (eq major-mode 'org-mode)
-      (save-excursion
-        (org-backward-paragraph)
-        (if (org-at-item-p)
-            nil
-          (progn
-            (if (eq (string-match-p "\\`\\s-*$" (thing-at-point 'line)) 0)
-                nil
-              (progn
-                (backward-char)
-                (org-at-item-p))))))))
+;; TODO плохая зависимость от eab/free-map, которая может еще не
+;; существовать на момент вызова (log-edit-mode) в ergoemacs-mode
+;; это даже при запуске (el-get 'sync eab/el-get-sources)
+;; (eab/add-hook log-edit-mode-hook eab/log-edit-hook
+;;   (eab/free-map log-edit-mode-map))
 
-(defun eab/org-in-src-block-p ()
-  (if (eq major-mode 'org-mode)
-      (org-in-src-block-p)))
+;; (general-define-key
+;;  :keymaps 'popup-isearch-keymap
+;;  "C-k"       (ilam (insert "л")))
 
-(defun eab/ergoemacs-new-empty-buffer (&optional arg)
-  (interactive "p")
-  (ergoemacs-new-empty-buffer)
-  (let ((new-buffer (buffer-name (current-buffer))))
-    (if (not (eq arg 4))
-        (progn
-          (write-file (concat
-                       (eab/history-dir)
-                       "/backup/"
-                       new-buffer
-                       (substring
-                        (replace-regexp-in-string
-                         ":" "" (shell-command-to-string "date +%F_%T"))
-                        0 -1)))
-          (rename-buffer new-buffer)))))
-
-(defun eab/ergoemacs-compact-uncompact-block ()
-  (interactive)
-  (if (eab/org-in-src-block-p)
-      (progn
-        (org-edit-special)
-        (ergoemacs-compact-uncompact-block)
-        (org-edit-src-exit))
-    (if (eab/org-at-paragraph-item-p)
-        (execute-kbd-macro 'org-align-list-item)
-      (ergoemacs-compact-uncompact-block)))
-  (if (and (eq major-mode 'org-mode)
-           (string= (org-get-heading) "yegge: vibe coding"))
-      (progn
-        (move-end-of-line nil)
-        (call-interactively 'eab/fix-pasted-text)))
-    (if (and (eq major-mode 'org-mode)
-           (not (string= (org-get-heading) "yegge: vibe coding")))
-      (progn
-        (move-end-of-line nil)
-        (call-interactively 'eab/fix-pasted-text-common))))
 
 ;; TODO сделать backup перед обнулением eab/free-map
 ;; (define-key git-commit-mode-map (kbd "M-n") 'git-commit-next-message)

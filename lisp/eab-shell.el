@@ -4,27 +4,25 @@
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 
-;; Requirements: async abbrev
+;; Requirements: abbrev
 ;; Status: ready
 
 (defvar eab/translate-path nil)
 
 (defun eab/over-bash (comhead comstr)
   "Run comhead with comstr over bash -i -c."
-  (concat "bash -i -c \"" comhead " \\\"" (expand-file-name comstr) "\\\"'&\""))
+  (concat "bash -i -c \"" comhead " \\\"" (expand-file-name comstr) "\\\"'\""))
 
 (defun eab/sh-over-bash (com fname &optional async)
   "Run com with fname over bash -i -c."
   (let ((default-directory "~/"))
     (save-window-excursion
       (let ((comstr (eab/over-bash com fname)))
-        (shell-command (if async
-                           (concat comstr "&")
-                         comstr))
-        (sleep-for 1)
-        (when async
-          (switch-to-buffer "*Async Shell Command*")
-          (kill-buffer))))))
+        (if async
+            (async-start
+             `(lambda ()
+                (shell-command ,comstr)))
+          (shell-command comstr))))))
 
 (defun eab/shell-command (command &optional output-buffer error-buffer)
   "Run command by `call-process-shell-command' in separate
@@ -60,7 +58,8 @@ process: e.g. nautilus or gnome-terminals"
 
 (defun eab/gconf-set-keyboard-rate ()
   (interactive)
-  (shell-command "gconftool-2 --type int --set /desktop/gnome/peripherals/keyboard/rate 120"))
+  (shell-command
+   "gconftool-2 --type int --set /desktop/gnome/peripherals/keyboard/rate 120"))
 
 (defun eab/gr-tag-default-directory ()
   (interactive)
@@ -70,17 +69,20 @@ process: e.g. nautilus or gnome-terminals"
 (defun eab/dired-see-file ()
   "See file by external application with dired."
   (interactive)
-  (eab/sh-over-bash eab/xdg-open
-                    (replace-regexp-in-string "`" "\\\\`" (dired-get-filename)) 't))
+  (eab/sh-over-bash
+   eab/xdg-open
+   (replace-regexp-in-string "`" "\\\\`" (dired-get-filename)) 't))
 
 (defun eab/ido-see-file ()
   "See file by external application with ido."
   (interactive)
   (progn
-    (eab/sh-over-bash eab/xdg-open (concat ido-current-directory
-                                         (if ido-matches
-                                             (ido-name (car ido-matches))
-                                           ido-text)) 't)
+    (eab/sh-over-bash
+     eab/xdg-open
+     (concat ido-current-directory
+             (if ido-matches
+                 (ido-name (car ido-matches))
+               ido-text)) 't)
     (abort-recursive-edit)))
 
 (defun eab/see-file ()
@@ -119,7 +121,9 @@ process: e.g. nautilus or gnome-terminals"
   (message "%s" (car eab/tmp-str)))
 
 (defun eab/latinize (str)
-  (substring (shell-command-to-string (concat "python " eab/trans-path " \"" str "\"")) 0 -1))
+  (substring
+   (shell-command-to-string
+    (concat "python " eab/trans-path " \"" str "\"")) 0 -1))
 
 (defun eab/latinize-region (start end)
   (interactive "r")

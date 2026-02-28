@@ -10,7 +10,10 @@
 ;; require grep-a-lot
 
 (setq wgrep-enable-key "r")
-(setq wgrep-default-line-header-regexp "^\\(.*?[^/\n]\\)\\([:-][ \t]*\\)\\([1-9][0-9]*\\)[ \t]*[-]:")
+(setq wgrep-default-line-header-regexp
+      (concat "^\\(.*?[^/\n]\\)"
+              "\\([:-][ \t]*\\)"
+              "\\([1-9][0-9]*\\)[ \t]*[-]:"))
 
 (setq grep-use-null-device nil)
 
@@ -26,14 +29,27 @@
 ;; grep-command isn't parsed correctly
 ;; (setq grep-history '("grep -i -nH -e test  `git ls-files \\`git rev-parse --show-toplevel\\``"))
 
-(setq eab/grep-command-args " --max-depth 0 --color never --no-heading --pcre2 -M 1000 -U -i -nH -e ")
+(setq eab/grep-command-args (concat " --max-depth 0 --color never --no-heading "
+                                    "--pcre2 -M 1000 -U -i -nH -e "))
 (defun eab/grep-command () (concat "rg" eab/grep-command-args))
 (setq eab/grep-ls "git ls-files `git rev-parse --show-toplevel`")
-(setq eab/grep-ls-recurse "git ls-files --recurse-submodules `git rev-parse --show-toplevel`")
-(setq eab/grep-clock-left "\"(^- |- <20|- \\[X|- \\[ |^\\*\\*\\*\\*\\*\\* )(?:(?!(^- |- <20|- \\[X|- \\[ |^\\*+ ))(.|\\n))*?")
-(setq eab/grep-clock-right "(\\n|.)*?((?= *- \\[X)|(?= *- \\[ )|(?= *- <)|(?=^- )|(?=\\n\\*+ )|(?=\\Z))\"")
-(setq eab/grep-clock-left-0 "\"(^ *- |- \\[ |^\\*\\*\\*\\*\\*\\* )(?:(?!(^ *- |^\\*+ ))(.|\\n))*?")
-(setq eab/grep-clock-right-0 "(\\n|.)*?((?=^ *- )|(?= *- <)|(?=\\n\\*+ )|(?=\\Z))\"")
+(setq eab/grep-ls-recurse (concat "git ls-files --recurse-submodules "
+                                  "`git rev-parse --show-toplevel`"))
+(setq eab/grep-clock-left-synopsys "")
+(defun eab/grep-clock-left ()
+    (concat "\"(^- |- <20|- \\[X|- \\[ |^\\*\\*\\*\\*\\*\\* )"
+            "(?:(?!(^- |- <20|- \\[X|- \\[ |^\\*+ "
+            eab/grep-clock-left-synopsys
+            "))(.|\\n))*?"))
+(defun eab/grep-clock-right ()
+  (concat
+   "(\\n|.)*?"
+   "((?= *- \\[X)|(?= *- \\[ )|(?= *- <)|(?=^- )|(?=\\n\\*+ )|(?=\\Z))\""))
+(setq eab/grep-clock-left-0 (concat "\"(^ *- |- \\[ |^\\*\\*\\*\\*\\*\\* )"
+                                    "(?:(?!(^ *- |^\\*+ ))(.|\\n))*?"))
+(setq eab/grep-clock-right-0
+      (concat "(\\n|.)*?"
+              "((?=^ *- )|(?= *- <)|(?=\\n\\*+ )|(?=\\Z))\""))
 (setq eab/grep-sort " | LC_ALL=C sort -t ':' -k1,1 -k2n")
 (setq eab/grep-xargs " | xargs -d '\\n' ")
 (defun eab/grep-ls-gitmode? ()
@@ -64,24 +80,11 @@
   (let* ((ss (split-string (car compilation-arguments) "LANG=C "))
          (compilation-arguments
           (append
-           (if (> (length ss) 1) (list (cadr ss)) (list (car compilation-arguments)))
+           (if (> (length ss) 1)
+               (list (cadr ss))
+             (list (car compilation-arguments)))
            (cdr compilation-arguments))))
     (eab/recompile)))
-
-(defun eab/grep-switch-3 ()
-  (interactive)
-  (if (not (boundp 'eab/grep-switch-cycle))
-      (setq-local eab/grep-switch-cycle 'init))
-  (if (eq eab/grep-switch-cycle 'full)
-      (eab/recompile))
-  (if (eq eab/grep-switch-cycle '0)
-      (progn
-        (eab/grep-switch-0 eab/grep-clock-left eab/grep-clock-right)
-        (setq-local eab/grep-switch-cycle 'full)))
-  (if (eq eab/grep-switch-cycle 'init)
-      (progn
-        (eab/grep-switch-0 eab/grep-clock-left-0 eab/grep-clock-right-0)
-        (setq-local eab/grep-switch-cycle '0))))
 
 (defun eab/grep-switch ()
   (interactive)
@@ -89,9 +92,29 @@
       (setq-local eab/grep-switch-cycle 'init))
   (if (eq eab/grep-switch-cycle 'full)
       (eab/recompile))
+  (if (eq eab/grep-switch-cycle '0)
+      (progn
+        (eab/grep-switch-0
+         (eab/grep-clock-left)
+         (eab/grep-clock-right))
+        (setq-local eab/grep-switch-cycle 'full)))
   (if (eq eab/grep-switch-cycle 'init)
       (progn
-        (eab/grep-switch-0 eab/grep-clock-left eab/grep-clock-right)
+        (eab/grep-switch-0
+         (let ((eab/grep-clock-left-synopsys "|synopsis"))
+           (eab/grep-clock-left))
+         (eab/grep-clock-right))
+        (setq-local eab/grep-switch-cycle '0))))
+
+(defun eab/grep-switchq-2 ()
+  (interactive)
+  (if (not (boundp 'eab/grep-switch-cycle))
+      (setq-local eab/grep-switch-cycle 'init))
+  (if (eq eab/grep-switch-cycle 'full)
+      (eab/recompile))
+  (if (eq eab/grep-switch-cycle 'init)
+      (progn
+        (eab/grep-switch-0 (eab/grep-clock-left) (eab/grep-clock-right))
         (setq-local eab/grep-switch-cycle 'full))))
 
 (defun eab/grep-switch-0 (left right)
@@ -170,7 +193,10 @@
 (defun eab/find-grep ()
   (interactive)
   (let* ((grep-host-defaults-alist nil)
-        (command (concat "find . -iname '**' -type f -print0 | xargs -0 -e " (eab/grep-command) "\"\""))
+        (command (concat
+                  "find . -iname '**' -type f -print0 | xargs -0 -e "
+                  (eab/grep-command)
+                  "\"\""))
         (grep-find-command
          `(, (concat command eab/grep-sort) . ,(length command))))
     (call-interactively 'find-grep)))
@@ -179,9 +205,14 @@
 (defun eab/clock-grep ()
   (interactive)
   (let* ((grep-host-defaults-alist nil)
-         (command (concat eab/grep-ls eab/grep-xargs (concat "rg" eab/grep-command-args) eab/grep-clock-left-0))
+         (command (concat
+           eab/grep-ls
+           eab/grep-xargs
+           (concat "rg" eab/grep-command-args)
+           eab/grep-clock-left-0))
          (grep-command
-          `(, (concat command eab/grep-clock-right-0 eab/grep-sort) . ,(1+ (length command)))))
+          `(, (concat command eab/grep-clock-right-0 eab/grep-sort)
+              . ,(1+ (length command)))))
     (call-interactively 'grep)))
 
 (grep-a-lot-advise eab/grep)

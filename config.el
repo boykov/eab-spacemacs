@@ -31,6 +31,14 @@
 END
 " )) 0 -1)))
   eab/ycai-token-cache)
+(defvar eab/orai-token-cache "" "")
+(defun eab/orai-token ()
+  (if (not (equal (length eab/orai-token-cache) 73))
+      (setq eab/orai-token-cache (substring (shell-command-to-string (concat eab/ssh-host " bash <<'END'
+~/git/auto/keepass.sh \"openrouter\" -a or-ai-api-key
+END
+" )) 0 -1)))
+  eab/orai-token-cache)
 (defvar eab/yc-id-cache "" "")
 (defun eab/yc-id ()
   (if (not (equal (length eab/yc-id-cache) 20))
@@ -78,21 +86,19 @@ END
 (setq eab/unlock-chronos-command
       (concat "ssh chronos" " \"sudo loginctl unlock-sessions && sleep 1 && ydotool mousemove --delay 500 0 0\""))
 
-(defun eab/loaded-ok ()
-  (if configuration-layer-error-count
-      (shell-command "echo > $HOME/dotemacs.error"))
-  (kill-emacs))
-
 (defun eab/update-site ()
   (shell-command
    (concat "ssh chronos" " <<'END'
 sudo docker exec eab-node bash -c \"cd ~/pub/eab-kb/js && node update-client.js\"
 END")))
 
-(defun eab/test-dotemacs ()
+(defun eab/loaded-ok (instance)
   (if configuration-layer-error-count
-      (eab/gotify "test-dotemacs" "bad" 5)
-    (eab/gotify "test-dotemacs" "OK" 0))
+      (eab/gotify instance "bad" 5)
+    (eab/gotify instance "OK" 0)))
+
+(defun eab/test-dotemacs ()
+  (eab/loaded-ok "test-dotemacs")
   (sleep-for 0.5)
   (kill-emacs))
 

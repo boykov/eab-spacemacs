@@ -35,23 +35,36 @@
 (defun eab/open-heading-browser ()
   (interactive)
   (let* ((prop (org-entry-properties))
-         (path (if prop (cl-find-if (lambda (x) (if (string= "FILE" (car x)) 't nil)) prop)
+         (path (if prop
+                   (cl-find-if
+                    (lambda (x) (if (string= "FILE" (car x)) 't nil)) prop)
                  (cons 'bogus (buffer-file-name))))
-         (id (cl-find-if (lambda (x) (if (string= "ID" (car x)) 't nil)) (org-entry-properties)))
-         (prefix (replace-regexp-in-string "eab\/git\/org" "eab/pub/org" (cdr path))))
+         (id (cl-find-if
+              (lambda (x)
+                (if (string= "ID" (car x)) 't nil)) (org-entry-properties)))
+         (prefix (replace-regexp-in-string
+                  "eab\/git\/org" "eab/pub/org" (cdr path))))
     (browse-url
-     (concat "file://" (replace-regexp-in-string "\.org$" ".html" prefix) "#ID-" (cdr id)))))
+     (concat "file://" (replace-regexp-in-string
+                        "\.org$" ".html" prefix) "#ID-" (cdr id)))))
 
 (defun eab/open-heading-browser ()
   (interactive)
   (let* ((fname (file-name-nondirectory (buffer-file-name)))
-         (id (cl-find-if (lambda (x) (if (string= "ID" (car x)) 't nil)) (org-entry-properties nil 'standard))))
+         (id (cl-find-if (lambda (x)
+                           (if (string= "ID" (car x))
+                               't nil))
+                         (org-entry-properties nil 'standard))))
     (browse-url
-     (concat "https://my.eab.su/org/clock/" (replace-regexp-in-string "\.org$" ".html" fname) "#ID-" (cdr id)))))
+     (concat "https://my.eab.su/org/clock/"
+             (replace-regexp-in-string "\.org$" ".html" fname) "#ID-" (cdr id)))))
 
 (defun eab/open-corresponding-html ()
   (interactive)
-  (let ((path (replace-regexp-in-string (file-truename org-directory) eab/org-publish-directory (buffer-file-name))))
+  (let ((path (replace-regexp-in-string
+               (file-truename org-directory)
+               eab/org-publish-directory
+               (buffer-file-name))))
     (find-file (replace-regexp-in-string "\.org$" ".html" path))))
 
 (defun eab/browse-paper ()

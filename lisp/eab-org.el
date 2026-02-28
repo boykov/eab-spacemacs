@@ -158,7 +158,10 @@
     "* %?              :NOTE:\n  %u\n  %a\n  %i")
    ("w" "org-protocol" plain
     (here)
-    "  - %t\n    - %L\n      - %i" :immediate-finish 1)))
+    "  - %t synopsis\n    - %L\n      - %:description" :immediate-finish 1)
+   ("s" "org-protocol" plain
+    (here)
+    "  - %t synopsis\n    - %L\n      - %:description\n      - %i" :immediate-finish 1)))
 
 ;; Fix (current-buffer) *server*
 (defadvice org-protocol-capture (before eab-org-protocol-capture activate)
@@ -226,6 +229,8 @@
 
 (setq org-log-done (quote time))
 (setq org-log-into-drawer t)
+
+(setq org-blank-before-new-entry '((heading . auto) (plain-list-item . nil)))
 
 (defsubst org-set-local (var value)
   "Make VAR local in current buffer and set it to VALUE."

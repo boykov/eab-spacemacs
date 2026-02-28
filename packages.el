@@ -40,7 +40,6 @@
     org-transclusion
     ox-pandoc
 
-    git-commit
     git-timemachine
     git-wip-timemachine
     libgit
@@ -58,8 +57,6 @@
     goto-chg
     redo+
     auto-complete
-    ac-dabbrev
-    ;; auto-complete-emacs-lisp ;; no melpa depend auto-complete
     idle-highlight-mode ;; + no melpa
     highlight ;; dired+
     string-edit-at-point
@@ -166,6 +163,8 @@
     llm
     ellama
     elisa
+    gptel
+    gptel-agent
 
     ;; built-in
     (compat :location built-in)
@@ -175,11 +174,22 @@
     (compile :location built-in)
     (window :location built-in)
     (desktop :location built-in)
+    (appt :location built-in)
     (server :location built-in)
     (grep :location built-in)
     (dired :location built-in)
     (ido :location built-in)
     (bookmark :location built-in)
+    (abbrev :location built-in)
+    (autorevert :location built-in)
+    (ansi-color :location built-in)
+    (recentf :location built-in)
+    (flyspell :location built-in)
+    (ispell :location built-in)
+    (ediff :location built-in)
+    (ediff-wind :location built-in)
+    (ediff-diff :location built-in)
+    (browse-url :location built-in)
     )
   "List of all packages to install and/or initialize. Built-in packages
 which require an initialization must be listed explicitly in the list.")
@@ -188,6 +198,26 @@ which require an initialization must be listed explicitly in the list.")
   "List of packages to exclude.")
 
 (defun eab-spacemacs/init-ox-pandoc nil)
+(defun eab-spacemacs/init-gptel nil
+  ;; (setq gptel-log-level 'debug)
+  (setq gptel-expert-commands 't)
+  (setq gptel-api-key (eab/orai-token))
+  (setq gptel-model   'openai/gpt-oss-120b
+        gptel-backend
+        (gptel-make-openai "OpenRouter" ;Any name you want
+          :host "openrouter.ai"
+          :curl-args '("-xsocks5://192.168.2.19:9050")
+          :endpoint "/api/v1/chat/completions"
+          :stream t
+          :key 'gptel-api-key
+          :models '(openai/gpt-3.5-turbo
+                    openai/gpt-oss-120b
+                    mistralai/mixtral-8x7b-instruct
+                    meta-llama/codellama-34b-instruct
+                    codellama/codellama-70b-instruct
+                    google/palm-2-codechat-bison-32k
+                    google/gemini-pro))))
+(defun eab-spacemacs/init-gptel-agent nil)
 (defun eab-spacemacs/init-elisa nil)
 (defun eab-spacemacs/init-llm ()
   (use-package llm)
@@ -388,7 +418,44 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
   ;; (key-chord-mode 1) ; DONE заедает, если не в конце dotemacs, не включается по-умолчанию (или выключается из-за чего-то)
   (add-hook 'term-mode-hook (lambda () (setq input-method-function 'key-chord-input-method)))
   )
+(defun eab-spacemacs/init-browse-url ()
+  (setq browse-url-browser-function (quote browse-url-firefox))
+  (setq browse-url-firefox-program "/usr/local/bin/browser-remote")
+  (defun google ()
+    "Google the selected region if any, display a query prompt otherwise."
+    (interactive)
+    (browse-url
+     (concat
+      "https://www.google.com/search?q="
+      (url-hexify-string (if mark-active
+                             (buffer-substring (region-beginning) (region-end))
+                           (read-string "Google: "))))))
+  )
 
+(defun eab-spacemacs/init-ediff ())
+(defun eab-spacemacs/init-ediff-wind ()
+  (require 'ediff-wind)
+  (setq ediff-window-setup-function 'ediff-setup-windows-plain)
+  (setq ediff-split-window-function 'split-window-horizontally)
+  )
+(defun eab-spacemacs/init-ediff-diff ()
+  (require 'ediff-diff)
+  (setq ediff-diff-options "-w")
+  )
+
+(defun eab-spacemacs/init-ispell ()
+  (setq ispell-dictionary "english")
+  )
+(defun eab-spacemacs/init-flyspell ()
+  (setq flyspell-default-dictionary "english")
+  (defun eab/flyspell-buffer (arg)
+    (interactive "P")
+    (let ((ispell-local-dictionary (if arg "en" "ru")))
+      (flyspell-buffer)))
+  (autoload 'flyspell-auto-correct-previous-word "flyspell" "Auto correct the first mispelled" t)
+  (autoload 'flyspell-delay-command "flyspell" "Delay on command." t)
+  (autoload 'flyspell-mode "flyspell" "On-the-fly spelling checker." t)
+  )
 (defun eab-spacemacs/init-auto-dictionary ()
   (use-package auto-dictionary
     :config
@@ -430,9 +497,68 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
     (interactive)
     (call-interactively 'howdoi-query-line-at-point-replace-by-code-snippet))  
   )
-(defun eab-spacemacs/init-ac-dabbrev nil
-  (use-package ac-dabbrev
-    :after (auto-complete)))
+(defun eab-spacemacs/init-recentf nil
+  (eab/bind-path recentf-save-file)
+  (setq recentf-max-saved-items 200)
+  (defun eab/recentf-eabpool ()
+    (mapcar
+     (lambda (x)
+       (replace-regexp-in-string
+        (concat "^" (regexp-quote "~/")) ""
+        (replace-regexp-in-string
+         (concat "^" (regexp-quote "~/pnt/lion/")) "" x)))
+     (seq-filter
+      (lambda (x)
+        (file-exists-p x))
+      (seq-filter
+       (lambda (x)
+         (or
+          (let ((s "~/git/"))
+            (and (length> x (length s)) (string= (substring x 0 (length s)) s)))
+          (let ((s "~/pnt/lion/data/"))
+            (and (length> x (length s)) (string= (substring x 0 (length s)) s)))))
+       (seq-filter
+        (lambda (x)
+          (let ((s "~/git/org"))
+            (and
+             (length> x (length s))
+             (not (string= (substring x 0 (length s)) s)))))
+        recentf-list)))))
+  (add-hook 'after-save-hook
+            (lambda ()
+              (f-write-text
+               (string-join
+                (eab/recentf-eabpool) "\n")
+               'utf-8
+               (concat recentf-save-file "-eabpool"))))
+  )
+(defun eab-spacemacs/init-ansi-color nil
+  (require 'ansi-color)
+  ;; see eab-compile.el
+  (defun colorize-compilation-buffer ()
+    (read-only-mode 'toggle)
+    (ansi-color-apply-on-region (point-min) (point-max))
+    (read-only-mode 'toggle))
+
+  ;; TODO why concrete buffer-name only?
+  (defadvice display-message-or-buffer (before ansi-color activate)
+    "Process ANSI color codes in shell output."
+    (let ((buf (ad-get-arg 0)))
+      (and (bufferp buf)
+           (string= (buffer-name buf) "*Shell Command Output*")
+           (with-current-buffer buf
+             (ansi-color-apply-on-region (point-min) (point-max))))))
+  )
+(defun eab-spacemacs/init-autorevert nil
+  (require 'autorevert)
+  (global-auto-revert-mode)
+  ;; TODO with notify my workflow breaks
+  ;; not all org buffers auto reverts, i.e. a bug?
+  ;; (setq auto-revert-use-notify 't)
+  ;; (setq auto-revert-avoid-polling 't)
+  (setq auto-revert-use-notify nil)
+  ;; (setq auto-revert-remote-files 't) it breaks magit-status buffer
+  )
 (defun eab-spacemacs/init-etags-table nil
   (require 'etags-table)
   (setq etags-table-alist 'nil) ;; попробуем использовать search up depth
@@ -475,10 +601,22 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
   )
 (defun eab-spacemacs/init-helm-org-rifle nil
   (use-package helm-org-rifle
-    :after (eab-helm eab-org)
+    :after (ergoemacs-mode eab-helm eab-org)
     :config
     (general-define-key
      :keymaps 'helm-org-rifle-map
+     "<C-return>" (ilam
+                   (with-helm-alive-p
+                     (helm-exit-and-execute-action 'eab/rifle-note-todo)))
+     "RET"        (ilam
+                   (with-helm-alive-p
+                     (helm-exit-and-execute-action 'eab/rifle-hron-todo)))
+     "M-RET"      (ilam
+                   (with-helm-alive-p
+                     (helm-exit-and-execute-action
+                      'helm-org-rifle-show-entry-in-real-buffer)))
+     "M-n"        'helm-next-source
+     "M-p"        'helm-previous-source
      "C-k"        'toggle-input-method
      "M-k"        'helm-next-line
      "C-n"        'next-history-element
@@ -487,10 +625,12 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
      "C-p"        'previous-history-element
      "M-i"        'helm-previous-line
      )
+    (ergoemacs-fix-arrow-keys helm-org-rifle-map)
     (setq helm-org-rifle-ellipsis-string "\n")
     (setq helm-org-rifle-context-characters 200)
     (setq helm-org-rifle-input-idle-delay 0.5)
     (add-to-list 'helm-org-rifle-actions '("eab/hron-todo" . eab/rifle-hron-todo))
+    (add-to-list 'helm-org-rifle-actions '("eab/note-todo" . eab/rifle-note-todo))
     )
   )
 (defun eab-spacemacs/init-smart-compile nil
@@ -606,7 +746,9 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
     :after (libgit)
     :init
     (require 'magit-status)
-    (add-to-list 'magit-status-sections-hook 'magit-insert-modules 't))
+    (add-to-list 'magit-status-sections-hook 'magit-insert-modules 't)
+    (transient-append-suffix 'magit-diff "-A"
+      '("-a" "Treat all files as text." "--text")))
   ;; (use-package magit-wip)
   (defadvice vc-annotate (before eab-vc-annotate activate)
     (vc-refresh-state))
@@ -623,7 +765,6 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
     (magit-stage-modified)
     (call-interactively 'magit-commit-amend))
   )
-(defun eab-spacemacs/init-git-commit nil)
 (defun eab-spacemacs/init-forge nil
   ;; (require 'forge)
   ;; (setq forge-post-mode-hook '(visual-line-mode))
@@ -1213,9 +1354,13 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
 (defun eab-spacemacs/init-window nil
   (use-package eab-window)
   )
-
+(defun eab-spacemacs/init-appt nil
+  (setq appt-message-warning-time 12)
+  (setq appt-display-interval 12)
+  )
 (defun eab-spacemacs/init-desktop nil
-  (use-package eab-desktop)
+  (use-package eab-desktop
+    :after (appt))
   )
 
 (defun eab-spacemacs/init-server nil
@@ -1241,13 +1386,38 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
   (use-package dired-async)
   (use-package dired-x)
   (use-package eab-dired
-    :after (eab-tramp))
+    :after (dired eab-minimal eab-tramp eab-org)
+    :init
+    (defvar eab/dired-map (make-sparse-keymap)
+      "keymap for fast dired")
+    (global-set-key (kbd "C-x d") nil)
+    (eab/bind-path eab/downloads-path)
+    (general-define-key
+     :prefix "C-x d"
+     "d" '(ido-dired :which-key "ido-dired")
+     "o" `(,(ilam (dired eab/org-publish-directory)) :which-key ,eab/org-publish-directory)
+     "h" `(,(ilam (dired "~/desktop")) :which-key "~/desktop")
+     "s" `(,(ilam (dired "~/share")) :which-key "~/share")
+     "p" `(,(ilam (dired eab/downloads-path)) :which-key ,eab/downloads-path)
+     "t" `(,(ilam (dired "~/tmp")) :which-key "~/tmp"))
+    (setq eab/dired-map (lookup-key global-map (kbd "C-x d")))
+    )
   )
 
 (defun eab-spacemacs/init-ido nil
   (use-package eab-ido
     :after (flx-ido projectile))
   )
+(defun eab-spacemacs/init-abbrev nil
+  (use-package eab-words
+    :after (abbrev)
+    :init
+    (eab/bind-path abbrev-file-name)
+    (if (file-exists-p abbrev-file-name)
+        (progn
+          (setq save-abbrevs 'silently)
+          (quietly-read-abbrev-file abbrev-file-name)))
+    ))
 (defun eab-spacemacs/init-bookmark nil
   (require 'bookmark)
   (use-package eab-bookmark
@@ -1292,16 +1462,6 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
   (use-package avy))
 
 (defun eab-spacemacs/user-config ()
-  (use-package eab-workflow)
-  (use-package eab-words
-    :init
-    (eab/bind-path abbrev-file-name)
-    (if (file-exists-p abbrev-file-name)
-        (progn
-          (setq save-abbrevs 'silently)
-          (quietly-read-abbrev-file abbrev-file-name)))
-    )
-  (use-package eab-appt)
   (use-package eab-ui)
   (use-package eab-shell
     :init

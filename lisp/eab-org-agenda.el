@@ -1,3 +1,12 @@
+;;; eab-org-agenda.el ---
+
+;; Copyright (C) 2010-2026 Evgeny Boykov
+;;
+;; Author: artscan@list.ru
+;; Keywords:
+;; Requirements: org-agenda
+;; Status: not intended to be distributed yet
+
 (require 'org-agenda)
 
 (setq eab/org-ql-T-query
@@ -130,8 +139,12 @@
            (b3 (org-element-property :TODO b))
            (a40 (org-element-property :deadline a))
            (b40 (org-element-property :deadline b))
-           (a4 (if (not a40) org-deadline-warning-days (org-time-stamp-to-now (org-timestamp-format a40 "%Y-%m-%d"))))
-           (b4 (if (not b40) org-deadline-warning-days (org-time-stamp-to-now (org-timestamp-format b40 "%Y-%m-%d"))))
+           (a4 (if (not a40)
+                   org-deadline-warning-days
+                 (org-time-stamp-to-now (org-timestamp-format a40 "%Y-%m-%d"))))
+           (b4 (if (not b40)
+                   org-deadline-warning-days
+                 (org-time-stamp-to-now (org-timestamp-format b40 "%Y-%m-%d"))))
            )
       (if (or
            (and (< (if (not a1) 2000 (string-to-number a1))
@@ -156,7 +169,8 @@ update search arguments."
   (interactive "P")
   (unless org-ql-view-buffers-files
     (user-error "Not an Org QL View buffer"))
-  (let* ((current-string (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
+  (let* ((current-string (buffer-substring-no-properties
+                          (line-beginning-position) (line-end-position)))
          (old-line (current-line))
          (old-column (current-column))
          (defaults (list org-ql-view-buffers-files
@@ -205,8 +219,10 @@ update search arguments."
           ;; (rename-buffer new-name)
           (setq-local org-agenda-buffer-name old-name)
           ;;  (setq org-agenda-this-buffer-name new-name)
-          (setq-local mode-line-buffer-identification (propertized-buffer-identification new-name))
-          (setq-local default-directory (expand-file-name (file-name-as-directory org-directory)))
+          (setq-local mode-line-buffer-identification
+                      (propertized-buffer-identification new-name))
+          (setq-local default-directory
+                      (expand-file-name (file-name-as-directory org-directory)))
           ))))
 
 (defun eab/fix-agenda-buffer-name ()

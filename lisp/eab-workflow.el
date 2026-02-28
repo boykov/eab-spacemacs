@@ -45,6 +45,68 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defun eab/wrap-tab ()
+  (interactive)
+  (term-char-mode)
+  (execute-kbd-macro (kbd "<tab>"))
+  (term-line-mode))
+
+(defun eab/org-at-paragraph-item-p ()
+  (if (eq major-mode 'org-mode)
+      (save-excursion
+        (org-backward-paragraph)
+        (if (org-at-item-p)
+            nil
+          (progn
+            (if (eq (string-match-p "\\`\\s-*$" (thing-at-point 'line)) 0)
+                nil
+              (progn
+                (backward-char)
+                (org-at-item-p))))))))
+
+(defun eab/org-in-src-block-p ()
+  (if (eq major-mode 'org-mode)
+      (org-in-src-block-p)))
+
+(defun eab/ergoemacs-new-empty-buffer (&optional arg)
+  (interactive "p")
+  (ergoemacs-new-empty-buffer)
+  (let ((new-buffer (buffer-name (current-buffer))))
+    (if (not (eq arg 4))
+        (progn
+          (write-file (concat
+                       (eab/history-dir)
+                       "/backup/"
+                       new-buffer
+                       (substring
+                        (replace-regexp-in-string
+                         ":" "" (shell-command-to-string "date +%F_%T"))
+                        0 -1)))
+          (rename-buffer new-buffer)))))
+
+(defun eab/ergoemacs-compact-uncompact-block ()
+  (interactive)
+  (if (eab/org-in-src-block-p)
+      (progn
+        (org-edit-special)
+        (ergoemacs-compact-uncompact-block)
+        (org-edit-src-exit))
+    (if (eab/org-at-paragraph-item-p)
+        (execute-kbd-macro 'org-align-list-item)
+      (ergoemacs-compact-uncompact-block)))
+  (if (and (eq major-mode 'org-mode)
+           (string= (org-get-heading) "yegge: vibe coding"))
+      (progn
+        (move-end-of-line nil)
+        (call-interactively 'eab/fix-pasted-text)))
+    (if (and (eq major-mode 'org-mode)
+           (not (string= (org-get-heading) "yegge: vibe coding")))
+      (progn
+        (move-end-of-line nil)
+        (call-interactively 'eab/fix-pasted-text-common))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defun eab/revert-buffer ()
   (interactive)
   (unless (buffer-modified-p)
@@ -75,7 +137,11 @@
              ""))
           (check-fatal
            (lambda (s)
-             (if (and (> (length s) 10) (string= (substring s 0 5) "fatal")) 't nil)))
+             (if (and
+                  (> (length s) 10)
+                  (string= (substring s 0 5) "fatal"))
+                 't
+               nil)))
           (try-super
            (shell-command-to-string
             "git rev-parse --show-superproject-working-tree --show-toplevel | head -1"))
@@ -159,6 +225,7 @@
                     "filing"
                     "final"
                     "fine"
+                    "refined"
                     "findings"
                     "finishes"
                     "finished"
@@ -178,7 +245,8 @@
         (let ((inhibit-message t)
               (message-log-max nil))
           (save-excursion (replace-regexp "‐[[:blank:]\n]*" ""))
-          (save-excursion (replace-string "-  " "- "))
+          (save-excursion (replace-regexp "\\([^ -]\\)-[[:blank:]\n]+" "\\1"))
+          (save-excursion (replace-string " -  " " - "))
           (save-excursion (replace-string "—" " --- ")))
         )))
   (recenter nil t))

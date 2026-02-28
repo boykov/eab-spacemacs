@@ -8,7 +8,7 @@
 ;; Status: not intended to be distributed yet
 
 (use-package eab-minimal)
-(use-package eab-kbd-ext)
+(use-package eab-workflow)
 
 (mapc (lambda (x) (add-to-list 'extended-command-history x))
         '(
@@ -49,6 +49,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Global
 
+(global-set-key (kbd "C-v") nil)
 (general-define-key
  "s-o"          'org-open-at-point
  "C-c a"        'org-agenda
@@ -85,7 +86,6 @@
  "C-s-i"        'imenu
  "C-s-k"        (lambda (ch) (interactive "c") (insert ch))
  "C-x C-d"      'dired-jump
- "C-v"          'vc-diff
  "C-x C-e"      'eval-defun
  "C-x C-k k"    'kill-region
  "C-x M-f"      'find-file-at-point
@@ -151,6 +151,16 @@
  "s-m"          'kmacro-keymap
  "<kp-insert>"  'nil
  "s-a"          'append-to-buffer)
+
+(general-define-key
+ "C-v d"        'vc-diff
+ "C-v g"        'gptel-mode
+ "C-v p"        'gptel-system-prompt
+ "C-v m"        'gptel-menu
+ "C-v a"        'gptel-agent
+ "C-v v"        'gptel-mode
+ "C-v t"        'gptel-tools
+ "C-v C-v"      'gptel-mode)
 
 (general-define-key
  "C-n"  'eab/ergoemacs-new-empty-buffer
@@ -314,6 +324,11 @@
  "M-;"          'isearch-backward
  "C-l M-i"      'previous-line
  "C-l M-k"      'next-line
+ "M-RET"        (ilam
+                 (run-with-timer
+                  0.01 nil `(lambda ()
+                              (eab/helm-org-goto-marker ,eab/helm-org-goto-marker)))
+                 (abort-recursive-edit))
  "M-i"          'previous-history-element
  "M-r"          'nil
  "M-p"          'nil
@@ -584,8 +599,8 @@
  "SPC"          'eab/wg-revert-and-update
  ;; DONE по имени буфера: нарушение SPOT!
  "M-h"          'eab/helm-org-agenda-files-headings
- "C-h"          'eab/helm-org-agenda-files-headings
- "h"            `(,(ilam (eab/org-ql-switch 'eab/org-ql-H-query)) :which-key " ")
+ "C-h"          `(,(ilam (eab/org-ql-switch 'eab/org-ql-H-query)) :which-key " ")
+ "h"            'eab/helm-org-agenda-files-headings
  "H"            `(,(ilam (eab/org-ql-search 'eab/org-ql-H-query)) :which-key " ")
  "t"            `(,(ilam (eab/org-ql-switch 'eab/org-ql-T-query)) :which-key " ")
  "T"            `(,(ilam (eab/org-ql-search 'eab/org-ql-T-query)) :which-key " ")
@@ -648,10 +663,6 @@
 
 (eab/add-hook etags-select-mode-hook eab/etags-select-hook
   )
-
-;; DONE это ведь то же самое, что просто вызов (eab/free-map git-commit-mode-map)
-(eab/add-hook git-commit-mode-hook eab/git-commit-hook
-  (eab/free-map git-commit-mode-map))
 
 (eab/add-hook proced-mode-hook eab/proced-hook
   (general-define-key
@@ -780,7 +791,11 @@
    "s-2"        'magit-section-show-level-2-all
    "<backtab>"  'magit-section-show-level-2-all
    "s-3"        'magit-section-show-level-3-all
-   "s-4"        'magit-section-show-level-4-all))
+   "s-4"        'magit-section-show-level-4-all)
+  (general-define-key
+   :keymaps 'git-commit-mode-map
+   "M-n"        'nil
+   "M-p"        'nil))
 
 (eab/add-hook nroff-mode-hook eab/nroff-hook
   (general-define-key
@@ -800,16 +815,6 @@
    :keymaps 'shell-mode-map
    "M-p"        'nil
    "M-n"        'nil))
-
-;; TODO плохая зависимость от eab/free-map, которая может еще не
-;; существовать на момент вызова (log-edit-mode) в ergoemacs-mode
-;; это даже при запуске (el-get 'sync eab/el-get-sources)
-;; (eab/add-hook log-edit-mode-hook eab/log-edit-hook
-;;   (eab/free-map log-edit-mode-map))
-
-;; (general-define-key
-;;  :keymaps 'popup-isearch-keymap
-;;  "C-k"       (ilam (insert "л")))
 
 (eab/add-hook auto-complete-mode-hook eab/ac-complete-mode-hook
   (general-define-key
@@ -1194,15 +1199,21 @@
    "M-g"        'helm-delete-minibuffer-contents
    "s-SPC"      'eab/helm-select-action
    "C-|"        'eab/helm-select-action
+   "<C-return>" (ilam
+                 (with-helm-alive-p
+                   (helm-exit-and-execute-action 'eab/helm-note-todo)))
+   "M-RET"      (ilam
+                 (with-helm-alive-p
+                   (helm-exit-and-execute-action 'eab/helm-org-goto-marker)))
    "M-j"        'nil
    "M-v"        'nil
    "M-l"        'nil
-   "M-m"        'helm-toggle-visible-mark
+   "M-m"        'eab/helm-toggle-visible-mark
    "M-k"        'helm-next-line
    "M-i"        'helm-previous-line
    "C-n"        'next-history-element
    "C-p"        'previous-history-element
-   "C-SPC"      'helm-toggle-visible-mark
+   "C-SPC"      'eab/helm-toggle-visible-mark
    "M-K"        'helm-next-page
    "M-J"        'helm-beginning-of-buffer
    "M-L"        'helm-end-of-buffer

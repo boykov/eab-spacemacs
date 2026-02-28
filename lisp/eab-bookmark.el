@@ -46,10 +46,11 @@
     (let* ((dedup (cl-remove-duplicates
                    (mapcar (lambda (x) (if (stringp x) x (car x)))
                            bookmark-history)
-                    :test #'string=))
+                   :test #'string=))
            (swap (if (> (length dedup) 2)
                      (append (list (cadr dedup)) (list (car dedup)) (cddr dedup))
-                   dedup)) 
+                   dedup))
+           (eab/bookmark-ido 't)
            (bm (ido-completing-read "Ido bookmarks: " swap nil nil nil))
            (wg (bookmark-get-annotation bm)))
       (if wg (wg-switch-to-workgroup wg))

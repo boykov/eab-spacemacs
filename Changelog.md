@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.4.15
+
+Add `eab/or-char` to ido.
+Disable `git-commit`, archive `eab-kbd-ext`.
+Chores.
+Use `async-start` for `eab/sh-over-bash`.
+Improve `eab/rifle-hron-todo`.
+Rm old `ac-dabbrev`.
+Fix `ac-source-abbrev` obarray auto-compete error.
+
 ## 0.4.14
 
 Improve `org-capture-templates`, use `eab-org-protocol-capture` for (here).

@@ -4,7 +4,7 @@
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 
-;; Requirements: auto-complete auto-complete-config ac-dabbrev mode-local
+;; Requirements: auto-complete auto-complete-config mode-local
 ;; Status: not intended to be distributed yet
 
 (global-auto-complete-mode t)
@@ -23,17 +23,14 @@
 (setq ac-candidate-limit 100)
 
 (setq ac-auto-show-menu 0.8)
-(setq-default ac-sources '(ac-source-abbrev ac-source-words-in-buffer))
+;; don't use ac-source-abbrev, fix popup-x-to-string obarray error
+(setq-default ac-sources '(ac-source-words-in-buffer))
 
 (setq ac-modes
       (append ac-modes
               '(org-mode
                 text-mode
                 )))
-
-(setq ac-sources
-      (list ac-source-dabbrev
-            ))
 
 (setq ac-source-american-english
       '((candidates
@@ -57,7 +54,7 @@
 (add-hook 'c++-mode-hook
           (lambda ()
             (setq ac-sources
-                  '(ac-source-abbrev ac-source-symbols ac-source-words-in-same-mode-buffers))))
+                  '(ac-source-symbols ac-source-words-in-same-mode-buffers))))
 ;; see also eval-expression-minibuffer-setup-hook
 (add-hook 'emacs-lisp-mode-hook
           (lambda ()

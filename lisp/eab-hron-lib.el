@@ -282,12 +282,12 @@
    (format-time-string "%Y-%m-%d %a %H:%M"
                        (eab/org-parse-current-time))))
 
-(defun eab/hron-todo-setup ()
+(defun eab/hron-todo-setup (num)
   (interactive)
   (load eab/org-file nil 't)
   (let* ((prompt (eab/hron-current-time-stamp))
          (str (read-from-minibuffer
-                 (concat prompt " [Hh]M ") nil nil nil
+                 (concat (number-to-string num) " " prompt " [Hh]M ") nil nil nil
                  'eab/hron-todo-history))
          (parsed (split-string str "h"))
          (hour (if (> (length parsed) 1)
@@ -300,7 +300,7 @@
         (progn
           (message "Use 0h0 for zero clock")
           (sleep-for 0.4)
-          (eab/hron-todo-setup))
+          (eab/hron-todo-setup num))
       (progn
         (setq eab/hron-todo-bulk-hour hour)
         (setq eab/hron-todo-bulk-minute minute)))))
@@ -349,14 +349,17 @@
    (let ((map (make-sparse-keymap)))
      (define-key map "u" (ilam
                           (eab/hron-update-current-time)
-                          (run-with-timer 0.01 nil `(lambda ()
-                                                      (call-interactively 'eab/hron-todo)))
+                          (run-with-timer
+                           0.01 nil `(lambda ()
+                                       (call-interactively 'eab/hron-todo)))
                           (abort-minibuffers))) map) 't nil)
   (if (eq arg 2)
       (progn
         (setq eab/hron-todo-bulk-hour 0)
         (setq eab/hron-todo-bulk-minute 0))
-    (eab/hron-todo-setup))
+    (eab/hron-todo-setup
+     (if org-agenda-bulk-marked-entries (length org-agenda-bulk-marked-entries)
+       1)))
   (if org-agenda-bulk-marked-entries
       (save-excursion
         (progn
@@ -384,14 +387,14 @@
         (setq eab/note-todo-from-agenda 't)
         (org-agenda-switch-to))
     (setq eab/note-todo-from-agenda nil))
-  (org-set-property "TODO" note)
+  (org-set-property "NOTE_TODO" note)
   (if eab/note-todo-from-agenda
       (switch-to-buffer eab/agendah-buffer)))
 
 (defun eab/note-todo-setup ()
   (interactive)
   (let* ((prompt "Enter")
-         (value (org-entry-get nil "TODO"))
+         (value (org-entry-get nil "NOTE_TODO"))
          (note (read-from-minibuffer
                 (concat prompt " note ") value nil nil
                 'eab/note-todo-history)))
@@ -399,10 +402,11 @@
 
 (defun eab/helm-note-todo (marker)
   (save-window-excursion
-      (helm-org-ql-show-marker marker)
-      (eab/note-todo-1  (eab/note-todo-setup))
-      (save-some-buffers 't))
-    (eab/helm-org-agenda-files-headings))
+    (helm-org-ql-show-marker marker)
+    (eab/note-todo-1  (eab/note-todo-setup))
+    (save-some-buffers 't))
+  (if (not (eab/onhost "cyclos-emacs"))
+      (eab/helm-org-agenda-files-headings)))
 
 (defun eab/helm-org-goto-marker (marker)
   "Go to MARKER in org buffer."
@@ -414,7 +418,9 @@
   (org-show-children))
 
 (defvar eab/helm-org-marker nil)
+(defvar eab/helm-org-goto-marker nil)
 (defun eab/helm-hron-todo (marker)
+  (setq eab/helm-org-goto-marker marker)
   (save-window-excursion
     (let ((markers (helm-marked-candidates :all-sources 't)))
       (if (not eab/helm-org-marker)
@@ -427,7 +433,7 @@
           (progn
             (add-to-list 'markers eab/helm-org-marker)
             ))
-      (eab/hron-todo-setup)
+      (eab/hron-todo-setup (length markers))
       (loop for cand in markers
             do
             (progn
@@ -444,10 +450,18 @@
         (eab/helm-org-agenda-files-headings))))
 
 (defun eab/rifle-hron-todo (candidate)
-  (-let (((buffer . pos) candidate))
-    (switch-to-buffer buffer)
-    (goto-char pos))
-  (point-marker))
+  (save-window-excursion
+    (-let (((buffer . pos) candidate))
+      (switch-to-buffer buffer)
+      (goto-char pos))
+    (call-interactively 'eab/hron-todo)))
+
+(defun eab/rifle-note-todo (candidate)
+  (save-window-excursion
+    (-let (((buffer . pos) candidate))
+      (switch-to-buffer buffer)
+      (goto-char pos))
+    (call-interactively 'eab/note-todo)))
 
 (defun eab/org-clock-parent ()
   (if (string= (org-entry-get nil "HRON") "parent")
