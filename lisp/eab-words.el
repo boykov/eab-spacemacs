@@ -25,6 +25,7 @@
 (eab/search-word eab/add-eab-abbrev "abbrev save" define-abbrev (eab-abbrev-table word word))
 (eab/search-word eab/google-translate "google translate" eab/shell-translate (word))
 (eab/search-word eab/google-translate "google translate" eab/shell-translate-remote (word))
+(eab/search-word eab/google "google" google (word))
 (eab/search-word eab/ido-at-point "Ido at point" eab/ido-at-point-1 (word))
 
 ;; TODO (ffap-guesser) curl --remote-name for sync-redmine link inside json

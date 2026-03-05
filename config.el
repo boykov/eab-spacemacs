@@ -316,7 +316,8 @@ END")))
 
 (setq-put org-link-abbrev-alist
           '(("bib" . "~/git/lit/boykov.bib::%s")
-            ("papers" . "https://share.eab.su/papers/%s.pdf")
+            ;; ("papers" . "https://share.eab.su/papers/%s.pdf")
+            ("papers" . "/home/eab/pnt/data/read/papers/%s.pdf")
             ("google" . "https://www.google.com/search?q=")
             ))
 ;; See also eab-header in ~/texmf/tex/latex/eab-styles/eab-header.sty

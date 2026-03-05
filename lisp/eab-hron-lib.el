@@ -255,11 +255,14 @@
                             hour
                             minute)))))
   (cl-case arg
-    (4 nil)
+    (4 (setq eab/hron-todo-pending 't))
     (2 (eab/hron-update-current-time))
-    (otherwise (eab/hron-change-current
-                hour
-                minute)))
+    (otherwise
+     (progn
+       (setq eab/hron-todo-pending nil)
+       (eab/hron-change-current
+        hour
+        minute))))
   (if eab/hron-todo-from-agenda
       (switch-to-buffer eab/agendah-buffer)))
 
@@ -343,6 +346,7 @@
               (setq eab/org-shift-updating nil))
           (run-with-timer eab/org-shift-timeout nil 'eab/org-shift-update-2)))))
 
+(setq eab/hron-todo-pending nil)
 (defun eab/hron-todo (&optional arg)
   (interactive "p")
   (set-transient-map
@@ -429,7 +433,8 @@
                   (org-cycle '(64))
                   (goto-line 86)
                   (point-marker))))
-      (if (> (length markers) 1)
+      (if (or (> (length markers) 1)
+              (eab/helm-marked=selected? markers))
           (progn
             (add-to-list 'markers eab/helm-org-marker)
             ))
@@ -438,16 +443,38 @@
             do
             (progn
               (message "%s" cand)
-              (helm-org-ql-show-marker cand)
-              (if (org-ql--predicate-clocked)
-                  (eab/hron-todo-1 eab/hron-todo-bulk-hour eab/hron-todo-bulk-minute
-                                   (if (eq cand (car (reverse markers))) 0 4))
-                (progn
-                  (message "Empty CLOCK entry!")
-                  (sleep-for 0.5)))))
+              (switch-to-buffer (marker-buffer cand))
+              (save-excursion
+                (helm-org-ql-show-marker cand)
+                (if (org-ql--predicate-clocked)
+                    (eab/hron-todo-1
+                     eab/hron-todo-bulk-hour
+                     eab/hron-todo-bulk-minute
+                     (if (eq cand (car (reverse markers))) 0 4))
+                  (progn
+                    (message "Empty CLOCK entry!")
+                    (sleep-for 0.5))))))
       (save-some-buffers 't))
     (if (not (eab/onhost "cyclos-emacs"))
         (eab/helm-org-agenda-files-headings))))
+
+(defun eab/helm-marked=selected? (markers)
+  ;; mark-timeline case
+  (and
+   (eq (length markers) 1)
+   (not (eq (helm-get-selection) (car markers)))))
+
+(defun eab/helm-toggle-visible-mark ()
+  (interactive)
+  (call-interactively 'helm-toggle-visible-mark)
+  (call-interactively 'helm-delete-minibuffer-contents)
+  (let ((markers (helm-marked-candidates :all-sources 't)))
+    (if (or (eq (length markers) 2)
+            (and
+             eab/hron-todo-pending
+             (eab/helm-marked=selected? markers)))
+        (with-helm-alive-p
+          (helm-exit-and-execute-action 'eab/helm-hron-todo)))))
 
 (defun eab/rifle-hron-todo (candidate)
   (save-window-excursion

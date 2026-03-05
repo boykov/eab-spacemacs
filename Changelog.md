@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.4.16
+
+Use generated commit message.
+Hide:
+    help+
+    help-mode+
+    pydoc-info
+    howdoi
+    etags
+    eab-tags.
+
 ## 0.4.15
 
 Add `eab/or-char` to ido.

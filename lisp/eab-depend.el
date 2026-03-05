@@ -18,8 +18,6 @@
 
 (setq which-key-idle-delay 2)
 (which-key-mode)
-(require 'diminish)
-(diminish 'which-key-mode "WK")
 
 (setq uniquify-buffer-name-style 'forward)
 

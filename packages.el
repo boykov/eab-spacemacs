@@ -11,12 +11,10 @@
   `(
     solarized-theme
     spacemacs-theme
-    etags-table
-    etags-select
+    diminish
     
     dictionary
     auto-dictionary ;; switcher for flyspell
-    howdoi
 
     (org :location local)
     bibretrieve
@@ -48,8 +46,6 @@
     orgit
     diff-hl
 
-    help+
-    help-mode+
     keyfreq
     achievements
     god-mode
@@ -92,7 +88,6 @@
     textile-mode
     ssh-config-mode
     python-mode
-    pydoc-info
     ansible
     ansible-doc
     ansible-vault
@@ -141,6 +136,8 @@
     flx-isearch
     (workgroups2/src :location local)
     projectile
+    consult
+    (consult-omni :location local)
 
     popwin
     tramp-term
@@ -152,6 +149,7 @@
     esup
     vterm
     (emacs-eat :location local)
+    (eaf :location local)
     emamux
     vagrant
     vagrant-tramp
@@ -165,6 +163,7 @@
     elisa
     gptel
     gptel-agent
+    gptel-magit
 
     ;; built-in
     (compat :location built-in)
@@ -210,14 +209,48 @@ which require an initialization must be listed explicitly in the list.")
           :endpoint "/api/v1/chat/completions"
           :stream t
           :key 'gptel-api-key
-          :models '(openai/gpt-3.5-turbo
-                    openai/gpt-oss-120b
+          :models '(openai/gpt-oss-120b
+                    qwen/qwen-turbo
+                    qwen/qwen3-coder-30b-a3b-instruct
+                    deepseek/deepseek-v3.2
                     mistralai/mixtral-8x7b-instruct
                     meta-llama/codellama-34b-instruct
                     codellama/codellama-70b-instruct
                     google/palm-2-codechat-bison-32k
-                    google/gemini-pro))))
+                    google/gemini-pro)))
+  (defun eab/gptel-rewrite ()
+    "Rewrite the current buffer or region.
+This function sets the gptel model to qwen/qwen3-coder-30b-a3b-instruct and
+calls the gptel-rewrite interactive command."
+    (interactive)
+    (setq gptel-model 'qwen/qwen3-coder-30b-a3b-instruct)
+    (call-interactively 'gptel-rewrite))
+  (defun eab/gptel-mode ()
+    (interactive)
+    (call-interactively 'org-mode)
+    (call-interactively 'gptel-mode))
+  )
 (defun eab-spacemacs/init-gptel-agent nil)
+(defun eab-spacemacs/init-gptel-magit nil
+  (use-package gptel-magit
+    :after (magit gptel)
+    :init
+    (defun gptel-magit--generate (callback)
+      "Generate a commit message for current magit repo.
+Invokes CALLBACK with the generated message when done."
+      (let ((diff (magit-git-output "diff" "--cached" "HEAD^")))
+        (gptel-magit--request diff
+          :system gptel-magit-commit-prompt
+          :context nil
+          :callback `(lambda (response _info)
+                      (let ((msg (gptel-magit--format-commit-message response)))
+                        (funcall ,callback msg))))))
+    (defun eab/gptel-magit-generate-message nil
+      (interactive)
+      (setq gptel-model 'qwen/qwen-turbo)
+      (call-interactively 'gptel-magit-generate-message)
+      )
+    ))
 (defun eab-spacemacs/init-elisa nil)
 (defun eab-spacemacs/init-llm ()
   (use-package llm)
@@ -377,6 +410,15 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
 (defun eab-spacemacs/init-vagrant-tramp nil)
 (defun eab-spacemacs/init-csv-mode nil)
 (defun eab-spacemacs/init-el-patch nil)
+(defun eab-spacemacs/init-consult nil)
+(defun eab-spacemacs/init-consult-omni nil
+  (add-to-list 'load-path "/home/eab/.emacs.d/private/eab-spacemacs/local/consult-omni")
+  (add-to-list 'load-path "/home/eab/.emacs.d/private/eab-spacemacs/local/consult-omni/sources")
+  (use-package consult-omni
+    :after (consult)
+    :init
+    (setq consult-omni-multi-sources '("DuckDuckGo API"))
+    ))
 (defun eab-spacemacs/init-projectile nil
   (require 'projectile)
   (setq projectile-require-project-root t)
@@ -419,17 +461,23 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
   (add-hook 'term-mode-hook (lambda () (setq input-method-function 'key-chord-input-method)))
   )
 (defun eab-spacemacs/init-browse-url ()
-  (setq browse-url-browser-function (quote browse-url-firefox))
+  (setq browse-url-browser-function (quote eab/browse-url))
   (setq browse-url-firefox-program "/usr/local/bin/browser-remote")
-  (defun google ()
-    "Google the selected region if any, display a query prompt otherwise."
+  (defun eab/browse-url (url &optional arg)
     (interactive)
-    (browse-url
+    (if current-prefix-arg (browse-url-firefox url)
+      (eaf-open-browser-other-window url)))
+  (defun google (phrase)
+    "Search Google for a given phrase.
+Prompts the user to enter a search query, defaulting to PHRASE if provided.
+Opens the Google search results page for the entered query in the default web browser."
+    (eab/browse-url
      (concat
       "https://www.google.com/search?q="
-      (url-hexify-string (if mark-active
-                             (buffer-substring (region-beginning) (region-end))
-                           (read-string "Google: "))))))
+      (url-hexify-string
+       (read-string (if phrase
+                        (format "Google (%s): " phrase)
+                      "Google: ") nil nil phrase)))))
   )
 
 (defun eab-spacemacs/init-ediff ())
@@ -491,12 +539,6 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
 
 (defun eab-spacemacs/init-spacemacs-theme ()
     (setq spacemacs-theme-comment-bg nil))
-(defun eab-spacemacs/init-howdoi nil
-  (require 'howdoi)
-  (defun eab/howdoi ()
-    (interactive)
-    (call-interactively 'howdoi-query-line-at-point-replace-by-code-snippet))  
-  )
 (defun eab-spacemacs/init-recentf nil
   (eab/bind-path recentf-save-file)
   (setq recentf-max-saved-items 200)
@@ -558,15 +600,6 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
   ;; (setq auto-revert-avoid-polling 't)
   (setq auto-revert-use-notify nil)
   ;; (setq auto-revert-remote-files 't) it breaks magit-status buffer
-  )
-(defun eab-spacemacs/init-etags-table nil
-  (require 'etags-table)
-  (setq etags-table-alist 'nil) ;; попробуем использовать search up depth
-  (setq etags-table-search-up-depth 10)
-  )
-(defun eab-spacemacs/init-etags-select nil
-  (require 'etags-select)
-  (use-package eab-tags)
   )
 (defun eab-spacemacs/init-helm nil
   (use-package eab-helm
@@ -810,6 +843,69 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
     ))
 (defun eab-spacemacs/init-vterm nil
     (setq vterm-keymap-exceptions '("C-c" "C-x" "C-u" "C-g" "C-h" "C-l" "M-x" "M-o" "C-v" "M-v" "C-y" "M-y" "M-s" "M-a" "M-i" "M-k" "M-j" "M-l" "C-a" "M-c" "M-p")))
+(defun eab-spacemacs/init-eaf nil
+  (if (eab/ondaemon "cyclos")
+      (progn
+        (add-to-list 'load-path "/home/eab/.emacs.d/private/eab-spacemacs/local/eaf/app/browser")
+        (add-to-list 'load-path "/home/eab/.emacs.d/private/eab-spacemacs/local/eaf/app/pdf-viewer")
+        (require 'eaf)
+        (require 'eaf-browser)
+        (require 'eaf-pdf-viewer)
+        (setq eaf-browser-dark-mode nil)
+        (general-define-key
+         :keymaps 'eaf-mode-map*
+         "C-o"   'nil
+         "C-c b" 'nil
+         )
+        (setq eaf-pdf-viewer-keybinding nil)
+        (let ((kb 'eaf-pdf-viewer-keybinding))
+          (eval
+           `(progn
+              (eaf-bind-key close_buffer "q" ,kb)
+              (eaf-bind-key jump_to_page "p" ,kb)
+              (eaf-bind-key eaf-pdf-outline "o" ,kb)
+              (eaf-bind-key scroll_down "M-i" ,kb)
+              (eaf-bind-key scroll_up "M-k" ,kb)
+              (eaf-bind-key scroll_down_page "M-I" ,kb)
+              (eaf-bind-key scroll_up_page "M-K" ,kb)
+              (eaf-bind-key scroll_up_page "<next>" ,kb)
+              (eaf-bind-key scroll_down_page "<prior>" ,kb)
+              (eaf-bind-key copy_select "M-c" ,kb)
+              (eaf-bind-key search_text_forward "M-;" ,kb)
+              (eaf-bind-key search_text_backward "M-:" ,kb)
+              (eaf-bind-key eaf-pdf-extract-page-text "C-w" ,kb)
+              (eaf-bind-key scroll_to_begin "<C-<home>" ,kb)
+              (eaf-bind-key scroll_to_begin "M-J" ,kb)
+              (eaf-bind-key scroll_to_end "<C-<end>" ,kb)
+              (eaf-bind-key scroll_to_end "M-L" ,kb))
+           ))
+        (setq eaf-browser-keybinding nil)
+        (let ((kb 'eaf-browser-keybinding))
+          (eval
+           `(progn
+              (eaf-bind-key scroll_to_begin "<C-<home>>" ,kb)
+              (eaf-bind-key scroll_to_begin "M-J" ,kb)
+              (eaf-bind-key scroll_to_bottom "<C-<end>>" ,kb)
+              (eaf-bind-key scroll_to_bottom "M-L" ,kb)
+              (eaf-bind-key open_link "M-D" ,kb)
+              (eaf-bind-key toggle_dark_mode "D" ,kb)
+              (eaf-bind-key insert_or_history_forward "F" ,kb)
+              (eaf-bind-key insert_or_history_backward "B" ,kb)
+              (eaf-bind-key search_text_forward "M-;" ,kb)
+              (eaf-bind-key search_text_backward "M-:" ,kb)
+              (eaf-bind-key scroll_down "M-i" ,kb)
+              (eaf-bind-key scroll_up "M-k" ,kb)
+              (eaf-bind-key scroll_down_page "M-I" ,kb)
+              (eaf-bind-key scroll_up_page "M-K" ,kb)
+              (eaf-bind-key scroll_up_page "<next>" ,kb)
+              (eaf-bind-key scroll_down_page "<prior>" ,kb)
+              (eaf-bind-key copy_text "M-c" ,kb)
+              (eaf-bind-key insert_or_export_text "n" ,kb)
+              (eaf-bind-key insert_or_export_text "C-w" ,kb)
+              (eaf-bind-key insert_or_close_buffer "q" ,kb)
+              (eaf-bind-key insert_or_edit_url "e" ,kb)
+              )))
+  )))
 (defun eab-spacemacs/init-emacs-eat nil
   (use-package eat
     :after (key-chord eab-minimal)
@@ -975,10 +1071,13 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
 (defun eab-spacemacs/init-undo-tree nil
   (require 'undo-tree)
   (global-undo-tree-mode)
-  (require 'diminish)
-  (diminish 'undo-tree-mode "UT")
   )
-
+(defun eab-spacemacs/init-diminish nil
+  (use-package diminish
+    :init
+    (diminish 'which-key-mode "WK")
+    (diminish 'undo-tree-mode "UT"))
+  )
 (defun eab-spacemacs/init-edit-list ()
   (use-package edit-list
     :config
@@ -1018,15 +1117,10 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
   ;;   (setq py-force-py-shell-name-p 't) ;; DONE error with #!/usr/bin/python
   ;;   (setq ipython-completion-command-string "print(';'.join(get_ipython().Completer.all_completions('%s')))\n"))
   )
-(defun eab-spacemacs/init-pydoc-info nil
-  (require 'pydoc-info)
-  )
 (defun eab-spacemacs/init-popup nil)
 (defun eab-spacemacs/init-idle-highlight-mode nil
   (require 'idle-highlight-mode)
   )
-(defun eab-spacemacs/init-help+ nil)
-(defun eab-spacemacs/init-help-mode+ nil)
 (defun eab-spacemacs/init-fuzzy nil)
 (defun eab-spacemacs/init-buffer-move nil
   (require 'buffer-move)
@@ -1459,7 +1553,9 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
   )
 
 (defun eab-spacemacs/init-eab-avy ()
-  (use-package avy))
+  (use-package avy
+    :init
+    (setq avy-timeout-seconds 0.25)))
 
 (defun eab-spacemacs/user-config ()
   (use-package eab-ui)

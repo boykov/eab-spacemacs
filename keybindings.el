@@ -154,13 +154,13 @@
 
 (general-define-key
  "C-v d"        'vc-diff
- "C-v g"        'gptel-mode
  "C-v p"        'gptel-system-prompt
  "C-v m"        'gptel-menu
  "C-v a"        'gptel-agent
- "C-v v"        'gptel-mode
+ "C-v r"        'eab/gptel-rewrite
+ "C-v v"        'eab/gptel-mode
  "C-v t"        'gptel-tools
- "C-v C-v"      'gptel-mode)
+ "C-v C-v"      'eab/gptel-mode)
 
 (general-define-key
  "C-n"  'eab/ergoemacs-new-empty-buffer
@@ -189,9 +189,10 @@
  "C-j"          'eab/completion-at-point
  "C-c RET"      'org-return
  "C-c c"        'eab/add-eab-abbrev
- "C-c d"        'eab/tracker-search
+ "C-c d"        'nil
  "C-c O"        'eab/open-corresponding-html
- "C-c b"        'eab/open-heading-browser
+ "C-c B"        'eab/open-heading-browser
+ "C-c b"        'browse-url
  "C-c s"        'eab/org-agenda-search
  "C-c u"        'eab/unbound-var
  "C-c U"        'eab/unbound-fun
@@ -206,7 +207,7 @@
  "C-x g"        'eab/grep
  "C-x C-g"      (kbd "C-u C-x g")
  "C-x M-g"      (ilam (eab/grep 2))
- "M-."          'eab/etags-find-or-pop
+ "M-."          'nil
  "M-A"          'eab/call-shell-command
  "s-v"          'eab/org-insert-link-fast
  "s-h"          'eab/hron-todo)
@@ -250,6 +251,7 @@
  "w"          'whitespace-mode)
 
 (general-define-key
+ "C-c g"        'eab/google
  "M-z"          'undo-tree-undo
  "C-b"          'eab/cxb
  "M-a"          'eab/smex-limited-commands
@@ -260,7 +262,6 @@
  "s-k"          (ilam (if (equal current-input-method "TeX") (set-input-method "russian-computer") (set-input-method "TeX")) (setq default-input-method "russian-computer"))
  "C-s"          (ilam (save-some-buffers 't))
  "C-:"          'isearch-moccur
- "C-c g"        'google
  "C-c t"        'dictionary-search
  "C-f"          eab/explore-map
  "C-p"          'er/expand-region
@@ -661,9 +662,6 @@
 (eab/add-hook rec-mode-hook eab/rec-hook
   )
 
-(eab/add-hook etags-select-mode-hook eab/etags-select-hook
-  )
-
 (eab/add-hook proced-mode-hook eab/proced-hook
   (general-define-key
    :keymaps 'proced-mode-map
@@ -794,6 +792,7 @@
    "s-4"        'magit-section-show-level-4-all)
   (general-define-key
    :keymaps 'git-commit-mode-map
+   "C-v c"      'eab/gptel-magit-generate-message
    "M-n"        'nil
    "M-p"        'nil))
 
@@ -1380,8 +1379,8 @@
      ;; "C-g"   (ilam (eab/or-self-insert 'mc/keyboard-quit))
      "g"        (ilam (eab/or-self-insert 'mc/keyboard-quit))
      "п"        (ilam (eab/or-self-insert 'mc/keyboard-quit))
-     "G"        (ilam (eab/or-self-insert 'google) (eab/or-self-insert 'mc/keyboard-quit))
-     "П"        (ilam (eab/or-self-insert 'google) (eab/or-self-insert 'mc/keyboard-quit))
+     "G"        (ilam (eab/or-self-insert 'eab/google) (eab/or-self-insert 'mc/keyboard-quit))
+     "П"        (ilam (eab/or-self-insert 'eab/google) (eab/or-self-insert 'mc/keyboard-quit))
      "l"        (ilam (eab/or-self-insert 'eab/replace-selection))
      "д"        (ilam (eab/or-self-insert 'eab/replace-selection))
      "R"        (ilam (eab/or-self-insert 'eab/replace-newline-by-space))
