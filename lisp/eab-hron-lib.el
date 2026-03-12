@@ -446,7 +446,8 @@
               (switch-to-buffer (marker-buffer cand))
               (save-excursion
                 (helm-org-ql-show-marker cand)
-                (if (org-ql--predicate-clocked)
+                (if (or (org-ql--predicate-clocked)
+                        (eab/org-clock-parent))
                     (eab/hron-todo-1
                      eab/hron-todo-bulk-hour
                      eab/hron-todo-bulk-minute
@@ -457,6 +458,17 @@
       (save-some-buffers 't))
     (if (not (eab/onhost "cyclos-emacs"))
         (eab/helm-org-agenda-files-headings))))
+
+;; TODO bug with window layout
+(defun eab/helm-org-recent-p ()
+  (memq 'eab/helm-org-agenda-files-headings
+        (nthcar 13
+                (cl-remove-duplicates
+                 (mapcar 'cdr
+                         (seq-filter
+                          (lambda (x) (listp x))
+                          (seq-into (recent-keys 'include-cmds) 'list)))
+                 :from-end 't))))
 
 (defun eab/helm-marked=selected? (markers)
   ;; mark-timeline case

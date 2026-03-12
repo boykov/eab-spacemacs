@@ -4,7 +4,7 @@
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 
-;; Requirements: abbrev
+;; Requirements:
 ;; Status: ready
 
 (defvar eab/translate-path nil)
@@ -104,21 +104,6 @@ process: e.g. nautilus or gnome-terminals"
     (abort-recursive-edit)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; TODO баг: зацикливание (много bash процессов) trying with detected language
-;; пример со словом hunchentoot
-;; убить можно pkill -f bash
-(defun eab/shell-translate (phrase &optional not-abbrevp)
-  (interactive)
-  (setq eab/tmp-str
-        (split-string
-         (ansi-color-filter-apply
-          (shell-command-to-string
-           (concat "export TERM=eterm-color && " eab/translate-path " " phrase)))
-         "\n"))
-  (unless not-abbrevp
-    (define-abbrev eab-abbrev-table phrase (car eab/tmp-str)))
-  (message "%s" (car eab/tmp-str)))
 
 (defun eab/latinize (str)
   (substring

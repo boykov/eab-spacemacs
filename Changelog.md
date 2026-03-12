@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.17
+
+Init `eab/switch-viewer`.
+
 ## 0.4.16
 
 Use generated commit message.

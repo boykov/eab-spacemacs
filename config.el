@@ -253,11 +253,12 @@ END")))
 
 (setq-put eab/emacs-service-alist
           `(
-            ("serverP"       . "docker-compose-emacs")
-            ("chronosP"      . "docker-compose-emacs")
-            ("microcyclos"   . "docker-compose-micro")
-            ("cyclos"        . "cyclos-emacs")
-            ("chronosC"       . "docker-compose-clocksum")
+            ("serverP"         . "docker-compose-emacs")
+            ("chronosP"        . "docker-compose-emacs")
+            ("microcyclos"     . "docker-compose-micro")
+            ("cyclos"          . "cyclos-emacs")
+            ("chronosC"        . "docker-compose-clocksum")
+            ("chronosCclient"  . "docker-clocksum-gui")
           ))
 
 (cond ((eab/onhost "kairos-emacs")    (setq eab/ssh-host-local "ssh -o ConnectTimeout=10 kairos"))
@@ -283,6 +284,13 @@ END")))
        eab/ssh-host-local
        " 'sudo systemctl restart "
        (cdr (assoc eab/daemon-name (gethash 'eab/emacs-service-alist eab/paths-hash)))))
+
+(setq eab/emacs-client-command
+      (concat
+       eab/ssh-host-local
+       " 'systemctl --user restart "
+       (cdr (assoc (concat eab/daemon-name "client")
+                   (gethash 'eab/emacs-service-alist eab/paths-hash)))))
 
 ;; TODO можно ли подобные настройки не считать "путями" и убрать из path?
 (setq-put org-clock-persist-file (concat (eab/history-dir) "org-clock-save.el"))
@@ -314,10 +322,16 @@ END")))
 (setq-put org-mobile-directory "~/Dropbox/MobileOrg")
 (setq-put org-ditaa-jar-path "/usr/bin/ditaa")
 
+(defun eab/papers-eaf (tag)
+  (concat "/home/eab/pnt/data/read/papers/" tag ".pdf"))
+(defun eab/papers-firefox (tag)
+  (concat "https://share.eab.su/papers/" tag ".pdf"))
+(put 'eab/papers-eaf 'org-link-abbrev-safe t)
+(put 'eab/papers-firefox 'org-link-abbrev-safe t)
+
 (setq-put org-link-abbrev-alist
           '(("bib" . "~/git/lit/boykov.bib::%s")
-            ;; ("papers" . "https://share.eab.su/papers/%s.pdf")
-            ("papers" . "/home/eab/pnt/data/read/papers/%s.pdf")
+            ("papers" . "%(eab/papers-firefox)")
             ("google" . "https://www.google.com/search?q=")
             ))
 ;; See also eab-header in ~/texmf/tex/latex/eab-styles/eab-header.sty

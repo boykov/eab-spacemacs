@@ -7,8 +7,6 @@
 ;; Requirements: grep-a-lot wgrep
 ;; Status: not intended to be distributed yet
 
-;; require grep-a-lot
-
 (setq wgrep-enable-key "r")
 (setq wgrep-default-line-header-regexp
       (concat "^\\(.*?[^/\n]\\)"
@@ -35,11 +33,11 @@
 (setq eab/grep-ls "git ls-files `git rev-parse --show-toplevel`")
 (setq eab/grep-ls-recurse (concat "git ls-files --recurse-submodules "
                                   "`git rev-parse --show-toplevel`"))
-(setq eab/grep-clock-left-synopsys "")
+(setq eab/grep-clock-left-bigchunk "")
 (defun eab/grep-clock-left ()
     (concat "\"(^- |- <20|- \\[X|- \\[ |^\\*\\*\\*\\*\\*\\* )"
             "(?:(?!(^- |- <20|- \\[X|- \\[ |^\\*+ "
-            eab/grep-clock-left-synopsys
+            eab/grep-clock-left-bigchunk
             "))(.|\\n))*?"))
 (defun eab/grep-clock-right ()
   (concat
@@ -101,7 +99,7 @@
   (if (eq eab/grep-switch-cycle 'init)
       (progn
         (eab/grep-switch-0
-         (let ((eab/grep-clock-left-synopsys "|synopsis"))
+         (let ((eab/grep-clock-left-bigchunk "|synopsis|bigchunk"))
            (eab/grep-clock-left))
          (eab/grep-clock-right))
         (setq-local eab/grep-switch-cycle '0))))

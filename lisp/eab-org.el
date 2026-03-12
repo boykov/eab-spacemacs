@@ -175,12 +175,28 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (setq org-return-follows-link t)
+
+(defun eab/org-get-link-type-at-point ()
+  "Extract the link type from the Org-mode link at point."
+  (interactive)
+  (let* ((element (org-element-context))
+         (type (and (eq (org-element-type element) 'link)
+                    (org-element-property :type element))))
+    type))
+
 (defun eab/org-return (&optional arg)
   (interactive "P")
-  (if arg
-      (let ((org-link-frame-setup (quote ((file . find-file)))))
+  (if (string= (eab/org-get-link-type-at-point) "file")
+      (setq current-prefix-arg (not current-prefix-arg)))
+  (if current-prefix-arg
+      (let ((org-link-abbrev-alist
+             '(("papers" . "%(eab/papers-firefox)"))))
         (org-return))
-    (org-return)))
+    (let ((org-link-frame-setup
+             (quote ((file . eab/eaf-open-viewer-other-window))))
+          (org-link-abbrev-alist
+           '(("papers" . "%(eab/papers-eaf)"))))
+      (org-return))))
 
 (add-hook 'org-mode-hook (lambda () (toggle-truncate-lines)))
 (add-hook 'org-mode-hook (lambda () (if (and (fboundp 'org-fold-hide-drawer-all) (not (eab/ondaemon "kairosC"))) (org-fold-hide-drawer-all))))
@@ -334,5 +350,7 @@ block from point."
 		   lim-up lim-down)
 	      (throw 'exit n)))))
       nil)))
+
+(add-to-list 'org-file-apps '("\\.pdf\\'" . eab/org-eaf-open) 't)
 
 (provide 'eab-org)

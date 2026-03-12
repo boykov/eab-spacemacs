@@ -71,7 +71,6 @@
     ;; (eab/load-desktop)
     (eab/create-workgroups)
     (eab/wg-switch-to-workgroup ":clock:")
-    ;; (toggle-frame-maximized)
     (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
     (iconify-frame)
     (execute-kbd-macro (read-kbd-macro "C-a H"))
@@ -89,5 +88,9 @@
 ;; (general-define-key
 ;;  :prefix "C-e"
 ;;  "d" docker-command-map)
+
+;; (eab/loaded-ok (concat (daemonp) " postload"))
+;; (if (eab/ondaemon "chronosC")
+;;     (eab/sh-over-bash eab/emacs-client-command "" 't))
 
 (provide 'eab-postload)

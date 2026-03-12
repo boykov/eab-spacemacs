@@ -49,7 +49,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Global
 
-(global-set-key (kbd "C-v") nil)
+(general-define-key
+ "C-M-f"        'toggle-frame-maximized
+ "C-M-:"        'isearch-backward-regexp
+ "C-M-;"        'isearch-forward-regexp
+)
+
 (general-define-key
  "s-o"          'org-open-at-point
  "C-c a"        'org-agenda
@@ -71,8 +76,6 @@
  "C-i"          'indent-for-tab-command
  "C-m"          'newline
  "C-@"          'set-mark-command
- "C-M-:"        'isearch-backward-regexp
- "C-M-;"        'isearch-forward-regexp
  "C-S-a"        'eval-expression
  "C-S-b"        'select-frame-by-name
  "C-S-s"        'write-file
@@ -152,10 +155,14 @@
  "<kp-insert>"  'nil
  "s-a"          'append-to-buffer)
 
+(global-set-key (kbd "C-v") nil)
 (general-define-key
  "C-v d"        'vc-diff
  "C-v p"        'gptel-system-prompt
  "C-v m"        'gptel-menu
+ "C-v g"        'gptel
+ "C-v n"        (ilam (call-interactively 'eab/ergoemacs-new-empty-buffer)
+                      (call-interactively 'eab/gptel-mode))
  "C-v a"        'gptel-agent
  "C-v r"        'eab/gptel-rewrite
  "C-v v"        'eab/gptel-mode
@@ -242,6 +249,7 @@
  "o"          'org-sort
  "e"          'ediff-buffers
  "c"          'eab/switch-or-clone-indirect-buffer
+ "C"          (ilam (call-interactively 'clone-a-lot-goto-prev))
  "f"          'eab/magit-status
  "C-f"        'eab/magit-status
  "C-j"        'eab/magit-amend-modified
@@ -327,9 +335,12 @@
  "C-l M-k"      'next-line
  "M-RET"        (ilam
                  (run-with-timer
-                  0.01 nil `(lambda ()
-                              (eab/helm-org-goto-marker ,eab/helm-org-goto-marker)))
-                 (abort-recursive-edit))
+                  0.01 nil
+                  `(lambda ()
+                     (eab/helm-org-goto-marker ,eab/helm-org-goto-marker)))
+                 (if (string= (minibuffer-contents) "")
+                     (abort-recursive-edit)
+                   (exit-minibuffer)))
  "M-i"          'previous-history-element
  "M-r"          'nil
  "M-p"          'nil
@@ -355,7 +366,7 @@
  :keymaps 'minibuffer-local-map
  "M-:"          'helm-minibuffer-history
  "M-k"          'next-history-element
- "C-d"          'eab/ace-ibuffer
+ "C-d"          'eab/clear-extended-history
  "C-|"          'eab/minibuffer-see-file
  "s-SPC"        'eab/ido-see-file
  "M-a"          'eab/smex-extended
@@ -516,7 +527,8 @@
 (global-set-key (kbd "C-e") nil)
 (general-define-key
  :prefix "C-e"
- "b"    'maplev-cmaple-send-buffer
+ "b"    'eab/switch-browser
+ "v"    'eab/switch-viewer
  "t"    'eab/switch-eepitch-target
  "a"    `(,(ilam (eepitch-ansi-term "1")) :which-key " ")
  "1"    `(,(ilam (eepitch-ansi-term "1")) :which-key " ")
@@ -537,7 +549,8 @@
  "X"    (ilam
          (desktop-save (eab/desktop-dir))
          (run-with-timer 0.1 nil 'kill-emacs)
-         (eab/sh-over-bash (concat "sleep 0.3 && emacs --daemon=" eab/daemon-name) "" 't))
+         (eab/sh-over-bash
+          (concat "sleep 0.3 && emacs --daemon=" eab/daemon-name) "" 't))
  "h"    'eab/switch-help
  "z"    'undo-tree-visualize
  "s"    'eab/switch-async
@@ -792,7 +805,7 @@
    "s-4"        'magit-section-show-level-4-all)
   (general-define-key
    :keymaps 'git-commit-mode-map
-   "C-v c"      'eab/gptel-magit-generate-message
+   "C-v c"      'gptel-magit-generate-message
    "M-n"        'nil
    "M-p"        'nil))
 
@@ -979,11 +992,6 @@
    "\C-d"       eab/compile-map
    "M-n"        'nil
    "M-p"        'nil))
-
-(eab/add-hook nxml-mode-hook eab/nxml-mode
-  (general-define-key
-   :keymaps 'nxml-mode-map
-   "M-h"        'nil))
 
 (eab/add-hook term-mode-hook eab/term-hook
   (general-define-key
@@ -1235,13 +1243,11 @@
   (general-define-key
    :keymaps 'ido-common-completion-map
    "C-v"        'eab/toggle-cxb-ido-item
-   "C-d"        'eab/ace-ibuffer
    )
   (general-define-key
    :keymaps 'ido-buffer-completion-map
    "C-k"        'nil
    "C-d"        'eab/ace-ibuffer
-   "C-d"        'ido-buffer-helm
    "M-RET"      'eab/ido-main
    "C-M-j"      'eab/ido-main
    ))
@@ -1379,8 +1385,8 @@
      ;; "C-g"   (ilam (eab/or-self-insert 'mc/keyboard-quit))
      "g"        (ilam (eab/or-self-insert 'mc/keyboard-quit))
      "п"        (ilam (eab/or-self-insert 'mc/keyboard-quit))
-     "G"        (ilam (eab/or-self-insert 'eab/google) (eab/or-self-insert 'mc/keyboard-quit))
-     "П"        (ilam (eab/or-self-insert 'eab/google) (eab/or-self-insert 'mc/keyboard-quit))
+     "G"        'google-region
+     "П"        'google-region
      "l"        (ilam (eab/or-self-insert 'eab/replace-selection))
      "д"        (ilam (eab/or-self-insert 'eab/replace-selection))
      "R"        (ilam (eab/or-self-insert 'eab/replace-newline-by-space))

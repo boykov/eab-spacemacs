@@ -173,4 +173,16 @@ WINDOW-WIDTH should be the width of the Helm window."
 ;; (get-text-property 0 'sort-priority (car (org-ql-select eab/clocktable-scope '(not (tags "nohelm")) :action `(eab/helm-org-ql--heading9 100))))
 ;; (get-text-property 0 'sort-he (car (org-ql-select eab/clocktable-scope '(not (tags "nohelm")) :action `(eab/helm-org-ql--heading9 100))))
 
+(defun eab/helm-org-setup ()
+  (progn
+    (setq eab/helm-org-goto-flag nil)
+    (remove-hook 'org-mode-hook 'eab/org-hook)
+    (ergoemacs-fix-arrow-keys global-map)
+    (ergoemacs-fix-arrow-keys org-mode-map)
+    (let ((helm-full-frame 't))
+      (eab/helm-org-agenda-files-headings))
+    (if (not eab/helm-org-goto-flag)
+        (delete-frame))
+    ))
+
 (provide 'eab-helm)

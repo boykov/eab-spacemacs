@@ -87,7 +87,6 @@
     (switch-to-buffer buf nil 't))
   (grep-a-lot-set-current-buffer))
 
-;; TODO из 2 в 1, из 3 во 2, обратный ход
 (defun eab/switch-or-clone-indirect-buffer ()
   (interactive)
   (let* ((basename (buffer-name))
@@ -106,25 +105,137 @@
 
 ;;;;;;;;;;;;;;;;;
 
+(defun eab/list-buffers-of-mode (mode-symbol)
+  "Return a list of all buffers whose major mode is MODE-SYMBOL.
+MODE-SYMBOL should be a symbol, e.g., 'emacs-lisp-mode'."
+  (let ((buffers-of-mode nil))
+    (dolist (buf (buffer-list))
+      (with-current-buffer buf
+        ;; Use `derived-mode-p` to include modes that inherit from the specified mode
+        ;; or use `eq` for an exact match. Using `derived-mode-p` is generally
+        ;; more flexible.
+        (when (derived-mode-p mode-symbol)
+          (push buf buffers-of-mode))))
+    ;; The list is built in reverse order, so reverse it at the end
+    (nreverse buffers-of-mode)))
+
+(defun eab/switch-common (pred)
+  (interactive)
+  (let ((b
+         (car
+          (seq-filter
+           (lambda (x)
+             (funcall pred x))
+           (eab/list-buffers-of-mode 'eaf-mode)))))
+    (if b
+        (eab/switch-window
+         (buffer-name b)))))
+
+(defun eab/switch-browser ()
+  (interactive)
+  (eab/switch-common 'browser-a-lot-buffer-p))
+  
+(defun eab/switch-viewer ()
+  (interactive)
+  (eab/switch-common 'viewer-a-lot-buffer-p))
+
+(defun browser-a-lot-goto-next (arg)
+  "Goto next search results buffer."
+  (interactive "P")
+  (let ((buf (browser-a-lot-next-buffer)))
+    (if arg (kill-buffer))
+    (switch-to-buffer-other-window buf)))
+
+(defun browser-a-lot-next-buffer (&optional reverse)
+  "Return next browser-a-lot buffer.
+When REVERSE is non-nil, return previous buffer.
+If current buffer is last then return first buffer.
+Returns nil if there is no browser-a-lot buffer to select."
+  (let* ((buffers (common-a-lot-buffers 'browser-a-lot-buffer-p reverse))
+         (current (current-buffer))
+         (head (car buffers))
+         (next (car (cdr (member current buffers))))
+         (result (and current (or next head))))
+    result))
+
+(defun viewer-a-lot-goto-next (arg)
+  "Goto next search results buffer."
+  (interactive "P")
+  (let ((buf (viewer-a-lot-next-buffer)))
+    (if arg (kill-buffer))
+    (switch-to-buffer-other-window buf)))
+
+(defun viewer-a-lot-next-buffer (&optional reverse)
+  "Return next viewer-a-lot buffer.
+When REVERSE is non-nil, return previous buffer.
+If current buffer is last then return first buffer.
+Returns nil if there is no viewer-a-lot buffer to select."
+  (let* ((buffers (common-a-lot-buffers 'viewer-a-lot-buffer-p reverse))
+         (current (current-buffer))
+         (head (car buffers))
+         (next (car (cdr (member current buffers))))
+         (result (and current (or next head))))
+    result))
+
+(defun viewer-a-lot-prev-buffer ()
+  "Return next viewer-a-lot buffer.
+Actually calls `viewer-a-lot-next-buffer'."
+  (viewer-a-lot-next-buffer 't))
+
+(defun viewer-a-lot-goto-prev (arg)
+  "Goto previous search results buffer."
+  (interactive "P")
+  (let ((buf (viewer-a-lot-prev-buffer)))
+    (if arg (kill-buffer))
+    (switch-to-buffer buf)))
+
+(defun viewer-a-lot-buffer-p (&optional buffer)
+  (let ((name (buffer-name buffer)))
+    (with-current-buffer buffer
+      (if (string= eaf--buffer-app-name "pdf-viewer")
+          't
+        nil))))
+
+(defun browser-a-lot-buffer-p (&optional buffer)
+  (let ((name (buffer-name buffer)))
+    (with-current-buffer buffer
+      (if (string= eaf--buffer-app-name "browser")
+          't
+        nil))))
+
+;;;;;;;;;;;;;;;;;
+
 (defun clone-a-lot-buffer-p (&optional buffer)
   "Return non-nil if BUFFER is a clone-a-lot search result buffer.
 The buffer name must match `clone-a-lot-buffer-name-regexp'.
 With no argument or nil as argument, check current buffer."
   (let ((name (buffer-name buffer)))
-    (if (or (string-match (concat (buffer-name (buffer-base-buffer (current-buffer))) "<[0-9]+>\\'") name)
-            (string-match (buffer-name (buffer-base-buffer (current-buffer))) name))
+    (if (or
+         (string-match
+          (concat
+           (buffer-name (buffer-base-buffer (current-buffer)))
+           "<[0-9]+>\\'")
+          name)
+         (string-match
+          (buffer-name (buffer-base-buffer (current-buffer)))
+          name))
         (get-buffer name)
       nil)))
 
 (defun clone-a-lot-buffers (&optional reverse)
   "Return a sorted list of clone-a-lot search result buffers.
 With REVERSE non-nil the sort order is reversed."
+  (common-a-lot-buffers 'clone-a-lot-buffer-p reverse))
+
+(defun common-a-lot-buffers (pred &optional reverse)
+  "Return a sorted list of common-a-lot search result buffers.
+With REVERSE non-nil the sort order is reversed."
   (let* ((buffers nil)
          (all-buffers (buffer-list)))
     ;; filter out non clone-a-lot buffers
     (while all-buffers
       (let ((buffer (car all-buffers)))
-        (if (clone-a-lot-buffer-p buffer)
+        (if (funcall pred buffer)
             (setq buffers (append buffers (list buffer))))
         (setq all-buffers (cdr all-buffers))))
     (sort buffers (lambda (a b)
@@ -181,20 +292,7 @@ With no argument or nil as argument, check current buffer."
 (defun compilation-a-lot-buffers (&optional reverse)
   "Return a sorted list of compilation-a-lot search result buffers.
 With REVERSE non-nil the sort order is reversed."
-  (let* ((buffers nil)
-         (all-buffers (buffer-list)))
-    ;; filter out non compilation-a-lot buffers
-    (while all-buffers
-      (let ((buffer (car all-buffers)))
-        (if (compilation-a-lot-buffer-p buffer)
-            (setq buffers (append buffers (list buffer))))
-        (setq all-buffers (cdr all-buffers))))
-    (sort buffers (lambda (a b)
-                    (let ((pos-a (buffer-name a))
-                          (pos-b (buffer-name b)))
-                      (if reverse
-                          (string< pos-b pos-a)
-                        (string< pos-a pos-b)))))))
+  (common-a-lot-buffers 'compilation-a-lot-buffer-p reverse))
 
 (defun compilation-a-lot-next-buffer (&optional reverse)
   "Return next compilation-a-lot buffer.

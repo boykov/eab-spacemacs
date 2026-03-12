@@ -9,7 +9,6 @@
 
 (require 'view)
 (require 'dbus)
-(require 'uniquify)
 (require 'log-edit)
 (require 'top-mode)
 
@@ -19,6 +18,7 @@
 (setq which-key-idle-delay 2)
 (which-key-mode)
 
+(require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
 
 (setq ibuffer-formats '((mark modified read-only " "
@@ -29,15 +29,12 @@
 (eab/bind-path eshell-history-file-name)
 
 (setq 
- mark-ring-max 64
- global-mark-ring-max 64
  history-length 500
  kill-ring-max 500
  eshell-history-size 1000
  )
 
 (setq max-lisp-eval-depth 10000)
-(setq max-specpdl-size 10000)
 
 (require 'epa)
 (require 'epg)
@@ -60,8 +57,6 @@
 (require 'ps-print)
 (require 'ps-mule)
 
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;               __  __           _           
 ;;              |  \/  | ___   __| | ___  ___ 
@@ -71,22 +66,7 @@
 ;;                                            
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(push '("\\.md\\'" . markdown-mode) auto-mode-alist)
-(add-to-list 'auto-mode-alist '("\\.rkt\\'" . racket-mode))
-(add-to-list 'auto-mode-alist '("\\.jl\\'" . julia-mode))
-(add-to-list 'auto-mode-alist '("\\.spec\\|\\.spec\\.in" . rpm-spec-mode))
-(add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
-(add-to-list 'auto-mode-alist '("/\\.ssh/config\\'"     . ssh-config-mode))
-(add-to-list 'auto-mode-alist '("/sshd?_config\\'"      . ssh-config-mode))
-(add-to-list 'auto-mode-alist '("/known_hosts\\'"       . ssh-known-hosts-mode))
-(add-to-list 'auto-mode-alist '("/authorized_keys2?\\'" . ssh-authorized-keys-mode))
-(add-to-list 'auto-mode-alist '("\\.textile\\'" . textile-mode))
-(add-to-list 'auto-mode-alist '("\\.redmine\\'" . restclient-mode))
-(add-to-list 'auto-mode-alist '("\\.pp\\'" . puppet-mode))
 (add-to-list 'auto-mode-alist '("\\.cu\\'" . c-mode))
-(add-to-list 'auto-mode-alist '("cron\\(tab\\)?\\."    . crontab-mode))
-(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
-(add-to-list 'auto-mode-alist '("/keys.yml"             . ansible-vault-mode))
 (add-to-list 'auto-mode-alist '("\\.dired$" . dired-virtual-mode))
 (add-to-list 'auto-mode-alist '("\\.tmpl$" . conf-mode))
 (add-to-list 'auto-mode-alist '("\\.m$" . octave-mode))
@@ -95,20 +75,13 @@
 (add-to-list 'auto-mode-alist '("\\.cuf\\'" . f90-mode))
 (add-to-list 'auto-mode-alist '("\\.F90\\'" . f90-mode))
 (add-to-list 'auto-mode-alist '("\\.[bB][aA][tT]$" . 'bat-mode))
-(add-to-list 'auto-mode-alist '("\\.\\(frm\\|bas\\|cls\\|vbs\\)$" . visual-basic-mode))
 (add-to-list 'auto-mode-alist '("\\.ahk$" . ahk-mode))
 (add-to-list 'auto-mode-alist '("\\.feature\\'" . feature-mode))
 (add-to-list 'auto-mode-alist '("\\.lsp\\'" . lisp-mode))
 (add-to-list 'auto-mode-alist '("\\.max\\'" . maxima-mode))
 (add-to-list 'auto-mode-alist '("\\.mpl\\'" . maplev-mode))
-(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
 (add-to-list 'auto-mode-alist '("\\.rtf\\'" . rtf-mode))
 (add-to-list 'auto-mode-alist '("\\.tex\\'" . latex-mode))
-(add-to-list 'auto-mode-alist '("\\.wiki\\'" . wikipedia-mode))
-(add-to-list 'auto-mode-alist '("\\.wikipedia\\.org.*\\.txt\\'" . wikipedia-mode))
-(add-to-list 'auto-mode-alist '("en\\.wikipedia\\.org" . wikipedia-mode))
-(add-to-list 'auto-mode-alist '("stack\\(exchange\\|overflow\\)\\.com\\.[a-z0-9]+\\.txt" . markdown-mode))
 
 (add-to-list 'load-path (eab/bind-path eab/emaxima-path))
 
@@ -121,20 +94,13 @@
 (autoload 'maplev-mode "maplev" "Maple editing mode" t)
 (autoload 'maxima "maxima" "Running Maxima interactively" t)
 (autoload 'maxima-mode "maxima" "Maxima editing mode" t)
-(autoload 'python-mode "python-mode" "Python Mode." t)
-(autoload 'tex-mode-flyspell-verify "flyspell" "" t)
-(autoload 'visual-basic-mode "visual-basic-mode" "Visual Basic mode." t)
-(autoload 'wikipedia-mode "wikipedia-mode.el" "Major mode for editing documents in Wikipedia markup." t)
 
 (defalias 'perl-mode 'cperl-mode)
 (setq cperl-extra-newline-before-brace t
       cperl-brace-offset              -2
       cperl-merge-trailing-else        nil)
 
-(add-hook 'textile-mode-hook (lambda () (toggle-truncate-lines -1)))
 (add-hook 'ielm-mode-hook (lambda () (setq comint-process-echoes nil)))
 (add-hook 'comint-mode-hook (lambda () (setq comint-process-echoes t)))
-(add-hook 'gnus-summary-prepared-hook 'gnus-summary-hide-all-threads)
-(add-hook 'gnus-summary-prepare-hook 'gnus-summary-sort-by-most-recent-date)
 
 (provide 'eab-depend)

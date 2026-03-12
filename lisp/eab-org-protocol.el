@@ -54,7 +54,8 @@
          (id (cl-find-if (lambda (x)
                            (if (string= "ID" (car x))
                                't nil))
-                         (org-entry-properties nil 'standard))))
+                         (org-entry-properties nil 'standard)))
+         (current-prefix-arg 't))
     (browse-url
      (concat "https://my.eab.su/org/clock/"
              (replace-regexp-in-string "\.org$" ".html" fname) "#ID-" (cdr id)))))

@@ -189,6 +189,10 @@
     (ediff-wind :location built-in)
     (ediff-diff :location built-in)
     (browse-url :location built-in)
+    (simple :location built-in)
+    (files :location built-in)
+    (subr :location built-in)
+    (paragraphs :location built-in)
     )
   "List of all packages to install and/or initialize. Built-in packages
 which require an initialization must be listed explicitly in the list.")
@@ -199,17 +203,19 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-ox-pandoc nil)
 (defun eab-spacemacs/init-gptel nil
   ;; (setq gptel-log-level 'debug)
+  ;; (setq gptel-confirm-tool-calls 'always)
+  (setq gptel-default-mode 'org-mode)
   (setq gptel-expert-commands 't)
   (setq gptel-api-key (eab/orai-token))
-  (setq gptel-model   'openai/gpt-oss-120b
+  (setq gptel-model   'deepseek/deepseek-v3.2
         gptel-backend
-        (gptel-make-openai "OpenRouter" ;Any name you want
+        (gptel-make-openai "OpenRouter"
           :host "openrouter.ai"
           :curl-args '("-xsocks5://192.168.2.19:9050")
           :endpoint "/api/v1/chat/completions"
           :stream t
           :key 'gptel-api-key
-          :models '(openai/gpt-oss-120b
+         :models '(openai/gpt-oss-120b
                     qwen/qwen-turbo
                     qwen/qwen3-coder-30b-a3b-instruct
                     deepseek/deepseek-v3.2
@@ -230,11 +236,19 @@ calls the gptel-rewrite interactive command."
     (call-interactively 'org-mode)
     (call-interactively 'gptel-mode))
   )
-(defun eab-spacemacs/init-gptel-agent nil)
+(defun eab-spacemacs/init-gptel-agent nil
+  (use-package gptel-agent-tools
+    ;; after package is loaded
+    :config
+    (add-to-list 'gptel-tools (cdr (assoc "WebSearch" (cdar gptel--known-tools))))
+    (add-to-list 'gptel-tools (cdr (assoc "WebFetch" (cdar gptel--known-tools))))
+    ))
 (defun eab-spacemacs/init-gptel-magit nil
   (use-package gptel-magit
     :after (magit gptel)
+    ;; before package is loaded
     :init
+    (setq gptel-magit-model 'qwen/qwen3-coder-30b-a3b-instruct)
     (defun gptel-magit--generate (callback)
       "Generate a commit message for current magit repo.
 Invokes CALLBACK with the generated message when done."
@@ -243,13 +257,8 @@ Invokes CALLBACK with the generated message when done."
           :system gptel-magit-commit-prompt
           :context nil
           :callback `(lambda (response _info)
-                      (let ((msg (gptel-magit--format-commit-message response)))
-                        (funcall ,callback msg))))))
-    (defun eab/gptel-magit-generate-message nil
-      (interactive)
-      (setq gptel-model 'qwen/qwen-turbo)
-      (call-interactively 'gptel-magit-generate-message)
-      )
+                       (let ((msg (gptel-magit--format-commit-message response)))
+                         (funcall ,callback msg))))))
     ))
 (defun eab-spacemacs/init-elisa nil)
 (defun eab-spacemacs/init-llm ()
@@ -377,32 +386,11 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
     )
   )
 
-(defun eab-spacemacs/init-rpm-spec-mode ())
 (defun eab-spacemacs/init-git-timemachine ())
 (defun eab-spacemacs/init-git-wip-timemachine ())
-(defun eab-spacemacs/init-go-mode ()
-  )
 (defun eab-spacemacs/init-xterm-color ()
   (require 'xterm-color)
   )
-(defun eab-spacemacs/init-ssh-config-mode ()
-  (use-package ssh-config-mode))
-(defun eab-spacemacs/init-textile-mode ()
-  (use-package textile-mode
-    :config
-    (set-face-foreground 'textile-link-face "deep sky blue")
-    (set-face-foreground 'textile-code-face "ivory4")
-    (set-face-foreground 'textile-style-face "orange red")
-    (set-face-foreground 'textile-ul-bullet-face "deep sky blue")))
-(defun eab-spacemacs/init-puppet-mode ()
-  (use-package puppet-mode))
-(defun eab-spacemacs/init-yaml-mode ()
-  (use-package yaml-mode))
-(defun eab-spacemacs/init-ansible ())
-(defun eab-spacemacs/init-ansible-doc ())
-(defun eab-spacemacs/init-ansible-vault ()
-  (eab/bind-path ansible-vault-pass-file)
-  (with-temp-buffer (ansible-vault-mode)))
 
 (defun eab-spacemacs/init-tramp-term ()
     (use-package tramp-term))
@@ -416,7 +404,7 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
   (add-to-list 'load-path "/home/eab/.emacs.d/private/eab-spacemacs/local/consult-omni/sources")
   (use-package consult-omni
     :after (consult)
-    :init
+    :config
     (setq consult-omni-multi-sources '("DuckDuckGo API"))
     ))
 (defun eab-spacemacs/init-projectile nil
@@ -460,6 +448,55 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
   ;; (key-chord-mode 1) ; DONE заедает, если не в конце dotemacs, не включается по-умолчанию (или выключается из-за чего-то)
   (add-hook 'term-mode-hook (lambda () (setq input-method-function 'key-chord-input-method)))
   )
+(defun eab-spacemacs/init-paragraphs ()
+  (setq page-delimiter "^$")
+  ;; (setq paragraph-start ...)
+  ;; (setq paragraph-separate ...)
+  )
+(defun eab-spacemacs/init-subr ()
+  (setq max-specpdl-size 10000)
+  (unless window-system ;; Only use in tty-sessions.
+    (defvar arrow-keys-map (make-sparse-keymap) "Keymap for arrow keys")
+    (define-key esc-map "O" arrow-keys-map)
+    (define-key arrow-keys-map "A" 'previous-line)
+    (define-key arrow-keys-map "B" 'next-line)
+    (define-key arrow-keys-map "C" 'forward-char)
+    (define-key arrow-keys-map "D" 'backward-char))
+  )
+(defun eab-spacemacs/init-files ()
+  (eab/bind-path backup-directory-alist)
+  (eab/bind-path auto-save-file-name-transforms)
+  (setq mode-require-final-newline nil)
+  (setq require-final-newline nil)
+  (setq make-backup-files nil)
+  ;; DONE теперь не работают TeX-master "main" в LaTeX-mode
+  ;; уже привык их задавать вручную
+  (setq enable-local-variables nil)
+  (setq frame-title-format
+        `("emacs"
+          ,(if (stringp (daemonp)) (daemonp) "")
+          "@"
+          ,(system-name)
+          " "
+          ;; ": -<{" (:eval (ignore-errors (eab/wg-current-workgroup))) "}>- "
+          (:eval (if (buffer-file-name)
+                     (abbreviate-file-name (buffer-file-name))
+                   "%b"))))
+  )
+(defun eab-spacemacs/init-simple ()
+  (column-number-mode 1)
+  (setq 
+   mark-ring-max 64
+   global-mark-ring-max 64
+   indent-tabs-mode nil
+   )
+  (use-package eab-shell
+    :init
+    ;; (shell-command "xmodmap -e 'keycode 135 = Hyper_R'")
+    ;; (shell-command "xmodmap -e 'keycode 95 = Hyper_R'")
+    (eab/bind-path eab/translate-path)
+    (eab/bind-path eab/trans-path)
+    ))
 (defun eab-spacemacs/init-browse-url ()
   (setq browse-url-browser-function (quote eab/browse-url))
   (setq browse-url-firefox-program "/usr/local/bin/browser-remote")
@@ -478,6 +515,11 @@ Opens the Google search results page for the entered query in the default web br
        (read-string (if phrase
                         (format "Google (%s): " phrase)
                       "Google: ") nil nil phrase)))))
+  (defun google-region ()
+    (interactive)
+    (let ((str (buffer-substring (region-beginning) (region-end))))
+      (call-interactively 'mc/keyboard-quit)
+      (google str)))
   )
 
 (defun eab-spacemacs/init-ediff ())
@@ -495,6 +537,7 @@ Opens the Google search results page for the entered query in the default web br
   (setq ispell-dictionary "english")
   )
 (defun eab-spacemacs/init-flyspell ()
+  (autoload 'tex-mode-flyspell-verify "flyspell" "" t)
   (setq flyspell-default-dictionary "english")
   (defun eab/flyspell-buffer (arg)
     (interactive "P")
@@ -825,12 +868,89 @@ Opens the Google search results page for the entered query in the default web br
   ;;   (setq magit-currently-shown-commit (ad-get-arg 0)))
   )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;               __  __           _           
+;;              |  \/  | ___   __| | ___  ___ 
+;;              | |\/| |/ _ \ / _` |/ _ \/ __|
+;;              | |  | | (_) | (_| |  __/\__ \
+;;              |_|  |_|\___/ \__,_|\___||___/
+;;                                            
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defun eab-spacemacs/init-logstash-conf nil)
 (defun eab-spacemacs/init-nginx-mode nil)
-(defun eab-spacemacs/init-julia-mode nil)
-(defun eab-spacemacs/init-racket-mode nil)
+(defun eab-spacemacs/init-julia-mode nil
+  (add-to-list 'auto-mode-alist '("\\.jl\\'" . julia-mode)))
+(defun eab-spacemacs/init-racket-mode nil
+  (add-to-list 'auto-mode-alist '("\\.rkt\\'" . racket-mode)))
 (defun eab-spacemacs/init-typescript-mode nil
   (use-package typescript-mode))
+(defun eab-spacemacs/init-rpm-spec-mode ()
+  (add-to-list 'auto-mode-alist '("\\.spec\\|\\.spec\\.in" . rpm-spec-mode)))
+(defun eab-spacemacs/init-go-mode ()
+  (add-hook 'go-mode-hook
+            (lambda ()
+              (setq indent-tabs-mode nil)
+              (setq-local tab-width 2)
+              ))
+  (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode)))
+(defun eab-spacemacs/init-ssh-config-mode ()
+  (use-package ssh-config-mode
+    :init
+    (add-to-list 'auto-mode-alist '("/\\.ssh/config\\'"     . ssh-config-mode))
+    (add-to-list 'auto-mode-alist '("/sshd?_config\\'"      . ssh-config-mode))
+    (add-to-list 'auto-mode-alist '("/known_hosts\\'"       . ssh-known-hosts-mode))
+    (add-to-list 'auto-mode-alist '("/authorized_keys2?\\'" . ssh-authorized-keys-mode))
+    ))
+(defun eab-spacemacs/init-textile-mode ()
+  (use-package textile-mode
+    :init
+    (add-hook 'textile-mode-hook (lambda () (toggle-truncate-lines -1)))
+    (add-to-list 'auto-mode-alist '("\\.textile\\'" . textile-mode))
+    :config
+    (set-face-foreground 'textile-link-face "deep sky blue")
+    (set-face-foreground 'textile-code-face "ivory4")
+    (set-face-foreground 'textile-style-face "orange red")
+    (set-face-foreground 'textile-ul-bullet-face "deep sky blue")))
+(defun eab-spacemacs/init-puppet-mode ()
+  (use-package puppet-mode
+    :init
+    (add-to-list 'auto-mode-alist '("\\.pp\\'" . puppet-mode))
+    ))
+(defun eab-spacemacs/init-yaml-mode ()
+  (use-package yaml-mode
+    :init
+    (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+    ))
+(defun eab-spacemacs/init-ansible ())
+(defun eab-spacemacs/init-ansible-doc ())
+(defun eab-spacemacs/init-ansible-vault ()
+  (eab/bind-path ansible-vault-pass-file)
+  (with-temp-buffer (ansible-vault-mode))
+  (add-hook 'ansible-vault-mode-hook (lambda () (setq indent-tabs-mode nil)))
+  (add-to-list 'auto-mode-alist '("/keys.yml" . ansible-vault-mode)))
+(defun eab-spacemacs/init-restclient nil
+  (require 'restclient)
+  (add-to-list 'auto-mode-alist '("\\.redmine\\'" . restclient-mode))
+  )
+(defun eab-spacemacs/init-python-mode nil
+  (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
+  (autoload 'python-mode "python-mode" "Python Mode." t)
+  ;; (use-package python-mode
+  ;;   :init
+  ;;   ;; (require 'ipython)
+  ;;   (setq py-python-command "ipython")
+  ;;   (setq py-start-run-py-shell nil)
+  ;;   (setq py-force-py-shell-name-p 't) ;; DONE error with #!/usr/bin/python
+  ;;   (setq ipython-completion-command-string "print(';'.join(get_ipython().Completer.all_completions('%s')))\n"))
+  )
+(defun eab-spacemacs/init-crontab-mode nil
+  (add-to-list 'auto-mode-alist '("cron\\(tab\\)?\\."    . crontab-mode))
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
 (defun eab-spacemacs/init-emamux nil)
 (defun eab-spacemacs/init-esup nil)
 (defun eab-spacemacs/init-diff-hl nil
@@ -851,6 +971,16 @@ Opens the Google search results page for the entered query in the default web br
         (require 'eaf)
         (require 'eaf-browser)
         (require 'eaf-pdf-viewer)
+        (defun eab/org-eaf-open (path link)
+          (eaf-open path))
+        (advice-remove #'org-open-file #'eaf--find-file-advisor)
+        (defun eab/eaf-open-viewer-other-window (url &optional args)
+          "Open EAF browser application given a URL and ARGS in other window."
+          (interactive "M[EAF/browser] URL: ")
+          (when (< (length (window-list)) 2)
+            (split-window-right))
+          (other-window 1)
+          (eaf-open url "pdf-viewer" args))
         (setq eaf-browser-dark-mode nil)
         (general-define-key
          :keymaps 'eaf-mode-map*
@@ -861,6 +991,10 @@ Opens the Google search results page for the entered query in the default web br
         (let ((kb 'eaf-pdf-viewer-keybinding))
           (eval
            `(progn
+              (eaf-bind-key zoom_reset "0" ,kb)
+              (eaf-bind-key zoom_in "=" ,kb)
+              (eaf-bind-key zoom_out "-" ,kb)
+              (eaf-bind-key viewer-a-lot-goto-prev "B" ,kb)
               (eaf-bind-key close_buffer "q" ,kb)
               (eaf-bind-key jump_to_page "p" ,kb)
               (eaf-bind-key eaf-pdf-outline "o" ,kb)
@@ -935,6 +1069,8 @@ Opens the Google search results page for the entered query in the default web br
             (define-key map [?\C-y] #'eat-yank)
             (define-key map [?\M-v] #'eat-yank)
             (define-key map [?\M-y] #'eat-yank-from-kill-ring)
+            ;; TODO prepare bind and HISTIGNORE for eab/m-r
+            ;; ssh case is needed to activate
             (define-key map [?\M-r] (ilam (eab/m-r)))
             (define-key map [?\M-j] (ilam (eat-self-input 1 'left)))
             (define-key map [?\M-l] (ilam (eat-self-input 1 'right)))
@@ -968,7 +1104,7 @@ Opens the Google search results page for the entered query in the default web br
       :interactive nil
       :keymap eat-char-mode-map)
 
-     ;; bind '"\C-]":"\C-e\C-u cat <<"EOF"\n\C-y\nEOF\n"'
+    ;; bind '"\C-]":"\C-e\C-u echo m-r123 > /dev/null; cat <<"EOF"\n\C-y\nEOF\n"'
     (defun eab/m-r ()
       (interactive)
       (execute-kbd-macro (read-kbd-macro "C-]"))
@@ -1057,7 +1193,8 @@ Opens the Google search results page for the entered query in the default web br
   )
 (defun eab-spacemacs/init-paredit nil
   (require 'paredit)
-  (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
+  (autoload 'enable-paredit-mode
+    "paredit" "Turn on pseudo-structural editing of Lisp code." t)
   )
 (defun eab-spacemacs/init-grep-a-lot nil
   (use-package grep-a-lot))
@@ -1069,11 +1206,13 @@ Opens the Google search results page for the entered query in the default web br
     )
 (defun eab-spacemacs/init-wgrep-ag nil)
 (defun eab-spacemacs/init-undo-tree nil
-  (require 'undo-tree)
-  (global-undo-tree-mode)
+  (use-package undo-tree
+    :init
+    (global-undo-tree-mode))
   )
 (defun eab-spacemacs/init-diminish nil
   (use-package diminish
+    :after (undo-tree which-key)
     :init
     (diminish 'which-key-mode "WK")
     (diminish 'undo-tree-mode "UT"))
@@ -1108,15 +1247,6 @@ Opens the Google search results page for the entered query in the default web br
 (defun eab-spacemacs/init-ace-jump-buffer nil)
 (defun eab-spacemacs/init-ace-link nil)
 (defun eab-spacemacs/init-request nil)
-(defun eab-spacemacs/init-python-mode nil
-  ;; (use-package python-mode
-  ;;   :init
-  ;;   ;; (require 'ipython)
-  ;;   (setq py-python-command "ipython")
-  ;;   (setq py-start-run-py-shell nil)
-  ;;   (setq py-force-py-shell-name-p 't) ;; DONE error with #!/usr/bin/python
-  ;;   (setq ipython-completion-command-string "print(';'.join(get_ipython().Completer.all_completions('%s')))\n"))
-  )
 (defun eab-spacemacs/init-popup nil)
 (defun eab-spacemacs/init-idle-highlight-mode nil
   (require 'idle-highlight-mode)
@@ -1125,7 +1255,7 @@ Opens the Google search results page for the entered query in the default web br
 (defun eab-spacemacs/init-buffer-move nil
   (require 'buffer-move)
   )
-(defun eab-spacemacs/init-crontab-mode nil)
+
 (defun eab-spacemacs/init-shut-up nil)
 (defun eab-spacemacs/init-parsebib nil)
 (defun eab-spacemacs/init-jedi-core nil)
@@ -1147,9 +1277,6 @@ Opens the Google search results page for the entered query in the default web br
 (defun eab-spacemacs/init-deferred nil)
 (defun eab-spacemacs/init-web-server nil)
 (defun eab-spacemacs/init-take-off nil)
-(defun eab-spacemacs/init-restclient nil
-  (require 'restclient)
-  )
 (defun eab-spacemacs/init-wide-n nil)
 (defun eab-spacemacs/init-god-mode nil
   (setq god-mod-alist
@@ -1190,13 +1317,19 @@ Opens the Google search results page for the entered query in the default web br
   (use-package org-ql-search
     :defer
     :config
-    (setq org-link-parameters (remove '("org-ql-search" :follow org-ql-view--link-follow :store org-ql-view--link-store) org-link-parameters))
+    (setq org-link-parameters
+          (remove
+           '("org-ql-search" :follow org-ql-view--link-follow
+             :store org-ql-view--link-store)
+           org-link-parameters))
     )
   (use-package helm-org-ql
     :after (org-ql)
     :config
     (add-to-list 'helm-org-ql-actions '("eab/hron-todo" . eab/helm-hron-todo))))
 (defun eab-spacemacs/init-org nil
+  (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+  (add-hook 'org-mode-hook (lambda () (setq indent-tabs-mode nil)))
   ;; fix org-element performance degradation
   (setq org-element--cache-self-verify 't)
   (setq org-element-use-cache 't)
@@ -1246,7 +1379,11 @@ Opens the Google search results page for the entered query in the default web br
 (defun eab-spacemacs/init-org-ehtml nil)
 (defun eab-spacemacs/init-noflet nil)
 (defun eab-spacemacs/init-minimap nil)
-(defun eab-spacemacs/init-markdown-mode nil)
+(defun eab-spacemacs/init-markdown-mode nil
+  (push '("\\.md\\'" . markdown-mode) auto-mode-alist)
+  (add-hook 'markdown-mode-hook (lambda () (setq indent-tabs-mode nil)))
+  (add-to-list 'auto-mode-alist '("stack\\(exchange\\|overflow\\)\\.com\\.[a-z0-9]+\\.txt" . markdown-mode))
+  )
 (defun eab-spacemacs/init-auto-complete nil
   (use-package auto-complete)
   (use-package auto-complete-config)
@@ -1423,8 +1560,11 @@ Opens the Google search results page for the entered query in the default web br
   )
 
 (defun eab-spacemacs/init-gnus nil
-  (use-package eab-gnus :disabled)
-  )
+  (use-package eab-gnus :disabled
+    :init
+    (add-hook 'gnus-summary-prepared-hook 'gnus-summary-hide-all-threads)
+    (add-hook 'gnus-summary-prepare-hook 'gnus-summary-sort-by-most-recent-date)
+    ))
 
 (defun eab-spacemacs/init-tramp nil
   (use-package tramp
@@ -1504,7 +1644,7 @@ Opens the Google search results page for the entered query in the default web br
   )
 (defun eab-spacemacs/init-abbrev nil
   (use-package eab-words
-    :after (abbrev)
+    :after (abbrev simple)
     :init
     (eab/bind-path abbrev-file-name)
     (if (file-exists-p abbrev-file-name)
@@ -1559,13 +1699,6 @@ Opens the Google search results page for the entered query in the default web br
 
 (defun eab-spacemacs/user-config ()
   (use-package eab-ui)
-  (use-package eab-shell
-    :init
-    ;; (shell-command "xmodmap -e 'keycode 135 = Hyper_R'")
-    ;; (shell-command "xmodmap -e 'keycode 95 = Hyper_R'")
-    (eab/bind-path eab/translate-path)
-    (eab/bind-path eab/trans-path)
-    )
   (use-package eab-depend)
 
   (use-package eab-org)

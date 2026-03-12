@@ -35,7 +35,9 @@
 (defun eepitch-ansi-term (sym)
   (interactive)
   (let ((default-directory "~/"))
-    (shell-command (concat "echo \"" eab/eegchannel-path " " sym " /bin/bash\" > " eab/eeansi-path)))
+    (shell-command
+     (concat "echo \"" eab/eegchannel-path " " sym
+             " /bin/bash\" > " eab/eeansi-path)))
   (eechannel sym)
   (save-window-excursion
     (eepitch `(eab/run-ansi eab/run-ansi-kind eab/eeansi-path ,sym))
@@ -44,7 +46,10 @@
 
 (defun eab/in-target-buffer? (str)
   (if (<= (+ (length str) 1) (length (buffer-name eepitch-target-buffer)))
-      (string= (substring (buffer-name eepitch-target-buffer) 0 (+ (length str) 1))
+      (string= (substring
+                (buffer-name eepitch-target-buffer)
+                0
+                (+ (length str) 1))
                (concat "*" str))))
 
 (defun eab/ansi-prepare (line)
