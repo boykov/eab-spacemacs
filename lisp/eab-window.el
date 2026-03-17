@@ -146,6 +146,18 @@ MODE-SYMBOL should be a symbol, e.g., 'emacs-lisp-mode'."
     (if arg (kill-buffer))
     (switch-to-buffer-other-window buf)))
 
+(defun browser-a-lot-prev-buffer ()
+  "Return next browser-a-lot buffer.
+Actually calls `browser-a-lot-next-buffer'."
+  (browser-a-lot-next-buffer 't))
+
+(defun browser-a-lot-goto-prev (arg)
+  "Goto previous search results buffer."
+  (interactive "P")
+  (let ((buf (browser-a-lot-prev-buffer)))
+    (if arg (kill-buffer))
+    (switch-to-buffer buf)))
+
 (defun browser-a-lot-next-buffer (&optional reverse)
   "Return next browser-a-lot buffer.
 When REVERSE is non-nil, return previous buffer.

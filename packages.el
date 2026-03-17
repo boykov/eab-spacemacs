@@ -45,6 +45,7 @@
     forge
     orgit
     diff-hl
+    sqlite3
 
     keyfreq
     achievements
@@ -217,13 +218,23 @@ which require an initialization must be listed explicitly in the list.")
           :key 'gptel-api-key
          :models '(openai/gpt-oss-120b
                     qwen/qwen-turbo
+                    nvidia/nemotron-3-super-120b-a12b:free
                     qwen/qwen3-coder-30b-a3b-instruct
                     deepseek/deepseek-v3.2
                     mistralai/mixtral-8x7b-instruct
                     meta-llama/codellama-34b-instruct
                     codellama/codellama-70b-instruct
                     google/palm-2-codechat-bison-32k
-                    google/gemini-pro)))
+                    google/gemini-pro
+                    )))
+  (defun eab/gptel-one-shot-3 ()
+    (interactive)
+    (let ((inhibit-message t))
+      (kill-new
+        "Суммируй приведенный текст ровно тремя словами.
+Формат ответа -- 3 слова, например: деньги-дата-отложить"))
+    (execute-kbd-macro
+     (read-kbd-macro "C-v m k m RET M-v RET")))
   (defun eab/gptel-rewrite ()
     "Rewrite the current buffer or region.
 This function sets the gptel model to qwen/qwen3-coder-30b-a3b-instruct and
@@ -242,6 +253,8 @@ calls the gptel-rewrite interactive command."
     :config
     (add-to-list 'gptel-tools (cdr (assoc "WebSearch" (cdar gptel--known-tools))))
     (add-to-list 'gptel-tools (cdr (assoc "WebFetch" (cdar gptel--known-tools))))
+    ;; (append gptel-agent-dirs
+    ;; (gptel-agent-update)
     ))
 (defun eab-spacemacs/init-gptel-magit nil
   (use-package gptel-magit
@@ -249,10 +262,19 @@ calls the gptel-rewrite interactive command."
     ;; before package is loaded
     :init
     (setq gptel-magit-model 'qwen/qwen3-coder-30b-a3b-instruct)
+    (defun eab/gptel-magit-generate-message ()
+      "Generate a commit message."
+      (interactive)
+      (gptel-magit--generate (lambda (message)
+                               (with-current-buffer (current-buffer)
+                                 (save-excursion
+                                   (insert message)))))
+      (message "magit-gptel: Generating commit message..."))
     (defun gptel-magit--generate (callback)
       "Generate a commit message for current magit repo.
 Invokes CALLBACK with the generated message when done."
-      (let ((diff (magit-git-output "diff" "--cached" "HEAD^")))
+      (let ((diff (magit-git-output "diff" "--cached" "HEAD^"))
+            (gptel-use-tools nil))
         (gptel-magit--request diff
           :system gptel-magit-commit-prompt
           :context nil
@@ -824,7 +846,9 @@ Opens the Google search results page for the entered query in the default web br
     (require 'magit-status)
     (add-to-list 'magit-status-sections-hook 'magit-insert-modules 't)
     (transient-append-suffix 'magit-diff "-A"
-      '("-a" "Treat all files as text." "--text")))
+      '("-a" "Treat all files as text." "--text"))
+    (transient-append-suffix 'magit-diff "-a"
+      '("-S" "Submodule diff" "--submodule=diff")))
   ;; (use-package magit-wip)
   (defadvice vc-annotate (before eab-vc-annotate activate)
     (vc-refresh-state))
@@ -833,14 +857,12 @@ Opens the Google search results page for the entered query in the default web br
 
   (require 'git-wip) ;; DONE can remove it and use magit-wip-mode? No, it's better
   ;; (setq auto-revert-buffer-list-filter 'magit-auto-revert-repository-buffer-p)
-  ;;    ("-S" "Submodule diff"                 ("-S" "--submodule=diff"))
-  ;; (put 'magit-status-mode 'magit-diff-default-arguments
-  ;;     '("--submodule=diff"))
   (defun eab/magit-amend-modified ()
     (interactive)
     (magit-stage-modified)
     (call-interactively 'magit-commit-amend))
   )
+(defun eab-spacemacs/init-sqlite3 nil)
 (defun eab-spacemacs/init-forge nil
   ;; (require 'forge)
   ;; (setq forge-post-mode-hook '(visual-line-mode))
@@ -962,7 +984,11 @@ Opens the Google search results page for the entered query in the default web br
     ;; (when (string= (daemonp) "????") (defvar libgit--build-dir (expand-file-name "build28" libgit--root)))
     ))
 (defun eab-spacemacs/init-vterm nil
-    (setq vterm-keymap-exceptions '("C-c" "C-x" "C-u" "C-g" "C-h" "C-l" "M-x" "M-o" "C-v" "M-v" "C-y" "M-y" "M-s" "M-a" "M-i" "M-k" "M-j" "M-l" "C-a" "M-c" "M-p")))
+    (setq vterm-keymap-exceptions '("C-c" "C-x" "C-u" "C-g" "C-h" "C-l" "M-x" "M-o" "C-v" "M-v" "C-y" "M-y" "M-s" "M-a" "M-i" "M-k" "M-j" "M-l" "C-a" "M-c" "M-p"))
+    (defun vterm-send-meta-c-b ()
+      "Send `M-<backspace>' to the libvterm."
+      (interactive)
+      (vterm-send-key "b" nil t t)))
 (defun eab-spacemacs/init-eaf nil
   (if (eab/ondaemon "cyclos")
       (progn
@@ -971,6 +997,11 @@ Opens the Google search results page for the entered query in the default web br
         (require 'eaf)
         (require 'eaf-browser)
         (require 'eaf-pdf-viewer)
+        ;; (setq eaf-proxy-host "192.168.2.19")
+        ;; (setq eaf-proxy-port "9152")
+        ;; (setq eaf-proxy-type "http")
+        ;; (eaf-restart-process)
+        (setq eaf-browser-auto-import-chrome-cookies 't)
         (defun eab/org-eaf-open (path link)
           (eaf-open path))
         (advice-remove #'org-open-file #'eaf--find-file-advisor)
@@ -987,58 +1018,68 @@ Opens the Google search results page for the entered query in the default web br
          "C-o"   'nil
          "C-c b" 'nil
          )
+        (defmacro eab/eaf-bind-key (pair kb)
+          (let ((f (intern (cdr pair)))
+                (k (car pair)))
+            `(eaf-bind-key ,f ,k ,kb)))
         (setq eaf-pdf-viewer-keybinding nil)
         (let ((kb 'eaf-pdf-viewer-keybinding))
-          (eval
-           `(progn
-              (eaf-bind-key zoom_reset "0" ,kb)
-              (eaf-bind-key zoom_in "=" ,kb)
-              (eaf-bind-key zoom_out "-" ,kb)
-              (eaf-bind-key viewer-a-lot-goto-prev "B" ,kb)
-              (eaf-bind-key close_buffer "q" ,kb)
-              (eaf-bind-key jump_to_page "p" ,kb)
-              (eaf-bind-key eaf-pdf-outline "o" ,kb)
-              (eaf-bind-key scroll_down "M-i" ,kb)
-              (eaf-bind-key scroll_up "M-k" ,kb)
-              (eaf-bind-key scroll_down_page "M-I" ,kb)
-              (eaf-bind-key scroll_up_page "M-K" ,kb)
-              (eaf-bind-key scroll_up_page "<next>" ,kb)
-              (eaf-bind-key scroll_down_page "<prior>" ,kb)
-              (eaf-bind-key copy_select "M-c" ,kb)
-              (eaf-bind-key search_text_forward "M-;" ,kb)
-              (eaf-bind-key search_text_backward "M-:" ,kb)
-              (eaf-bind-key eaf-pdf-extract-page-text "C-w" ,kb)
-              (eaf-bind-key scroll_to_begin "<C-<home>" ,kb)
-              (eaf-bind-key scroll_to_begin "M-J" ,kb)
-              (eaf-bind-key scroll_to_end "<C-<end>" ,kb)
-              (eaf-bind-key scroll_to_end "M-L" ,kb))
-           ))
+          (mapc (lambda (x)
+                  (eval `(eab/eaf-bind-key ,x ,kb)))
+                '(
+                  ("0" . "zoom_reset")
+                  ("=" . "zoom_in")
+                  ("-" . "zoom_out")
+                  ("B" . "viewer-a-lot-goto-prev")
+                  ("q" . "close_buffer")
+                  ("p" . "jump_to_page")
+                  ("o" . "eaf-pdf-outline")
+                  ("M-i" . "scroll_down")
+                  ("M-k" . "scroll_up")
+                  ("M-I" . "scroll_down_page")
+                  ("M-K" . "scroll_up_page")
+                  ("<next>" . "scroll_up_page")
+                  ("<prior>" . "scroll_down_page")
+                  ("M-c" . "copy_select")
+                  ("M-;" . "search_text_forward")
+                  ("M-:" . "search_text_backward")
+                  ("C-w" . "eaf-pdf-extract-page-text")
+                  ("<C-<home>" . "scroll_to_begin")
+                  ("M-J" . "scroll_to_begin")
+                  ("<C-<end>" . "scroll_to_end")
+                  ("M-L" . "scroll_to_end")
+                  )))
         (setq eaf-browser-keybinding nil)
         (let ((kb 'eaf-browser-keybinding))
-          (eval
-           `(progn
-              (eaf-bind-key scroll_to_begin "<C-<home>>" ,kb)
-              (eaf-bind-key scroll_to_begin "M-J" ,kb)
-              (eaf-bind-key scroll_to_bottom "<C-<end>>" ,kb)
-              (eaf-bind-key scroll_to_bottom "M-L" ,kb)
-              (eaf-bind-key open_link "M-D" ,kb)
-              (eaf-bind-key toggle_dark_mode "D" ,kb)
-              (eaf-bind-key insert_or_history_forward "F" ,kb)
-              (eaf-bind-key insert_or_history_backward "B" ,kb)
-              (eaf-bind-key search_text_forward "M-;" ,kb)
-              (eaf-bind-key search_text_backward "M-:" ,kb)
-              (eaf-bind-key scroll_down "M-i" ,kb)
-              (eaf-bind-key scroll_up "M-k" ,kb)
-              (eaf-bind-key scroll_down_page "M-I" ,kb)
-              (eaf-bind-key scroll_up_page "M-K" ,kb)
-              (eaf-bind-key scroll_up_page "<next>" ,kb)
-              (eaf-bind-key scroll_down_page "<prior>" ,kb)
-              (eaf-bind-key copy_text "M-c" ,kb)
-              (eaf-bind-key insert_or_export_text "n" ,kb)
-              (eaf-bind-key insert_or_export_text "C-w" ,kb)
-              (eaf-bind-key insert_or_close_buffer "q" ,kb)
-              (eaf-bind-key insert_or_edit_url "e" ,kb)
-              )))
+          (mapc (lambda (x)
+                  (eval `(eab/eaf-bind-key ,x ,kb)))
+                '(
+                  ("M-b" . "browser-a-lot-goto-prev")
+                  ("0" . "insert_or_zoom_reset")
+                  ("=" . "insert_or_zoom_in")
+                  ("-" . "insert_or_zoom_out")
+                  ("<C-<home>>" . "scroll_to_begin")
+                  ("M-J" . "scroll_to_begin")
+                  ("<C-<end>>" . "scroll_to_bottom")
+                  ("M-L" . "scroll_to_bottom")
+                  ("M-D" . "open_link")
+                  ("D" . "toggle_dark_mode")
+                  ("F" . "insert_or_history_forward")
+                  ("B" . "insert_or_history_backward")
+                  ("M-;" . "search_text_forward")
+                  ("M-:" . "search_text_backward")
+                  ("M-i" . "scroll_down")
+                  ("M-k" . "scroll_up")
+                  ("M-I" . "scroll_down_page")
+                  ("M-K" . "scroll_up_page")
+                  ("<next>" . "scroll_up_page")
+                  ("<prior>" . "scroll_down_page")
+                  ("M-c" . "copy_text")
+                  ("n" . "insert_or_export_text")
+                  ("C-w" . "insert_or_export_text")
+                  ("q" . "insert_or_close_buffer")
+                  ("e" . "insert_or_edit_url")
+                  )))
   )))
 (defun eab-spacemacs/init-emacs-eat nil
   (use-package eat
@@ -1052,6 +1093,7 @@ Opens the Google search results page for the entered query in the default web br
             (define-key map [?\C-c ?\C-p] #'eat-previous-shell-prompt)
             (define-key map [?\C-c ?\C-n] #'eat-next-shell-prompt)
             (key-chord-define map "jj" #'eat-semi-char-mode)
+            (define-key map [?\C-c ?\C-e] #'eat-semi-char-mode)
             map))
 
     (setq eat-semi-char-mode-map
@@ -1069,8 +1111,7 @@ Opens the Google search results page for the entered query in the default web br
             (define-key map [?\C-y] #'eat-yank)
             (define-key map [?\M-v] #'eat-yank)
             (define-key map [?\M-y] #'eat-yank-from-kill-ring)
-            ;; TODO prepare bind and HISTIGNORE for eab/m-r
-            ;; ssh case is needed to activate
+            (define-key map [?\M-m] (ilam (eab/eepitch-prepare-m-r)))
             (define-key map [?\M-r] (ilam (eab/m-r)))
             (define-key map [?\M-j] (ilam (eat-self-input 1 'left)))
             (define-key map [?\M-l] (ilam (eat-self-input 1 'right)))
@@ -1104,7 +1145,6 @@ Opens the Google search results page for the entered query in the default web br
       :interactive nil
       :keymap eat-char-mode-map)
 
-    ;; bind '"\C-]":"\C-e\C-u echo m-r123 > /dev/null; cat <<"EOF"\n\C-y\nEOF\n"'
     (defun eab/m-r ()
       (interactive)
       (execute-kbd-macro (read-kbd-macro "C-]"))

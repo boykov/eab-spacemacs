@@ -159,6 +159,7 @@
 (general-define-key
  "C-v d"        'vc-diff
  "C-v p"        'gptel-system-prompt
+ "C-v c"        'eab/gptel-magit-generate-message
  "C-v m"        'gptel-menu
  "C-v g"        'gptel
  "C-v n"        (ilam (call-interactively 'eab/ergoemacs-new-empty-buffer)
@@ -1357,6 +1358,7 @@
     (setq region-bindings-mode-disabled-modes '(magit-status-mode magit-diff-mode))
     (general-define-key
      :keymaps 'region-bindings-mode-map
+     "3"        'eab/gptel-one-shot-3
      "w"        (ilam (shell-command-on-region (region-beginning) (region-end) "wc -l"))
      "ц"        (ilam (shell-command-on-region (region-beginning) (region-end) "wc -l"))
      "u"        'untabify

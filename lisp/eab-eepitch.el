@@ -86,6 +86,12 @@
         (eab/wrap-eepitch-this line))
     (ee-next-line 1)))
 
+(defun eab/eepitch-prepare-m-r ()
+  (eab/wrap-eepitch-this " HISTIGNORE='*m-r123*'\n")
+  (eab/wrap-eepitch-this
+   "bind '\"\\C-]\":\"\\C-e\\C-u echo m-r123 > /dev/null; cat <<\"EOF\"\\n\\C-y\\nEOF\\n\"'\n")
+  )
+
 (defun eab/eepitch-paragraph ()
   (interactive)
   (flet ((forward ()

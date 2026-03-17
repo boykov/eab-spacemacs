@@ -211,13 +211,16 @@
          (day (nth 3 now))
          (month (nth 4 now))
          (year (nth 5 now)))
-    (format-time-string "%Y-%m-%d %a %H:%M"
-                        (apply 'encode-time (list second (+ m minute) (+ h hour) day month year)))))
+    (format-time-string
+     "%Y-%m-%d %a %H:%M"
+     (apply 'encode-time
+            (list second (+ m minute) (+ h hour) day month year)))))
 
 (defun eab/hron-change-current (h m)
   (let ((body
          `(setq eab/hron-current-time
-                ',(apply 'encode-time (org-parse-time-string (eab/hron-add-current h m))))))
+                ',(apply 'encode-time
+                         (org-parse-time-string (eab/hron-add-current h m))))))
     (with-temp-file eab/org-file
       (let ((standard-output (current-buffer))) (print body)))
     (funcall `(lambda () ,body))))

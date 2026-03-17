@@ -129,7 +129,7 @@
                   (lambda (s) (string-match ".*virtual.*" s))
                   (org-ql-select eab/clocktable-scope '(not (tags "nohelm"))
                     :action `(eab/helm-org-ql--heading 100 (random))))
-                 ;; Чтобы перекомпилировать во время отладки ,(random)
+                 ;; Чтобы перекомпилировать во время отладки (random 1000) => 223
                  'stringp
                  nil nil
                  nil helm-org-completion-styles)
@@ -141,6 +141,10 @@
     :keymap helm-org-headings-map
     :group 'helm-org))
 
+;; (sxhash-equal
+;;  (concat (prin1-to-string (symbol-function 'eab/helm-org-ql--heading))
+;;          (prin1-to-string (symbol-function 'seconds-to-dhms))))
+
 ;; org-revert-all-org-buffers
 ;; (completion-metadata-get
 ;;  '(metadata (display-sort-function
@@ -149,15 +153,31 @@
 ;;                (sort candidates
 ;;                      (eab/cmp-helm-property))))) 'display-sort-function)
 
+(defun seconds-to-dhms (total-seconds)
+  "Convert total-seconds (integer) to a 'days, hours, minutes, seconds' string."
+  (let* ((days (floor total-seconds 86400)) ; 86400 seconds in a day
+         (remaining-seconds (- total-seconds (* days 86400)))
+         (hours (floor remaining-seconds 3600)) ; 3600 seconds in an hour
+         (remaining-seconds (- remaining-seconds (* hours 3600)))
+         (minutes (floor remaining-seconds 60)) ; 60 seconds in a minute
+         (seconds (mod remaining-seconds 60)))
+    (format "%dd %02dh" days hours)))
+    ;; (format "%dd %02dh %02dm %02ds" days hours minutes seconds)))
+
 (defun eab/helm-org-ql--heading (window-width &optional pseudo)
   "Return string for Helm for heading at point.
 WINDOW-WIDTH should be the width of the Helm window."
   (font-lock-ensure (point-at-bol) (point-at-eol))
   (let* ((prefix (concat (buffer-name) ":"))
          (width (- window-width (length prefix)))
+         (dh (seconds-to-dhms
+              (float-time
+               (time-subtract
+                eab/hron-current-time
+                (org-clock-get-last-clock-out-time)))))
          (heading (org-get-heading)))
     (propertize
-     (concat heading)
+     (concat dh " " heading)
      'sort-he (org-element-property :HE_SORT (org-element-context))
      'sort-deadline
      (let ((a40 (org-element-property :deadline (org-element-context))))

@@ -31,12 +31,19 @@
   (let* ((true-path (file-truename path))
          (nondir (file-name-nondirectory path))
          (name nondir))
-    (when (file-exists-p true-path)
+    (when (and (file-exists-p true-path)
+               (not (string-match ".*.dired$" path)))
       (unless (wg-get-workgroup name 't)
         (wg-create-workgroup name 't)
         (find-file true-path)
         (if (file-regular-p true-path)
-            (execute-kbd-macro (read-kbd-macro "M-1 M-@ C-f c C-f c")))
+            (if (string-match ".*.dired$" true-path)
+                (progn
+                  (call-interactively 'dired-virtual-mode)
+                  (setq mode-name "Dired"
+                        revert-buffer-function 'dired-revert)
+                  (revert-buffer 't 't))
+              (execute-kbd-macro (read-kbd-macro "M-1 M-@ C-f c C-f c"))))
         (eab/wg-update-workgroup "dflt"))
       (eab/wg-add-workgroup-to-history
        (wg-workgroup-uid (wg-get-workgroup name 't))))))

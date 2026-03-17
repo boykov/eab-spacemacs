@@ -1,5 +1,32 @@
 # Changelog
 
+## 0.4.18
+
+fix(sqlite3): add `sqlite3` package and fix magit `forge` warning
+feat(simple-agent): add new simple agent configuration
+feat(keybindings): add new keybinding for `eab/gptel-one-shot-3` command.
+feat(eepitch): add `eab/eepitch-prepare-m-r` for shell command preparation
+fix(eepitch): correct eepitch preparation function syntax
+feat(org-protocol): enhance `eab/browse-paper` to use `eaf-open`
+feat(shell): improve shell command handling and add async command configuration
+feat(window): add `browser-a-lot` navigation functions for buffer management
+feat(workgroups): enhance workgroup creation with `virtual dired` support
+fix(workgroups): improve workgroup creation with proper dired mode handling
+feat(vterm): add `vterm` keymap exception and custom key binding for `meta-c-b`
+feat(eaf): add Chrome cookies import option
+fix(eaf): streamline EAF keybinding definitions using macro
+feat(gptel): update magit commit generation
+fix(gptel): enhance gptel prompt system and add new model support
+feat(magit): add submodule diff support and improve magit status section hooks
+fix(magit): update magit diff arguments and submodule handling
+refactor(org): update org-protocol capture templates with highlighting support
+refactor(postload): adjust window management macro for better buffer handling
+refactor(hron): improve time formatting and clock handling functions
+refactor(helm): clean up comments and improve helm org ql implementation
+feat(helm): add `seconds-to-dhms` and update helm org ql heading display
+fix(helm): fix helm org ql heading display with time conversion
+fix(helm): fix comment syntax in helm org ql implementation
+
 ## 0.4.17
 
 Init `eab/switch-viewer`.

@@ -73,7 +73,7 @@
     (eab/wg-switch-to-workgroup ":clock:")
     (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
     (iconify-frame)
-    (execute-kbd-macro (read-kbd-macro "C-a H"))
+    (execute-kbd-macro (read-kbd-macro "C-a h C-g"))
     (setq eab/first-emacsclient nil))
   (set-face-attribute 'default nil
                       :family "Source Code Pro"

@@ -70,10 +70,12 @@
 
 (defun eab/browse-paper ()
   (interactive)
-  (browse-url
-   (concat
-    "https://share.eab.su/papers/"
-    (org-entry-get nil "Custom_BIB") ".pdf")))
+  (let ((name (org-entry-get nil "Custom_BIB")))
+    (if current-prefix-arg
+        (browse-url
+         (concat
+          "https://share.eab.su/papers/" name ".pdf"))
+      (eaf-open (eab/papers-eaf name)))))
 
 (defun eab/browse-paper-1 (word)
   (browse-url

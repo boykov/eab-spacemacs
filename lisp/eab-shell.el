@@ -7,12 +7,16 @@
 ;; Requirements:
 ;; Status: ready
 
+;; (setq shell-command-dont-erase-buffer 't) ;; add to previous output
+(setq async-shell-command-buffer 'new-buffer)
+
 (defvar eab/translate-path nil)
 
 (defun eab/over-bash (comhead comstr)
   "Run comhead with comstr over bash -i -c."
   (concat "bash -i -c \"" comhead " \\\"" (expand-file-name comstr) "\\\"'\""))
 
+;; TODO Why async-start is better than call-process-shell-command?
 (defun eab/sh-over-bash (com fname &optional async)
   "Run com with fname over bash -i -c."
   (let ((default-directory "~/"))
@@ -42,15 +46,15 @@ process: e.g. nautilus or gnome-terminals"
 
 (defun eab/call-shell-command (&optional arg)
   "Command for manual running (thru M-A): with different settings"
-  (interactive "P")
-  (cond ((or (if (listp arg) (eq (car arg) 4)) (eq arg 4))
+  (interactive "p")
+  (cond ((eq arg 4)
          (call-interactively 'eab/shell-command))
         ((eq arg 1)
+         (call-interactively 'shell-command))
+        (t
          (let ((shell-command-switch "-ic")
                (current-prefix-arg nil))
-             (call-interactively 'shell-command)))
-        (t
-         (call-interactively 'shell-command))))
+           (call-interactively 'shell-command)))))
 
 (defun eab/xmodmap-set-hyper ()
   (interactive)
