@@ -64,8 +64,6 @@
  "C-c r"        'org-capture
  "C-x C-M-p"    'org-open-at-point-global
  "s-c"          'org-store-link
- "s-H"          'org-clock-in
- "C-s-h"        'org-clock-out
  "M-z"          'undo
  "C-b"          'switch-to-buffer
  "M-a"          'execute-extended-command
@@ -450,7 +448,6 @@
  "h"            'eab/hron-todo
  "C-h"          'eab/hron-todo
  "M-h"          'eab/jump-current-time
- "M-H"          'eab/send-csum-all-remote
  "v"            'eab/org-insert-link-fast
  "V"            'org-insert-link
  "."            (kbd "C-c . RET")

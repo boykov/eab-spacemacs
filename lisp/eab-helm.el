@@ -128,8 +128,15 @@
                  (remove-if
                   (lambda (s) (string-match ".*virtual.*" s))
                   (org-ql-select eab/clocktable-scope '(not (tags "nohelm"))
-                    :action `(eab/helm-org-ql--heading 100 (random))))
-                 ;; Чтобы перекомпилировать во время отладки (random 1000) => 223
+                    :action `(eab/helm-org-ql--heading
+                              100
+                              ,(sxhash-equal
+                                (concat (prin1-to-string
+                                         (symbol-function
+                                          'eab/helm-org-ql--heading))
+                                        (prin1-to-string
+                                         (symbol-function
+                                          'seconds-to-dhms)))))))
                  'stringp
                  nil nil
                  nil helm-org-completion-styles)
@@ -140,10 +147,6 @@
     :help-message 'helm-org-headings-help-message
     :keymap helm-org-headings-map
     :group 'helm-org))
-
-;; (sxhash-equal
-;;  (concat (prin1-to-string (symbol-function 'eab/helm-org-ql--heading))
-;;          (prin1-to-string (symbol-function 'seconds-to-dhms))))
 
 ;; org-revert-all-org-buffers
 ;; (completion-metadata-get
@@ -161,8 +164,12 @@
          (remaining-seconds (- remaining-seconds (* hours 3600)))
          (minutes (floor remaining-seconds 60)) ; 60 seconds in a minute
          (seconds (mod remaining-seconds 60)))
-    (format "%dd %02dh" days hours)))
-    ;; (format "%dd %02dh %02dm %02ds" days hours minutes seconds)))
+    (cond ((and (eq days 0) (eq hours 0))
+           (format "%dm" minutes))
+          ((and (eq days 0) (not (eq hours 0)))
+           (format "%dh" hours))
+          (t
+           (format "%dd" days)))))
 
 (defun eab/helm-org-ql--heading (window-width &optional pseudo)
   "Return string for Helm for heading at point.

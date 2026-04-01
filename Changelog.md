@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.19
+
+Rm old `eab/get-all-csum`, `csum` functions, use clock.sh
+Fix `eab/grep-clock-left-bigchunk` for `right`.
+Fix `helm-org-rifle` load order: `ergoemacs-functions` vs `ergoemacs-mode`.
+Use `system-time-locale` for all.
+
 ## 0.4.18
 
 fix(sqlite3): add `sqlite3` package and fix magit `forge` warning

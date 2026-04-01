@@ -32,9 +32,7 @@
 
 (eab/renew-agenda-files-1)
 
-(when (eab/ondaemon (eab/server-C))
-  ;; (eab/check-csum-day)
-  (setq system-time-locale "ru_RU.utf8"))
+(setq system-time-locale "ru_RU.utf8")
 
 (eab/bind-path eab/secrets-path)
 ; TODO create function and hook after first start frame

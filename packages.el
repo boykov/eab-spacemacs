@@ -194,6 +194,7 @@
     (files :location built-in)
     (subr :location built-in)
     (paragraphs :location built-in)
+    (eab-ui :location built-in)
     )
   "List of all packages to install and/or initialize. Built-in packages
 which require an initialization must be listed explicitly in the list.")
@@ -248,13 +249,16 @@ calls the gptel-rewrite interactive command."
     (call-interactively 'gptel-mode))
   )
 (defun eab-spacemacs/init-gptel-agent nil
+  (use-package gptel-agent
+    :config
+    (add-to-list 'gptel-agent-dirs "/home/eab/.emacs.d/private/eab-spacemacs/agents/")
+    (gptel-agent-update)
+    )
   (use-package gptel-agent-tools
     ;; after package is loaded
     :config
     (add-to-list 'gptel-tools (cdr (assoc "WebSearch" (cdar gptel--known-tools))))
     (add-to-list 'gptel-tools (cdr (assoc "WebFetch" (cdar gptel--known-tools))))
-    ;; (append gptel-agent-dirs
-    ;; (gptel-agent-update)
     ))
 (defun eab-spacemacs/init-gptel-magit nil
   (use-package gptel-magit
@@ -274,6 +278,7 @@ calls the gptel-rewrite interactive command."
       "Generate a commit message for current magit repo.
 Invokes CALLBACK with the generated message when done."
       (let ((diff (magit-git-output "diff" "--cached" "HEAD^"))
+            (gptel-tools nil)
             (gptel-use-tools nil))
         (gptel-magit--request diff
           :system gptel-magit-commit-prompt
@@ -699,7 +704,7 @@ Opens the Google search results page for the entered query in the default web br
   )
 (defun eab-spacemacs/init-helm-org-rifle nil
   (use-package helm-org-rifle
-    :after (ergoemacs-mode eab-helm eab-org)
+    :after (general ergoemacs-functions helm org)
     :config
     (general-define-key
      :keymaps 'helm-org-rifle-map
@@ -1044,9 +1049,9 @@ Opens the Google search results page for the entered query in the default web br
                   ("M-;" . "search_text_forward")
                   ("M-:" . "search_text_backward")
                   ("C-w" . "eaf-pdf-extract-page-text")
-                  ("<C-<home>" . "scroll_to_begin")
+                  ("C-<home>" . "scroll_to_begin")
                   ("M-J" . "scroll_to_begin")
-                  ("<C-<end>" . "scroll_to_end")
+                  ("C-<end>" . "scroll_to_end")
                   ("M-L" . "scroll_to_end")
                   )))
         (setq eaf-browser-keybinding nil)
@@ -1058,9 +1063,9 @@ Opens the Google search results page for the entered query in the default web br
                   ("0" . "insert_or_zoom_reset")
                   ("=" . "insert_or_zoom_in")
                   ("-" . "insert_or_zoom_out")
-                  ("<C-<home>>" . "scroll_to_begin")
+                  ("C-<home>" . "scroll_to_begin")
                   ("M-J" . "scroll_to_begin")
-                  ("<C-<end>>" . "scroll_to_bottom")
+                  ("C-<end>" . "scroll_to_bottom")
                   ("M-L" . "scroll_to_bottom")
                   ("M-D" . "open_link")
                   ("D" . "toggle_dark_mode")
@@ -1737,8 +1742,10 @@ Opens the Google search results page for the entered query in the default web br
     :init
     (setq avy-timeout-seconds 0.25)))
 
-(defun eab-spacemacs/user-config ()
+(defun eab-spacemacs/init-eab-ui ()
   (use-package eab-ui)
+  )
+(defun eab-spacemacs/user-config ()
   (use-package eab-depend)
 
   (use-package eab-org)

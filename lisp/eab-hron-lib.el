@@ -153,10 +153,6 @@
     (revert-all-buffers)
     (eab/renew-agenda-files-1)
     (unless fast
-      (eab/send-csum)
-      (eab/check-csum-all)
-      (eab/send-csum-all))
-    (unless fast
       (eab/update-all-dblocks) ;; DONE why doesn't work?
       ;; DONE it seems to hangs up `eab/update-reports-nightly'
       (eab/update-reports-nightly)
@@ -270,12 +266,13 @@
       (switch-to-buffer eab/agendah-buffer)))
 
 (defun eab/org-parse-current-time ()
-  (apply 'encode-time
-         (org-parse-time-string
-          (substring
-           (shell-command-to-string
-            (concat org-directory "misc/clock.sh -s getCT -c " org-directory "clock"))
-           0 -1))))
+  (apply
+   'encode-time
+   (org-parse-time-string
+    (substring
+     (shell-command-to-string
+      (concat org-directory "misc/clock.sh -s getCT -c " org-directory "clock"))
+     0 -1))))
 
 (defun eab/hron-update-current-time ()
   (eab/hron-set-current
@@ -751,28 +748,6 @@
   (org-clock-sum)
   (org-minutes-to-clocksum-string org-clock-file-total-minutes '(("h") (special . h:mm))))
 
-(defun csum-year ()
-  (eab/forecast-hron (org-minutes-to-clocksum-string (eab/clock-sum-this-year))))
-
-(defun eab/clock-sum-this-year (&optional headline-filter)
-  (interactive)
-  (let ((range (org-clock-special-range 'thisyear)))
-    (org-clock-sum (car range) (cadr range) nil :org-clock-minutes-this-year)
-    org-clock-file-total-minutes))
-
-;; TODO why do begining-of-buffer?
-(defun eab/org-clock-sum (file)
-  (save-excursion
-    (find-file file)
-    (beginning-of-buffer)
-    (org-clock-sum)
-    (set-mark-command 4)))
-
-(defun eab/clock-sum-all ()
-  "Do `org-clock-sum' on `eab/clocktable-scope' files."
-  (interactive)
-  (mapcar (lambda (f) (eab/org-clock-sum f)) (eab/clocktable-scope)))
-
 (defun eab/clocktable-scope-1 ()
   (append
    (file-expand-wildcards (concat (file-name-as-directory org-directory) "clock/*.org"))
@@ -804,228 +779,7 @@
         (server-eval-at "serverP" '(eab/renew-agenda-files-1)))))
   )
 
-(defun eab/check-csum-day (&optional date)
-  (interactive)
-  (dired org-directory)
-  (let ((buf (generate-new-buffer "untitled")))
-    (switch-to-buffer buf))
-  (require 'yasnippet)
-  (require 'org)
-  (org-mode)
-  (insert "* контрольная сумма\n")
-  (insert "#+BEGIN: clocktable :step day :tstart \"")
-  (insert
-   (format-time-string
-    (car org-time-stamp-formats)
-    (apply 'encode-time (org-parse-time-string  (eab/hron-add-current -24 0)))))
-  (insert "\" :tend \"")
-  (insert
-   (format-time-string
-    (car org-time-stamp-formats)
-    (apply 'encode-time  (org-parse-time-string (eab/hron-add-current 0 0)))))
-  (insert "\" :maxlevel 1 :narrow 80! :link t :scope eab/clocktable-scope\n")
-  (insert "#+END:")
-  (previous-line)
-  (org-ctrl-c-ctrl-c)
-  (eab/extract-csum)
-  (kill-buffer (current-buffer))
-  (setq 3GG (eab/days-to-minutes (substring eab/hron-csum-day 1 -1)))
-  (let ((buf (generate-new-buffer "untitled")))
-    (switch-to-buffer buf))
-  (org-mode)
-  (insert "* контрольная сумма\n")
-  (insert "#+BEGIN: clocktable :step day :tstart \"")
-  (insert
-   (format-time-string
-    (car org-time-stamp-formats)
-    (apply 'encode-time (org-parse-time-string  (eab/hron-add-current -24 0)))))
-  (insert "\" :tend \"")
-  (insert
-   (format-time-string
-    (car org-time-stamp-formats)
-    (apply 'encode-time  (org-parse-time-string (eab/hron-add-current 0 0)))))
-  (insert (concat "\" :maxlevel 1 :narrow 80! :link t :scope (\"" org-directory "clock/timeline-time-mining.org\") \n"))
-  (insert "#+END:")
-  (previous-line)
-  (org-ctrl-c-ctrl-c)
-  (eab/extract-csum)
-  (kill-buffer (current-buffer))
-  (setq 1GG (eab/days-to-minutes (substring eab/hron-csum-day 1 -1)))
-  (setq eab/hron-csum-day (concat "*" (org-minutes-to-clocksum-string (- 3GG (* 2 1GG))) "*"))
-  (kill-buffer (current-buffer)))
-
-(defun eab/check-csum-all-GREP ()
-  (interactive)
-  (if (eq (shell-command (concat "cd " (concat org-directory "clock/") " && test-csum.sh")) 0)
-      (setq eab/hron-csum-day (concat "*" (eab/get-all-csum) "*"))
-    (setq eab/hron-csum-day (concat "*" "ERROR GREP" "*"))))
-
-(defun eab/check-csum-all ()
-  (interactive)
-  (dired org-directory)
-  (let ((buf (generate-new-buffer "untitled")))
-    (switch-to-buffer buf))
-  (require 'yasnippet)
-  (require 'org)
-  (org-mode)
-  (insert "* контрольная сумма\n")
-  (insert "#+BEGIN: clocktable :maxlevel 1 :narrow 80! :scope eab/clocktable-scope\n")
-  (insert "#+END:")
-  (previous-line)
-  (org-ctrl-c-ctrl-c)
-  (eab/extract-csum)
-  (kill-buffer (current-buffer))
-  (setq 3GG (eab/days-to-minutes (substring eab/hron-csum-day 1 -1)))
-  (let ((buf (generate-new-buffer "untitled")))
-    (switch-to-buffer buf))
-  (org-mode)
-  (insert "* контрольная сумма\n")
-  (insert (concat "#+BEGIN: clocktable :maxlevel 1 :narrow 80! :scope (\"" org-directory "clock/timeline-time-mining.org\") \n"))
-  (insert "#+END:")
-  (previous-line)
-  (org-ctrl-c-ctrl-c)
-  (eab/extract-csum)
-  (setq 1GG (eab/days-to-minutes (substring eab/hron-csum-day 1 -1)))
-  (setq eab/hron-csum-day (concat "*" (org-minutes-to-clocksum-string (- 3GG (* 2 1GG))) "*"))
-  (kill-buffer (current-buffer))
-  (kill-buffer (current-buffer)))
-
-(defvar eab/total-csum "")
-
-(defun eab/extract-csum ()
-  (interactive)
-  (execute-kbd-macro "\M-;ALL *Total\C-m")
-  ;; (execute-kbd-macro "\M-;*nil\C-m")
-  (org-cycle)
-  (setq eab/hron-csum-day (let ((beg (point)))
-                            (execute-kbd-macro "\M-l\M-;*\M-j\M-l")
-                            (buffer-substring-no-properties beg (point)))))
-
-;; DONE kairos заменить на hostname
-(defun eab/send-mail (message)
-  )
-  ;; (shell-command (concat "echo " message " | mail -s \"" message "\" eab@" system-name)))
-
-(defun eab/send-csum ()
-  (eab/check-csum-day)
-  (if (string-equal eab/hron-csum-day "*1d 0:00*")
-      (eab/send-mail "Совпадает!")
-    (eab/send-mail
-     (concat
-      "Сумма не равна 24 часа failed: calendar 1d"
-      ", csum "
-      eab/hron-csum-day))
-    ))
-
-;; TODO create arbitrary date instead hard-coded 01-01-2007
-(defun eab/get-all-csum ()
-  (load eab/org-file)
-  (let* ((current-encoded
-          (apply 'encode-time  (org-parse-time-string (eab/hron-add-current 0 0))))
-         (year (- (string-to-number (format-time-string "%Y" current-encoded)) 1))
-         (min
-          (number-to-string (string-to-number (format-time-string "%M" current-encoded))))
-         (hour
-          (+
-           (* (apply '+
-                     (mapcar (lambda (y)
-                               (calendar-day-number `(12 31 ,y)))
-                             (number-sequence 2007 year))) 24)
-           0 ;; transfer time: winter/summer
-           ;; see also CLOCK: [2014-10-26 Вс. 00:00]--[2014-10-26 Вс. 05:00] =>  6:00
-           (* (- (string-to-number
-                  (cadr
-                   (split-string
-                    (calendar-day-of-year-string
-                     (read (format-time-string "(%m %d %Y)" current-encoded)))))) 1) 24)
-           (string-to-number (format-time-string "%H" current-encoded)))))
-    (concat
-     (number-to-string (/ hour 24))
-     "d "
-     (number-to-string (- hour (* (/ hour 24) 24)))
-     ":" (if (= (length min) 1) (concat "0" min) min))))
-
-(defun eab/send-csum-all ()
-  (if (string-equal
-       eab/hron-csum-day
-       (concat "*" (eab/get-all-csum) "*"))
-      (eab/gotify "ok csum" "All time Совпадает!" 0)
-    (eab/gotify "bad csum" "[!]" 5)))
-
-(defun eab/send-csum-all-remote (&optional arg)
-  (interactive "P")
-  ;; (let ((shell-command-switch "-ic")) (eab/shell-command "nemacs"))
-  ;; (sleep-for 1)
-  (let ((fname (if arg 'eab/check-csum-all 'eab/check-csum-all-GREP)))
-    (funcall
-     `(lambda () (async-start
-                   (lambda ()
-                     (require 'server)
-                     (sleep-for 1)
-                     (let ((server-use-tcp ,server-C-use-tcp))
-                       (server-eval-at ,(eab/target-C) '(progn
-                                                          (shell-command (concat "cd " org-directory))
-                                                          (eab/rsync-org-directory)
-                                                          (revert-all-buffers)
-                                                          (,fname)
-                                                          (eab/send-csum-all)
-                                                          )))
-                     (kill-emacs))
-                   (lambda (result) (message "async result: <%s>" result)))))))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defun eab/days-to-minutes (str)
-  (if (string-match
-       "\\([0-9]*?\\)\\(?:d \\)*\\([0-9]+\\):\\([0-9]+\\)"
-       str)
-      (let* ((days
-              (string-to-number (match-string 1 str)))
-             (hours
-              (string-to-number (match-string 2 str)))
-             (minutes
-              (string-to-number (match-string 3 str)))
-             (total-minutes
-              (+ minutes
-                 (* hours 60)
-                 (* days 24 60))))
-        total-minutes)))
-
-(defun eab/forecast-hron (str)
-  (if (string-match
-       "\\([0-9]*?\\)\\(?:d \\)*\\([0-9]+\\):\\([0-9]+\\)"
-       str)
-      (let* ((total-days
-              (string-to-number (match-string 1 str)))
-             (total-hours
-              (+ (* total-days 24)
-                 (string-to-number (match-string 2 str))
-                 (/ (string-to-number (match-string 3 str)) 60.0)))
-             (now (org-parse-time-string (eab/hron-current-time-stamp)))
-             (days
-              (-
-               (string-to-number
-                (cadr
-                 (split-string
-                  (calendar-day-of-year-string (list (nth 4 now) (nth 3 now) (nth 5 now))))))
-               1))
-             (hours (/ (nth 2 now) 24.0))
-             (forecast-hours
-              (* (/ 365.0 (+ days hours))
-                 total-hours)))
-        ;; forecast-hours) 0.0))
-        (if (>= forecast-hours 24)
-            (let ((forecast-days
-                   (truncate (/ forecast-hours 24))))
-              (concat
-               (number-to-string forecast-days)
-               "d "
-               (number-to-string
-                (- (/ (truncate (* forecast-hours 100)) 100) (* forecast-days 24)))
-               ":00"))
-          (concat
-           (number-to-string
-            (/ (truncate (* forecast-hours 100)) 100)) ":00"))) 0.0))
 
 ;; TODO если извлекать id из столбца Headline, а затем по id получать
 ;; Custom_BIB, то можно обойтись без отдельного столбца

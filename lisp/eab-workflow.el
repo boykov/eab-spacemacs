@@ -247,7 +247,10 @@
           (save-excursion (replace-regexp "‐[[:blank:]\n]*" ""))
           (save-excursion (replace-regexp "\\([^ -]\\)-[[:blank:]\n]+" "\\1"))
           (save-excursion (replace-string " -  " " - "))
-          (save-excursion (replace-string "—" " --- ")))
+          (save-excursion (replace-string "—" " --- "))
+          (save-excursion (replace-string "---  " "--- "))
+          (save-excursion (replace-string "\\([^ ]\\)  ---" "\\1 ---"))
+          )
         )))
   (recenter nil t))
 

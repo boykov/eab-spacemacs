@@ -35,8 +35,6 @@
 (add-hook 'js-mode-hook (lambda () (setq indent-tabs-mode nil)))
 (add-hook 'emacs-lisp-mode-hook (lambda () (setq indent-tabs-mode nil)))
 
-(setq system-time-locale "ru_RU.utf8")
-
 (setq eww-search-prefix "https://duckduckgo.com/html/?q=")
 
 (provide 'eab-ui)

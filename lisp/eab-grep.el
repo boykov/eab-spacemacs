@@ -41,7 +41,9 @@
             "))(.|\\n))*?"))
 (defun eab/grep-clock-right ()
   (concat
-   "(\\n|.)*?"
+   (if (string= eab/grep-clock-left-bigchunk "")
+       "(\\n|.)*?"
+     (concat "(?:(?!(" (substring eab/grep-clock-left-bigchunk 1) "))(\\n|.))*?"))
    "((?= *- \\[X)|(?= *- \\[ )|(?= *- <)|(?=^- )|(?=\\n\\*+ )|(?=\\Z))\""))
 (setq eab/grep-clock-left-0 (concat "\"(^ *- |- \\[ |^\\*\\*\\*\\*\\*\\* )"
                                     "(?:(?!(^ *- |^\\*+ ))(.|\\n))*?"))
@@ -98,10 +100,10 @@
         (setq-local eab/grep-switch-cycle 'full)))
   (if (eq eab/grep-switch-cycle 'init)
       (progn
-        (eab/grep-switch-0
-         (let ((eab/grep-clock-left-bigchunk "|synopsis|bigchunk"))
-           (eab/grep-clock-left))
-         (eab/grep-clock-right))
+        (let ((eab/grep-clock-left-bigchunk "|synopsis|bigchunk"))
+          (eab/grep-switch-0
+           (eab/grep-clock-left)
+           (eab/grep-clock-right)))
         (setq-local eab/grep-switch-cycle '0))))
 
 (defun eab/grep-switchq-2 ()
