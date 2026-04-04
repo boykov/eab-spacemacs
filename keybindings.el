@@ -70,7 +70,7 @@
  "C-t"          'transpose-sexps
  "M-m"          'forward-sexp
  "M-n"          'backward-sexp
- "M-q"          'kill-buffer-and-window
+ "M-q"          'kill-current-buffer
  "C-i"          'indent-for-tab-command
  "C-m"          'newline
  "C-@"          'set-mark-command
@@ -462,7 +462,6 @@
  "n SPC"        'dash-to-space3
  "nf"           'eab/pm-write-last-kbd-macro
  "nd"           'delete-end-clock
- "nn"           'star-to-space2
  "ns"           'split-clock
  "nc"           'insert-clock
  "Y"            'auto-complete-mode

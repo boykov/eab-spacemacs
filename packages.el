@@ -221,6 +221,8 @@ which require an initialization must be listed explicitly in the list.")
                     qwen/qwen-turbo
                     nvidia/nemotron-3-super-120b-a12b:free
                     qwen/qwen3-coder-30b-a3b-instruct
+                    qwen/qwen3.6-plus:free
+                    qwen/qwen3-coder-next
                     deepseek/deepseek-v3.2
                     mistralai/mixtral-8x7b-instruct
                     meta-llama/codellama-34b-instruct
@@ -274,6 +276,7 @@ calls the gptel-rewrite interactive command."
                                  (save-excursion
                                    (insert message)))))
       (message "magit-gptel: Generating commit message..."))
+    :config
     (defun gptel-magit--generate (callback)
       "Generate a commit message for current magit repo.
 Invokes CALLBACK with the generated message when done."
@@ -314,8 +317,8 @@ Invokes CALLBACK with the generated message when done."
     (defun daemons-systemd--cmd ()
       "Appends `--user' to the `systemctl' call if `daemons-systemd-is-user' is set"
       (if daemons-systemd-is-user
-          ". /tmp/lib.sh; cache_cmd 30000 systemctl --user"
-        ". /tmp/lib.sh; cache_cmd 30000 systemctl"))
+          ". /tmp/lib.sh; cache_cmd_filter 30000 systemctl --user"
+        ". /tmp/lib.sh; cache_cmd_filter 30000 systemctl"))
     (defun daemons-systemd-toggle-user ()
       "Toggle showing of user services"
       (interactive)
@@ -527,15 +530,29 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
 (defun eab-spacemacs/init-browse-url ()
   (setq browse-url-browser-function (quote eab/browse-url))
   (setq browse-url-firefox-program "/usr/local/bin/browser-remote")
+  (defun eab/eaf-open-browser (url)
+    (call-process-shell-command
+     (concat "
+ssh chronos docker exec -u app \
+  -e HOME=/config \
+  -e DBUS_SESSION_BUS_ADDRESS=unix:path=/tmp/dbus.base \
+   firefox firefox --profile /config/profile " url)  nil 0)
+    (switch-to-buffer "Firefox"))
   (defun eab/browse-url (url &optional arg)
     (interactive)
-    (if current-prefix-arg (browse-url-firefox url)
+    (if current-prefix-arg
+        (browse-url-firefox url)
       (eaf-open-browser-other-window url)))
+  (defun eab/browse-url0 (url &optional arg)
+    (interactive)
+    (if current-prefix-arg
+        (browse-url-firefox url)
+      (eab/eaf-open-browser url)))
   (defun google (phrase)
     "Search Google for a given phrase.
 Prompts the user to enter a search query, defaulting to PHRASE if provided.
 Opens the Google search results page for the entered query in the default web browser."
-    (eab/browse-url
+    (eab/browse-url0
      (concat
       "https://www.google.com/search?q="
       (url-hexify-string
@@ -549,7 +566,16 @@ Opens the Google search results page for the entered query in the default web br
       (google str)))
   )
 
-(defun eab-spacemacs/init-ediff ())
+(defun eab-spacemacs/init-ediff ()
+  (defun eab/ediff-dired-directories ()
+    (interactive)
+    (when (= (length (window-list)) 2)
+      (let ((dirs (mapcar
+                   (lambda (w) 
+                     (buffer-local-value 'default-directory (window-buffer w)))
+                          (window-list))))
+        (ediff-directories (car dirs) (cadr dirs) nil))))
+  )
 (defun eab-spacemacs/init-ediff-wind ()
   (require 'ediff-wind)
   (setq ediff-window-setup-function 'ediff-setup-windows-plain)
@@ -1007,6 +1033,8 @@ Opens the Google search results page for the entered query in the default web br
         ;; (setq eaf-proxy-type "http")
         ;; (eaf-restart-process)
         (setq eaf-browser-auto-import-chrome-cookies 't)
+        (setq eaf-browser-chrome-browser-name "chrome")
+        (setq eaf-webengine-pc-user-agent "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36")
         (defun eab/org-eaf-open (path link)
           (eaf-open path))
         (advice-remove #'org-open-file #'eaf--find-file-advisor)
@@ -1054,23 +1082,27 @@ Opens the Google search results page for the entered query in the default web br
                   ("C-<end>" . "scroll_to_end")
                   ("M-L" . "scroll_to_end")
                   )))
+        (eaf-create-send-sequence-function "ctrl-t" "C-t")
+        (eaf-create-send-sequence-function "ctrl-v" "C-v")
         (setq eaf-browser-keybinding nil)
         (let ((kb 'eaf-browser-keybinding))
           (mapc (lambda (x)
                   (eval `(eab/eaf-bind-key ,x ,kb)))
                 '(
+                  ;; ("C-t" . "eaf-send-ctrl-t-sequence")
+                  ;; ("C-v" . "eaf-send-ctrl-v-sequence")
                   ("M-b" . "browser-a-lot-goto-prev")
-                  ("0" . "insert_or_zoom_reset")
-                  ("=" . "insert_or_zoom_in")
-                  ("-" . "insert_or_zoom_out")
+                  ;; ("0" . "insert_or_zoom_reset")
+                  ;; ("=" . "insert_or_zoom_in")
+                  ;; ("-" . "insert_or_zoom_out")
                   ("C-<home>" . "scroll_to_begin")
                   ("M-J" . "scroll_to_begin")
                   ("C-<end>" . "scroll_to_bottom")
                   ("M-L" . "scroll_to_bottom")
                   ("M-D" . "open_link")
-                  ("D" . "toggle_dark_mode")
-                  ("F" . "insert_or_history_forward")
-                  ("B" . "insert_or_history_backward")
+                  ;; ("D" . "toggle_dark_mode")
+                  ("M-F" . "insert_or_history_forward")
+                  ("M-B" . "insert_or_history_backward")
                   ("M-;" . "search_text_forward")
                   ("M-:" . "search_text_backward")
                   ("M-i" . "scroll_down")
@@ -1080,10 +1112,10 @@ Opens the Google search results page for the entered query in the default web br
                   ("<next>" . "scroll_up_page")
                   ("<prior>" . "scroll_down_page")
                   ("M-c" . "copy_text")
-                  ("n" . "insert_or_export_text")
+                  ("M-v" . "yank_text")
                   ("C-w" . "insert_or_export_text")
-                  ("q" . "insert_or_close_buffer")
-                  ("e" . "insert_or_edit_url")
+                  ("C-q" . "insert_or_close_buffer")
+                  ("C-e e" . "insert_or_edit_url")
                   )))
   )))
 (defun eab-spacemacs/init-emacs-eat nil

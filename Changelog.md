@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.4.20
+
+fix(keybindings): replace `kill-buffer-and-window` with `kill-current-buffer`
+feat(lisp): add `eab/org-clock-he-minmax` and `eab/org-clock-he-delta`
+feat(lisp): add new pmacro `narrow-note` and remove `star-to-space2`
+fix(lisp): improve em-dash replacement logic in workflow
+feat(packages): add new qwen models and update daemons-systemd command
+feat(packages): add eaf browser integration with chrome support and improved keybindings
+refactor(packages): reorganize eab-spacemacs init functions for better structure
+
 ## 0.4.19
 
 Rm old `eab/get-all-csum`, `csum` functions, use clock.sh

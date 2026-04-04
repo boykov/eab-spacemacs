@@ -26,6 +26,25 @@ This function is made for clock tables."
                         tot))))
         0))))
 
+(defun eab/org-clock-he-minmax (c16s r16)
+  (let* ((range+ (seq-filter (lambda (x) (> x 0)) (cl-map 'list #'string-to-number r16)))
+         (range- (seq-filter (lambda (x) (< x 0)) (cl-map 'list #'string-to-number r16)))
+         (minimum (calcFunc-vmedian (cons 'vec (if (evenp (length range-)) (append range- '(0.)) range-))))
+         (maximum (calcFunc-vmedian (cons 'vec (if (evenp (length range+)) (append range+ '(0.)) range+))))
+         (c16 (string-to-number c16s)))
+    (if (or (> c16 maximum)
+            (< c16 minimum))
+        c16
+      0)))
+
+;; (eab/org-clock-he-minmax "-3" '("1" "2" "3" "4" "5" "-1" "-2" "-3" "-4"))
+;; (eab/org-clock-he-delta "30" "23" "22")
+
+(defun eab/org-clock-he-delta (c15 c14 c6)
+  (if (> (abs (string-to-number c15)) 40)
+      0
+    (* 100 (- (string-to-number c14) (string-to-number c6)))))
+
 (defun eab/org-clock-dispersion (func frac range)
   (let* ((minutes (cl-map 'vector #'org-duration-string-to-minutes range))
          (len (length minutes))

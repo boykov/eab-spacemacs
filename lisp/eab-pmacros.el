@@ -118,7 +118,7 @@
  ;--------------------------------------------------------------------
         pm-def-macro
         'star-to-space2
-        'global [8388718 110]
+        nil nil
         "*** -> -"
         "M-SPC M-m M-5 * RET SPC RET ! M-l - SPC M-k M-h M-i M-SPC M-; - M-j M-c
  M-k M-h 2*M-w M-v M-h"
@@ -204,3 +204,9 @@
  ""
  "C-l C-k M-; _abstr RET M-h RET M-SPC M-k M-X M-; _abs RET M-h M-SPC M-k M-X M-w
  C-l L")
+
+(pm-def-macro
+ 'narrow-note
+ 'global "nn"
+ ""
+ "C-l C-k C-SPC M-: - SPC <2026 RET M-h C-x n n M-L")
