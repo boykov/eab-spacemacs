@@ -1,10 +1,3 @@
-(fset 'reply-last-mail
-   [?\C-x ?b ?g ?r ?o ?u return ?\M-< ?g return ?r]) ;;?\M-> ?\C-p  
-
-(fset 'eab/set-work-buffers
-   [?\C-x ?1 ?\C-x ?1 ?\C-x ?1 ?\C-x ?b ?r ?u ?n ?. ?m ?p ?l return ?\C-x ?3 ?\C-x ?o ?\C-x ?b ?l ?i ?b ?s ?y ?m ?. ?m ?p ?l return ?\C-x ?o])
-
-
 (fset 'eab/help-mode-back ;; see help-go-back 
    [?\M-L ?\M-: ?b ?a ?c ?k ?\C-m return]) ;ergo
 
@@ -25,20 +18,6 @@
  ;--------------------------------------------------------------------
 )
 
-
-(;--------------------------- power-macros ---------------------------
- ;---------------C-l n g - specific for emacs-lisp-mode---------------
- ;--------------------------------------------------------------------
-        pm-def-macro
-        'define2general
-        'emacs-lisp-mode "ng"
-        ""
-        "general- ESC m RET :keymaps SPC ' ESC m RET ESC f ESC f ESC f ESC f
- ESC f ESC m ESC f ESC ; define RET ESC n"
- ;--------------------------------------------------------------------
-)
-
-
 (;--------------------------- power-macros ---------------------------
  ;------------------s - specific for org-agenda-mode------------------
  ;--------------------------------------------------------------------
@@ -50,7 +29,6 @@
  1w M-s"
  ;--------------------------------------------------------------------
 )
-
 
 (;--------------------------- power-macros ---------------------------
  ;---------------------s-n e - global definition----------------------
@@ -112,20 +90,6 @@
  ;--------------------------------------------------------------------
 )
 
-
-(;--------------------------- power-macros ---------------------------
- ;---------------------s-n n - global definition----------------------
- ;--------------------------------------------------------------------
-        pm-def-macro
-        'star-to-space2
-        nil nil
-        "*** -> -"
-        "M-SPC M-m M-5 * RET SPC RET ! M-l - SPC M-k M-h M-i M-SPC M-; - M-j M-c
- M-k M-h 2*M-w M-v M-h"
- ;--------------------------------------------------------------------
-)
-
-
 (;--------------------------- power-macros ---------------------------
  ;---------------------s-n S - global definition----------------------
  ;--------------------------------------------------------------------
@@ -137,17 +101,11 @@
  ;--------------------------------------------------------------------
 )
 
-
-(;--------------------------- power-macros ---------------------------
- ;--------------------C-l n d - global definition---------------------
- ;--------------------------------------------------------------------
-        pm-def-macro
-        'delete-end-clock
-        'global "nd"
-        "delete block between :END: and next :CLOCK:"
-        "ESC : :end RET ESC SPC ESC ; :cloc RET ESC k ESC h ESC X"
- ;--------------------------------------------------------------------
-)
+(pm-def-macro
+ 'delete-end-clock
+ 'global "nd"
+ "delete block between :END: and next :CLOCK:"
+ "ESC : :end RET ESC SPC ESC ; :cloc RET ESC k ESC h ESC X")
 
 (pm-def-macro
  'org-note-align

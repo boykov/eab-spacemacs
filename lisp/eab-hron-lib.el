@@ -311,16 +311,16 @@
 (defun eab/hron-todo-bulk ()
   (eab/hron-todo-1 eab/hron-todo-bulk-hour eab/hron-todo-bulk-minute 4))
 
-(defadvice org-shiftup (after eab/org-shift-update activate)
+(define-advice org-shiftup (:after (&rest args) eab/org-shift-update)
   (eab/org-shift-update-1))
 
-(defadvice org-shiftdown (after eab/org-shift-update activate)
+(define-advice org-shiftdown (:after (&rest args) eab/org-shift-update)
   (eab/org-shift-update-1))
 
-(defadvice org-shiftmetaup (after eab/org-shift-update activate)
+(define-advice org-shiftmetaup (:after (&rest args) eab/org-shift-update)
   (eab/org-shift-update-1))
 
-(defadvice org-shiftmetadown (after eab/org-shift-update activate)
+(define-advice org-shiftmetadown (:after (&rest args) eab/org-shift-update)
   (eab/org-shift-update-1))
 
 (defvar eab/org-shift-timeout 0.3 "Lock current time delay timeout")

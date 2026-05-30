@@ -231,21 +231,18 @@ update search arguments."
 ;; DONE для C-c s eab/org-agenda-search используется org-search-view
 ;; т.е. команда org-agenda не вызывается и advice не используется
 ;; также, если обновить буфер по "g" это не вызывается
-(defadvice org-agenda (after eab-advice-agenda activate)
+(define-advice org-agenda (:after (&rest args) eab-advice-agenda)
   (eab/short-name-agenda))
 
-;; (defadvice org-ql-search (after eab-org-ql-search activate)
+;; (define-advice org-ql-search (:after (&rest args) eab-org-ql-search)
 ;;   (eab/fix-agenda-buffer-name))
-;; (ad-remove-advice 'org-ql-search 'after 'eab-org-ql-search)
-;; (ad-deactivate 'org-ql-search)
-;; (ad-activate 'org-ql-search)
+;; (advice-remove 'org-ql-search #'eab-org-ql-search)
 
-(defadvice org-search-view (after eab-advice-search-view activate)
+(define-advice org-search-view (:after (&rest args) eab-advice-search-view)
   (eab/short-name-agenda))
 
-(defadvice org-agenda-redo (after eab-advice-agenda-redo activate)
+(define-advice org-agenda-redo (:after (&rest args) eab-advice-agenda-redo)
   (eab/short-name-agenda))
-;; (ad-remove-advice 'org-search-view 'after 'eab-advice-search-view)
-;; (ad-deactivate 'org-search-view)
+;; (advice-remove 'org-search-view #'eab-advice-search-view)
 
 (provide 'eab-org-agenda)

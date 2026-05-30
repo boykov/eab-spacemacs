@@ -164,7 +164,7 @@
     "  - %t {{{synopsis}}}\n    - %L\n      - %:description\n      - %i" :immediate-finish 1)))
 
 ;; Fix (current-buffer) *server*
-(defadvice org-protocol-capture (before eab-org-protocol-capture activate)
+(define-advice org-protocol-capture (:before (&rest args) eab-org-protocol-capture)
   (switch-to-buffer (window-buffer (selected-window))))
 
 ;; (here) -> (function eab/org-capture-w)

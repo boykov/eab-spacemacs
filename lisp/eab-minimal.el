@@ -48,7 +48,7 @@
          ,@body
      (call-interactively 'self-insert-command)))
 
-(defadvice kmacro-end-macro (after fix-kmacro-input activate)
+(define-advice kmacro-end-macro (:after (&rest args) fix-kmacro-input)
   (setq last-kbd-macro (cl-remove 'with-input-method last-kbd-macro)))
 
 (defun eab/kmacro-end-or-call-macro ()

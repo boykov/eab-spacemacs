@@ -9,11 +9,11 @@
 
 (global-auto-complete-mode t)
 
-(defadvice kmacro-start-macro (before eab-kmacro-start activate)
+(define-advice kmacro-start-macro (:before (&rest args) eab-kmacro-start)
   (if auto-complete-mode
       (call-interactively 'auto-complete-mode)))
 
-(defadvice kmacro-end-macro (after eab-kmacro-end activate)
+(define-advice kmacro-end-macro (:after (&rest args) eab-kmacro-end)
   (unless auto-complete-mode
     (call-interactively 'auto-complete-mode)))
 

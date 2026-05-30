@@ -10,7 +10,6 @@
 (require 'view)
 (require 'dbus)
 (require 'log-edit)
-(require 'top-mode)
 
 (eab/bind-path savehist-file)
 (savehist-mode 1)
@@ -50,10 +49,6 @@
 (setq explicit-bash-args '("--noediting" "-i"))
 (if (file-exists-p "/bin/bash") (setq shell-file-name "/bin/bash"))
 
-(require 'nnir)
-
-(require 'smtpmail-async)
-
 (require 'ps-print)
 (require 'ps-mule)
 
@@ -67,33 +62,20 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (add-to-list 'auto-mode-alist '("\\.cu\\'" . c-mode))
-(add-to-list 'auto-mode-alist '("\\.dired$" . dired-virtual-mode))
 (add-to-list 'auto-mode-alist '("\\.tmpl$" . conf-mode))
-(add-to-list 'auto-mode-alist '("\\.m$" . octave-mode))
 (add-to-list 'auto-mode-alist '("AUTOEXEC\\." . 'bat-mode))
 (add-to-list 'auto-mode-alist '("CONFIG\\." . 'bat-mode))
 (add-to-list 'auto-mode-alist '("\\.cuf\\'" . f90-mode))
 (add-to-list 'auto-mode-alist '("\\.F90\\'" . f90-mode))
 (add-to-list 'auto-mode-alist '("\\.[bB][aA][tT]$" . 'bat-mode))
-(add-to-list 'auto-mode-alist '("\\.ahk$" . ahk-mode))
 (add-to-list 'auto-mode-alist '("\\.feature\\'" . feature-mode))
 (add-to-list 'auto-mode-alist '("\\.lsp\\'" . lisp-mode))
-(add-to-list 'auto-mode-alist '("\\.max\\'" . maxima-mode))
-(add-to-list 'auto-mode-alist '("\\.mpl\\'" . maplev-mode))
 (add-to-list 'auto-mode-alist '("\\.rtf\\'" . rtf-mode))
 (add-to-list 'auto-mode-alist '("\\.tex\\'" . latex-mode))
 
-(add-to-list 'load-path (eab/bind-path eab/emaxima-path))
-
 (autoload 'rtf-mode "rtf-mode" "RTF" t)
-(autoload 'ahk-mode "ahk-mode")
 (autoload 'bat-mode "bat-mode" "DOS and WIndows BAT files" t)
-(autoload 'cmaple "maplev" "Start maple process" t)
 (autoload 'ebib "ebib" "Ebib, a BibTeX database manager." t)
-(autoload 'emaxima-mode "emaxima" "EMaxima mode" t)
-(autoload 'maplev-mode "maplev" "Maple editing mode" t)
-(autoload 'maxima "maxima" "Running Maxima interactively" t)
-(autoload 'maxima-mode "maxima" "Maxima editing mode" t)
 
 (defalias 'perl-mode 'cperl-mode)
 (setq cperl-extra-newline-before-brace t

@@ -73,14 +73,13 @@
             (lambda (uid) (wg-find-workgroup-by :uid uid t))
             eab/wg-workgroups-history))))
 
-(defadvice wg-switch-to-workgroup (before eab-wg-switch-to-workgroup activate)
+(define-advice wg-switch-to-workgroup (:before (&rest args) eab-wg-switch-to-workgroup)
   (let ((workgroup (wg-current-workgroup t)))
     (if workgroup
         (if (eab/wg-base? (wg-workgroup-name workgroup))
             (eab/wg-add-workgroup-to-history (wg-workgroup-uid workgroup))))))
 
-;; (ad-remove-advice 'wg-switch-to-workgroup 'before 'eab-wg-set-previous-workgroup)
-;; (ad-deactivate 'wg-switch-to-workgroup)
+;; (advice-remove 'wg-switch-to-workgroup #'eab-wg-set-previous-workgroup)
 
 (defun eab/wg-update (bufsw)
   "Update current workgroup by current directory"
@@ -307,10 +306,10 @@
   (mapcar 'wg-winner-get wg-winner-vars)
   (wg-winner-mode-restore))
 
-(defadvice wg-switch-to-workgroup (before wg-winner-before activate)
+(define-advice wg-switch-to-workgroup (:before (&rest args) wg-winner-before)
   (wg-winner-save))
 
-(defadvice wg-switch-to-workgroup (after wg-winner-after activate)
+(define-advice wg-switch-to-workgroup (:after (&rest args) wg-winner-after)
   (wg-winner-load))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;

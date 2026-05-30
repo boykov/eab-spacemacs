@@ -40,7 +40,6 @@
 
     git-timemachine
     git-wip-timemachine
-    libgit
     magit
     forge
     orgit
@@ -224,6 +223,7 @@ which require an initialization must be listed explicitly in the list.")
                     qwen/qwen3.6-plus:free
                     qwen/qwen3-coder-next
                     deepseek/deepseek-v3.2
+                    deepseek/deepseek-v4-pro
                     mistralai/mixtral-8x7b-instruct
                     meta-llama/codellama-34b-instruct
                     codellama/codellama-70b-instruct
@@ -267,7 +267,26 @@ calls the gptel-rewrite interactive command."
     :after (magit gptel)
     ;; before package is loaded
     :init
-    (setq gptel-magit-model 'qwen/qwen3-coder-30b-a3b-instruct)
+    (setq gptel-magit-model 'qwen/qwen3-coder-next)
+    (setq gptel-magit-commit-prompt
+          "You are an expert at writing Git commits. Your job is to write a short clear commit message that summarizes the changes.
+
+The commit message should be structured as follows:
+
+    <type>(<optional scope>): <description>
+
+    [optional body]
+
+- Commits MUST be prefixed with a type, which consists of one of the followings words: build, chore, ci, docs, feat, fix, perf, refactor, style, test
+- The type feat MUST be used when a commit adds a new feature
+- The type fix MUST be used when a commit represents a bug fix
+- An optional scope MAY be provided after a type. A scope is a phrase describing a section of the codebase enclosed in parenthesis, e.g., fix(parser):
+- A description MUST immediately follow the type/scope prefix. The description is a short description of the code changes, e.g., fix: array parsing issue when multiple spaces were contained in string.
+- Try to limit the whole subject line to 60 characters
+- Capitalize the subject line
+- Do not end the subject line with any punctuation
+- Use the imperative mood in the subject line
+- Keep the body short and concise (omit it entirely if not useful)" )
     (defun eab/gptel-magit-generate-message ()
       "Generate a commit message."
       (interactive)
@@ -287,7 +306,7 @@ Invokes CALLBACK with the generated message when done."
           :system gptel-magit-commit-prompt
           :context nil
           :callback `(lambda (response _info)
-                       (let ((msg (gptel-magit--format-commit-message response)))
+                       (let ((msg response))
                          (funcall ,callback msg))))))
     ))
 (defun eab-spacemacs/init-elisa nil)
@@ -679,9 +698,9 @@ Opens the Google search results page for the entered query in the default web br
     (read-only-mode 'toggle))
 
   ;; TODO why concrete buffer-name only?
-  (defadvice display-message-or-buffer (before ansi-color activate)
+  (define-advice display-message-or-buffer (:before (&rest args) ansi-color)
     "Process ANSI color codes in shell output."
-    (let ((buf (ad-get-arg 0)))
+    (let ((buf (car args)))
       (and (bufferp buf)
            (string= (buffer-name buf) "*Shell Command Output*")
            (with-current-buffer buf
@@ -863,16 +882,15 @@ Opens the Google search results page for the entered query in the default web br
 (defun eab-spacemacs/init-dictionary nil
   (require 'dictionary)
   (setq dictionary-server "localhost")
-  (defadvice dictionary-search (after eab-dictionary-abbrev activate)
+  (define-advice dictionary-search (:after (&rest args) eab-dictionary-abbrev)
     "Put searched word for dictionary to eab-abbrev-table"
-    (let ((word (ad-get-arg 0)))
+    (let ((word (car args)))
       (unless (string-equal word "")
         (define-abbrev eab-abbrev-table word word)))))
 
 (defun eab-spacemacs/init-magit nil
   (use-package magit
     :defer
-    :after (libgit)
     :init
     (require 'magit-status)
     (add-to-list 'magit-status-sections-hook 'magit-insert-modules 't)
@@ -881,7 +899,7 @@ Opens the Google search results page for the entered query in the default web br
     (transient-append-suffix 'magit-diff "-a"
       '("-S" "Submodule diff" "--submodule=diff")))
   ;; (use-package magit-wip)
-  (defadvice vc-annotate (before eab-vc-annotate activate)
+  (define-advice vc-annotate (:before (&rest args) eab-vc-annotate)
     (vc-refresh-state))
   (setq magit-section-visibility-indicator nil)
   (eab/bind-path transient-history-file)
@@ -917,8 +935,8 @@ Opens the Google search results page for the entered query in the default web br
   ;; org-magit obsolete
   ;; org-magit workaround
   ;; (defvar magit-currently-shown-commit nil)
-  ;; (defadvice magit-show-commit (after eab-magit-show-commit activate)
-  ;;   (setq magit-currently-shown-commit (ad-get-arg 0)))
+  ;; (define-advice magit-show-commit (:after (&rest args) eab-magit-show-commit)
+  ;;   (setq magit-currently-shown-commit (car args)))
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1008,12 +1026,6 @@ Opens the Google search results page for the entered query in the default web br
 (defun eab-spacemacs/init-esup nil)
 (defun eab-spacemacs/init-diff-hl nil
   (require 'diff-hl))
-(defun eab-spacemacs/init-libgit nil
-  (use-package libgit
-    ;; :init
-    ;; build28 bad name: libssl ubuntu 20.04
-    ;; (when (string= (daemonp) "????") (defvar libgit--build-dir (expand-file-name "build28" libgit--root)))
-    ))
 (defun eab-spacemacs/init-vterm nil
     (setq vterm-keymap-exceptions '("C-c" "C-x" "C-u" "C-g" "C-h" "C-l" "M-x" "M-o" "C-v" "M-v" "C-y" "M-y" "M-s" "M-a" "M-i" "M-k" "M-j" "M-l" "C-a" "M-c" "M-p"))
     (defun vterm-send-meta-c-b ()
@@ -1237,13 +1249,13 @@ Opens the Google search results page for the entered query in the default web br
             (lambda ()
               (if (and mark-active (not (use-region-p)))
                   (deactivate-mark))))
-  (defadvice winner-undo (before eab-winner-undo-before activate)
+  (define-advice winner-undo (:before (&rest args) eab-winner-undo-before)
     (region-bindings-mode-disable))
-  (defadvice winner-undo (after eab-winner-undo-after activate)
+  (define-advice winner-undo (:after (&rest args) eab-winner-undo-after)
     (region-bindings-mode-enable))
-  (defadvice winner-redo (before eab-winner-redo-before activate)
+  (define-advice winner-redo (:before (&rest args) eab-winner-redo-before)
     (region-bindings-mode-disable))
-  (defadvice winner-redo (after eab-winner-redo-after activate)
+  (define-advice winner-redo (:after (&rest args) eab-winner-redo-after)
     (region-bindings-mode-enable))
   ;; TODO fix the hack: why call it second time?
   ;; emacs 28 bad
@@ -1609,6 +1621,16 @@ Opens the Google search results page for the entered query in the default web br
                                               ("5" "maple" nil "mint")
                                               ("4" "maple" nil "mint")))))
   (require 'ido-better-flex)
+  (autoload 'cmaple "maplev" "Start maple process" t)
+  (autoload 'emaxima-mode "emaxima" "EMaxima mode" t)
+  (autoload 'maplev-mode "maplev" "Maple editing mode" t)
+  (autoload 'maxima "maxima" "Running Maxima interactively" t)
+  (autoload 'maxima-mode "maxima" "Maxima editing mode" t)
+  (add-to-list 'auto-mode-alist '("\\.max\\'" . maxima-mode))
+  (add-to-list 'auto-mode-alist '("\\.mpl\\'" . maplev-mode))
+  (add-to-list 'load-path (eab/bind-path eab/emaxima-path))
+
+  (require 'top-mode)
   )
 
 ;; for history only
@@ -1712,6 +1734,7 @@ Opens the Google search results page for the entered query in the default web br
      "p" `(,(ilam (dired eab/downloads-path)) :which-key ,eab/downloads-path)
      "t" `(,(ilam (dired "~/tmp")) :which-key "~/tmp"))
     (setq eab/dired-map (lookup-key global-map (kbd "C-x d")))
+    (add-to-list 'auto-mode-alist '("\\.dired$" . dired-virtual-mode))
     )
   )
 

@@ -13,7 +13,7 @@
 
 (smex-initialize)
 
-(defadvice smex-show-key-advice (around eab-advice-smex activate)
+(define-advice smex-show-key-advice (:around (&rest args) eab-advice-smex)
   "Put item to extended-command-history"
   (add-to-list 'extended-command-history (car smex-ido-cache)))
 

@@ -42,7 +42,7 @@
 
 
 (defun eab/load-desktop ()
-  ;; TODO don't setup defadvice wg-switch-to-workgroup before it
+  ;; TODO don't setup define-advice wg-switch-to-workgroup before it
   (eab/workgroups-save-file-load)
   (ignore-errors (let ((dir (eab/desktop-dir)))
                    (if (file-exists-p (concat dir ".emacs.desktop"))

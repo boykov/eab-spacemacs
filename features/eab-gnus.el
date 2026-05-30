@@ -8,6 +8,8 @@
 ;; Status: not intended to be distributed yet
 
 (require 'gnus-dired)
+(require 'smtpmail-async)
+(require 'nnir)
 
 (eab/bind-path gnus-init-file)
 (eab/bind-path gnus-startup-file)

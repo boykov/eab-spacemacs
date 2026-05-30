@@ -4,7 +4,7 @@
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords: 
-;; Requirements: ansi-color, async
+;; Requirements:
 ;; Status: not intended to be distributed yet
 
 (eab/bind-path auto-save-list-file-prefix)

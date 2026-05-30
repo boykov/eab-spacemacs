@@ -217,10 +217,9 @@
 
 (grep-a-lot-advise eab/grep)
 
-;; (defadvice eab/grep (after eab/grep-setup activate)
+;; (define-advice eab/grep (:after (&rest args) eab/grep-setup)
 ;;   (eab/grep-setup-1))
-;; (ad-remove-advice 'eab/grep 'after 'eab/grep-setup)
-;; (ad-deactivate 'eab/grep)
+;; (advice-remove 'eab/grep #'eab/grep-setup)
 
 (defun eab/grep-setup-1 ()
   (message  "%s" (buffer-name))

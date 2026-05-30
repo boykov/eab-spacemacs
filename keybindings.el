@@ -233,7 +233,7 @@
 (general-define-key
  "<f8>"         'eepitch-this-line
  "<kp-enter>"   'winner-undo
- "<kp-add>"     (ilam (gnus-group-read-group t t "nnimap+Dovecot:inbox"))
+ "<kp-add>"     'nil
  "<kp-begin>"   'nil
  ;; "<kp-home>" (ilam (switch-to-buffer "&bitlbee"))
  "<M-kp-equal>" (ilam (shell-command "suspend_until.sh 4:00 &"))
@@ -677,7 +677,7 @@
    :keymaps 'proced-mode-map
    "O"  'top))
 
-(defadvice top-mode (after eab-javascript-mode-after activate)
+(define-advice top-mode (:after (&rest args) eab-javascript-mode-after)
   (general-define-key
    :keymaps 'top-mode-map
    "O"  (ilam (switch-to-buffer "*Proced*"))))
@@ -724,7 +724,7 @@
    "t"  'dictionary-search
    "B"  'eab/help-mode-back))
 
-(defadvice artist-mode (before eab-artist-mode activate)
+(define-advice artist-mode (:before (&rest args) eab-artist-mode)
   (general-define-key
    :keymaps 'artist-mode-map
    "C-b"        'nil))
@@ -1089,41 +1089,6 @@
    "M-n"        'nil
    "C-w"        'eab/wgrep-change-to-wgrep-mode))
 
-(eab/add-hook gnus-started-hook eab/gnus-article-hook
-  (general-define-key
-   :keymaps 'gnus-article-mode-map
-   "M-g"        'nil
-   "M-u"        'nil
-   "M-*"        'nil
-   "M-n"        'nil
-   "C-c C-v"    'gnus-article-browse-html-article))
-
-(eab/add-hook gnus-started-hook eab/gnus-summary-hook
-  (general-define-key
-   :keymaps 'gnus-summary-mode-map
-   "g"          'eab/gnus-inbox
-   "RET"        'gnus-summary-show-article
-   "A o"        'gnus-summary-insert-old-articles
-   "M-I"        'nil
-   "M-i"        'nil
-   "M-k"        'nil
-   "M-K"        'nil
-   "M-s"        'nil
-   "M-p"        'nil
-   "M-n"        'nil
-   "\C-c\C-w"   'gnus-summary-move-article
-   "m"          'gnus-summary-mark-as-processable
-   "x"          'gnus-summary-delete-article
-   "u"          'gnus-summary-unmark-as-processable))
-
-(eab/add-hook gnus-started-hook eab/gnus-group-hook
-  (general-define-key
-   :keymaps 'gnus-group-mode-map
-   "RET"        'eab/gnus-group-select
-   "M-d"        'nil
-   "M-k"        'nil
-   "M-n"        'nil))
-
 (eab/add-hook dired-mode-hook eab/dired-hook
   (general-define-key
    :keymaps 'dired-mode-map
@@ -1349,7 +1314,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; no hook
 
-(defadvice region-bindings-mode-on (before eab-region-bindings-mode-on activate)
+(define-advice region-bindings-mode-on (:before (&rest args) eab-region-bindings-mode-on)
   (progn
     (setq region-bindings-mode-disabled-modes '(magit-status-mode magit-diff-mode))
     (general-define-key

@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.4.21
+
+feat: update keybindings, migrate from `defadvice` to `define-advice`, and add DeepSeek V4-Pro model support
+
+- Replace deprecated `defadvice` with `define-advice` syntax across multiple files.
+- `nnir`/`smtpmail-async` requirements moved from `eab-depend.el` to `eab-gnus.el`.
+- Update `gptel-magit-model` to `qwen/qwen3-coder-next` and extend the commit prompt with detailed commit message guidelines.
+- Minor cleanup: remove commented-out ad advising, remove `libgit` package dependency.
+
 ## 0.4.20
 
 fix(keybindings): replace `kill-buffer-and-window` with `kill-current-buffer`
