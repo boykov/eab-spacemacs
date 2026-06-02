@@ -17,6 +17,8 @@
 ;; (load "preview-latex.el" nil t t)
 ;; (TeX-global-PDF-mode)
 
+(add-to-list 'auto-mode-alist '("\\.tex\\'" . latex-mode))
+
 (setq eab/tex-commands-extra (list
                               (list "View" "evince %s.pdf" 'TeX-run-command t nil)
                               (list "BibLaT" "bibtex %s; pdflatex -shell-escape -file-line-error -interaction nonstopmode %t" 'TeX-run-TeX nil t)

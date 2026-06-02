@@ -9,7 +9,6 @@
 
 (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-;; melpa.org is blocked
 (add-to-list 'load-path (concat eab-spacemacs-path "lisp"))
 (add-to-list 'load-path (concat eab-spacemacs-path "features"))
 
@@ -247,7 +246,7 @@ END")))
             ("chronosP"      . ,(concat user-emacs-directory "historyChronosP/"))
             ("microcyclos"   . ,(concat user-emacs-directory "historyMicrocyclos/"))
             ("cyclos"        . ,(concat user-emacs-directory "historyCyclos/"))
-            ("chronosC"       . ,(concat user-emacs-directory "historyChronosC/"))
+            ("chronosC"      . ,(concat user-emacs-directory "historyChronosC/"))
             ("kairosC"       . ,(concat user-emacs-directory "kairosC/"))
             ))
 
@@ -319,7 +318,6 @@ END")))
   (setq-put eab/org-publish-directory "~/pub/org/"))
 
 (setq-put eab/org-publish-directory-file "file:///home/eab/pub/org/")
-(setq-put org-mobile-directory "~/Dropbox/MobileOrg")
 (setq-put org-ditaa-jar-path "/usr/bin/ditaa")
 
 (defun eab/papers-eaf (tag)

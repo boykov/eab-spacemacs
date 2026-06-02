@@ -1,13 +1,26 @@
 # Changelog
 
+## 0.4.22
+
+refactor(keybindings): remove unused keybindings and related code
+
+- HIDE gnus keybindings and perl-mode configuration
+- Simplify power-macros in eab-pmacros.el by removing outdated macros
+- Reorganize built-in package initialization in packages.el
+- Add explicit bash shell configuration to eab-shell.el
+
 ## 0.4.21
 
-feat: update keybindings, migrate from `defadvice` to `define-advice`, and add DeepSeek V4-Pro model support
+feat: update keybindings, migrate from `defadvice` to `define-advice`,
+and add DeepSeek V4-Pro model support
 
-- Replace deprecated `defadvice` with `define-advice` syntax across multiple files.
-- `nnir`/`smtpmail-async` requirements moved from `eab-depend.el` to `eab-gnus.el`.
-- Update `gptel-magit-model` to `qwen/qwen3-coder-next` and extend the commit prompt with detailed commit message guidelines.
-- Minor cleanup: remove commented-out ad advising, remove `libgit` package dependency.
+- Replace deprecated `defadvice` with `define-advice` syntax.
+- `nnir`/`smtpmail-async` requirements moved to `eab-gnus.el`.
+- Update `gptel-magit-model` to `qwen/qwen3-coder-next`
+- Extend the commit prompt with detailed commit message guidelines.
+- Minor cleanup: remove `libgit` package dependency.
+
+HIDE gnus keybindings in git history.
 
 ## 0.4.20
 
@@ -16,7 +29,7 @@ feat(lisp): add `eab/org-clock-he-minmax` and `eab/org-clock-he-delta`
 feat(lisp): add new pmacro `narrow-note` and remove `star-to-space2`
 fix(lisp): improve em-dash replacement logic in workflow
 feat(packages): add new qwen models and update daemons-systemd command
-feat(packages): add eaf browser integration with chrome support and improved keybindings
+feat(packages): add eaf browser integration with improved keybindings
 refactor(packages): reorganize eab-spacemacs init functions for better structure
 
 ## 0.4.19

@@ -96,15 +96,12 @@
 (eab/bind-path org-link-abbrev-alist)
 (eab/bind-path org-id-locations-file)
 (eab/bind-path org-clock-persist-file)
-(eab/bind-path org-mobile-directory)
 (eab/bind-path bibtex-files)
 (eab/bind-path org-ditaa-jar-path)
 
 (ox-extras-activate '(ignore-headlines))
 
-;; (org-mobile-create-sumo-agenda) - Create a file that contains all custom agenda views.
 
-;; TODO move this functionality to eab/bind-path
 (unless (boundp 'eab/org-publish-directory-file)
   (setq eab/org-publish-directory-file "ERROR"))
 
@@ -121,20 +118,8 @@
 ;; DONE не помогает! Надо еще какое-то шаманство, чтобы заработали ID на org-store-link по-умолчанию
 ;; DONE после этой команды (featurep 'org-id) дает nil
 (setq org-id-link-to-org-use-id 'create-if-interactive)
-;; (require 'org-wikinodes) ;; TODO лезут ошибки, после обновления до 8 версии
-(setq org-wikinodes-create-targets 't)
 
 (setq org-bbdb-anniversary-field 'birthday)
-
-;; Set to the name of the file where new notes will be stored
-(setq org-mobile-inbox-for-pull (concat org-directory "archive/flagged.org"))
-(setq org-mobile-files
-      (mapcar (lambda (x)
-                (concat org-directory "archive/" x))
-              '(
-                "refile.org"
-                "todo.org"
-                )))
 
 (setq org-default-notes-file (concat org-directory "archive/refile.org"))
 
@@ -166,11 +151,6 @@
 ;; Fix (current-buffer) *server*
 (define-advice org-protocol-capture (:before (&rest args) eab-org-protocol-capture)
   (switch-to-buffer (window-buffer (selected-window))))
-
-;; (here) -> (function eab/org-capture-w)
-(defun eab/org-capture-w ()
-  (switch-to-buffer "w2c-improve-developing-prog.org")
-  (point))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

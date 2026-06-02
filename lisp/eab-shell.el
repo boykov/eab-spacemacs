@@ -9,6 +9,8 @@
 
 ;; (setq shell-command-dont-erase-buffer 't) ;; add to previous output
 (setq async-shell-command-buffer 'new-buffer)
+(if (file-exists-p "/bin/bash") (setq shell-file-name "/bin/bash"))
+(setq explicit-bash-args '("--noediting" "-i"))
 
 (defvar eab/translate-path nil)
 

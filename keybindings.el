@@ -459,11 +459,7 @@
  "b"            'eab/bookmark-set
  "B"            'eab/bookmark-delete
  "C-b"          'eab/bookmark-jump
- "n SPC"        'dash-to-space3
  "nf"           'eab/pm-write-last-kbd-macro
- "nd"           'delete-end-clock
- "ns"           'split-clock
- "nc"           'insert-clock
  "Y"            'auto-complete-mode
  "g"            'eab/kill-last-grep
  "y"            'yas-minor-mode
@@ -669,18 +665,10 @@
    :keymaps 'docker-containers-mode-map
    "c"  'eab/tramp-docker-cleanup))
 
-(eab/add-hook rec-mode-hook eab/rec-hook
-  )
-
 (eab/add-hook proced-mode-hook eab/proced-hook
   (general-define-key
    :keymaps 'proced-mode-map
    "O"  'top))
-
-(define-advice top-mode (:after (&rest args) eab-javascript-mode-after)
-  (general-define-key
-   :keymaps 'top-mode-map
-   "O"  (ilam (switch-to-buffer "*Proced*"))))
 
 (eab/add-hook bibtex-mode-hook eab/bibtex-hook
   (general-define-key
@@ -717,13 +705,6 @@
    :keymaps 'text-mode-map
    "C-c C-c"    'server-edit))
 
-;; DONE does it really work? Only back
-(eab/add-hook dictionary-mode-hook eab/dictionary-hook
-  (general-define-key
-   :keymaps 'dictionary-mode-map
-   "t"  'dictionary-search
-   "B"  'eab/help-mode-back))
-
 (define-advice artist-mode (:before (&rest args) eab-artist-mode)
   (general-define-key
    :keymaps 'artist-mode-map
@@ -739,20 +720,6 @@
    "M-n"        'nil
    "M-p"        'nil
    "<tab>"      'nil))
-
-(eab/add-hook ibuffer-mode-hook eab/ibuffer-hook
-  (general-define-key
-   :keymaps 'ibuffer-mode-map
-   "C-d"        'nil
-   "C-k"        'nil
-   "C-o"        'nil
-   "C-y"        'nil
-   "M-g"        'nil
-   "M-j"        'nil
-   "M-n"        'nil
-   "M-o"        'nil
-   "M-p"        'nil
-   "M-s"        'nil))
 
 (eab/add-hook magit-file-mode-hook eab/magit-file-mode-hook
   (general-define-key
@@ -934,14 +901,6 @@
    "M-k"        'org-agenda-next-line
    "M-i"        'org-agenda-previous-line))
 
-(eab/add-hook comint-mode-hook eab/coming-hook
-  (general-define-key
-   :keymaps 'comint-mode-map
-   "M-p"        'comint-previous-matching-input-from-input
-   "M-n"        'comint-next-matching-input-from-input
-   "C-M-n"      'comint-next-input
-   "C-M-p"      'comint-previous-input))
-
 (eab/add-hook diff-mode-hook eab/diff-hook
   (general-define-key
    :keymaps 'diff-mode-map
@@ -1042,16 +1001,6 @@
    "M-i"        'term-send-down
    "C-p"        'term-send-up
    "C-n"        'term-send-down))
-
-(eab/add-hook comint-mode-hook eab/comint-hook
-  (general-define-key
-   :keymaps 'comint-mode-map
-   "M-s"        'nil
-   "M-p"        'nil
-   "M-n"        'nil
-   "M-r"        'nil
-   "C-p"        'comint-previous-input
-   "C-n"        'comint-next-input))
 
 (eab/add-hook compilation-mode-hook eab/compilation-hook
   (general-define-key
@@ -1295,8 +1244,7 @@
    :keymaps 'help-mode-map
    "o"  'ace-link-help
    "B"  'help-go-back
-   "F"  'help-go-forward
-   "F"  'nil))
+   "F"  'help-go-forward))
 
 (eab/add-hook eww-mode-hook eab/eww-hook
   (general-define-key

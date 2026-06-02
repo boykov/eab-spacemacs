@@ -193,6 +193,9 @@
     (files :location built-in)
     (subr :location built-in)
     (paragraphs :location built-in)
+    (ibuffer :location built-in)
+    (comint :location built-in)
+    (epa :location built-in)
     (eab-ui :location built-in)
     )
   "List of all packages to install and/or initialize. Built-in packages
@@ -497,6 +500,56 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
   ;; (key-chord-mode 1) ; DONE заедает, если не в конце dotemacs, не включается по-умолчанию (или выключается из-за чего-то)
   (add-hook 'term-mode-hook (lambda () (setq input-method-function 'key-chord-input-method)))
   )
+(defun eab-spacemacs/init-epa ()
+  (require 'epa)
+  (require 'epg)
+  (require 'epa-file)
+  (epa-file-enable)
+  (setq epa-file-select-keys 'silent) 
+  (setenv "GPG_AGENT_INFO" nil) ; use gpg without gui window
+  (setq epg-gpg-program "gpg")
+  (setq epa-pinentry-mode 'loopback)
+  )
+(defun eab-spacemacs/init-comint ()
+  (use-package comint
+    :init
+    (add-hook 'ielm-mode-hook (lambda () (setq comint-process-echoes nil)))
+    (add-hook 'comint-mode-hook (lambda () (setq comint-process-echoes t)))
+    (general-define-key
+     :keymaps 'comint-mode-map
+     "M-p"        'comint-previous-matching-input-from-input
+     "M-n"        'comint-next-matching-input-from-input
+     "C-M-n"      'comint-next-input
+     "C-M-p"      'comint-previous-input
+     "M-s"        'nil
+     "M-p"        'nil
+     "M-n"        'nil
+     "M-r"        'nil
+     "C-p"        'comint-previous-input
+     "C-n"        'comint-next-input))
+  )
+(defun eab-spacemacs/init-ibuffer ()
+  (use-package ibuffer
+    :init
+    (setq ibuffer-formats
+          '((mark modified read-only " "
+                  (name 18 18 :left :elide))
+            (mark modified read-only " " (name 18 18 :left :elide) " "
+                  (size 9 -1 :right) " " (mode 16 16 :left :elide) " "
+                  filename-and-process)))
+    (general-define-key
+     :keymaps 'ibuffer-mode-map
+     "C-d"        'nil
+     "C-k"        'nil
+     "C-o"        'nil
+     "C-y"        'nil
+     "M-g"        'nil
+     "M-j"        'nil
+     "M-n"        'nil
+     "M-o"        'nil
+     "M-p"        'nil
+     "M-s"        'nil))
+  )
 (defun eab-spacemacs/init-paragraphs ()
   (setq page-delimiter "^$")
   ;; (setq paragraph-start ...)
@@ -538,6 +591,13 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
    mark-ring-max 64
    global-mark-ring-max 64
    indent-tabs-mode nil
+   )
+  (eab/bind-path eshell-history-file-name)
+  (setq
+   history-length 500
+   kill-ring-max 500
+   max-lisp-eval-depth 10000
+   eshell-history-size 1000
    )
   (use-package eab-shell
     :init
@@ -880,13 +940,18 @@ Opens the Google search results page for the entered query in the default web br
   )
 
 (defun eab-spacemacs/init-dictionary nil
-  (require 'dictionary)
-  (setq dictionary-server "localhost")
-  (define-advice dictionary-search (:after (&rest args) eab-dictionary-abbrev)
-    "Put searched word for dictionary to eab-abbrev-table"
-    (let ((word (car args)))
-      (unless (string-equal word "")
-        (define-abbrev eab-abbrev-table word word)))))
+  (use-package dictionary
+    :init
+    (setq dictionary-server "localhost")
+    (define-advice dictionary-search (:after (&rest args) eab-dictionary-abbrev)
+      "Put searched word for dictionary to eab-abbrev-table"
+      (let ((word (car args)))
+        (unless (string-equal word "")
+          (define-abbrev eab-abbrev-table word word))))
+    (general-define-key
+     :keymaps 'dictionary-mode-map
+     "t"  'dictionary-search
+     "B"  'dictionary-previous)))
 
 (defun eab-spacemacs/init-magit nil
   (use-package magit
@@ -1351,6 +1416,7 @@ Opens the Google search results page for the entered query in the default web br
 (defun eab-spacemacs/init-ebib nil
   (eab/bind-path ebib-file-search-dirs)
   (eab/bind-path ebib-preload-bib-files)
+  (autoload 'ebib "ebib" "Ebib, a BibTeX database manager." t)
   )
 (defun eab-spacemacs/init-dockerfile-mode nil)
 (defun eab-spacemacs/init-ewmctrl nil)
@@ -1631,31 +1697,10 @@ Opens the Google search results page for the entered query in the default web br
   (add-to-list 'load-path (eab/bind-path eab/emaxima-path))
 
   (require 'top-mode)
-  )
-
-;; for history only
-(defun eab-spacemacs/init-eab-org-mode/lisp ()
-  (require 'org)
-  (require 'org-crypt)
-  (require 'org-habit)
-  (require 'org-id)
-  (require 'org-agenda)
-  (require 'org-clock)
-  (require 'org-table)
-  (require 'org-bbdb)
-  (require 'org-element)
-  (require 'ox)
-  (require 'ox-freemind)
-  (require 'ox-odt)
-  (require 'ob)
-  (require 'ob-ditaa)
-  (require 'ob-dot)
-  (require 'ob-shell)
-  (require 'ob-latex)
-  (require 'ob-python)
-  (require 'ob-makefile)
-  (require 'ob-R)
-  ;;  (require 'ob-rec)
+  (define-advice top-mode (:after (&rest args) eab-top-mode-after)
+    (general-define-key
+     :keymaps 'top-mode-map
+     "O"  (ilam (switch-to-buffer "*Proced*"))))
   )
 
 (defun eab-spacemacs/init-gnus nil
@@ -1816,7 +1861,6 @@ Opens the Google search results page for the entered query in the default web br
             (search category-keep)))
     (setq org-agenda-hide-tags-regexp nil)
     (org-toggle-sticky-agenda t)
-    (setq org-mobile-agendas '("S" "g" "a"))
     (setq org-agenda-include-diary nil)
     (setq org-agenda-archives-mode 't)
     (setq org-agenda-text-search-extra-files (quote (agenda-archives)))
