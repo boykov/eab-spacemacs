@@ -77,4 +77,4 @@
  'narrow-note
  'global "nn"
  ""
- "C-l C-k C-SPC M-: - SPC <2026 RET M-h C-x n n M-L")
+ "C-l C-k C-SPC M-: - SPC <2026 RET M-h C-x n n M-L C-l M-a (deactivate-mark) RET")

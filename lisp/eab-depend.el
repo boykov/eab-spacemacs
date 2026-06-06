@@ -7,21 +7,6 @@
 ;; Requirements: 
 ;; Status: not intended to be distributed yet
 
-(require 'view)
-(require 'log-edit)
-
-(eab/bind-path savehist-file)
-(savehist-mode 1)
-
-(setq which-key-idle-delay 2)
-(which-key-mode)
-
-(require 'uniquify)
-(setq uniquify-buffer-name-style 'forward)
-
-(require 'ps-print)
-(require 'ps-mule)
-
 (add-to-list 'auto-mode-alist '("\\.tmpl$" . conf-mode))
 (add-to-list 'auto-mode-alist '("AUTOEXEC\\." . 'bat-mode))
 (add-to-list 'auto-mode-alist '("CONFIG\\." . 'bat-mode))

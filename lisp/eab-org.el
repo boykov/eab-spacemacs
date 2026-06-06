@@ -7,23 +7,6 @@
 ;; Requirements: 
 ;; Status: not intended to be distributed yet
 
-;; (unload-feature 'org 't)
-(require 'org)
-(require 'org-clock)
-;; (require 'org-checklist)
-(require 'org-crypt)
-(require 'remember)
-(require 'org-capture)
-(require 'org-id)
-(require 'org-archive)
-(require 'ol-bbdb)
-(require 'ox-latex)
-(require 'ox-extra)
-(require 'ox-html)
-
-(require 'tex)
-(require 'tex-site)
-
 (setq org-odt-display-outline-level 1)
 
 (eab/patch-this-code

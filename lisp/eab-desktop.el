@@ -7,8 +7,6 @@
 ;; Requirements:
 ;; Status: ready
 
-(require 'desktop)
-
 (if (or
      (eab/ondaemon (eab/server-P))
      (eab/ondaemon (eab/server-C))
@@ -31,10 +29,6 @@
 (when (eab/ondaemon (eab/server-P))
   (run-with-idle-timer
    15 't (lambda () (interactive) (save-some-buffers 't))))
-
-(when (eab/ondaemon (eab/server-P))
-  (run-with-idle-timer
-   5 't (lambda () (interactive) (eab/update-query-on-idle 'eab/org-ql-H-query))))
 
 (when (eab/onhost "chronos-emacs")
   (run-with-idle-timer

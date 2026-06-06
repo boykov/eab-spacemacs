@@ -7,6 +7,7 @@
 ;; Requirements: workgroups2
 ;; Status: ready
 
+;; Should use require, not use-package due to (setf (wg-wconfig-name wconfig) name)
 (require 'workgroups2)
 
 (defvar eab/wg-path nil "")

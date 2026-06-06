@@ -7,7 +7,8 @@
 ;; Requirements:
 ;; Status: not intended to be distributed yet
 
-(use-package eab-minimal)
+(use-package eab-minimal
+  :after (cl cl-macs))
 (use-package eab-workflow)
 
 (mapc (lambda (x) (add-to-list 'extended-command-history x))
@@ -460,6 +461,7 @@
  "B"            'eab/bookmark-delete
  "C-b"          'eab/bookmark-jump
  "nf"           'eab/pm-write-last-kbd-macro
+ "nw"           'widen
  "Y"            'auto-complete-mode
  "g"            'eab/kill-last-grep
  "y"            'yas-minor-mode
@@ -659,11 +661,6 @@
    "p"          'git-rebase-pick
    "M-n"        'git-rebase-move-line-down
    "M-p"        'git-rebase-move-line-up))
-
-(eab/add-hook docker-containers-mode-hook eab/docker-containers-hook
-  (general-define-key
-   :keymaps 'docker-containers-mode-map
-   "c"  'eab/tramp-docker-cleanup))
 
 (eab/add-hook proced-mode-hook eab/proced-hook
   (general-define-key

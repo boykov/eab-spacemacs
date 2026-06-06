@@ -7,6 +7,10 @@
 ;; Requirements: none
 ;; Status: ready
 
+(electric-indent-mode)
+(electric-pair-mode -1)
+(setq default-input-method "russian-computer")
+(setq system-time-locale "ru_RU.utf8")
 (setq desktop-load-locked-desktop 't)
 (when (and (not noninteractive))
   (if configuration-layer-error-count
@@ -14,11 +18,6 @@
   ;; TODO раньше был nil, потом стало глючить
   ;; из-за enable-local-variables
   (setq-default TeX-master t))
-
-(electric-indent-mode)
-(electric-pair-mode -1)
-
-;; DONE похоже, переменная server-name здесь еще не становится server-C
 
 (if (and (or
           (eab/ondaemon (eab/server-P))
@@ -32,60 +31,10 @@
 
 (eab/renew-agenda-files-1)
 
-(setq system-time-locale "ru_RU.utf8")
-
-(eab/bind-path eab/secrets-path)
 ; TODO create function and hook after first start frame
-
-(defun eab/load-personal ()
-  (interactive)
-  (if (fboundp 'grep-a-lot-clear-stack)
-      (grep-a-lot-clear-stack))
-  (winner-mode)
-  ;; (load-file eab/secrets-path)
-  (wg-change-modeline)
-  (require 'cl-macs)
-  (cl-assert
-   (equal (ido-completing-read-silent
-           "prompt: " '("one" "two" "three" "four" "five") "t")
-          '("two" "three")))
-  (global-eldoc-mode 0)
-  (require 'yasnippet)
-  (yas-reload-all)
-  (require 'org-ql-search)
-  (require 'org-depend)
-  (require 'org-sql)
-  (require 'eab-helm)
-  (eab/loaded-ok (concat (daemonp) " dotemacs"))
-  )
-
-;; TODO move to eab-minimal?
-(defun eab/load-gui ()
-  (interactive)
-  (when eab/first-emacsclient
-    (iconify-frame)
-    (disable-theme 'solarized-light)
-    (eab/load-personal)
-    ;; (eab/load-desktop)
-    (eab/create-workgroups)
-    (eab/wg-switch-to-workgroup ":clock:")
-    (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
-    (iconify-frame)
-    (execute-kbd-macro (read-kbd-macro "C-a h C-g"))
-    (setq eab/first-emacsclient nil))
-  (set-face-attribute 'default nil
-                      :family "Source Code Pro"
-                      :height (if (eq (display-pixel-width) 1680) 130 150)
-                      :weight 'normal
-                      :width 'normal))
-
-(setq default-input-method "russian-computer")
 
 (global-set-key (kbd "C-h c") 'describe-key-briefly)
 (global-set-key (kbd "M-O") 'forward-paragraph)
-;; (general-define-key
-;;  :prefix "C-e"
-;;  "d" docker-command-map)
 
 ;; (eab/loaded-ok (concat (daemonp) " postload"))
 ;; (if (eab/ondaemon "chronosC")

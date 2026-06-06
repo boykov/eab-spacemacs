@@ -7,8 +7,6 @@
 ;; Requirements: org-agenda
 ;; Status: not intended to be distributed yet
 
-(require 'org-agenda)
-
 (setq eab/org-ql-T-query
       '(and
         (or

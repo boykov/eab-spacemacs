@@ -16,6 +16,7 @@
 (eab/bind-path nnmail-message-id-cache-file)
 
 (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
+(add-hook 'gnus-startup-hook 'bbdb-insinuate-gnus)
 
 (setq gnus-large-newsgroup 100)
 (setq gnus-always-read-dribble-file t)

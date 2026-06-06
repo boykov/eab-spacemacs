@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.4.23
+
+refactor: clean up unused dependencies and obsolete code
+
+- Delete commented-out or disabled configurations and hooks
+- Update package declarations from `require` to `use-package` where appropriate
+- Clean up code scaffolding, trailing whitespace, and dead code paths
+
+HIDE commented hints.
+Debug workgroups2 load order.
+
 ## 0.4.22
 
 refactor(keybindings): remove unused keybindings and related code

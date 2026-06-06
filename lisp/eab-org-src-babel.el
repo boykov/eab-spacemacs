@@ -1,6 +1,3 @@
-(require 'org-src)
-(require 'ob-tmux)
-
 (defun eab/detangle ()
   (interactive)
   (save-window-excursion

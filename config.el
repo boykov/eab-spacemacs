@@ -137,32 +137,6 @@ END")))
 (setq server-C-use-tcp 't)
 '((setq org-fold-core-style 'overlays))
 
-;; TODO для многих патчей требуется одновременно несколько замен
-;; значит, если продолжать в этом направлении, надо заменить пару
-;; (regexp rep) на список пар
-;; лучше использовать el-patch
-(require 'cl-macs)
-(cl-defun eab/patch-this-code (func-name rpairs &optional &key lexical native)
-  (let* ((overriding-terminal-local-map (make-sparse-keymap))
-         (func-string (save-window-excursion
-                        (find-function-do-it func-name nil 'switch-to-buffer)
-                        (let ((bgn (point)))
-                          (forward-sexp)
-                          (let ((end (point)))
-                            (buffer-substring-no-properties bgn end)))))
-         (func-code (read
-                     (seq-reduce
-                      (lambda (string regexp-replacement-pair)
-                        (replace-regexp-in-string
-                         (car regexp-replacement-pair)
-                         (cdr regexp-replacement-pair)
-                         string))
-                      rpairs
-                      func-string))))
-    (if native
-        (native-compile (eval func-code lexical))
-      (eval func-code lexical))))
-
 (defun revert-all-buffers ()
   "Refreshes all open buffers from their respective files."
   (interactive)

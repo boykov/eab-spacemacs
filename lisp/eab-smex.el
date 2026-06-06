@@ -7,19 +7,13 @@
 ;; Requirements: helm smex
 ;; Status: not intended to be distributed yet
 
-(require 'smex)
-
 (eab/bind-path smex-save-file)
-
 (smex-initialize)
 
 (define-advice smex-show-key-advice (:around (&rest args) eab-advice-smex)
   "Put item to extended-command-history"
   (add-to-list 'extended-command-history (car smex-ido-cache)))
 
-;; DONE сделать переключение в "полный" режим, где доступны все команды,
-;; а не только extended-command-history
-;; это похоже на eab/toggle-cxb-ido-item
 (defun eab/smex-limited-commands ()
   "Command used instead `execute-extended-command'"
   (interactive)

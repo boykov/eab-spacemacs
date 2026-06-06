@@ -7,10 +7,6 @@
 ;; Requirements: eev vterm
 ;; Status: not intended to be distributed yet
 
-(require 'eev-all)
-(require 'eev-browse-url)
-(require 'eev-mini-steps)
-
 (defvar eab/run-ansi-kind "eat" "Choose eat/ansi")
 
 (defun eab/run-tmux (sym)
