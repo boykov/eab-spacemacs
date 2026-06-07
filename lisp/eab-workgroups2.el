@@ -20,8 +20,7 @@
 
 ;; (eab/print-0 (wg-workgroup-names))
 (defun eab/wg-init ()
-  (unless (boundp 'eab/workgroups-save)
-    (setq eab/workgroups-save wg-session-file))
+  (setq wg-session-file eab/workgroups-save)
   (if (boundp 'eab/wg-update-list)
       (mapcar
        (lambda (lst)
@@ -131,7 +130,7 @@
       (:cmd "Saved: ")
       (:cur name))))
 
-;; (eab/bind-path eab/eab-workgroups)
+;; (setq eab/eab-workgroups (concat (eab/history-dir) "eab-workgroups"))
 
 ;; (defun eab/eab-wg-save ()
 ;;   "Save workgroups to `eab/eab-workgroups' and reset `wg-file'"

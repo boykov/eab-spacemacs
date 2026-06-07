@@ -31,8 +31,6 @@
 
 (eab/renew-agenda-files-1)
 
-; TODO create function and hook after first start frame
-
 (global-set-key (kbd "C-h c") 'describe-key-briefly)
 (global-set-key (kbd "M-O") 'forward-paragraph)
 

@@ -140,8 +140,6 @@
 ;; TODO предварительно закрыть все *.org буферы в server?
 (defun eab/batch-publish (&optional fast)
   (progn
-    (require 'yasnippet)
-    (require 'org)
     (sleep-for 1)
     (if fast
         (eab/gotify "fast publish..." "started" 0)

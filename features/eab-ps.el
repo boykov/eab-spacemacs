@@ -2,8 +2,8 @@
 
 ;; define eab/print-dir
 ;; define eab/tmp-ps
-(eab/bind-path eab/print-dir)
-(eab/bind-path eab/tmp-ps)
+(setq eab/print-dir nil)
+(setq eab/tmp-ps nil)
 
 (setq ps-multibyte-buffer 'bdf-font-except-latin) ; set bdf fonts for russian lang
 

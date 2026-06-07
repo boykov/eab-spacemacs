@@ -7,8 +7,6 @@
 ;; Requirements: ido ido-at-point flx-ido projectile workgroups2 helm
 ;; Status: not intended to be distributed yet
 
-(eab/bind-path ido-save-directory-list-file)
-
 (ido-mode t) ;; fix boundp ido-buffer-completion-map
 (setq ido-enable-flex-matching t)
 (setq ido-everywhere t)

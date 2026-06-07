@@ -13,14 +13,11 @@
 (use-package helm-multi-match)
 (remove-hook 'helm-update-hook 'helm-mp-highlight-match)
 
-(eab/bind-path helm-c-adaptative-history-file)
-
 (defun eab/helm-select-action ()
   (interactive)
   (eab/sh-over-bash eab/xdg-open (helm-get-selection) 't)
   (abort-recursive-edit))
 
-(eab/bind-path helm-locate-command)
 
 (setq helm-idle-delay 0.01)
 (setq helm-input-idle-delay 0.01)

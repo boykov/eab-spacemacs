@@ -316,12 +316,11 @@ END")))
     `(,true-path ,name)))
 
 (setq-put eab/workgroups-save (concat (eab/history-dir) ".emacs_workgroups"))
-(setq-put wg-session-file (eab/bind-path eab/workgroups-save))
+(setq-put wg-session-file (eab/get-path 'eab/workgroups-save))
 
 
 (setq-put ac-comphist-file (concat (eab/history-dir) "ac-comphist.dat"))
 (setq-put save-place-file (concat (eab/history-dir) ".emacs-places"))
-;; (setq-put eab/eab-workgroups (concat (eab/history-dir) "eab-workgroups"))
 (setq-put savehist-file (concat (eab/history-dir) "history"))
 (setq-put smex-save-file (concat (eab/history-dir) ".smex-items"))
 (setq-put eab/trans-path "~/git/python/trans.py")
@@ -336,8 +335,7 @@ END")))
 (setq-put mc/list-file (concat (eab/history-dir) ".mc-lists.el"))
 (setq-put pm-macro-files `(,(concat eab-spacemacs-path "lisp/eab-pmacros.el")))
 (setq-put power-macros-file (concat eab-spacemacs-path "lisp/eab-pmacros.el"))
-(setq-put reftex-default-bibliography '("~/git/lit/boykov.bib"))
-(setq-put eab/secrets-path (concat user-emacs-directory "eab-private/eab-secrets.el.gpg"))
+(setq eab/secrets-path (concat user-emacs-directory "eab-private/eab-secrets.el.gpg"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -371,7 +369,6 @@ END")))
 (setq-put keyfreq-file-lock (concat (eab/history-dir) ".emacs.keyfreq.lock." system-name))
 
 (setq-put eab/check-cc-path "~/git/auto/check-cc.sh") ;; see eab-private/eab-secrets.el.gpg
-(setq-put eab/musicdb-path "~/data/dbs/media/music.db")
 (setq-put eab/downloads-path "~/downloads/")
 
 (setq-put eab/american-english (eab/read-lines "/usr/share/dict/american-english"))
@@ -384,11 +381,8 @@ END")))
 (setq-put ebib-file-search-dirs '("~/git/lit/"))
 (setq-put ebib-preload-bib-files '("~/git/lit/boykov.bib"))
 (setq-put eshell-history-file-name "~/.bash_history")
-(setq-put gnus-init-file (concat user-emacs-directory ".gnus"))
-(setq-put gnus-startup-file (concat (eab/history-dir) ".newsrc"))
 (setq-put helm-c-adaptative-history-file (concat (eab/history-dir) "helm-adaptive-history"))
 (setq-put helm-locate-command (concat eab/ssh-host-local " plocate %s -e %s"))
-(setq-put nnmail-message-id-cache-file (concat (eab/history-dir) ".nnmail-cache"))
 (setq-put tramp-persistency-file-name (concat (eab/history-dir) "tramp"))
 (setq-put url-configuration-directory (concat (eab/history-dir) "url/"))
 (setq-put transient-history-file (concat (eab/history-dir) "transient/history.el"))

@@ -7,7 +7,6 @@
 ;; Requirements: helm smex
 ;; Status: not intended to be distributed yet
 
-(eab/bind-path smex-save-file)
 (smex-initialize)
 
 (define-advice smex-show-key-advice (:around (&rest args) eab-advice-smex)

@@ -17,7 +17,7 @@
     dictionary
     auto-dictionary ;; switcher for flyspell
 
-    (org :location local)
+    (aaorg :location local)
     bibretrieve
     ebib
     parsebib
@@ -587,6 +587,18 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
    max-lisp-eval-depth 10000
    eshell-history-size 1000
    )
+  (mapc (lambda (x) (add-to-list 'extended-command-history x))
+        '(
+          "tramp-cleanup-this-connection"
+          "eab/create-workgroups"
+          "eab/clear-extended-history"
+          "eab/load-personal"
+          ))
+  (mapc (lambda (x) (add-to-list 'read-expression-history x))
+        '(
+          "(setq input-method-function 'key-chord-input-method)"
+          "(tramp-term--initialize \"jupiter\")"
+          ))
   (use-package eab-shell
     :init
     ;; (shell-command "xmodmap -e 'keycode 135 = Hyper_R'")
@@ -766,7 +778,6 @@ Opens the Google search results page for the entered query in the default web br
     (setq auto-revert-use-notify nil)))
 (defun eab-spacemacs/init-helm nil
   (use-package eab-helm
-    :defer
     :after (eab-org)
     :init
     (defvar browse-url-galeon-program nil)
@@ -774,7 +785,8 @@ Opens the Google search results page for the entered query in the default web br
     (defvar browse-url-netscape-program nil)
     (defun browse-url-netscape nil)
     :config
-    (eab/bind-path eab/musicdb-path)
+    (eab/bind-path helm-c-adaptative-history-file)
+    (eab/bind-path helm-locate-command)
     (defun eab/helm-find-file-or-marked (candidate)
       (helm-find-file-or-marked (concat "/ssh:chronos:" candidate)))
     (setf (cdr (rassoc 'helm-find-file-or-marked helm-type-file-actions))
@@ -899,12 +911,10 @@ Opens the Google search results page for the entered query in the default web br
 
 (defun eab-spacemacs/init-workgroups2/src ()
   (use-package eab-workgroups2
-    :after (workgroups2)
     :config
     (setq wg-use-default-session-file 't)
     (setq wg-control-frames 'nil)
     (setq wg-session-load-on-start nil)
-    (eab/bind-path wg-session-file)
     (ignore-errors (workgroups-mode 1))
     (setq wg-mode-line-decor-divider "")
     (eab/bind-path eab/wg-path)
@@ -1256,6 +1266,7 @@ Opens the Google search results page for the entered query in the default web br
     (setq org-agenda-property-list '("Custom_BIB"))))
 (defun eab-spacemacs/init-region-bindings-mode nil
   (use-package region-bindings-mode
+    :after (eab-minimal)
     :config
     (region-bindings-mode-enable)
     ;; prevent annoying switching on rk in region-bindings-mode on set-mark-command
@@ -1270,11 +1281,71 @@ Opens the Google search results page for the entered query in the default web br
     (define-advice winner-redo (:before (&rest args) eab-winner-redo-before)
       (region-bindings-mode-disable))
     (define-advice winner-redo (:after (&rest args) eab-winner-redo-after)
-      (region-bindings-mode-enable))))
+      (region-bindings-mode-enable))
+    (define-advice region-bindings-mode-on (:before (&rest args) eab-region-bindings-mode-on)
+      (progn
+        (setq region-bindings-mode-disabled-modes '(magit-status-mode magit-diff-mode))
+        (general-define-key
+         :keymaps 'region-bindings-mode-map
+         "3"        'eab/gptel-one-shot-3
+         "w"        (ilam (shell-command-on-region (region-beginning) (region-end) "wc -l"))
+         "ц"        (ilam (shell-command-on-region (region-beginning) (region-end) "wc -l"))
+         "u"        'untabify
+         "г"        'untabify
+         "s"        'sort-lines
+         "ы"        'sort-lines
+         "o"        'org-sort
+         "щ"        'org-sort
+         "c"        'copy-rectangle-as-kill
+         "с"        'copy-rectangle-as-kill
+         "v"        'yank-rectangle
+         "м"        'yank-rectangle
+         "0"        (ilam (eab/or-self-insert-body (er/expand-region 0)))
+         "p"        (ilam (eab/or-self-insert-body (er/expand-region 1)))
+         "-"        (ilam (eab/or-self-insert-body (er/expand-region -1)))
+         "P"        (ilam (eab/or-self-insert-body (progn (er/expand-region 0) (org-mark-paragraph))))
+         "З"        (ilam (eab/or-self-insert-body (progn (er/expand-region 0) (org-mark-paragraph))))
+         "I"        (ilam (eab/or-self-insert 'indent-region))
+         "Ш"        (ilam (eab/or-self-insert 'indent-region))
+         "d"        (ilam (eab/or-self-insert-body (progn (er/expand-region 0) (mark-defun))))
+         "/"        (ilam (let ((this-command 'ergoemacs-toggle-letter-case)) (eab/or-self-insert 'ergoemacs-toggle-letter-case)))
+         "r"        (ilam (eab/or-self-insert 'string-rectangle))
+         "к"        (ilam (eab/or-self-insert 'string-rectangle))
+         "t"        'nil
+         ;; TODO C-g неправильно работает с region-bindings-mode
+         ;; "C-g"   (ilam (eab/or-self-insert 'mc/keyboard-quit))
+         "g"        (ilam (eab/or-self-insert 'mc/keyboard-quit))
+         "п"        (ilam (eab/or-self-insert 'mc/keyboard-quit))
+         "G"        'google-region
+         "П"        'google-region
+         "l"        (ilam (eab/or-self-insert 'eab/replace-selection))
+         "д"        (ilam (eab/or-self-insert 'eab/replace-selection))
+         "R"        (ilam (eab/or-self-insert 'eab/replace-newline-by-space))
+         "К"        (ilam (eab/or-self-insert 'eab/replace-newline-by-space))
+         "e"        'mc/edit-lines
+         "у"        'mc/edit-lines
+         "x"        (ilam (eab/or-self-insert 'kill-rectangle))
+         "ч"        (ilam (eab/or-self-insert 'kill-rectangle))
+         "A"        (ilam
+                     (eab/or-self-insert-body
+                      (save-restriction
+                        (narrow-to-region (window-start) (window-end))
+                        (ignore-errors (mc/mark-all-like-this)))))
+         "D"        'ansible-vault-decrypt-region
+         "E"        'ansible-vault-encrypt-region
+         "a"        'mc/mark-all-like-this
+         "i"        'mc/mark-previous-like-this
+         "ш"        'mc/mark-previous-like-this
+         "k"        'mc/mark-next-like-this
+         "л"        'mc/mark-next-like-this
+         "C-c C-c"  'org-toggle-checkbox
+         "m"        'mc/mark-more-like-this-extended)))))
 (defun eab-spacemacs/init-smex nil
   (use-package smex)
   (use-package eab-smex
-    :after (helm smex eab-minimal)))
+    :after (helm smex eab-minimal)
+    :config
+    (eab/bind-path smex-save-file)))
 (defun eab-spacemacs/init-smartparens nil
   (use-package smartparens
     :config
@@ -1412,10 +1483,8 @@ Opens the Google search results page for the entered query in the default web br
 (defun eab-spacemacs/init-org-transclusion nil
   (use-package org-transclusion))
 (defun eab-spacemacs/init-org-ql nil
-  (use-package org-ql
-    :defer)
+  (use-package org-ql)
   (use-package org-ql-search
-    :defer
     :config
     (setq org-link-parameters
           (remove
@@ -1426,17 +1495,20 @@ Opens the Google search results page for the entered query in the default web br
     :after (org-ql)
     :config
     (add-to-list 'helm-org-ql-actions '("eab/hron-todo" . eab/helm-hron-todo))))
-(defun eab-spacemacs/init-org nil
-  (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-  (add-hook 'org-mode-hook (lambda () (setq indent-tabs-mode nil)))
-  ;; fix org-element performance degradation
-  (setq org-element--cache-self-verify 't)
-  (setq org-element-use-cache 't)
-  (if (string= (daemonp) "kairosC") (setq org-cycle-hide-drawer-startup nil))
-  '((setq org-element-cache-persistent nil))
-  '((setq org-element-use-cache nil))
-  ;; fix 'file is already exist' bug
-  (setq org-babel-temporary-directory "/tmp/user/1000/babel-aa5I6G"))
+(defun eab-spacemacs/init-aaorg nil
+  (use-package org
+    :config
+    (eab/bind-path org-directory)
+    (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+    (add-hook 'org-mode-hook (lambda () (setq indent-tabs-mode nil)))
+    ;; fix org-element performance degradation
+    (setq org-element--cache-self-verify 't)
+    (setq org-element-use-cache 't)
+    (if (string= (daemonp) "kairosC") (setq org-cycle-hide-drawer-startup nil))
+    '((setq org-element-cache-persistent nil))
+    '((setq org-element-use-cache nil))
+    ;; fix 'file is already exist' bug
+    (setq org-babel-temporary-directory "/tmp/user/1000/babel-aa5I6G")))
 (defun eab-spacemacs/init-org-mode-fix/lisp nil
   ;; fix 'file is already exist' bug
   (setq org-babel-temporary-directory "/tmp/user/1000/babel-aa5I6G"))
@@ -1495,20 +1567,18 @@ Opens the Google search results page for the entered query in the default web br
     (defvar-mode-local org-mode ac-use-quick-help nil)))
 (defun eab-spacemacs/init-yasnippet nil
   (use-package yasnippet
-    :defer
+    :after (org)
     :config
 
     (setq yas-snippet-dirs '())
     ;; cd el-get && git clone https://github.com/AndreaCrotti/yasnippet-snippets
-    ;; (add-to-list 'yas-snippet-dirs (eab/bind-path eab/yasnippets-path))
     (add-to-list 'yas-snippet-dirs (eab/bind-path eab/eab-snippets-path))
 
     (setq yas-key-syntaxes '("w_" "w_." "w_.()" "^ "))
 
     (defun yas-org-very-safe-expand ()
       (yas-minor-mode 't)
-      (let ((yas-fallback-behavior 'return-nil)
-            )
+      (let ((yas-fallback-behavior 'return-nil))
         (yas-expand)))
 
     (add-hook 'org-mode-hook
@@ -1561,10 +1631,14 @@ Opens the Google search results page for the entered query in the default web br
   (use-package bbdb-loaddefs)
   (use-package bbdb-anniv))
 (defun eab-spacemacs/init-eab-misc nil
+  (use-package org-depend)
   (use-package power-macros
+    :after (eab-depend)
     :config
     (eab/bind-path pm-macro-files)
     (eab/bind-path power-macros-file)
+    (if (file-exists-p power-macros-file)
+        (load power-macros-file))
     (defun eab/pm-write-last-kbd-macro (name)
       (interactive "MName of macro: ")
       (with-temp-buffer
@@ -1670,7 +1744,8 @@ Opens the Google search results page for the entered query in the default web br
   (use-package eab-desktop
     :after (desktop appt autorevert)))
 (defun eab-spacemacs/init-server nil
-  (use-package eab-server))
+  (use-package eab-server
+    :after (org)))
 (defun eab-spacemacs/init-compile nil
   (use-package eab-compile
     :config
@@ -1705,7 +1780,9 @@ Opens the Google search results page for the entered query in the default web br
 
 (defun eab-spacemacs/init-ido nil
   (use-package eab-ido
-    :after (flx-ido projectile eab-minimal)))
+    :after (flx-ido projectile eab-minimal)
+    :config
+    (eab/bind-path ido-save-directory-list-file)))
 (defun eab-spacemacs/init-abbrev nil
   (use-package eab-words
     :after (abbrev simple)
@@ -1716,9 +1793,25 @@ Opens the Google search results page for the entered query in the default web br
           (setq save-abbrevs 'silently)
           (quietly-read-abbrev-file abbrev-file-name)))))
 (defun eab-spacemacs/init-bookmark nil
-  (use-package bookmark)
+  (use-package bookmark
+    :config
+    (setq bookmark-watch-bookmark-file 'silent)
+    (bookmark-maybe-load-default-file)
+    (setq bookmark-history bookmark-alist)
+    (setq bookmark-automatically-show-annotations nil)
+    (setq bookmark-fringe-mark nil))
   (use-package eab-bookmark
-    :after (bookmark eab-minimal eab-workgroups2)))
+    :after (bookmark eab-minimal eab-workgroups2)
+    :config
+    (eab/bind-path bookmark-default-file)
+    (general-define-key
+     :keymaps 'bookmark-minibuffer-read-name-map
+     "C-l" (ilam
+            (let ((string
+                   (with-current-buffer
+                       bookmark-current-buffer
+                     (eab/replace-in-string "{{{kb_hide}}}" "" (thing-at-point 'line)))))
+              (insert (substring string 0 -1)))))))
 
 (defun eab-spacemacs/init-eab-ace-jump-mode ()
   (use-package ace-jump-mode
@@ -1758,7 +1851,14 @@ Opens the Google search results page for the entered query in the default web br
     (setq avy-timeout-seconds 0.25)))
 
 (defun eab-spacemacs/init-eab-ui ()
-  (use-package eab-ui))
+  (use-package eab-ui
+    :config
+    (eab/bind-path auto-save-list-file-prefix)
+    (eab/bind-path save-place-file)
+    (eab/bind-path url-configuration-directory)
+    (eab/bind-path source-directory)
+    (setq find-function-C-source-directory source-directory)
+    (eab/bind-path custom-file)))
 (defun eab-spacemacs/user-config ()
   (use-package cl)
   (use-package cl-macs)
@@ -1773,7 +1873,6 @@ Opens the Google search results page for the entered query in the default web br
     (eab/bind-path savehist-file)
     (savehist-mode 1))
   (use-package log-edit)
-  (use-package org)
   (use-package org-clock)
   (use-package org-crypt)
   (use-package org-capture)
@@ -1790,8 +1889,10 @@ Opens the Google search results page for the entered query in the default web br
   (use-package org-src)
   (use-package ob-tmux)
 
-  (use-package eab-depend)
   (use-package eab-org
+    :init
+    (eab/bind-path eab/org-publish-directory-file)
+    (eab/bind-path eab/org-publish-directory)
     :after (org
             org-clock
             org-crypt
@@ -1804,10 +1905,16 @@ Opens the Google search results page for the entered query in the default web br
             ox-html
             tex
             tex-site
-            eab-minimal))
+            eab-minimal)
+    :config
+    (eab/bind-path org-link-abbrev-alist)
+    (eab/bind-path org-id-locations-file)
+    (eab/bind-path org-clock-persist-file)
+    (eab/bind-path bibtex-files)
+    (eab/bind-path org-ditaa-jar-path))
   (use-package eab-org-publish)
   (use-package eab-org-agenda
-    :after (org-agenda)
+    :after (org org-agenda)
     :config
     (add-hook 'org-agenda-mode-hook (lambda () (hl-line-mode 1)))
     (setq org-sort-agenda-notime-is-late nil)
@@ -1823,14 +1930,15 @@ Opens the Google search results page for the entered query in the default web br
     (setq org-agenda-text-search-extra-files (quote (agenda-archives)))
     (setq org-agenda-clockreport-parameter-plist (quote (:link nil :maxlevel 2))))
   (use-package eab-org-protocol
-    :after (org-protocol))
+    :after (eab-org org-protocol))
   (use-package eab-org-src-babel
     :after (org-src ob-tmux))
   (use-package eab-org-todo)
-  (use-package eab-hron-lib)
+  (use-package eab-hron-lib
+    :after (eab-org))
   (use-package eab-org-latex)
   (use-package eab-greek-to-latex :disabled)
   (use-package eab-org-reftex :disabled)
   (use-package eab-org-extension)
-
-  (require 'eab-postload))
+  (use-package eab-postload
+    :after (org)))

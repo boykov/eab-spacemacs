@@ -7,13 +7,13 @@
 ;; Requirements: none
 ;; Status: not intended to be distributed yet
 
-(require 'gnus-dired)
-(require 'smtpmail-async)
-(require 'nnir)
+(use-package gnus-dired)
+(use-package smtpmail-async)
+(use-package nnir)
 
-(eab/bind-path gnus-init-file)
-(eab/bind-path gnus-startup-file)
-(eab/bind-path nnmail-message-id-cache-file)
+(setq gnus-init-file (concat user-emacs-directory ".gnus"))
+(setq gnus-startup-file (concat (eab/history-dir) ".newsrc"))
+(setq nnmail-message-id-cache-file (concat (eab/history-dir) ".nnmail-cache"))
 
 (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
 (add-hook 'gnus-startup-hook 'bbdb-insinuate-gnus)

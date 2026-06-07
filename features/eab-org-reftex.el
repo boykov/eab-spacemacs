@@ -1,4 +1,4 @@
-(eab/bind-path reftex-default-bibliography)
+(setq reftex-default-bibliography '("~/git/lit/boykov.bib"))
 
 (defun org-mode-reftex-setup ()
   (load-library "reftex")

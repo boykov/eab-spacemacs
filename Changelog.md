@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.4.24
+
+feat(config): refactor path binding and simplify configuration
+
+- Replace obsolete path bindings with direct setq for Gnus, Org, and other settings
+- Remove unused path variables (eab/musicdb-path, eab/eab-workgroups, etc.)
+- Convert eab-bind-path calls to direct variable assignments where appropriate
+- Reorganize and consolidate keybinding definitions into region-bindings-mode init
+- Rename local/org to local/aaorg and update packages.el accordingly
+- Reorganize package loading order, dependency tracking, and :after/:config clauses
+- Clean up redundant load and require statements in multiple files
+
 ## 0.4.23
 
 refactor: clean up unused dependencies and obsolete code

@@ -7,14 +7,6 @@
 ;; Requirements:
 ;; Status: not intended to be distributed yet
 
-(eab/bind-path auto-save-list-file-prefix)
-(eab/bind-path save-place-file)
-(eab/bind-path url-configuration-directory)
-(eab/bind-path source-directory)
-(eab/bind-path custom-file)
-
-(setq find-function-C-source-directory source-directory)
-
 (setq ring-bell-function 'ignore)
 
 (setq disabled-command-function nil)

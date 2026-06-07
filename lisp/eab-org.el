@@ -73,15 +73,6 @@
 ;;   (let ((cookie-value (substring (org-element-property :value statistics-cookie) 1 -1)))
 ;;     (format "<span class=\"stat\">%s</span>" cookie-value)))
 
-(eab/bind-path org-directory)
-(eab/bind-path eab/org-publish-directory)
-(eab/bind-path eab/org-publish-directory-file)
-(eab/bind-path org-link-abbrev-alist)
-(eab/bind-path org-id-locations-file)
-(eab/bind-path org-clock-persist-file)
-(eab/bind-path bibtex-files)
-(eab/bind-path org-ditaa-jar-path)
-
 (ox-extras-activate '(ignore-headlines))
 
 

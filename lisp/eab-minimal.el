@@ -93,23 +93,17 @@
   (if (fboundp 'grep-a-lot-clear-stack)
       (grep-a-lot-clear-stack))
   (winner-mode)
-  (eab/bind-path eab/secrets-path)
   ;; (load-file eab/secrets-path)
-  (require 'cl-macs)
   (cl-assert
    (equal (ido-completing-read-silent
            "prompt: " '("one" "two" "three" "four" "five") "t")
           '("two" "three")))
   (global-eldoc-mode 0)
-  (require 'yasnippet)
   (yas-reload-all)
-  (require 'org-ql-search)
-  (require 'org-depend)
-  (require 'org-sql)
-  (require 'eab-helm)
   (eab/loaded-ok (concat (daemonp) " dotemacs"))
   )
 
+; TODO create function and hook after first start frame
 (defun eab/load-gui ()
   (interactive)
   (when eab/first-emacsclient
@@ -117,8 +111,6 @@
     (disable-theme 'solarized-light)
     (eab/load-personal)
     ;; (eab/load-desktop)
-    (require 'workgroups2)
-    (require 'eab-workgroups2)
     (wg-change-modeline)
     (eab/create-workgroups)
     (eab/wg-switch-to-workgroup ":clock:")
