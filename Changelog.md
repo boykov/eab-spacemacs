@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.4.25
+
+chore: refactor keybindings, adjust UI settings, and reorganize org-mode initialization
+
+- Removed commented-out keybinding and unbound `<M-kp-equal>` in keybindings.el
+- Moved hook definitions for python-mode and maplev-mode
+- Cleaned up maplev-mode configuration and removed outdated Maple versions
+- Updated screen resolution check in eab-minimal.el to 1920px
+- Added TODO comment in eab-shell.el regarding shell-command buffer naming
+- Fixed replace-regexp pattern in eab-workflow.el to handle em-dash spacing correctly
+- Enabled built-in eab-org and eab-org-agenda packages in packages.el
+- Refactored org-mode-related packages into init-eab-org and init-eab-org-agenda functions
+- Reorganized EAF package configuration to wrap conditionally under `:if (eab/ondaemon "cyclos")`
+- Moved package declarations for org-clock, org-crypt, etc., in init-org-mode
+- Fixed eab-misc package dependencies and moved ox-extra to correct location
+
 ## 0.4.24
 
 feat(config): refactor path binding and simplify configuration

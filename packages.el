@@ -199,6 +199,8 @@
     (epa :location built-in)
     (python :location built-in)
     (eab-ui :location built-in)
+    (eab-org :location built-in)
+    (eab-org-agenda :location built-in)
     )
   "List of all packages to install and/or initialize. Built-in packages
 which require an initialization must be listed explicitly in the list.")
@@ -207,6 +209,8 @@ which require an initialization must be listed explicitly in the list.")
   "List of packages to exclude.")
 
 (defun eab-spacemacs/init-ox-pandoc nil)
+(defun eab-spacemacs/init-elisa nil)
+
 (defun eab-spacemacs/init-gptel nil
   ;; (setq gptel-log-level 'debug)
   ;; (setq gptel-confirm-tool-calls 'always)
@@ -221,7 +225,7 @@ which require an initialization must be listed explicitly in the list.")
           :endpoint "/api/v1/chat/completions"
           :stream t
           :key 'gptel-api-key
-         :models '(openai/gpt-oss-120b
+          :models '(openai/gpt-oss-120b
                     qwen/qwen-turbo
                     nvidia/nemotron-3-super-120b-a12b:free
                     qwen/qwen3-coder-30b-a3b-instruct
@@ -239,7 +243,7 @@ which require an initialization must be listed explicitly in the list.")
     (interactive)
     (let ((inhibit-message t))
       (kill-new
-        "Суммируй приведенный текст ровно тремя словами.
+       "Суммируй приведенный текст ровно тремя словами.
 Формат ответа -- 3 слова, например: деньги-дата-отложить"))
     (execute-kbd-macro
      (read-kbd-macro "C-v m k m RET M-v RET")))
@@ -262,7 +266,6 @@ calls the gptel-rewrite interactive command."
     (gptel-agent-update)
     )
   (use-package gptel-agent-tools
-    ;; after package is loaded
     :config
     (add-to-list 'gptel-tools (cdr (assoc "WebSearch" (cdar gptel--known-tools))))
     (add-to-list 'gptel-tools (cdr (assoc "WebFetch" (cdar gptel--known-tools))))))
@@ -311,7 +314,6 @@ Invokes CALLBACK with the generated message when done."
           :callback `(lambda (response _info)
                        (let ((msg response))
                          (funcall ,callback msg))))))))
-(defun eab-spacemacs/init-elisa nil)
 (defun eab-spacemacs/init-llm ()
   (use-package llm)
   (use-package llm-openai))
@@ -1036,7 +1038,15 @@ Opens the Google search results page for the entered query in the default web br
 (defun eab-spacemacs/init-python-mode nil)
 (defun eab-spacemacs/init-python nil
   (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
-  (autoload 'python-mode "python-mode" "Python Mode." t))
+  (autoload 'python-mode "python-mode" "Python Mode." t)
+  (add-hook 'python-mode-hook
+            (lambda ()
+              (general-define-key
+               :keymaps 'python-mode-map
+               "C-d"        eab/compile-map
+               "C-j"        'nil
+               "M-RET"      'newline
+               "RET"        'newline))))
 (defun eab-spacemacs/init-crontab-mode nil
   (add-to-list 'auto-mode-alist '("cron\\(tab\\)?\\."    . crontab-mode)))
 
@@ -1056,109 +1066,110 @@ Opens the Google search results page for the entered query in the default web br
       (interactive)
       (vterm-send-key "b" nil t t))))
 (defun eab-spacemacs/init-eaf nil
-  (if (eab/ondaemon "cyclos")
-      (progn
-        (use-package eaf
-          :config
-          (setq eaf-webengine-pc-user-agent "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36")
-          ;; (setq eaf-proxy-host "192.168.2.19")
-          ;; (setq eaf-proxy-port "9152")
-          ;; (setq eaf-proxy-type "http")
-          ;; (eaf-restart-process)
-          (advice-remove #'org-open-file #'eaf--find-file-advisor)
-          (defun eab/org-eaf-open (path link)
-            (eaf-open path))
-          (defun eab/eaf-open-viewer-other-window (url &optional args)
-            "Open EAF browser application given a URL and ARGS in other window."
-            (interactive "M[EAF/browser] URL: ")
-            (when (< (length (window-list)) 2)
-              (split-window-right))
-            (other-window 1)
-            (eaf-open url "pdf-viewer" args))
-          (defmacro eab/eaf-bind-key (pair kb)
-            (let ((f (intern (cdr pair)))
-                  (k (car pair)))
-              `(eaf-bind-key ,f ,k ,kb)))
-          (general-define-key
-           :keymaps 'eaf-mode-map*
-           "C-o"   'nil
-           "C-c b" 'nil
-           )
-          (eaf-create-send-sequence-function "ctrl-t" "C-t")
-          (eaf-create-send-sequence-function "ctrl-v" "C-v"))
-        (use-package eaf-browser
-          :after (eaf)
-          :init
-          (add-to-list 'load-path "/home/eab/.emacs.d/private/eab-spacemacs/local/eaf/app/browser")
-          :config
-          (setq eaf-browser-auto-import-chrome-cookies 't)
-          (setq eaf-browser-chrome-browser-name "chrome")
-          (setq eaf-browser-dark-mode nil)
-          (setq eaf-browser-keybinding nil)
-          (let ((kb 'eaf-browser-keybinding))
-            (mapc (lambda (x)
-                    (eval `(eab/eaf-bind-key ,x ,kb)))
-                  '(
-                    ;; ("C-t" . "eaf-send-ctrl-t-sequence")
-                    ;; ("C-v" . "eaf-send-ctrl-v-sequence")
-                    ("M-b" . "browser-a-lot-goto-prev")
-                    ;; ("0" . "insert_or_zoom_reset")
-                    ;; ("=" . "insert_or_zoom_in")
-                    ;; ("-" . "insert_or_zoom_out")
-                    ("C-<home>" . "scroll_to_begin")
-                    ("M-J" . "scroll_to_begin")
-                    ("C-<end>" . "scroll_to_bottom")
-                    ("M-L" . "scroll_to_bottom")
-                    ("M-D" . "open_link")
-                    ;; ("D" . "toggle_dark_mode")
-                    ("M-F" . "insert_or_history_forward")
-                    ("M-B" . "insert_or_history_backward")
-                    ("M-;" . "search_text_forward")
-                    ("M-:" . "search_text_backward")
-                    ("M-i" . "scroll_down")
-                    ("M-k" . "scroll_up")
-                    ("M-I" . "scroll_down_page")
-                    ("M-K" . "scroll_up_page")
-                    ("<next>" . "scroll_up_page")
-                    ("<prior>" . "scroll_down_page")
-                    ("M-c" . "copy_text")
-                    ("M-v" . "yank_text")
-                    ("C-w" . "insert_or_export_text")
-                    ("C-q" . "insert_or_close_buffer")
-                    ("C-e e" . "insert_or_edit_url")
-                    ))))
-        (use-package eaf-pdf-viewer
-          :after (eaf)
-          :init
-          (add-to-list 'load-path "/home/eab/.emacs.d/private/eab-spacemacs/local/eaf/app/pdf-viewer")
-          :config
-          (setq eaf-pdf-viewer-keybinding nil)
-          (let ((kb 'eaf-pdf-viewer-keybinding))
-            (mapc (lambda (x)
-                    (eval `(eab/eaf-bind-key ,x ,kb)))
-                  '(
-                    ("0" . "zoom_reset")
-                    ("=" . "zoom_in")
-                    ("-" . "zoom_out")
-                    ("B" . "viewer-a-lot-goto-prev")
-                    ("q" . "close_buffer")
-                    ("p" . "jump_to_page")
-                    ("o" . "eaf-pdf-outline")
-                    ("M-i" . "scroll_down")
-                    ("M-k" . "scroll_up")
-                    ("M-I" . "scroll_down_page")
-                    ("M-K" . "scroll_up_page")
-                    ("<next>" . "scroll_up_page")
-                    ("<prior>" . "scroll_down_page")
-                    ("M-c" . "copy_select")
-                    ("M-;" . "search_text_forward")
-                    ("M-:" . "search_text_backward")
-                    ("C-w" . "eaf-pdf-extract-page-text")
-                    ("C-<home>" . "scroll_to_begin")
-                    ("M-J" . "scroll_to_begin")
-                    ("C-<end>" . "scroll_to_end")
-                    ("M-L" . "scroll_to_end")
-                    )))))))
+  (use-package eaf
+    :if (eab/ondaemon "cyclos")
+    :config
+    (setq eaf-webengine-pc-user-agent "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36")
+    ;; (setq eaf-proxy-host "192.168.2.19")
+    ;; (setq eaf-proxy-port "9152")
+    ;; (setq eaf-proxy-type "http")
+    ;; (eaf-restart-process)
+    (advice-remove #'org-open-file #'eaf--find-file-advisor)
+    (defun eab/org-eaf-open (path link)
+      (eaf-open path))
+    (defun eab/eaf-open-viewer-other-window (url &optional args)
+      "Open EAF browser application given a URL and ARGS in other window."
+      (interactive "M[EAF/browser] URL: ")
+      (when (< (length (window-list)) 2)
+        (split-window-right))
+      (other-window 1)
+      (eaf-open url "pdf-viewer" args))
+    (defmacro eab/eaf-bind-key (pair kb)
+      (let ((f (intern (cdr pair)))
+            (k (car pair)))
+        `(eaf-bind-key ,f ,k ,kb)))
+    (general-define-key
+     :keymaps 'eaf-mode-map*
+     "C-o"   'nil
+     "C-c b" 'nil
+     )
+    (eaf-create-send-sequence-function "ctrl-t" "C-t")
+    (eaf-create-send-sequence-function "ctrl-v" "C-v"))
+  (use-package eaf-browser
+    :if (eab/ondaemon "cyclos")
+    :after (eaf)
+    :init
+    (add-to-list 'load-path "/home/eab/.emacs.d/private/eab-spacemacs/local/eaf/app/browser")
+    :config
+    (setq eaf-browser-auto-import-chrome-cookies 't)
+    (setq eaf-browser-chrome-browser-name "chrome")
+    (setq eaf-browser-dark-mode nil)
+    (setq eaf-browser-keybinding nil)
+    (let ((kb 'eaf-browser-keybinding))
+      (mapc (lambda (x)
+              (eval `(eab/eaf-bind-key ,x ,kb)))
+            '(
+              ;; ("C-t" . "eaf-send-ctrl-t-sequence")
+              ;; ("C-v" . "eaf-send-ctrl-v-sequence")
+              ("M-b" . "browser-a-lot-goto-prev")
+              ;; ("0" . "insert_or_zoom_reset")
+              ;; ("=" . "insert_or_zoom_in")
+              ;; ("-" . "insert_or_zoom_out")
+              ("C-<home>" . "scroll_to_begin")
+              ("M-J" . "scroll_to_begin")
+              ("C-<end>" . "scroll_to_bottom")
+              ("M-L" . "scroll_to_bottom")
+              ("M-D" . "open_link")
+              ;; ("D" . "toggle_dark_mode")
+              ("M-F" . "insert_or_history_forward")
+              ("M-B" . "insert_or_history_backward")
+              ("M-;" . "search_text_forward")
+              ("M-:" . "search_text_backward")
+              ("M-i" . "scroll_down")
+              ("M-k" . "scroll_up")
+              ("M-I" . "scroll_down_page")
+              ("M-K" . "scroll_up_page")
+              ("<next>" . "scroll_up_page")
+              ("<prior>" . "scroll_down_page")
+              ("M-c" . "copy_text")
+              ("M-v" . "yank_text")
+              ("C-w" . "insert_or_export_text")
+              ("C-q" . "insert_or_close_buffer")
+              ("C-e e" . "insert_or_edit_url")
+              ))))
+  (use-package eaf-pdf-viewer
+    :if (eab/ondaemon "cyclos")
+    :after (eaf)
+    :init
+    (add-to-list 'load-path "/home/eab/.emacs.d/private/eab-spacemacs/local/eaf/app/pdf-viewer")
+    :config
+    (setq eaf-pdf-viewer-keybinding nil)
+    (let ((kb 'eaf-pdf-viewer-keybinding))
+      (mapc (lambda (x)
+              (eval `(eab/eaf-bind-key ,x ,kb)))
+            '(
+              ("0" . "zoom_reset")
+              ("=" . "zoom_in")
+              ("-" . "zoom_out")
+              ("B" . "viewer-a-lot-goto-prev")
+              ("q" . "close_buffer")
+              ("p" . "jump_to_page")
+              ("o" . "eaf-pdf-outline")
+              ("M-i" . "scroll_down")
+              ("M-k" . "scroll_up")
+              ("M-I" . "scroll_down_page")
+              ("M-K" . "scroll_up_page")
+              ("<next>" . "scroll_up_page")
+              ("<prior>" . "scroll_down_page")
+              ("M-c" . "copy_select")
+              ("M-;" . "search_text_forward")
+              ("M-:" . "search_text_backward")
+              ("C-w" . "eaf-pdf-extract-page-text")
+              ("C-<home>" . "scroll_to_begin")
+              ("M-J" . "scroll_to_begin")
+              ("C-<end>" . "scroll_to_end")
+              ("M-L" . "scroll_to_end")
+              )))))
 (defun eab-spacemacs/init-emacs-eat nil
   (use-package eat
     :after (key-chord eab-minimal)
@@ -1508,7 +1519,19 @@ Opens the Google search results page for the entered query in the default web br
     '((setq org-element-cache-persistent nil))
     '((setq org-element-use-cache nil))
     ;; fix 'file is already exist' bug
-    (setq org-babel-temporary-directory "/tmp/user/1000/babel-aa5I6G")))
+    (setq org-babel-temporary-directory "/tmp/user/1000/babel-aa5I6G"))
+  (use-package org-clock)
+  (use-package org-crypt)
+  (use-package org-capture)
+  (use-package org-id)
+  (use-package org-archive)
+  (use-package ox-latex)
+  (use-package ox-html)
+  (use-package ol-bbdb)
+  (use-package org-agenda)
+  (use-package org-protocol)
+  (use-package org-src)
+  )
 (defun eab-spacemacs/init-org-mode-fix/lisp nil
   ;; fix 'file is already exist' bug
   (setq org-babel-temporary-directory "/tmp/user/1000/babel-aa5I6G"))
@@ -1528,7 +1551,8 @@ Opens the Google search results page for the entered query in the default web br
   (use-package pallet
     :config
     (pallet-init)))
-(defun eab-spacemacs/init-ob-tmux nil)
+(defun eab-spacemacs/init-ob-tmux nil
+    (use-package ob-tmux))
 (defun eab-spacemacs/init-purty-mode nil
   (use-package purty-mode))
 (defun eab-spacemacs/init-flx nil)
@@ -1631,9 +1655,10 @@ Opens the Google search results page for the entered query in the default web br
   (use-package bbdb-loaddefs)
   (use-package bbdb-anniv))
 (defun eab-spacemacs/init-eab-misc nil
-  (use-package org-depend)
+  (use-package org-depend
+    :after (org))
   (use-package power-macros
-    :after (eab-depend)
+    :after (eab-depend) ;; keybindings.el C-l vs eab-pmacros.el
     :config
     (eab/bind-path pm-macro-files)
     (eab/bind-path power-macros-file)
@@ -1674,6 +1699,8 @@ Opens the Google search results page for the entered query in the default web br
   (use-package moccur-edit)
   (use-package smart-operator)
   (use-package ido-better-flex)
+  (use-package ox-extra
+    :after (org))
   
   (defun multi-occur-in-all-buffers ()
     "Show all lines matching REGEXP in all buffers."
@@ -1685,16 +1712,14 @@ Opens the Google search results page for the entered query in the default web br
   (add-hook 'maplev-mode-hook
             (lambda ()
               ;;            (smart-operator-mode-on)
+              (general-define-key
+               :keymaps 'maplev-mode-map
+               "C-c d"      'maplev-help-at-point
+               "C-k"        'toggle-input-method)
               (setq maplev-mint-start-options (list "-q" "-P"))
               (setq maplev-executable-alist '(("11" "maple" nil "maple")
-                                              ("10" "maple" nil "mint")
-                                              ("9" "maple" nil "mint")
-                                              ("8" "maple" nil "mint")
-                                              ("7" "maple" nil "mint")
-                                              ("6" "maple" nil "mint")
-                                              ("5.1" "maple" nil "mint")
-                                              ("5" "maple" nil "mint")
-                                              ("4" "maple" nil "mint")))))
+                                              ("10" "maple" nil "mint")))))
+
   (autoload 'cmaple "maplev" "Start maple process" t)
   (autoload 'emaxima-mode "emaxima" "EMaxima mode" t)
   (autoload 'maplev-mode "maplev" "Maple editing mode" t)
@@ -1859,36 +1884,7 @@ Opens the Google search results page for the entered query in the default web br
     (eab/bind-path source-directory)
     (setq find-function-C-source-directory source-directory)
     (eab/bind-path custom-file)))
-(defun eab-spacemacs/user-config ()
-  (use-package cl)
-  (use-package cl-macs)
-  (use-package view)
-  (use-package ps-print)
-  (use-package ps-mule)
-  (use-package uniquify
-    :config
-    (setq uniquify-buffer-name-style 'forward))
-  (use-package savehist
-    :config
-    (eab/bind-path savehist-file)
-    (savehist-mode 1))
-  (use-package log-edit)
-  (use-package org-clock)
-  (use-package org-crypt)
-  (use-package org-capture)
-  (use-package org-id)
-  (use-package org-archive)
-  (use-package ol-bbdb)
-  (use-package ox-latex)
-  (use-package ox-extra)
-  (use-package ox-html)
-  (use-package tex)
-  (use-package tex-site)
-  (use-package org-agenda)
-  (use-package org-protocol)
-  (use-package org-src)
-  (use-package ob-tmux)
-
+(defun eab-spacemacs/init-eab-org ()
   (use-package eab-org
     :init
     (eab/bind-path eab/org-publish-directory-file)
@@ -1911,8 +1907,8 @@ Opens the Google search results page for the entered query in the default web br
     (eab/bind-path org-id-locations-file)
     (eab/bind-path org-clock-persist-file)
     (eab/bind-path bibtex-files)
-    (eab/bind-path org-ditaa-jar-path))
-  (use-package eab-org-publish)
+    (eab/bind-path org-ditaa-jar-path)))
+(defun eab-spacemacs/init-eab-org-agenda ()
   (use-package eab-org-agenda
     :after (org org-agenda)
     :config
@@ -1928,7 +1924,25 @@ Opens the Google search results page for the entered query in the default web br
     (setq org-agenda-include-diary nil)
     (setq org-agenda-archives-mode 't)
     (setq org-agenda-text-search-extra-files (quote (agenda-archives)))
-    (setq org-agenda-clockreport-parameter-plist (quote (:link nil :maxlevel 2))))
+    (setq org-agenda-clockreport-parameter-plist (quote (:link nil :maxlevel 2)))))
+(defun eab-spacemacs/user-config ()
+  (use-package cl)
+  (use-package cl-macs)
+  (use-package view)
+  (use-package ps-print)
+  (use-package ps-mule)
+  (use-package uniquify
+    :config
+    (setq uniquify-buffer-name-style 'forward))
+  (use-package savehist
+    :config
+    (eab/bind-path savehist-file)
+    (savehist-mode 1))
+  (use-package log-edit)
+  (use-package tex)
+  (use-package tex-site)
+
+  (use-package eab-org-publish)
   (use-package eab-org-protocol
     :after (eab-org org-protocol))
   (use-package eab-org-src-babel

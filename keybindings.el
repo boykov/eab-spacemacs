@@ -207,8 +207,7 @@
  "<kp-enter>"   'winner-undo
  "<kp-add>"     'nil
  "<kp-begin>"   'nil
- ;; "<kp-home>" (ilam (switch-to-buffer "&bitlbee"))
- "<M-kp-equal>" (ilam (shell-command "suspend_until.sh 4:00 &"))
+ "<M-kp-equal>" 'nil
  "<kp-delete>"  (ilam (kill-buffer-and-window)))
 
 (defvar eab/explore-map (make-sparse-keymap)
@@ -1192,20 +1191,6 @@
    :keymaps 'ruby-mode-map
    "C-d"        eab/compile-map
    "C-M-b"      'nil))
-
-(eab/add-hook python-mode-hook eab/python-hook
-  (general-define-key
-   :keymaps 'python-mode-map
-   "C-d"        eab/compile-map
-   "C-j"        'nil
-   "M-RET"      'newline
-   "RET"        'newline))
-
-(eab/add-hook maplev-mode-hook eab/maplev-hook
-  (general-define-key
-   :keymaps 'maplev-mode-map
-   "C-c d"      'maplev-help-at-point
-   "C-k"        'toggle-input-method))
 
 (eab/add-hook help-mode-hook eab/help-hook
   (general-define-key

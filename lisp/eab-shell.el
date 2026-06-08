@@ -8,6 +8,8 @@
 ;; Status: ready
 
 ;; (setq shell-command-dont-erase-buffer 't) ;; add to previous output
+;; TODO add hook to shell-command: rename shell-command-buffer-name uniquely
+;; it doesn't work for "no process" inactive buffers
 (setq async-shell-command-buffer 'new-buffer)
 (if (file-exists-p "/bin/bash") (setq shell-file-name "/bin/bash"))
 (setq explicit-bash-args '("--noediting" "-i"))

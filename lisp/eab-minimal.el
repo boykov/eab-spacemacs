@@ -120,7 +120,7 @@
     (setq eab/first-emacsclient nil))
   (set-face-attribute 'default nil
                       :family "Source Code Pro"
-                      :height (if (eq (display-pixel-width) 1680) 130 150)
+                      :height (if (eq (display-pixel-width) 1920) 130 150)
                       :weight 'normal
                       :width 'normal))
 
