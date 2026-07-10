@@ -29,13 +29,6 @@
                                   (setq kill-ring (cdr kill-ring))))
     (recursive-edit)))
 
-(defmacro eab/add-hook (hookname funcname &rest body)
-  "add-hook with lambda progn"
-  (declare (indent defun))
-  `(progn (add-hook ',hookname ',funcname)
-          (defun ,funcname ()
-            (progn ,@body))))
-
 (defun eab/or-self-insert (command)
   (if (use-region-p)
       (call-interactively command)

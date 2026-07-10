@@ -442,50 +442,10 @@
  "f"            'eab/see-file
  "SPC"          'eab/gr-tag-default-directory
  "M-d"          (ilam (call-process-shell-command eab/test-dotemacs-command nil 0))
- "M-b"          (ilam (call-process-shell-command eab/unlock-chronos-command nil 0)
-                      (call-process-shell-command "ssh cyclos \"DISPLAY=:0 wmctrl -a 'NoMachine -'\""))
- "M-s"          (ilam (call-process-shell-command eab/sync-zfs-command nil 0)))
+ "M-b"          'nil
+ "M-s"          (ilam (call-process-shell-command eab/sync-rsync-command nil 0))
+ "M-S"          (ilam (call-process-shell-command eab/sync-zfs-command nil 0)))
 (setq eab/temacs-map (lookup-key global-map (kbd "C-l")))
-
-(defvar eab/compile-map (make-sparse-keymap)
-  "Compile keymap.")
-(global-set-key (kbd "C-d") nil)
-(general-define-key
- :prefix "C-d"
- "q"    'eab/nocommand
- "a"    'eab/compile-helm
- "e"    eab/explore-map
- "d"    'eab/projectile-compile-project
- "C-d"    'eab/projectile-compile-project
- "s"    (ilam (smart-compile 4))
- "S"    `(,(ilam (eab/projectile-compile-project-custom "make push_unstaged")) :which-key " ")
- "l"    `(,(ilam (TeX-command "LaTeX"   'TeX-master-file)) :which-key " ")
- "b"    `(,(ilam (TeX-command "BibTeX"  'TeX-master-file)) :which-key " ")
- "L"    `(,(ilam (TeX-command "LaTeX"   'TeX-master-file)) :which-key " ")
- "p"    `(,(ilam (eab/projectile-compile-project-custom "make push_all")) :which-key " ")
- "c"    `(,(ilam (eab/projectile-compile-project-custom "make clear")) :which-key " ")
- "t"    `(,(ilam (eab/projectile-compile-project-custom "make test")) :which-key " ")
- "2"    `(,(ilam (eab/projectile-compile-project-custom "make test2")) :which-key " "))
-(setq eab/compile-map (lookup-key global-map (kbd "C-d")))
-
-(defvar eab/grep-map (make-sparse-keymap)
-  "Grep keymap.")
-(global-set-key (kbd "C-x G") nil)
-(general-define-key
- :prefix "C-x G"
- "f"    'eab/find-grep
- "g"    'eab/find-grep
- "c"    'eab/clock-grep
- "s"    (ilam
-         (call-interactively 'eab/grep)
-         (call-interactively 'eab/switch-grep)
-         ;; (setq-local eab/grep-switch-cycle 'full)
-         (sleep-for 0.4)
-         (progn
-           (eab/grep-switch-0 eab/grep-clock-left eab/grep-clock-right)
-           (setq-local eab/grep-switch-cycle 'full)))
- "G"    'eab/clock-grep)
-(setq eab/grep-map (lookup-key global-map (kbd "C-x G")))
 
 (defvar eab/one-key-map (make-sparse-keymap)
   "One-key keymap.")
@@ -600,24 +560,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; add-hook
 
-(eab/add-hook textile-mode-hook eab/textile-hook
-  (general-define-key
-   :keymaps 'textile-mode-map
-   "C-i"        'eab/outline-toggle-children
-   "<backtab>"  'eab/outline-toggle-all))
-
-(eab/add-hook ssh-config-mode-hook eab/ssh-config-hook
-  (general-define-key
-   :keymaps 'ssh-config-mode-map
-   "C-i"        'eab/outline-toggle-children
-   "<backtab>"  'eab/outline-toggle-all))
-
-(eab/add-hook yaml-mode-hook eab/yaml-hook
-  (general-define-key
-   :keymaps 'yaml-mode-map
-   "C-i"        'eab/outline-toggle-children
-   "<backtab>"  'eab/outline-toggle-all))
-
 (eab/add-hook groovy-mode-hook eab/groovy-hook
   (general-define-key
    :keymaps 'groovy-mode-map
@@ -642,11 +584,6 @@
    :keymaps 'bibtex-mode-map
    "C-M-\\"     'bibtex-fill-entry))
 
-(eab/add-hook ediff-after-setup-control-frame-hook eab/ediff-hook
-  (general-define-key
-   :keymaps 'ediff-mode-map
-   "d"  'nil))
-
 (eab/add-hook fortran-mode-hook eab/fortran-hook
   (general-define-key
    :keymaps 'fortran-mode-map
@@ -657,16 +594,6 @@
    :keymaps 'ag-mode-map
    "C-w"        'eab/wgrep-change-to-wgrep-mode))
 
-(eab/add-hook wdired-mode-hook eab/wdired-hook
-  (general-define-key
-   :keymaps 'wdired-mode-map
-   "s-w"        'wdired-finish-edit))
-
-(eab/add-hook flyspell-mode-hook eab/flyspell-hook
-  (general-define-key
-   :keymaps 'flyspell-mode-map
-   "C-k"        'toggle-input-method))
-
 (eab/add-hook text-mode-hook eab/text-hook
   (general-define-key
    :keymaps 'text-mode-map
@@ -676,69 +603,6 @@
   (general-define-key
    :keymaps 'artist-mode-map
    "C-b"        'nil))
-
-(eab/add-hook markdown-mode-hook eab/markdown-hook
-  (general-define-key
-   :keymaps 'markdown-mode-map
-   "C-M-b"      'nil
-   "C-M-f"      'nil
-   "M-l"        'nil
-   "M-i"        'nil
-   "M-n"        'nil
-   "M-p"        'nil
-   "<tab>"      'nil))
-
-(eab/add-hook magit-file-mode-hook eab/magit-file-mode-hook
-  (general-define-key
-   :keymaps 'magit-file-mode-map
-   "C-x g"      'nil
-   ))
-
-(eab/add-hook magit-mode-hook eab/magit-hook
-  (general-define-key
-   :keymaps 'magit-log-mode-map
-   "C-l M-n"    'log-edit-next-comment
-   "C-l M-p"    'log-edit-previous-comment
-   "M-n"        'nil
-   "M-p"        'nil
-   "C-d"        'nil)
-  (general-define-key
-   :keymaps 'magit-revision-mode-map
-   "C-j"        'magit-diff-visit-file
-   "RET"        'magit-diff-visit-worktree-file
-   "C-d"        'nil)
-  (general-define-key
-   :keymaps 'magit-status-mode-map
-   "C-d"        'nil)
-  ;;  "C-f"     'magit-show-only-files
-  ;;  "C-F"     'magit-show-only-files-all
-  (general-define-key
-   :keymaps 'magit-mode-map
-   "J"          'magit-commit-amend
-   "R"          (kbd "r - A e o r i g i n / m a s t e r RET")
-   "N"          (kbd "P o m a s t e r 2*RET")
-   "{"          (ilam (execute-kbd-macro (read-kbd-macro "C-u S ESC A g i t SPC c o 2*m i t SPC - m SPC u p d a t e RET g")))
-   "M-n"        'nil
-   "M-p"        'nil
-   "M-s"        'nil
-   "M-S"        'nil
-   "M-h"        'nil
-   "M-H"        'nil
-   "M-1"        'nil
-   "M-2"        'nil
-   "M-g"        'magit-fetch-all
-   "C-d"        'nil
-   "C-D"        'magit-section-show-level-4-all
-   "s-1"        'magit-section-show-level-1-all
-   "s-2"        'magit-section-show-level-2-all
-   "<backtab>"  'magit-section-show-level-2-all
-   "s-3"        'magit-section-show-level-3-all
-   "s-4"        'magit-section-show-level-4-all)
-  (general-define-key
-   :keymaps 'git-commit-mode-map
-   "C-v c"      'gptel-magit-generate-message
-   "M-n"        'nil
-   "M-p"        'nil))
 
 (eab/add-hook nroff-mode-hook eab/nroff-hook
   (general-define-key
@@ -759,16 +623,6 @@
    "M-p"        'nil
    "M-n"        'nil))
 
-(eab/add-hook auto-complete-mode-hook eab/ac-complete-mode-hook
-  (general-define-key
-   :keymaps 'ac-completing-map
-   "\C-s"       'ac-isearch)
-  (general-define-key
-   :keymaps 'ac-complete-mode-map
-   "M-c"        'ac-expand-common
-   "M-k"        'ac-next
-   "M-i"        'ac-previous))
-
 (eab/add-hook moccur-mode eab/moccur-hook
   (general-define-key
    :keymaps 'moccur-mode-map
@@ -776,97 +630,6 @@
    "M-p"        'nil
    "M-m"        'nil
    "M-d"        'nil))
-
-(eab/add-hook orgtbl-mode-hook eab/orgtbl-mode-hook
-  (general-define-key
-   :keymaps 'orgtbl-mode-map
-   "M-a"        'nil))
-
-(eab/add-hook org-mode-hook eab/org-hook
-  (general-define-key
-   :keymaps 'org-mode-map
-   "RET"                'eab/org-return
-   "M-D"                'ace-link-org
-   "C-d"                eab/compile-map
-   "<f6>"               'eab/revert-buffer
-   "s-'"                'org-edit-src-code
-   "s-k"                'undefined
-   "s-i"                'org-metaup
-   "s-p"                'org-priority-up
-   "s-j"                'org-metaleft
-   "s-l"                'org-metaright
-   "s-K"                'undefined
-   "s-I"                'org-shiftmetaup
-   "s-J"                'org-shiftmetaleft
-   "s-L"                'org-shiftmetaright
-   "s-<return>"         'org-insert-heading
-   "s-S-<return>"       'org-insert-todo-heading
-   "M-s-k"              'org-shiftdown
-   "M-s-i"              'org-shiftup
-   "M-s-j"              'org-shiftleft
-   "M-s-l"              'org-shiftright
-   "C-y"                'nil
-   "C-e"                'nil
-   "C-,"                'nil
-   "C-SPC"              'nil
-   "M-a"                'nil
-   "M-e"                'nil
-   "C-a"                'nil
-   "C-k"                'nil
-   "M-h"                'org-beginning-of-line
-   "M-p"                'org-end-of-line
-   "M-g"                'org-kill-line
-   "M-v"                'org-yank
-   "M-RET"              (ilam (org-insert-heading nil))
-   "C-M-n"              'org-backward-element
-   "C-M-m"              'org-forward-element
-   "M-n"                'sp-backward-sexp
-   "M-m"                'sp-forward-sexp
-   "M-N"                'org-backward-sentence
-   "M-M"                'org-forward-sentence
-   "M-U"                'eab/org-backward-paragraph
-   "M-O"                'eab/org-forward-paragraph
-   "M-u"                'eab/org-backward-page
-   "M-o"                'eab/org-forward-page
-   "C-M-S-u"            'org-backward-paragraph
-   "C-M-S-o"            'org-forward-paragraph
-   "C-M-u"              'outline-previous-visible-heading
-   "C-M-o"              'outline-next-visible-heading
-   "s-u"                'org-preview-latex-fragment
-   "C-c C-x M-c"        'org-copy-special
-   "C-c C-x M-x"        'org-cut-special
-   "C-c C-x M-v"        'org-paste-special
-   "s-x M-c"            'org-copy-special
-   "s-x M-x"            'org-cut-special
-   "s-x M-v"            'org-paste-special
-   "s-."                (kbd "C-c . RET"))
-
-  (key-chord-define org-mode-map "jj" 'org-edit-src-code)
-  (key-chord-define org-src-mode-map "jj" 'org-edit-src-exit)
-
-  (general-define-key
-   :keymaps 'org-src-mode-map
-   "s-'"        'org-edit-src-exit
-   "C-l '"      'org-edit-src-exit)
-
-  (general-define-key
-   :keymaps 'org-ql-view-map
-   "q" #'eab/bury-buffer
-   "g" #'eab/org-ql-view-refresh)
-
-  (general-define-key
-   :keymaps 'org-agenda-mode-map
-   "M-j"        'nil
-   "M-l"        'nil
-   "C-p"        'nil
-   "C-n"        'nil
-   "C-k"        'nil
-   "s"          'isearch-forward
-   "h"          'eab/hron-todo
-   "j"          'beginning-of-buffer
-   "M-g"        'org-agenda-kill
-   "M-k"        'org-agenda-next-line
-   "M-i"        'org-agenda-previous-line))
 
 (eab/add-hook diff-mode-hook eab/diff-hook
   (general-define-key
@@ -890,17 +653,6 @@
    :keymaps 'f90-mode-map
    "C-j"        'nil
    "C-d"        eab/compile-map))
-
-(eab/add-hook maxima-mode-hook eab/maxima-hook
-  (general-define-key
-   :keymaps 'maxima-mode-map
-   "C-M-a"      'nil
-   "C-M-b"      'nil
-   "C-M-e"      'nil
-   "C-M-f"      'nil
-   "M-;"        'nil
-   "C-d"        eab/compile-map
-   "M-h"        'nil))
 
 (eab/add-hook message-mode-hook eab/message-hook
   (general-define-key
@@ -969,74 +721,6 @@
    "C-p"        'term-send-up
    "C-n"        'term-send-down))
 
-(eab/add-hook compilation-mode-hook eab/compilation-hook
-  (general-define-key
-   :keymaps 'compilation-button-map
-   "M-RET"      'eab/compile-goto-error-same-window
-   "RET"        'eab/compile-goto-error)
-  (general-define-key
-   :keymaps 'compilation-mode-map
-   "g"          'eab/recompile
-   "B"          'compilation-a-lot-goto-prev
-   "F"          'compilation-a-lot-goto-next
-   "\C-d"       eab/compile-map
-   "\C-o"       'nil
-   "M-k"        'nil
-   "M-p"        'nil
-   "M-i"        'nil
-   "M-n"        'nil))
-
-(eab/add-hook grep-mode-hook eab/grep-hook
-  (general-define-key
-   :keymaps 'grep-mode-map
-   "B"          'eab/switch-grep-prev
-   "F"          'eab/switch-grep-next
-   "C-o"        'nil
-   "M-p"        'nil
-   "C-l b"      'eab/kill-last-grep
-   "b"          (ilam (eab/switch-grep-prev 't))
-   "M-RET"      'eab/compile-goto-error-same-window
-   "C-M-j"      'eab/compile-goto-error-same-window
-   "RET"        'eab/compile-goto-error
-   "g"          'eab/recompile
-   "u"          'eab/grep-utf
-   "s"          'eab/grep-switch
-   "l"          (ilam (so-long-minor-mode 1) (toggle-truncate-lines 1))
-   "M-n"        'nil
-   "C-w"        'eab/wgrep-change-to-wgrep-mode))
-
-(eab/add-hook dired-mode-hook eab/dired-hook
-  (general-define-key
-   :keymaps 'dired-mode-map
-   "C-M-b"      'nil
-   "M-a"        'nil
-   "M-i"        'nil
-   "M-j"        'nil
-   "C-n"        'nil
-   "M-c"        'nil
-   "M-g"        'nil
-   "M-G"        'nil
-   "M-v"        'nil
-   "M-!"        'nil
-   "M-l"        'nil
-   "M-p"        'nil
-   "M-o"        'nil
-   "M-s"        'nil
-   "M-u"        'nil
-   "M-m"        'nil
-   "C-o"        'nil
-   "C-p"        'nil
-   "C-k"        'nil
-   "C-S-a"      'nil
-   "C-c C-w"    'dired-do-rename
-   "C-w"        'wdired-change-to-wdired-mode
-   "b"          'browse-url-of-dired-file
-   "o"          'dired-find-file-other-window
-   "C-|"        'eab/dired-see-file
-   "s-SPC"      'eab/dired-see-file
-   "E"          'ediff-files
-   "SPC"        'open-in-external-app))
-
 (eab/add-hook java-mode-hook eab/java-hook
   (general-define-key
    :keymaps 'java-mode-map
@@ -1075,116 +759,6 @@
    "M-M"        'c-end-of-defun
    "M-N"        'c-beginning-of-defun
    "M-e"        'nil))
-
-(eab/add-hook helm-before-initialize-hook eab/helm-hook
-  (general-define-key
-   :keymaps 'helm-map
-   "C-k"        'toggle-input-method
-   "M-H"        'helm-select-2nd-action-or-end-of-line
-   "M-g"        'helm-delete-minibuffer-contents
-   "s-SPC"      'eab/helm-select-action
-   "C-|"        'eab/helm-select-action
-   "<C-return>" (ilam
-                 (with-helm-alive-p
-                   (helm-exit-and-execute-action 'eab/helm-note-todo)))
-   "M-RET"      (ilam
-                 (with-helm-alive-p
-                   (helm-exit-and-execute-action 'eab/helm-org-goto-marker)))
-   "M-j"        'nil
-   "M-v"        'nil
-   "M-l"        'nil
-   "M-m"        'eab/helm-toggle-visible-mark
-   "M-k"        'helm-next-line
-   "M-i"        'helm-previous-line
-   "C-n"        'next-history-element
-   "C-p"        'previous-history-element
-   "C-SPC"      'eab/helm-toggle-visible-mark
-   "M-K"        'helm-next-page
-   "M-J"        'helm-beginning-of-buffer
-   "M-L"        'helm-end-of-buffer
-   "M-I"        'helm-previous-page)
-  (ergoemacs-fix-arrow-keys helm-map)
-  (general-define-key
-   :keymaps 'helm-generic-files-map
-   "M-i"        'helm-previous-line))
-
-(eab/add-hook ido-minibuffer-setup-hook eab/ido-minibuffer-hook
-  (general-define-key
-   :keymaps 'ido-file-dir-completion-map
-   "M-v"        'yank)
-  (general-define-key
-   :keymaps 'ido-file-completion-map
-   "C-n"        (eab/do-action (ilam (execute-kbd-macro (read-kbd-macro "C-x C-f / 2*s h : k a i r o s - h o s t | s u d o : k a i r o s - h o s t : / C-x Q"))))
-   "C-d"        'eab/ace-ibuffer
-   "C-|"        'eab/ido-see-file
-   "s-SPC"      'eab/ido-see-file)
-  (general-define-key
-   :keymaps 'ido-common-completion-map
-   "C-v"        'eab/toggle-cxb-ido-item
-   )
-  (general-define-key
-   :keymaps 'ido-buffer-completion-map
-   "C-k"        'nil
-   "C-d"        'eab/ace-ibuffer
-   "M-RET"      'eab/ido-main
-   "C-M-j"      'eab/ido-main
-   ))
-
-(eab/add-hook emacs-lisp-mode-hook eab/emacs-lisp-hook
-  (general-define-key
-   :keymaps 'emacs-lisp-mode-map
-   "s-r"        'paredit-raise-sexp
-   "s-L"        'paredit-forward-barf-sexp
-   "s-J"        'paredit-backward-barf-sexp
-   "s-l"        'paredit-forward-slurp-sexp
-   "s-j"        'paredit-backward-slurp-sexp
-   "s-I"        'paredit-splice-sexp
-   "s-K"        'undefined
-   "s-i"        'paredit-splice-sexp-killing-backward
-   "s-k"        'undefined
-   "M-("        'paredit-wrap-round
-   "M-r"        'paredit-forward-kill-word
-   "M-e"        'paredit-backward-kill-word
-   "M-g"        'paredit-kill
-   "M-'"        'paredit-comment-dwim
-   "RET"        'paredit-newline))
-
-(eab/add-hook smartparens-enabled-hook eab/smartparens-hook
-  (general-define-key
-   :keymaps 'sp-keymap
-   "/"  'nil
-   "b"  'sp--self-insert-command ;; for latex sp-local-tag
-   "B"  'nil
-   "f"  'nil
-   "g"  'nil
-   "h"  'nil
-   "l"  'nil
-   "t"  'nil
-   "i"  'nil
-   "e"  'nil
-   "r"  'nil
-   "к"  'nil))
-
-(eab/add-hook multiple-cursors-mode-enabled-hook eab/multiple-cursors-hook
-  (general-define-key
-   :keymaps 'mc/keymap
-   "M-K"        'mc/cycle-forward
-   "M-I"        'mc/cycle-backward
-   "M-v"        'nil
-   "C-v"        'nil))
-
-(eab/add-hook LaTeX-mode-hook eab/LaTeX-hook
-  (general-define-key
-   :keymaps 'LaTeX-mode-map
-   "M-m"        'forward-sexp
-   "C-d"        'nil
-   "C-S-d"      eab/compile-map))
-
-(eab/add-hook graphviz-dot-mode-hook eab/graphviz-hook
-  (general-define-key
-   :keymaps 'graphviz-dot-mode-map
-   "C-d"        eab/compile-map)
-  (set (make-local-variable 'compile-command) nil))
 
 (eab/add-hook ruby-mode-hook eab/ruby-hook
   (general-define-key

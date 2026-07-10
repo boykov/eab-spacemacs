@@ -20,11 +20,7 @@
           (todo)
           (heading "\["))
          (not (or
-               (heading "1/1")
-               (heading "2/2")
-               (heading "3/3")
-               (heading "4/4")
-               (heading "5/5")
+               (heading-regexp "\\[\\([0-9]+\\)\\/\\1\\]")
                )))))
 
 (setq eab/org-ql-H-query
@@ -85,7 +81,7 @@
          (window (get-buffer-window buffer-name)))
     (if window
         (select-window window)
-      (switch-to-buffer buffer-name))
+      (switch-to-buffer-other-window buffer-name))
     (when (or (not (boundp 'eab/org-ql-select-hash))
               (not (string= eab/org-ql-select-hash (eab/org-ql-select-md5))))
       (eab/org-ql-view-refresh)

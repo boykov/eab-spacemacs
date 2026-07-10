@@ -27,6 +27,13 @@
 (add-hook 'js-mode-hook (lambda () (setq indent-tabs-mode nil)))
 (add-hook 'emacs-lisp-mode-hook (lambda () (setq indent-tabs-mode nil)))
 
+;; socks unstable, use privoxy or socks2http
+;; Once converted, route Emacs traffic using the native url-proxy-services variable
+;; (setq url-gateway-method 'socks)
+;; (setq socks-server '("Default server" "192.168.2.19" 9050 5))
+(setq url-proxy-services
+      '(("http"  . "192.168.2.19:8118")
+        ("https" . "192.168.2.19:8118")))
 (setq eww-search-prefix "https://duckduckgo.com/html/?q=")
 
 (provide 'eab-ui)

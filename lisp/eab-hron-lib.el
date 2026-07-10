@@ -142,8 +142,8 @@
   (progn
     (sleep-for 1)
     (if fast
-        (eab/gotify "fast publish..." "started" 0)
-      (eab/gotify "publish..." "Come in to eab/batch-publish" 0)
+        (eab/gotify "fast publish started..." system-name 0)
+      (eab/gotify "Entered eab/batch-publish..." system-name 0)
       )
     (shell-command (concat "cd " org-directory))
     (eab/rsync-org-directory)
@@ -153,6 +153,9 @@
     (unless fast
       (eab/update-all-dblocks) ;; DONE why doesn't work?
       ;; DONE it seems to hangs up `eab/update-reports-nightly'
+      (eab/org-ql-search 'eab/org-ql-T-query)
+      (call-interactively (ilam (org-agenda-write (concat org-directory "gen/plot/allagenda.org"))))
+      (org-id-update-id-locations)
       (eab/update-reports-nightly)
       (org-publish-remove-all-timestamps))
     (let ((org-confirm-babel-evaluate nil))
@@ -167,8 +170,8 @@
     (sleep-for 2)
     (eab/update-site)
     (if fast
-        (eab/gotify "...fast finished" "success" 0)
-      (eab/gotify "...finished" "success" 0)
+        (eab/gotify "...fast finished" system-name 0)
+      (eab/gotify "...finished" system-name 0)
       )
     ))
 
@@ -609,10 +612,10 @@
 ;; See `eab/clocktable-scope' in eab-path-org.el
 
 (defun eab/total-minutes ()
-  (* (- (org-time-stamp-to-now "<2007-01-01 Пн. 00:00>")) 1.1423 24 60))
+  (* (- (org-time-stamp-to-now "<2007-01-01 Пн. 00:00>")) 1.14496 24 60))
 
 ;; (let ((m (/ (- (org-time-stamp-to-now "<2007-01-01 Пн. 00:00>" 't)) 60)))
-;;   (/ (+ m (* 2 714935)) (float m)))
+;;   (/ (+ m (* 2 60 (+ (* 24 519) 21))) (float m)))
 
 (defun csum-percent ()
   (format "%0.2f" (* (/ (org-clock-sum-current-item)

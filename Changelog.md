@@ -1,5 +1,36 @@
 # Changelog
 
+## 0.4.26
+
+refactor: replace `eab/unlock-chronos-command` with `nomachine-switch.sh` and
+    simplify sync/keybindings
+
+- config.el: remove no longer needed token cache functions,
+    update token caching logic,
+    add generic eab/config and eab/add-hook macro;
+    remove eab/unlock-chronos-command definition;
+    add rsync-based sync commands for cyclos/chronosP;
+    simplify source-directory handling
+- keybindings.el: disable `M-b` (unlock-chronos), replace `M-s` with rsync command,
+    add `M-S` for ZFS sync;
+    re-add removed mode hooks that were previously removed (org, magit, dired, etc.)
+- eab-depend.el: re-enable feature-mode association
+- eab-dired.el: comment about async sussh
+- eab-eepitch.el: change default ansi backend to ghostel, add ghostel support, 
+    improve eepitch wrapping
+- eab-hron-lib.el: adjust publish notifications, add agenda export and 
+    org-id-update-id-locations
+- eab-minimal.el: mv eab/add-hook macro
+- eab-org-agenda.el: improve window selection for org-ql view
+- eab-postload.el: disable electric-indent-mode
+- eab-ui.el: add proxy settings via privoxy
+- packages.el: add ghostel, ai-code packages and respective init functions; 
+    re-enable keybindings and hooks for many modes;
+    update gptel config with OpenWebui and OpenRouter backends;
+    adjust magit commit model
+- all remaining files: re-add keybindings previously removed in prior refactor 
+    (org, magit, dired, helm, ido, etc.)
+
 ## 0.4.25
 
 chore: refactor keybindings, adjust UI settings, and reorganize org-mode initialization

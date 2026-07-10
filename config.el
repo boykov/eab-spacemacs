@@ -22,30 +22,16 @@
           (server-eval-at "kairosC" '(eab/gotify-client-token))))
   )
 
-(defvar eab/ycai-token-cache "" "")
-(defun eab/ycai-token ()
-  (if (not (equal (length eab/ycai-token-cache) 40))
-      (setq eab/ycai-token-cache (substring (shell-command-to-string (concat eab/ssh-host " bash <<'END'
-~/git/auto/keepass.sh \"portal/yandex cloud\" -a yc-ai-api-key
-END
-" )) 0 -1)))
-  eab/ycai-token-cache)
-(defvar eab/orai-token-cache "" "")
-(defun eab/orai-token ()
-  (if (not (equal (length eab/orai-token-cache) 73))
-      (setq eab/orai-token-cache (substring (shell-command-to-string (concat eab/ssh-host " bash <<'END'
-~/git/auto/keepass.sh \"openrouter\" -a or-ai-api-key
-END
-" )) 0 -1)))
-  eab/orai-token-cache)
-(defvar eab/yc-id-cache "" "")
-(defun eab/yc-id ()
-  (if (not (equal (length eab/yc-id-cache) 20))
-      (setq eab/yc-id-cache (substring (shell-command-to-string (concat eab/ssh-host " bash <<'END'
-~/git/auto/keepass.sh \"portal/yandex cloud\" -a yc-id
-END
-" )) 0 -1)))
-  eab/yc-id-cache)
+(defun eab/config (str)
+  str)
+
+(defmacro eab/add-hook (hookname funcname &rest body)
+  "add-hook with lambda progn"
+  (declare (indent defun))
+  `(progn (add-hook ',hookname ',funcname)
+          (defun ,funcname ()
+            (progn ,@body))))
+
 (defvar eab/gotify-token-cache "" "")
 (defun eab/gotify-token ()
   (if (not (equal (length eab/gotify-token-cache) 15))
@@ -81,9 +67,6 @@ END
 (setq eab/test-dotemacs-command
       ;; host=`dig test-dotemacs.salmon.eab.su TXT +short | tr -d '"'`
       (concat "ssh chronos" " ~/git/auto/test-dotemacs.sh"))
-
-(setq eab/unlock-chronos-command
-      (concat "ssh chronos" " \"sudo loginctl unlock-sessions && sleep 1 && ydotool mousemove --delay 500 0 0\""))
 
 (defun eab/update-site ()
   (shell-command
@@ -150,12 +133,28 @@ END")))
   (message "Refreshed open files."))
 
 (if (eab/ondaemon "cyclos")
-    (setq eab/sync-zfs-command
-          (concat "ssh cyclos" " screen -d -m bash -c \"echo; syncoid.sh chronos kairos\"")))
+    (progn
+      (setq eab/sync-rsync-command
+            (concat "ssh cyclos"
+                    " screen -d -m bash -c \"echo; "
+                    "rsync -WavR --files-from=/home/eab/.emacs.d/historyCyclos/recentf-eabpool /mnt/lion/ kairos:/mnt/lion/; "
+                    "rsync -WavR --files-from=/home/eab/.emacs.d/historyCyclos/recentf-eabpool /mnt/lion/ chronos:/mnt/lion/; "
+                    "/home/eab/git/auto/notify.sh -a " (eab/gotify-token) " -t \"OK\" -m \"rsync\" -p 0; "
+                    "\""))
+      (setq eab/sync-zfs-command
+            (concat "ssh cyclos" " screen -d -m bash -c \"echo; syncoid.sh chronos kairos\""))))
 
 (if (eab/ondaemon "chronosP")
-    (setq eab/sync-zfs-command
-          (concat "ssh chronos" " screen -d -m bash -c \"echo; syncoid.sh cyclos kairos\"")))
+    (progn
+      (setq eab/sync-rsync-command
+            (concat "ssh cyclos"
+                    " screen -d -m bash -c \"echo; "
+                    "rsync -WavR --files-from=/home/eab/.emacs.d/historyCyclos/recentf-eabpool /mnt/lion/ kairos:/mnt/lion/; "
+                    "rsync -WavR --files-from=/home/eab/.emacs.d/historyCyclos/recentf-eabpool /mnt/lion/ cyclos:/mnt/lion/; "
+                    "/home/eab/git/auto/notify.sh -a " (eab/gotify-token) " -t \"OK\" -m \"rsync\" -p 0; "
+                    "\""))
+      (setq eab/sync-zfs-command
+            (concat "ssh chronos" " screen -d -m bash -c \"echo; syncoid.sh cyclos kairos\""))))
 
 (if (eab/ondaemon (eab/server-C))
     (progn
@@ -339,9 +338,7 @@ END")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(cond ((eab/onhost "jonesbook")    (setq-put source-directory "~/emacs/src/emacs/")) ;; DONE old path
-      ((eab/onhost "victory")      (setq-put source-directory "~/src/emacs/"))
-      ((eab/onhost "kairos")       (setq-put source-directory "~/data/github/emacs/src"))
+(cond ((eab/onhost "kairos")       (setq-put source-directory "~/data/github/emacs/src"))
       ((eab/onhost "chronos")      (setq-put source-directory "~/data/github/emacs/src"))
       ((eab/onhost "kairos-emacs") (setq-put source-directory "~/data/github/emacs/src"))
       ((eab/onhost "chronos-emacs")(setq-put source-directory "~/data/github/emacs/src"))

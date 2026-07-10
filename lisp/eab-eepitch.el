@@ -7,7 +7,7 @@
 ;; Requirements: eev vterm
 ;; Status: not intended to be distributed yet
 
-(defvar eab/run-ansi-kind "eat" "Choose eat/ansi")
+(defvar eab/run-ansi-kind "ghostel" "Choose eat/ansi/ghostel")
 
 (defun eab/run-tmux (sym)
   (let ((default-directory "/ssh:kairos-host:/home/eab/"))
@@ -23,6 +23,10 @@
     (if buffer
         (switch-to-buffer-other-window buffer)
       (progn
+        (if (string= kind "ghostel")
+            (let ((ghostel-buffer-name (concat "*ansi-term" sym "*"))
+                  (ghostel-shell `(,eab/eegchannel-path ,sym "/bin/bash")))
+              (ghostel)))
         (if (string= kind "ansi")
             (ansi-term prog buf))
         (if (string= kind "eat")
@@ -63,14 +67,21 @@
 (defun eab/wrap-eepitch-this (region)
   (interactive)
   (if (eab/in-target-buffer? "ansi")
-      (eechannel-send nil region)
+      (if (get-buffer-window (buffer-name eepitch-target-buffer))
+          (eechannel-send nil region)
+        (progn
+          (let ((pop-up-windows t))
+            (pop-to-buffer (get-buffer (buffer-name eepitch-target-buffer)) t))
+          (other-window 1)
+          (keyboard-quit)))
     (error "There isn't target buffer")))
 
 (defun eab/eepitch-buffer-end ()
   (save-window-excursion
     (let ((cur (current-buffer)))
       (switch-to-buffer-other-window eepitch-target-buffer)
-      (goto-char (point-max))
+      ;; (execute-kbd-macro (read-kbd-macro "C-c C-c"))
+      ;; (goto-char (point-max))
       (switch-to-buffer-other-window cur))))
 
 (defun eab/eepitch-this-line ()
@@ -103,7 +114,7 @@
                (let ((en (point)))
                  (ee-se-to-string st en))))))
       (eab/eepitch-buffer-end)
-      (eechannel-send nil region)
+      (eab/wrap-eepitch-this region)
       (forward)
       (if (eq major-mode 'python-mode)
           (eab/eepitch-this-line)))))

@@ -7,7 +7,7 @@
 ;; Requirements: none
 ;; Status: ready
 
-(electric-indent-mode)
+(electric-indent-mode -1)
 (electric-pair-mode -1)
 (setq default-input-method "russian-computer")
 (setq system-time-locale "ru_RU.utf8")
