@@ -212,12 +212,24 @@ which require an initialization must be listed explicitly in the list.")
 
 (defun eab-spacemacs/init-ox-pandoc nil)
 (defun eab-spacemacs/init-elisa nil)
-(defun eab-spacemacs/init-ai-code nil)
+(defun eab-spacemacs/init-ai-code nil
+  ;; TODO: remote claude, which path
+  (use-package ai-code
+    :config
+    (setq ai-code-mcp-agent-enabled-backends
+          (remove 'claude-code ai-code-mcp-agent-enabled-backends))
+    (setq ai-code-claude-code-program "ccr") ;; "/home/eab/git/eab-system/eab-spacemacs/claude.sh"
+    (setq ai-code-claude-code-program-switches '("claude-code"))
+    (setq ai-code--session-project-root-override "/ssh:chronos:/home/eab/claude/")
+    (setq ai-code-backends-infra-terminal-backend 'ghostel)
+    (ai-code-set-backend 'claude-code))
+  ;;   (global-set-key (kbd "C-c a") #'ai-code-menu))
+  )
 (defun eab-spacemacs/init-gptel-agent nil
   (use-package gptel-agent
     :after (gptel)
     :config
-    (add-to-list 'gptel-agent-dirs (eab/config "/home/eab/.emacs.d/private/eab-spacemacs/agents/"))
+    (add-to-list 'gptel-agent-dirs (eab/config (concat eab-spacemacs-path "agents")))
     (gptel-agent-update))
   (use-package gptel-agent-tools
     :after (gptel gptel-agent)
@@ -262,8 +274,8 @@ which require an initialization must be listed explicitly in the list.")
   (use-package consult-omni
     :after (consult)
     :init
-    (add-to-list 'load-path (eab/config "/home/eab/.emacs.d/private/eab-spacemacs/local/consult-omni"))
-    (add-to-list 'load-path (eab/config "/home/eab/.emacs.d/private/eab-spacemacs/local/consult-omni/sources"))
+    (add-to-list 'load-path (eab/config (concat eab-spacemacs-path "local/consult-omni")))
+    (add-to-list 'load-path (eab/config (concat eab-spacemacs-path "local/consult-omni/sources")))
     :config
     (setq consult-omni-multi-sources '("DuckDuckGo API"))))
 (defun eab-spacemacs/init-ldap-mode nil)
@@ -279,8 +291,8 @@ which require an initialization must be listed explicitly in the list.")
   (use-package key-chord
     :config
     (setq key-chord-two-keys-delay 0.05)
-    ;; (key-chord-mode 1) ; DONE заедает, если не в конце dotemacs, не включается по-умолчанию (или выключается из-за чего-то)
-    (add-hook 'term-mode-hook (lambda () (setq input-method-function 'key-chord-input-method)))))
+    (add-hook 'term-mode-hook
+              (lambda () (setq input-method-function 'key-chord-input-method)))))
 (defun eab-spacemacs/init-autorevert nil
   (use-package autorevert
     :config
@@ -290,185 +302,11 @@ which require an initialization must be listed explicitly in the list.")
     (setq spacemacs-theme-comment-bg nil))
 
 (defun eab-spacemacs/init-gptel nil
-  ;; (setq gptel-log-level 'debug)
-  ;; (setq gptel-confirm-tool-calls 'always)
-  (defvar eab/orai-token-cache "" "")
-  (defun eab/orai-token ()
-    (if (not (equal (length eab/orai-token-cache) 73))
-        (setq eab/orai-token-cache
-              (substring (shell-command-to-string
-                          (eab/config (concat eab/ssh-host " bash <<'END'
-~/git/auto/keepass.sh \"openrouter\" -a or-ai-api-key
-END
-" ))) 0 -1)))
-    eab/orai-token-cache)
-  (defvar eab/webui-token-cache "" "")
-  (defun eab/webui-token ()
-    (if (not (equal (length eab/webui-token-cache) 35))
-        (setq eab/webui-token-cache
-              (substring (shell-command-to-string
-                          (eab/config (concat eab/ssh-host " bash <<'END'
-~/git/auto/keepass.sh \"openrouter\" -a webui-api-key
-END
-" ))) 0 -1)))
-    eab/webui-token-cache)
-  (setq gptel-default-mode 'org-mode)
-  (setq gptel-expert-commands 't)
-  ;; TODO use gptel-api-key-from-auth-source + auth-source-search instead?
-  (setq gptel-api-key (eab/orai-token))
-  (require 'gptel-request)
-  (add-to-list 'gptel-directives
-               '(google-ai-eab . "Действуй как поисковая система Google с функцией AI Overviews.
-Соблюдай следующие правила структуры и стиля:
-Начни с прямого, емкого ответа на 2–3 предложения в самом начале.
-Продолжи развернутым объяснением, разбив ключевые детали на маркированные списки (bullet points).
-Тон ответа должен быть объективным, информативным, нейтральным и экспертным.
-В конце добавь блок из 3–4 коротких вопросов для дальнейшего углубления в тему (раздел \"С этим часто ищут\").
-Пиши так, будто синтезируешь данные из нескольких авторитетных интернет-источников.
-К КАЖДОМУ важному факту, цифре или утверждению обязательно добавляй
-гиперссылку на авторитетный источник в формате [[URL][Название источника]].
- Если точной ссылки из базы данных нет, используй
-реальные домены первоисточников или официальных баз данных, избегая
-выдуманных URL. В конце ответа добавь блок «Источники», где перечисли
-все использованные сайты списком с активными ссылками.
-"))
-  (gptel-make-openai "OpenWebui"
-    :host "192.168.2.18:3003"
-    :protocol "http"
-    :endpoint "/api/chat/completions"
-    :stream t
-    :request-params '(:metadata [(:web_search "true")])
-    :key (eab/webui-token)
-    :models '(google/gemini-3.7-flash))
-  (gptel-make-openai "OpenRouter"
-    :host "openrouter.ai"
-    :curl-args '("-xsocks5://192.168.2.19:9050")
-    :endpoint "/api/v1/chat/completions"
-    ;; :request-params '(:plugins [(:id "web")]) ;; deprecated openrouter web plugin
-    ;; :request-params '(:tools [(:type "openrouter:web_search")])
-    :stream t
-    :key 'gptel-api-key
-    :models '(openai/gpt-oss-120b
-              z-ai/glm-5.3-flash
-              z-ai/glm-5.2
-              z-ai/glm-5.2:free
-              openrouter/free
-              perplexity/sonar
-              x-ai/grok-4.20-multi-agent
-              qwen/qwen-turbo
-              nvidia/nemotron-3-super-120b-a12b:free
-              qwen/qwen3-coder-30b-a3b-instruct
-              qwen/qwen3-coder-next
-              deepseek/deepseek-v3.2
-              deepseek/deepseek-v4-pro
-              mistralai/mixtral-8x7b-instruct
-              meta-llama/codellama-34b-instruct
-              codellama/codellama-70b-instruct
-              google/palm-2-codechat-bison-32k
-              google/gemini-3.7-flash
-              ))
-  '((setq gptel-model   'google/gemini-3.7-flash
-          gptel-backend (gptel-get-backend "OpenWebui"))
-    )
-  (setq gptel-model   'z-ai/glm-5.2:free
-        gptel-backend (gptel-get-backend "OpenRouter"))
-  
-  (defun eab/gptel-one-shot-3 ()
-    (interactive)
-    (let ((inhibit-message t))
-      (kill-new
-       "Суммируй приведенный текст ровно тремя словами.
-Формат ответа -- 3 слова, например: деньги-дата-отложить"))
-    (execute-kbd-macro
-     (read-kbd-macro "C-v m k m RET M-v RET")))
-  (defun eab/gptel-rewrite ()
-    "Rewrite the current buffer or region.
-This function sets the gptel model to qwen/qwen3-coder-30b-a3b-instruct and
-calls the gptel-rewrite interactive command."
-    (interactive)
-    (setq gptel-model 'qwen/qwen3-coder-30b-a3b-instruct)
-    (call-interactively 'gptel-rewrite))
-  (defun eab/gptel-mode ()
-    (interactive)
-    (call-interactively 'org-mode)
-    (call-interactively 'gptel-mode))
-  )
+  (load "eab-gptel.el"))
 (defun eab-spacemacs/init-gptel-magit nil
-  (use-package gptel-magit
-    :after (magit gptel)
-    :config
-    (setq gptel-magit-model 'qwen/qwen3-coder-next)
-    (setq gptel-magit-commit-prompt
-          "You are an expert at writing Git commits. Your job is to write a short clear commit message that summarizes the changes.
-
-The commit message should be structured as follows:
-
-    <type>(<optional scope>): <description>
-
-    [optional body]
-
-- Commits MUST be prefixed with a type, which consists of one of the followings words: build, chore, ci, docs, feat, fix, perf, refactor, style, test
-- The type feat MUST be used when a commit adds a new feature
-- The type fix MUST be used when a commit represents a bug fix
-- An optional scope MAY be provided after a type. A scope is a phrase describing a section of the codebase enclosed in parenthesis, e.g., fix(parser):
-- A description MUST immediately follow the type/scope prefix. The description is a short description of the code changes, e.g., fix: array parsing issue when multiple spaces were contained in string.
-- Try to limit the whole subject line to 60 characters
-- Capitalize the subject line
-- Do not end the subject line with any punctuation
-- Use the imperative mood in the subject line
-- Keep the body short and concise (omit it entirely if not useful)" )
-    (defun eab/gptel-magit-generate-message ()
-      "Generate a commit message."
-      (interactive)
-      (gptel-magit--generate (lambda (message)
-                               (with-current-buffer (current-buffer)
-                                 (save-excursion
-                                   (insert message)))))
-      (message "magit-gptel: Generating commit message..."))
-    (defun gptel-magit--generate (callback)
-      "Generate a commit message for current magit repo.
-Invokes CALLBACK with the generated message when done."
-      (let ((diff (magit-git-output "diff" "--cached" "HEAD^"))
-            (gptel-tools nil)
-            (gptel-use-tools nil))
-        (gptel-magit--request diff
-          :system gptel-magit-commit-prompt
-          :context nil
-          :callback `(lambda (response _info)
-                       (let ((msg response))
-                         (funcall ,callback msg))))))))
-(defun eab-spacemacs/init-ellama ()
-  (defvar eab/ycai-token-cache "" "")
-  (defun eab/ycai-token ()
-    (if (not (equal (length eab/ycai-token-cache) 40))
-        (setq eab/ycai-token-cache
-              (substring (shell-command-to-string
-                          (eab/config (concat eab/ssh-host " bash <<'END'
-~/git/auto/keepass.sh \"portal/yandex cloud\" -a yc-ai-api-key
-END
-" ))) 0 -1)))
-    eab/ycai-token-cache)
-
-  (defvar eab/yc-id-cache "" "")
-  (defun eab/yc-id ()
-    (if (not (equal (length eab/yc-id-cache) 20))
-        (setq eab/yc-id-cache
-              (substring (shell-command-to-string
-                          (eab/config (concat eab/ssh-host " bash <<'END'
-~/git/auto/keepass.sh \"portal/yandex cloud\" -a yc-id
-END
-" ))) 0 -1)))
-    eab/yc-id-cache)
-  (use-package ellama
-    :after (llm llm-openai)
-    :config
-    (setq eab-llm (make-llm-openai-compatible
-                   :url "https://llm.api.cloud.yandex.net/v1"
-                   :chat-model (concat "gpt://" (eab/yc-id) "/yandexgpt/rc")
-                   :key (eab/ycai-token)))
-    (setopt ellama-language "Russian")
-    (setopt ellama-provider eab-llm)
-    (setopt ellama-coding-provider eab-llm)))
+  (load "eab-gptel-magit.el"))
+(defun eab-spacemacs/init-ellama nil
+  (load "eab-ellama.el"))
 (defun eab-spacemacs/init-daemons nil
   (use-package daemons
     :config
@@ -702,11 +540,41 @@ ssh chronos docker exec -u 1000:1000 \
           (switch-to-buffer-other-window "Firefox")
         (progn
           (eaf-open-browser "https://eaf-browser.eab.su"))))
+    (defun eab/eaf-browser-paste-clip ()
+      (interactive)
+      (with-temp-file "/tmp/clip.txt"
+        (insert (current-kill 0)))
+      (call-process-shell-command
+       "scp /tmp/clip.txt chronos:/docker/appdata/ff-tmp/clip.txt" nil 0)
+      (call-process-shell-command
+       (concat "
+bash -c \"ssh chronos\" <<EOF
+ docker exec firefox sh -c \"cat /tmp/clip.txt | xclip -selection clipboard; \
+ sleep 0.1; xdotool key ctrl+v \"
+EOF")
+       nil 0))
+    (defun eab/eaf-browser-ctrl-f ()
+      (interactive)
+      (call-process-shell-command
+       (concat "
+ssh chronos docker exec \
+   firefox xdotool key ctrl+f")  nil 0))
+    (defun eab/eaf-browser-ctrl-t ()
+      (interactive)
+      (call-process-shell-command
+       (concat "
+ssh chronos docker exec \
+   firefox xdotool key ctrl+t")  nil 0))
     (defun eab/browse-url (url &optional arg)
       (interactive)
-      (if current-prefix-arg
-          (browse-url-firefox url)
-        (eaf-open-browser-other-window url)))
+      (cond
+       ((equal current-prefix-arg 2)
+        (eaf-open-browser-other-window url))
+       ((equal current-prefix-arg '(4))
+        (browse-url-firefox url))
+       ((not current-prefix-arg)
+        (eab/eaf-open-browser url)
+        )))
     (defun eab/browse-url0 (url &optional arg)
       (interactive)
       (if current-prefix-arg
@@ -853,7 +721,7 @@ Opens the Google search results page for the entered query in the default web br
       (ansi-color-apply-on-region (point-min) (point-max))
       (read-only-mode 'toggle))
 
-    ;; TODO why concrete buffer-name only?
+    ;; TODO: why concrete buffer-name only?
     (define-advice display-message-or-buffer (:before (&rest args) ansi-color)
       "Process ANSI color codes in shell output."
       (let ((buf (car args)))
@@ -913,10 +781,12 @@ Opens the Google search results page for the entered query in the default web br
   (use-package helm-org
     :after (eab-helm eab-org)
     :config
+    ;; see also minibuffer-local-map
     (add-to-list 'helm-org-headings-actions '("eab/helm-org-goto-marker" . eab/helm-org-goto-marker))
     (add-to-list 'helm-org-headings-actions '("eab/helm-note-todo" . eab/helm-note-todo))
     (add-to-list 'helm-org-headings-actions '("eab/helm-org-switch-ql" . eab/helm-org-switch-ql))
-    (add-to-list 'helm-org-headings-actions '("eab/hron-todo" . eab/helm-hron-todo))))
+    (add-to-list 'helm-org-headings-actions '("eab/helm-org-store-link" . eab/helm-org-store-link))
+    (add-to-list 'helm-org-headings-actions '("eab/helm-hron-todo" . eab/helm-hron-todo))))
 (defun eab-spacemacs/init-helm-org-rifle nil
   (use-package helm-org-rifle
     :after (general ergoemacs-functions helm org eab-minimal)
@@ -933,6 +803,10 @@ Opens the Google search results page for the entered query in the default web br
                    (with-helm-alive-p
                      (helm-exit-and-execute-action
                       'helm-org-rifle-show-entry-in-real-buffer)))
+     "M-c"        (ilam
+                   (with-helm-alive-p
+                     (helm-exit-and-execute-action
+                      'eab/helm-rifle-store-link)))
      "M-n"        'helm-next-source
      "M-p"        'helm-previous-source
      "C-k"        'toggle-input-method
@@ -974,6 +848,7 @@ Opens the Google search results page for the entered query in the default web br
     (add-to-list 'popwin:special-display-config
                  `(,eab/special-buffer :width 20 :position left :stick t))
 
+    ;; TODO: see also window-toggle-side-windows C-x w s
     ;; see also toggle-window-dedicated
     (defun eab/special-buffer-toggle ()
       (interactive)
@@ -1024,12 +899,12 @@ Opens the Google search results page for the entered query in the default web br
     (eab/bind-path mc/list-file)
     (if (boundp 'mc--default-cmds-to-run-for-all)
         (setq mc--cmds mc--default-cmds-to-run-for-all))
-    ;; TODO mc/cmds-to-run-for-all переназначается (sp-backward-sexp sp-forward-sexp)
+    ;; TODO: mc/cmds-to-run-for-all переназначается (sp-backward-sexp sp-forward-sexp)
     (setq mc/cmds-to-run-for-all (append mc/cmds-to-run-for-all
                                          '(org-delete-char
                                            org-self-insert-command)))))
 (defun eab-spacemacs/init-flx-isearch ()
-  ;; TODO поробовать разрешить в agenda?
+  ;; TODO: поробовать разрешить в agenda?
   (flx-isearch-mode 0)
   (setq isearch-search-fun-function 'isearch-search-fun-default))
 
@@ -1140,7 +1015,7 @@ Opens the Google search results page for the entered query in the default web br
                                 "gitlab-local.boos.solutions" forge-gitlab-repository))
     (setq bug-reference-auto-setup-functions nil)))
 (defun eab-spacemacs/init-orgit nil
-  ;; TODO cancel rev-export disabling
+  ;; TODO: cancel rev-export disabling
   (use-package orgit
     :after (magit)
     :config
@@ -1264,6 +1139,18 @@ Opens the Google search results page for the entered query in the default web br
     (advice-remove #'org-open-file #'eaf--find-file-advisor)
     (defun eab/org-eaf-open (path link)
       (eaf-open path))
+    (defun eaf--dired-find-file-advisor (orig-fn)
+      "Advisor of `dired-find-file' and `dired-find-alternate-file' that opens EAF supported file using EAF.
+
+It currently identifies PDF, videos, images, and mindmap file extensions."
+      (dolist (file (dired-get-marked-files))
+        (let* ((local-file
+                (if (and (file-remote-p file) (string-match-p "\\.[pP][dD][fF]\\'" file))
+                    (let* ((tmp-file
+                            (tramp-handle-file-local-copy file)))
+                      tmp-file)
+                  file)))
+          (eaf--find-file orig-fn local-file t))))
     (defun eab/eaf-open-viewer-other-window (url &optional args)
       "Open EAF browser application given a URL and ARGS in other window."
       (interactive "M[EAF/browser] URL: ")
@@ -1279,24 +1166,31 @@ Opens the Google search results page for the entered query in the default web br
      :keymaps 'eaf-mode-map*
      "C-o"   'nil
      "C-c b" 'nil
-     )
-    (eaf-create-send-sequence-function "ctrl-t" "C-t")
-    (eaf-create-send-sequence-function "ctrl-v" "C-v"))
+     ))
+    ;; doesn't work in eaf + remote vnc
+    ;; (eaf-create-send-sequence-function "ctrl-t" "C-t") ;; needs eaf--buffer-id ?
+    ;; (eaf-create-send-sequence-function "ctrl-v" "C-v") ;; needs eaf--buffer-id ?
   (use-package eaf-browser
     :if (eab/ondaemon "cyclos")
     :after (eaf)
     :init
-    (add-to-list 'load-path "/home/eab/.emacs.d/private/eab-spacemacs/local/eaf/app/browser")
+    (add-to-list 'load-path (concat eab-spacemacs-path "local/eaf/app/browser"))
     :config
     (setq eaf-browser-auto-import-chrome-cookies 't)
     (setq eaf-browser-chrome-browser-name "chrome")
     (setq eaf-browser-dark-mode-theme "light")
     (setq eaf-browser-dark-mode nil)
+    ;; (eaf-create-send-sequence-function "ctrl-f" "C-f") ;; needs eaf--buffer-id ?
     (setq eaf-browser-keybinding nil)
     (let ((kb 'eaf-browser-keybinding))
       (mapc (lambda (x)
               (eval `(eab/eaf-bind-key ,x ,kb)))
             '(
+              ("C-t" . "eab/eaf-browser-ctrl-t")
+              ("C-f" . "eab/eaf-browser-ctrl-f")
+              ("C-v" . "eab/eaf-browser-paste-clip")
+              ("C-<escape>" . "eaf-browser-send-esc-or-exit-fullscreen")
+              ("<escape>" . "eaf-browser-send-esc-or-exit-fullscreen")
               ;; ("C-t" . "eaf-send-ctrl-t-sequence")
               ;; ("C-v" . "eaf-send-ctrl-v-sequence")
               ("M-b" . "browser-a-lot-goto-prev")
@@ -1330,7 +1224,7 @@ Opens the Google search results page for the entered query in the default web br
     :if (eab/ondaemon "cyclos")
     :after (eaf)
     :init
-    (add-to-list 'load-path "/home/eab/.emacs.d/private/eab-spacemacs/local/eaf/app/pdf-viewer")
+    (add-to-list 'load-path (concat eab-spacemacs-path "local/eaf/app/pdf-viewer"))
     :config
     (setq eaf-pdf-viewer-keybinding nil)
     (let ((kb 'eaf-pdf-viewer-keybinding))
@@ -1368,9 +1262,12 @@ Opens the Google search results page for the entered query in the default web br
             (define-key map [?\C-c ?\M-d] #'ghostel-char-mode)
             (define-key map [?\C-c ?\C-j] #'ghostel-semi-char-mode)
             (define-key map [?\M-v] #'ghostel-yank)
-            (key-chord-define map "jj" #'ghostel-semi-char-mode)
+            ;; (key-chord-define map "jj" #'ghostel-semi-char-mode)
             (define-key map [?\C-c ?\C-e] #'ghostel-emacs-mode)
             map))
+
+    (key-chord-define ghostel-readonly-fast-exit-mode-map "jj" #'ghostel-readonly-exit)
+    (key-chord-define ghostel-readonly-mode-map "jj" #'ghostel-readonly-exit)
 
     (setq ghostel-semi-char-mode-map
           (let ((map (eat-term-make-keymap
@@ -1381,8 +1278,45 @@ Opens the Google search results page for the entered query in the default web br
                          [?\C-a] [?\C-l] [?\e ?a] [?\e ?s] [?\C-b] [?\e ?1]
                          [?\e ?c] [?\e ?v] [?\e ?g] [?\e ?h] [?\e ?p]
                          [?\C-p] [?\C-n] [?\C-v] [?\C-o] [?\C-e]
-                         [?\e ?o] [?\e ?j] [?\e ?l] [?\e ?k] [?\e ?i] [?\e ?\s]
+                         [?\e ?o] [?\e ?j] [?\e ?l] [?\e ?k] [?\e ?i]
                          [?\e ?!] [?\e ?&] [?\C-y] [?\e ?y]))))
+            (define-key map (kbd "<escape>") #'ghostel--send-event)
+            (define-key map [?\C-k] #'toggle-input-method)
+            (define-key map [?\C-y] #'ghostel-yank)
+            (define-key map [?\M-v] #'ghostel-yank)
+            (define-key map [?\M-y] #'ghostel-yank)
+            (define-key map [?\M-m] (ilam (eab/eepitch-prepare-m-r)))
+            (define-key map [?\M-r] (ilam (eab/m-r-ghostel)))
+            (define-key map [?\M-j] (ilam (let ((last-command-event 'left)) (ghostel--send-event))))
+            (define-key map [?\M-l] (ilam (let ((last-command-event 'right)) (ghostel--send-event))))
+            (define-key map [?\M-k] (ilam (let ((last-command-event 'down)) (ghostel--send-event))))
+            (define-key map [?\M-i] (ilam (let ((last-command-event 'up)) (ghostel--send-event))))
+            (define-key map [?\M-K] (ilam (let ((last-command-event 'next)) (ghostel--send-event))))
+            (define-key map [?\M-I] (ilam (let ((last-command-event 'prior)) (ghostel--send-event))))
+            (define-key map [?\M-h] (ilam (let ((last-command-event 'home)) (ghostel--send-event))))
+            (define-key map [?\M-p] (ilam (let ((last-command-event 'end)) (ghostel--send-event))))
+            (define-key map [?\C-p] (ilam (let ((last-command-event 'up)) (ghostel--send-event))))
+            (define-key map [?\C-n] (ilam (let ((last-command-event 'down)) (ghostel--send-event))))
+            (define-key map [?\C-c ?\C-c] #'ghostel--send-event)
+            (define-key map [?\C-c ?\C-e] #'ghostel-emacs-mode)
+            (key-chord-define map "jj" #'ghostel-emacs-mode)
+            map))
+
+    ;; (use-local-map claude-ghostel-semi-char-mode-map)
+    (setq claude-ghostel-semi-char-mode-map
+          (let ((map (eat-term-make-keymap
+                      #'ghostel--send-event
+                      '(:ascii :arrow :navigation)
+                      '( [?\C-\\] [?\C-q] [?\C-c] [?\C-g] [?\C-h]
+                         [?\e ?\C-c] [?\C-u] [?\C-q] [?\e ?x] [?\e ?:]
+                         [?\C-a] [?\C-l] [?\e ?a] [?\e ?s] [?\C-b] [?\e ?1]
+                         [?\e ?c] [?\e ?v] [?\e ?g] [?\e ?h] [?\e ?p]
+                         [?\C-p] [?\C-n] [?\C-v] [?\C-o] [?\C-e]
+                         [?\e ?o] [?\e ?j] [?\e ?l] [?\e ?k] [?\e ?i]
+                         [?\e ?!] [?\e ?&] [?\C-y] [?\e ?y]))))
+            (define-key map (kbd "<C-return>") #'ghostel--send-event)
+            (define-key map (kbd "<escape>") #'ghostel--send-event)
+            (define-key map [?\C-k] #'toggle-input-method)
             (define-key map [?\C-y] #'ghostel-yank)
             (define-key map [?\M-v] #'ghostel-yank)
             (define-key map [?\M-y] #'ghostel-yank)
@@ -1411,6 +1345,7 @@ Opens the Google search results page for the entered query in the default web br
             (define-key map [?\C-\M-m] #'ghostel-semi-char-mode)
             map))
 
+    ;; C-] doesn't work inside container
     (defun eab/m-r-ghostel ()
       (interactive)
       (execute-kbd-macro (read-kbd-macro "C-]"))
@@ -1428,6 +1363,8 @@ Opens the Google search results page for the entered query in the default web br
       (sleep-for 0.2)
       (let ((last-command-event 'right))
         (ghostel--send-event)))
+
+    (add-hook 'ghostel-mode-hook (lambda () (setq input-method-function 'key-chord-input-method)))
 
     ))
 
@@ -1584,7 +1521,7 @@ Opens the Google search results page for the entered query in the default web br
          "r"        (ilam (eab/or-self-insert 'string-rectangle))
          "к"        (ilam (eab/or-self-insert 'string-rectangle))
          "t"        'nil
-         ;; TODO C-g неправильно работает с region-bindings-mode
+         ;; TODO: C-g неправильно работает с region-bindings-mode
          ;; "C-g"   (ilam (eab/or-self-insert 'mc/keyboard-quit))
          "g"        (ilam (eab/or-self-insert 'mc/keyboard-quit))
          "п"        (ilam (eab/or-self-insert 'mc/keyboard-quit))
@@ -1710,7 +1647,7 @@ Opens the Google search results page for the entered query in the default web br
       (interactive)
       (tramp-cleanup-connection
        (tramp-dissect-file-name
-        ;; TODO tramp default-directory path
+        ;; TODO: tramp default-directory path
         (concat "/docker:"
                 (car (progn
                        (docker-utils-get-marked-items-ids))) ":"))))
@@ -2422,7 +2359,7 @@ Opens the Google search results page for the entered query in the default web br
                (unless (equal isearch-string "")
                  (isearch-exit)))))
         (isearch-exit)
-        ;; TODO ace -> avy
+        ;; TODO: ace -> avy
         (ace-jump-do (concat "\\b" isearch-string))))))
 
 (defun eab-spacemacs/init-eab-avy ()

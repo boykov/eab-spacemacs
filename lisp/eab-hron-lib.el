@@ -219,7 +219,9 @@
                 ',(apply 'encode-time
                          (org-parse-time-string (eab/hron-add-current h m))))))
     (with-temp-file eab/org-file
-      (let ((standard-output (current-buffer))) (print body)))
+      (let ((standard-output (current-buffer)))
+        (princ ";;; current-time.el --- eab-hron-lib current time -*- lexical-binding: t -*-")
+        (print body)))
     (funcall `(lambda () ,body))))
 
 (defun eab/hron-set-current (str)
@@ -228,7 +230,9 @@
          `(setq eab/hron-current-time
                 ',(apply 'encode-time (org-parse-time-string str)))))
     (with-temp-file eab/org-file
-      (let ((standard-output (current-buffer))) (print body)))
+      (let ((standard-output (current-buffer)))
+        (princ ";;; current-time.el --- eab-hron-lib current time -*- lexical-binding: t -*-")
+        (print body)))
     (funcall `(lambda () ,body))))
 
 (defvar eab/hron-todo-history nil "`eab/hron-todo' history alist")
@@ -421,6 +425,22 @@
   (org-show-context)
   (org-show-entry)
   (org-show-children))
+
+(defun eab/helm-org-store-link (marker)
+  "Store org link."
+  (save-window-excursion
+    (setq eab/helm-org-goto-flag 't)
+    (switch-to-buffer (marker-buffer marker))
+    (goto-char (marker-position marker))
+    (call-interactively 'org-store-link)))
+
+(defun eab/helm-rifle-store-link (candidate)
+  "Store org link."
+  (save-window-excursion
+    (-let (((buffer . pos) candidate))
+      (switch-to-buffer buffer)
+      (goto-char pos))
+    (call-interactively 'org-store-link)))
 
 (defvar eab/helm-org-marker nil)
 (defvar eab/helm-org-goto-marker nil)
@@ -777,7 +797,7 @@
                                           (eab/rsync-org-directory)
                                           (eab/renew-agenda-files-1))))
       (let ((server-use-tcp 't))
-        (server-eval-at "serverP" '(eab/renew-agenda-files-1)))))
+        (server-eval-at "kairosP" '(eab/renew-agenda-files-1)))))
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -15,19 +15,19 @@
                                   `(eval ',sexp)))))
 
 '((let ((server-use-tcp 't))
-    (server-eval-at "serverP" '(symbol-function 'eab/eval-last-sexp-server-M)))
+    (server-eval-at "kairosP" '(symbol-function 'eab/eval-last-sexp-server-M)))
   )
 
-(defun eab/eval-last-sexp-server-P ()
-  "Evaluate sexp before point on serverM; print value in minibuffer."
+(defun eab/eval-last-sexp-kairos-P ()
+  "Evaluate sexp before point on kairosP; print value in minibuffer."
   (interactive)
   (let ((sexp (call-interactively (lambda () (interactive) (preceding-sexp)))))
     (message "%s" (let ((server-use-tcp 't))
-                    (server-eval-at "serverP"
+                    (server-eval-at "kairosP"
                                     `(eval ',sexp))))))
 
 (defun eab/eval-last-sexp-chronos-C ()
-  "Evaluate sexp before point on server-C; print value in minibuffer."
+  "Evaluate sexp before point on chronosC; print value in minibuffer."
   (interactive)
   (let ((sexp (call-interactively (lambda () (interactive) (preceding-sexp)))))
     (let ((server-use-tcp server-C-use-tcp))
@@ -35,7 +35,7 @@
                                     `(eval ',sexp))))))
 
 (defun eab/eval-last-sexp-kairos-C ()
-  "Evaluate sexp before point on server-C; print value in minibuffer."
+  "Evaluate sexp before point on kairosC; print value in minibuffer."
   (interactive)
   (let ((sexp (call-interactively (lambda () (interactive) (preceding-sexp)))))
     (let ((server-use-tcp server-C-use-tcp))

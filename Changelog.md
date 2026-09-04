@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.4.27
+
+refactor: rename serverP to kairosP and update references
+
+- Replace all occurrences of "serverP" with "kairosP"
+- Add new file owui-run.el for Open WebUI integration
+- Add new files eab-ellama.el and eab-gptel-magit.el to modularize configurations
+- Update config.el: add eab/dl.sh-command, adjust gptel backend setup, and update serverP references
+- Update keybindings.el: restructure C-v bindings, add M-c keybinding for helm-org-store-link, adjust M-b binding for dl.sh
+- Update lisp/eab-eepitch.el: comment about ash/bash in container
+- Update packages.el: load new eab-ellama.el, eab-gptel.el, eab-gptel-magit.el; remove duplicated code and dead code; fix load-path paths
+- Add .ai.code.files to .gitignore
+
 ## 0.4.26
 
 refactor: replace `eab/unlock-chronos-command` with `nomachine-switch.sh` and
@@ -482,7 +495,7 @@ Fix `toggle-read-only`.
 Fix `eab/helm-org-agenda-files-headings` with `eab/org-file`.
 Switch `serverP`, `cyclos` to tcp.
 Add external `serverP` to `eab/renew-agenda-files`.
-Add `eab/eval-last-sexp-server-P`.
+Add `eab/eval-last-sexp-kairos-P`.
 Fix `emacs-eat` with diminish `WK` again.
 Improve `eab/renew-agenda-files` for all tcp.
 Rewrite `eab/make-list-paths` via `dired-copy-filename-as-kill`.

@@ -93,6 +93,7 @@
         (eab/wrap-eepitch-this line))
     (ee-next-line 1)))
 
+;; doesn't work inside container, ash instead of bash
 (defun eab/eepitch-prepare-m-r ()
   (eab/wrap-eepitch-this " HISTIGNORE='*m-r123*'\n")
   (eab/wrap-eepitch-this

@@ -64,6 +64,9 @@ END
       (concat "ssh kairos" " 'sqlite3 -column /var/gotify/data/gotify.db \"select datetime(date,\\\"localtime\\\"),title,message from messages order by date desc limit 20;\"'"))
 ;; (eab/gotify "test" "test" 0)
 
+(setq eab/dl.sh-command
+      (concat "ssh chronos" " dl.sh "))
+
 (setq eab/test-dotemacs-command
       ;; host=`dig test-dotemacs.salmon.eab.su TXT +short | tr -d '"'`
       (concat "ssh chronos" " ~/git/auto/test-dotemacs.sh"))
@@ -103,7 +106,7 @@ END")))
   (if (string= eab/daemon-name def) 't))
 
 (defun eab/server-P ()
-  (if (or (eab/ondaemon "serverP")
+  (if (or (eab/ondaemon "kairosP")
           (eab/ondaemon "chronosP")
           (eab/ondaemon "cyclos")
           (eab/ondaemon "microcyclos"))
@@ -167,8 +170,8 @@ END")))
       (setq server-use-tcp 't)))
 
 '((let ((server-use-tcp 't))
-    (list (server-eval-at "serverP" '(eab/gotify-token))
-          (server-eval-at "serverP" '(eab/gotify-client-token))))
+    (list (server-eval-at "kairosP" '(eab/gotify-token))
+          (server-eval-at "kairosP" '(eab/gotify-client-token))))
   )
 
 
@@ -215,7 +218,7 @@ END")))
           `(
             ("server"        . ,(concat user-emacs-directory "history/"))
             ("serverM"       . ,(concat user-emacs-directory "historyM/"))
-            ("serverP"       . ,(concat user-emacs-directory "historyP/"))
+            ("kairosP"       . ,(concat user-emacs-directory "historyP/"))
             ("chronosP"      . ,(concat user-emacs-directory "historyChronosP/"))
             ("microcyclos"   . ,(concat user-emacs-directory "historyMicrocyclos/"))
             ("cyclos"        . ,(concat user-emacs-directory "historyCyclos/"))
@@ -225,7 +228,7 @@ END")))
 
 (setq-put eab/emacs-service-alist
           `(
-            ("serverP"         . "docker-compose-emacs")
+            ("kairosP"         . "docker-compose-emacs")
             ("chronosP"        . "docker-compose-emacs")
             ("microcyclos"     . "docker-compose-micro")
             ("cyclos"          . "cyclos-emacs")

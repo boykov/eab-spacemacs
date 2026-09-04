@@ -206,6 +206,13 @@ update search arguments."
   (let ((ido-mode nil))
     (execute-kbd-macro (read-kbd-macro "C-c C-l M-i RET RET"))))
 
+(defun eab/org-insert-capture-from-clipboard ()
+  (interactive)
+  (let ((info (org-protocol-parse-parameters
+               (substring (substring (current-kill 0) 1 -1)
+                          (length "org-protocol://capture?")) 't)))
+    (org-protocol-capture info)))
+
 (defun eab/short-name-agenda ()
   (let ((old-name (buffer-name)))
     (if (> (length old-name) 20)

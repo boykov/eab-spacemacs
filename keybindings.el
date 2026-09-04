@@ -125,21 +125,6 @@
  "<kp-insert>"  'nil
  "s-a"          'append-to-buffer)
 
-(global-set-key (kbd "C-v") nil)
-(general-define-key
- "C-v d"        'vc-diff
- "C-v p"        'gptel-system-prompt
- "C-v c"        'eab/gptel-magit-generate-message
- "C-v m"        'gptel-menu
- "C-v g"        'gptel
- "C-v n"        (ilam (call-interactively 'eab/ergoemacs-new-empty-buffer)
-                      (call-interactively 'eab/gptel-mode))
- "C-v a"        'gptel-agent
- "C-v r"        'eab/gptel-rewrite
- "C-v v"        'eab/gptel-mode
- "C-v t"        'gptel-tools
- "C-v C-v"      'eab/gptel-mode)
-
 (general-define-key
  "C-n"  'eab/ergoemacs-new-empty-buffer
  "C-w"  'eab/ergoemacs-compact-uncompact-block
@@ -311,6 +296,16 @@
                  (if (string= (minibuffer-contents) "")
                      (abort-recursive-edit)
                    (exit-minibuffer)))
+ "M-c"          (ilam
+                 (run-with-timer
+                  0.01 nil
+                  `(lambda ()
+                     (save-window-excursion
+                       (eab/helm-org-goto-marker ,eab/helm-org-goto-marker)
+                       (call-interactively 'org-store-link))))
+                 (if (string= (minibuffer-contents) "")
+                     (abort-recursive-edit)
+                   (exit-minibuffer)))
  "M-i"          'previous-history-element
  "M-r"          'nil
  "M-p"          'nil
@@ -318,7 +313,15 @@
  "M-x"          'nil
  "M-I"          'previous-matching-history-element
  "M-K"          'next-matching-history-element
- "M-v"          'nil)
+ "M-v"          'nil
+ "M-:"          'helm-minibuffer-history
+ "M-k"          'next-history-element
+ "C-d"          'eab/clear-extended-history
+ "C-|"          'eab/minibuffer-see-file
+ "s-SPC"        'eab/ido-see-file
+ "M-a"          'eab/smex-extended
+ "C-w"          'eab/smex-repeat
+ "M-E"          (ilam (delete-minibuffer-contents)))
 
 (general-define-key
  :keymaps 'kmacro-keymap
@@ -331,17 +334,6 @@
 (general-define-key
  :keymaps 'isearch-mode-map
  "M-d" 'eab/isearch-ace-jump)
-
-(general-define-key
- :keymaps 'minibuffer-local-map
- "M-:"          'helm-minibuffer-history
- "M-k"          'next-history-element
- "C-d"          'eab/clear-extended-history
- "C-|"          'eab/minibuffer-see-file
- "s-SPC"        'eab/ido-see-file
- "M-a"          'eab/smex-extended
- "C-w"          'eab/smex-repeat
- "M-E"          (ilam (delete-minibuffer-contents)))
 
 (general-define-key
  :keymaps 'minibuffer-inactive-mode-map
@@ -421,6 +413,7 @@
  "M-h"          'eab/jump-current-time
  "v"            'eab/org-insert-link-fast
  "V"            'org-insert-link
+ "C-v"          'eab/org-insert-capture-from-clipboard
  "."            (kbd "C-c . RET")
  "M-."          `(,(ilam (execute-kbd-macro (read-kbd-macro "C-c . RET C-l RET C-l l"))) :which-key " ")
  "O"            'esc-toggle-window-selectability
@@ -442,7 +435,7 @@
  "f"            'eab/see-file
  "SPC"          'eab/gr-tag-default-directory
  "M-d"          (ilam (call-process-shell-command eab/test-dotemacs-command nil 0))
- "M-b"          'nil
+ "M-b"          (ilam (call-process-shell-command (concat eab/dl.sh-command (current-kill 0))  nil 0))
  "M-s"          (ilam (call-process-shell-command eab/sync-rsync-command nil 0))
  "M-S"          (ilam (call-process-shell-command eab/sync-zfs-command nil 0)))
 (setq eab/temacs-map (lookup-key global-map (kbd "C-l")))
