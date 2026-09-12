@@ -60,15 +60,6 @@ process: e.g. nautilus or gnome-terminals"
                (current-prefix-arg nil))
            (call-interactively 'shell-command)))))
 
-(defun eab/xmodmap-set-hyper ()
-  (interactive)
-  (shell-command "xmodmap -e 'keycode 135 = Hyper_R'"))
-
-(defun eab/gconf-set-keyboard-rate ()
-  (interactive)
-  (shell-command
-   "gconftool-2 --type int --set /desktop/gnome/peripherals/keyboard/rate 120"))
-
 (defun eab/gr-tag-default-directory ()
   (interactive)
   (shell-command (concat "gr +#emacs " default-directory)))

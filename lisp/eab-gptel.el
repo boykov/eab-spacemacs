@@ -19,7 +19,8 @@
    "C-v g"        'gptel
    "C-v n"        (ilam (call-interactively 'eab/ergoemacs-new-empty-buffer)
                         (call-interactively 'eab/gptel-mode))
-   "C-v a"        'gptel-agent
+   "C-v A"        'gptel-agent
+   "C-v a"        'ai-code-menu
    "C-v r"        'eab/gptel-rewrite
    "C-v v"        'eab/gptel-mode
    "C-v t"        'gptel-tools
@@ -87,7 +88,7 @@ END
     ;; :request-params '(:plugins [(:id "web")]) ;; deprecated openrouter web plugin
     ;; :request-params '(:tools [(:type "openrouter:web_search")])
     :stream t
-    :key 'gptel-api-key
+    :key gptel-api-key
     :models '(openai/gpt-oss-120b
               openai/gpt-oss-120b:nitro
               z-ai/glm-5.3-flash
@@ -132,6 +133,9 @@ END
     (execute-kbd-macro
      (read-kbd-macro "C-v m d M-v RET k m RET RET"))
     (setq gptel-model eab/gptel-one-shot-model))
+  (setq eab/gptel-rewrite-note
+        "Rewrite: Все текстовые блоки должны стать элементами org-mode списка.
+ Строки текста должны быть не длиннее 80 символов, перенос на следующую строку если длиннее.")
   (defun eab/gptel-rewrite ()
     "Rewrite the current buffer or region.
 This function sets the gptel model to qwen/qwen3-coder-30b-a3b-instruct and

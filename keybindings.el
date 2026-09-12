@@ -25,6 +25,13 @@
  "C-M-f"        'toggle-frame-maximized
  "C-M-:"        'isearch-backward-regexp
  "C-M-;"        'isearch-forward-regexp
+ "C-s-k"        '(:def (lambda (ch) "insert ch" (interactive "c") (insert ch)) :which-key "insert ch")
+ "C-h C-c"      'describe-command
+ "C-h c"        'eab/describe-key-briefly
+ "C-h C-f"      'eab/find-function-at-point
+ "C-h C-k"      'eab/describe-key-find
+ "C-h C-v"      'eab/find-variable-at-point
+ "C-x M-g"      (ilam (eab/grep 2))
 )
 
 (general-define-key
@@ -52,12 +59,9 @@
  "C-SPC"        'set-mark-command
  "S-SPC"        'nil
  "C-c M-f"      'find-file-at-point
- "C-h C-c"      'describe-command
- "C-h c"        'describe-key-briefly
  "C-k"          'toggle-input-method
  "C-o"          'find-file
  "C-s-i"        'imenu
- "C-s-k"        (lambda (ch) (interactive "c") (insert ch))
  "C-x C-d"      'dired-jump
  "C-x C-e"      'eval-defun
  "C-x C-k k"    'kill-region
@@ -126,20 +130,6 @@
  "s-a"          'append-to-buffer)
 
 (general-define-key
- "C-n"  'eab/ergoemacs-new-empty-buffer
- "C-w"  'eab/ergoemacs-compact-uncompact-block
- "M-G"  'ergoemacs-kill-line-backward
- "M-Q"  'ergoemacs-close-current-buffer
- "M-`"  'ergoemacs-switch-to-next-frame
- "M-S"  'ergoemacs-move-cursor-previous-pane
- "M-s"  (ilam (ergoemacs-move-cursor-previous-pane -1))
- "M-w"  'ergoemacs-shrink-whitespaces
- "M-~"  'ergoemacs-switch-to-previous-frame
- "C-/"  'ergoemacs-toggle-letter-case
- "M-*"  'ergoemacs-select-text-in-quote
- "M-8"  'ergoemacs-extend-selection)
-
-(general-define-key
  "<f10>"        'eab/flyspell-buffer
  "<f12>"        'eab/make-list-paths
  "<f6>"         'eab/revert-buffer
@@ -162,14 +152,10 @@
  "C-c v"        'nil
  "C-c w"        'nil
  "C-c e"        'eab/edit-list-at-point
- "C-h C-f"      'eab/find-function-at-point
- "C-h C-k"      'eab/describe-key-find
- "C-h C-v"      'eab/find-variable-at-point
  "C-x b"        'switch-to-buffer
  "C-x C-b"      'ibuffer
  "C-x g"        'eab/grep
  "C-x C-g"      (kbd "C-u C-x g")
- "C-x M-g"      (ilam (eab/grep 2))
  "M-."          'nil
  "M-A"          'eab/call-shell-command
  "s-v"          'eab/org-insert-link-fast
@@ -415,7 +401,7 @@
  "V"            'org-insert-link
  "C-v"          'eab/org-insert-capture-from-clipboard
  "."            (kbd "C-c . RET")
- "M-."          `(,(ilam (execute-kbd-macro (read-kbd-macro "C-c . RET C-l RET C-l l"))) :which-key " ")
+ "M-."          (ilam (execute-kbd-macro (read-kbd-macro "C-c . RET C-l RET C-l l")))
  "O"            'esc-toggle-window-selectability
  "D"            'toggle-window-dedicated
  "<tab>"        (ilam (progn (show-all) (run-hook-with-args 'org-cycle-hook 'all)))
@@ -448,20 +434,20 @@
  "b"    'eab/switch-browser
  "v"    'eab/switch-viewer
  "t"    'eab/switch-eepitch-target
- "a"    `(,(ilam (eepitch-ansi-term "1")) :which-key " ")
- "1"    `(,(ilam (eepitch-ansi-term "1")) :which-key " ")
- "2"    `(,(ilam (eepitch-ansi-term "2")) :which-key " ")
- "3"    `(,(ilam (eepitch-ansi-term "3")) :which-key " ")
- "4"    `(,(ilam (eepitch-ansi-term "4")) :which-key " ")
- "5"    `(,(ilam (eepitch-ansi-term "5")) :which-key " ")
- "6"    `(,(ilam (eepitch-ansi-term "6")) :which-key " ")
- "7"    `(,(ilam (eepitch-ansi-term "7")) :which-key " ")
- "8"    `(,(ilam (eepitch-ansi-term "8")) :which-key " ")
- "9"    `(,(ilam (eepitch-ansi-term "9")) :which-key " ")
+ "a"    (ilam (eepitch-ansi-term "1"))
+ "1"    (ilam (eepitch-ansi-term "1"))
+ "2"    (ilam (eepitch-ansi-term "2"))
+ "3"    (ilam (eepitch-ansi-term "3"))
+ "4"    (ilam (eepitch-ansi-term "4"))
+ "5"    (ilam (eepitch-ansi-term "5"))
+ "6"    (ilam (eepitch-ansi-term "6"))
+ "7"    (ilam (eepitch-ansi-term "7"))
+ "8"    (ilam (eepitch-ansi-term "8"))
+ "9"    (ilam (eepitch-ansi-term "9"))
  "c"    'eab/switch-compile
- "d c"  `(,(ilam (setq eab/daemons-host "chronos") (call-interactively 'eab/daemons)) :which-key "(c)hronos")
- "d k"  `(,(ilam (setq eab/daemons-host "kairos") (call-interactively 'eab/daemons))  :which-key "(k)airos")
- "d y"  `(,(ilam (setq eab/daemons-host "cyclos") (call-interactively 'eab/daemons))  :which-key "c(y)clos")
+ "d c"  '(:def (ilam-no-def (setq eab/daemons-host "chronos") (call-interactively 'eab/daemons)) :which-key "(c)hronos")
+ "d k"  (ilam (setq eab/daemons-host "kairos") (call-interactively 'eab/daemons))
+ "d y"  (ilam (setq eab/daemons-host "cyclos") (call-interactively 'eab/daemons))
  "x"    (ilam
          (eab/sh-over-bash eab/emacs-service-command "" 't))
  "X"    (ilam
@@ -474,7 +460,7 @@
  "s"    'eab/switch-async
  "S"    'eab/switch-shell
  "m"    'eab/switch-message
- "k"    `(,(ilam (eepitch-kill)) :which-key " ")
+ "k"    (ilam (eepitch-kill))
  "o"    'proced
  "g"    'eab/switch-grep
  "G"    'eab/kill-last-grep
@@ -499,13 +485,11 @@
 (global-set-key (kbd "C-a") nil)
 (general-define-key
  :prefix "C-a"
- "a"            `(,(ilam (eab/wg-switch-to-workgroup ":clock:")) :which-key "apple :clock:")
- "A"            `(,(ilam (eab/wg-switch-to-workgroup ":auto:")) :which-key "AUTO :auto:")
- "e"            `(,(ilam (eab/wg-switch-to-workgroup ":eab-spacemacs:")) :which-key "eagle :eab-spacemacs:")
- "4"            `(,(ilam (eab/wg-switch-to-workgroup ":portal:")) :which-key "4 :portal:")
- "b"            `(,(ilam (eab/wg-switch-to-workgroup ":fz:")) :which-key ":fz:")
- "f"            'projectile-switch-project
- "F"            'projectile-discover-projects-in-directory
+ "a"            (ilam (eab/wg-switch-to-workgroup ":clock:"))
+ "A"            (ilam (eab/wg-switch-to-workgroup ":auto:"))
+ "e"            (ilam (eab/wg-switch-to-workgroup ":eab-spacemacs:"))
+ "4"            (ilam (eab/wg-switch-to-workgroup ":portal:"))
+ "b"            (ilam (eab/wg-switch-to-workgroup ":fz:"))
  "p"            'eab/wg-switch-to-previous-workgroup
  "o"            'eab/wg-rotate-base
  "O"            'eab/wg-rotate-twice
@@ -516,7 +500,7 @@
  "v"            'wg-yank-config ;; wg-yank-wconfig
  "r"            'eab/wg-revert-workgroup
  "R"            'wg-revert-workgroup ;; +
- "u"            `(,(ilam (eab/wg-update-workgroup "dflt")) :which-key " ") ;; eab/wg-update-workgroup
+ "u"            (ilam (eab/wg-update-workgroup "dflt"))
  "U"            'wg-save-session ;; wg-update-workgroup
  ;;  "S"        'eab/eab-wg-save
  ;;  "L"        'eab/eab-wg-load
@@ -527,19 +511,20 @@
  "n"            'eab/wg-create-workgroup-xxx ;; +
  "N"            'wg-create-workgroup ;; +
  "k"            'wg-kill-workgroup ;; +
- "c"            `(,(ilam (eab/wg-kill-tmp) (wg-clone-workgroup (wg-current-workgroup) ":tmp:")) :which-key " ") ;; +
+ "c"            (ilam (eab/wg-kill-tmp) (wg-clone-workgroup (wg-current-workgroup) ":tmp:")) ;; +
  "SPC"          'eab/wg-revert-and-update
  ;; DONE по имени буфера: нарушение SPOT!
  "M-h"          'eab/helm-org-agenda-files-headings
- "C-h"          `(,(ilam (eab/org-ql-switch 'eab/org-ql-H-query)) :which-key " ")
+ "C-h"          (ilam (eab/org-ql-switch 'eab/org-ql-H-query))
  "h"            'eab/helm-org-agenda-files-headings
- "H"            `(,(ilam (eab/org-ql-search 'eab/org-ql-H-query)) :which-key " ")
- "t"            `(,(ilam (eab/org-ql-switch 'eab/org-ql-T-query)) :which-key " ")
- "T"            `(,(ilam (eab/org-ql-search 'eab/org-ql-T-query)) :which-key " ")
- "0"            `(,(ilam (eab/org-ql-switch 'eab/org-ql-O-query)) :which-key " ")
- ")"            `(,(ilam (eab/org-ql-search 'eab/org-ql-O-query)) :which-key " ")
- "w"            `(,(ilam (eab/org-ql-switch 'eab/org-ql-W-query)) :which-key " ")
- "W"            `(,(ilam (eab/org-ql-search 'eab/org-ql-W-query)) :which-key " ")
+ "H"            (ilam (eab/org-ql-search 'eab/org-ql-H-query))
+ "t"            (ilam (eab/org-ql-switch 'eab/org-ql-T-query))
+ "T"            (ilam (eab/org-ql-search 'eab/org-ql-T-query))
+ "0"            (ilam (eab/org-ql-switch 'eab/org-ql-O-query))
+ ")"            (ilam (eab/org-ql-search 'eab/org-ql-O-query))
+ "w"            'window-toggle-side-windows
+ ;; "w"            (ilam (eab/org-ql-switch 'eab/org-ql-W-query))
+ ;; "W"            (ilam (eab/org-ql-search 'eab/org-ql-W-query))
  "C-s"          'eab/gotify-status)
 (setq eab/wg-map (lookup-key global-map (kbd "C-a")))
 

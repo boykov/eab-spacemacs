@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.4.28
+
+refactor: Modularize eab-* packages and simplify keybindings
+
+- Add new modular files: eab-gptel.el, eab-popwin.el, eab-browse-url.el,
+  eab-daemons.el, eab-eaf.el, eab-ergoemacs.el, eab-magit.el,
+  eab-projectile.el, eab-recentf.el, eab-simple.el, eab-template.el
+- Update functions to load from new modular files
+- Split existing functionality into separate modular files
+- Refactor ilam macro to ilam-no-def; introduce ilam with :def wrapper
+- Add eab/describe-key-briefly to keybindings.el and update references
+- Simplify many key bindings by removing unnecessary :which-key hints
+- Fix gptel lexical-binding :key gptel-api-key
+- Fix eab/kbd-macro-query timers (0.1 -> 0.01/0.02)
+- Fix typos and formatting inconsistencies
+- Remove unused config setting eab/check-cc-path
+
+- Fix gptel lexical-binding :key gptel-api-key
+- Fix eab/kbd-macro-query timers
+
 ## 0.4.27
 
 refactor: rename serverP to kairosP and update references
@@ -7,10 +27,14 @@ refactor: rename serverP to kairosP and update references
 - Replace all occurrences of "serverP" with "kairosP"
 - Add new file owui-run.el for Open WebUI integration
 - Add new files eab-ellama.el and eab-gptel-magit.el to modularize configurations
-- Update config.el: add eab/dl.sh-command, adjust gptel backend setup, and update serverP references
-- Update keybindings.el: restructure C-v bindings, add M-c keybinding for helm-org-store-link, adjust M-b binding for dl.sh
+- Update config.el: add eab/dl.sh-command, adjust gptel backend setup,
+  and update serverP references
+- Update keybindings.el: restructure C-v bindings, add M-c keybinding
+  for helm-org-store-link, adjust M-b binding for dl.sh
 - Update lisp/eab-eepitch.el: comment about ash/bash in container
-- Update packages.el: load new eab-ellama.el, eab-gptel.el, eab-gptel-magit.el; remove duplicated code and dead code; fix load-path paths
+- Update packages.el: load new eab-ellama.el, eab-gptel.el,
+  eab-gptel-magit.el; remove duplicated code and dead code; fix
+  load-path paths
 - Add .ai.code.files to .gitignore
 
 ## 0.4.26

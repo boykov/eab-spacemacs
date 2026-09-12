@@ -9,23 +9,45 @@
 
 (defmacro ilam (&rest body)
   "Interactive lambda"
+  `'(:def (lambda ()
+           (interactive)
+           ,@body)))
+
+(defmacro ilam-no-def (&rest body)
+  "Interactive lambda"
   `(lambda ()
      (interactive)
      ,@body))
 
+(defun eab/describe-key-briefly (key &optional insert untranslated)
+  "Like `describe-key-briefly`, but prints the lambda definition if found."
+  (interactive "kDescribe key briefly: \nP")
+  (let* ((binding (key-binding key t)))
+    (if (and (listp binding) (eq (car binding) 'lambda))
+        (message "%s runs an anonymous function: %s"
+                 (key-description key)
+                 (if (fboundp 'lispy-alt-multiline)
+                     (with-temp-buffer
+                       (insert (prin1-to-string binding))
+                       (call-interactively 'lispy-alt-multiline)
+                       (buffer-string))
+                   (prin1-to-string binding)))
+      (describe-key-briefly key insert untranslated))))
+
+;; TODO: timers depend on keboard speed
 (defmacro eab/do-action (&rest body)
   ""
-  `(lambda ()
-     (interactive)
-     (let ((executing-kbd-macro defining-kbd-macro))
-       (run-with-timer 0.1 nil ,@body)
-       (abort-recursive-edit))))
+  `'(:def (lambda ()
+            (interactive)
+            (let ((executing-kbd-macro defining-kbd-macro))
+              (run-with-timer 0.01 nil ,@body)
+              (abort-recursive-edit)))))
 
 (defun eab/kbd-macro-query ()
   (interactive)
   (let (executing-kbd-macro defining-kbd-macro)
-    (run-with-timer 0.1 nil (ilam (execute-kbd-macro (read-kbd-macro "C-g"))))
-    (run-with-timer 0.2 nil (ilam (execute-kbd-macro (read-kbd-macro "M-g"))
+    (run-with-timer 0.01 nil (ilam-no-def (execute-kbd-macro (read-kbd-macro "C-]"))))
+    (run-with-timer 0.02 nil (ilam-no-def (execute-kbd-macro (read-kbd-macro "M-g"))
                                   (setq kill-ring (cdr kill-ring))))
     (recursive-edit)))
 

@@ -368,7 +368,6 @@ END")))
 (setq-put keyfreq-file (concat (eab/history-dir) ".emacs.keyfreq." system-name))
 (setq-put keyfreq-file-lock (concat (eab/history-dir) ".emacs.keyfreq.lock." system-name))
 
-(setq-put eab/check-cc-path "~/git/auto/check-cc.sh") ;; see eab-private/eab-secrets.el.gpg
 (setq-put eab/downloads-path "~/downloads/")
 
 (setq-put eab/american-english (eab/read-lines "/usr/share/dict/american-english"))

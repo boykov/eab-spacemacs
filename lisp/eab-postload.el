@@ -31,7 +31,7 @@
 
 (eab/renew-agenda-files-1)
 
-(global-set-key (kbd "C-h c") 'describe-key-briefly)
+(global-set-key (kbd "C-h c") 'eab/describe-key-briefly)
 (global-set-key (kbd "M-O") 'forward-paragraph)
 
 ;; (eab/loaded-ok (concat (daemonp) " postload"))
