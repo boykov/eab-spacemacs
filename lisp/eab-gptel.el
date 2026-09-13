@@ -24,6 +24,7 @@
    "C-v r"        'eab/gptel-rewrite
    "C-v v"        'eab/gptel-mode
    "C-v t"        'gptel-tools
+   "C-v s"        'gptel-abort ;; stop
    "C-v C-v"      'eab/gptel-mode)
 
   (defvar eab/orai-token-cache "" "")

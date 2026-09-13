@@ -154,7 +154,8 @@
       (eab/update-all-dblocks) ;; DONE why doesn't work?
       ;; DONE it seems to hangs up `eab/update-reports-nightly'
       (eab/org-ql-search 'eab/org-ql-T-query)
-      (call-interactively (ilam (org-agenda-write (concat org-directory "gen/plot/allagenda.org"))))
+      (call-interactively
+       (ilam-no-def (org-agenda-write (concat org-directory "gen/plot/allagenda.org"))))
       (org-id-update-id-locations)
       (eab/update-reports-nightly)
       (org-publish-remove-all-timestamps))

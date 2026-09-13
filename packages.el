@@ -230,9 +230,15 @@ which require an initialization must be listed explicitly in the list.")
           (remove 'claude-code ai-code-mcp-agent-enabled-backends))
     (setq ai-code-claude-code-program "bash")
     (setq ai-code-claude-code-program-switches '("/home/eab/git/eab-system/eab-spacemacs/claude.sh"))
+    (setq ai-code-pi-program "bash")
+    (setq ai-code-pi-program-switches '("/home/eab/git/eab-system/eab-spacemacs/pi.sh"))
     ;; (setq ai-code--session-project-root-override "/ssh:chronos:/home/eab/claude/")
     (setq ai-code-backends-infra-terminal-backend 'ghostel)
-    (ai-code-set-backend 'claude-code)))
+    (ai-code-set-backend 'claude-code)
+    ;; russian lang
+    (setq ai-code-backends-infra-ghostel-enable-ime-integration nil)
+    (ai-code-set-backend 'pi)
+    ))
 (defun eab-spacemacs/init-gptel-agent nil
   (use-package gptel-agent
     :after (gptel)
@@ -507,6 +513,11 @@ which require an initialization must be listed explicitly in the list.")
   (use-package eab-helm
     :after (eab-org ergoemacs-functions)
     :init
+    (defvar browse-url-galeon-program nil)
+    (defun browse-url-galeon nil)
+    (defvar browse-url-netscape-program nil)
+    (defun browse-url-netscape nil)
+    :config
     (eab/add-hook helm-before-initialize-hook eab/helm-hook
       (general-define-key
        :keymaps 'helm-map
@@ -518,6 +529,9 @@ which require an initialization must be listed explicitly in the list.")
        "<C-return>" (ilam
                      (with-helm-alive-p
                        (helm-exit-and-execute-action 'eab/helm-note-todo)))
+       "M-4"        (ilam
+                     (with-helm-alive-p
+                       (helm-exit-and-execute-action 'eab/helm-note-todo)))
        "M-RET"      (ilam
                      (with-helm-alive-p
                        (helm-exit-and-execute-action 'eab/helm-org-goto-marker)))
@@ -525,6 +539,10 @@ which require an initialization must be listed explicitly in the list.")
        "M-v"        'nil
        "M-l"        'nil
        "M-m"        'eab/helm-toggle-visible-mark
+       "M-2"        'eab/helm-toggle-visible-mark
+       "M-3"        (ilam
+                     (with-helm-alive-p
+                       (helm-exit-and-execute-action 'eab/helm-org-switch-ql)))
        "M-k"        'helm-next-line
        "M-i"        'helm-previous-line
        "C-n"        'next-history-element
@@ -538,11 +556,6 @@ which require an initialization must be listed explicitly in the list.")
       (general-define-key
        :keymaps 'helm-generic-files-map
        "M-i"        'helm-previous-line))
-    (defvar browse-url-galeon-program nil)
-    (defun browse-url-galeon nil)
-    (defvar browse-url-netscape-program nil)
-    (defun browse-url-netscape nil)
-    :config
     (eab/bind-path helm-c-adaptative-history-file)
     (eab/bind-path helm-locate-command)
     (defun eab/helm-find-file-or-marked (candidate)
@@ -596,6 +609,8 @@ which require an initialization must be listed explicitly in the list.")
     (setq helm-org-rifle-ellipsis-string "\n")
     (setq helm-org-rifle-context-characters 200)
     (setq helm-org-rifle-input-idle-delay 0.5)
+    (if (eab/ondaemon (eab/server-P))
+        (setq helm-org-rifle-input-idle-delay 1))
     (add-to-list 'helm-org-rifle-actions '("eab/hron-todo" . eab/rifle-hron-todo))
     (add-to-list 'helm-org-rifle-actions '("eab/note-todo" . eab/rifle-note-todo))))
 (defun eab-spacemacs/init-smart-compile nil
@@ -820,46 +835,16 @@ which require an initialization must be listed explicitly in the list.")
             (define-key map [?\M-v] #'ghostel-yank)
             ;; (key-chord-define map "jj" #'ghostel-semi-char-mode)
             (define-key map [?\C-c ?\C-e] #'ghostel-emacs-mode)
+            (define-key map (kbd "C-r") #'ghostel--send-event)
             map))
+
+    (define-key ghostel-readonly-fast-exit-mode-map (kbd "C-r") #'ghostel--send-event)
+    (define-key ghostel-readonly-mode-map (kbd "C-r") #'ghostel--send-event)
 
     (key-chord-define ghostel-readonly-fast-exit-mode-map "jj" #'ghostel-readonly-exit)
     (key-chord-define ghostel-readonly-mode-map "jj" #'ghostel-readonly-exit)
 
     (setq ghostel-semi-char-mode-map
-          (let ((map (eat-term-make-keymap
-                      #'ghostel--send-event
-                      '(:ascii :arrow :navigation)
-                      '( [?\C-\\] [?\C-q] [?\C-c] [?\C-x] [?\C-g] [?\C-h]
-                         [?\e ?\C-c] [?\C-u] [?\C-q] [?\e ?x] [?\e ?:]
-                         [?\C-a] [?\C-l] [?\e ?a] [?\e ?s] [?\C-b] [?\e ?1]
-                         [?\e ?c] [?\e ?v] [?\e ?g] [?\e ?h] [?\e ?p]
-                         [?\C-p] [?\C-n] [?\C-v] [?\C-o] [?\C-e]
-                         [?\e ?o] [?\e ?j] [?\e ?l] [?\e ?k] [?\e ?i]
-                         [?\e ?!] [?\e ?&] [?\C-y] [?\e ?y]))))
-            (define-key map (kbd "<escape>") #'ghostel--send-event)
-            (define-key map [?\C-k] #'toggle-input-method)
-            (define-key map [?\C-y] #'ghostel-yank)
-            (define-key map [?\M-v] #'ghostel-yank)
-            (define-key map [?\M-y] #'ghostel-yank)
-            (define-key map [?\M-m] (ilam-no-def (eab/eepitch-prepare-m-r)))
-            (define-key map [?\M-r] (ilam-no-def (eab/m-r-ghostel)))
-            (define-key map [?\M-j] (ilam-no-def (let ((last-command-event 'left)) (ghostel--send-event))))
-            (define-key map [?\M-l] (ilam-no-def (let ((last-command-event 'right)) (ghostel--send-event))))
-            (define-key map [?\M-k] (ilam-no-def (let ((last-command-event 'down)) (ghostel--send-event))))
-            (define-key map [?\M-i] (ilam-no-def (let ((last-command-event 'up)) (ghostel--send-event))))
-            (define-key map [?\M-K] (ilam-no-def (let ((last-command-event 'next)) (ghostel--send-event))))
-            (define-key map [?\M-I] (ilam-no-def (let ((last-command-event 'prior)) (ghostel--send-event))))
-            (define-key map [?\M-h] (ilam-no-def (let ((last-command-event 'home)) (ghostel--send-event))))
-            (define-key map [?\M-p] (ilam-no-def (let ((last-command-event 'end)) (ghostel--send-event))))
-            (define-key map [?\C-p] (ilam-no-def (let ((last-command-event 'up)) (ghostel--send-event))))
-            (define-key map [?\C-n] (ilam-no-def (let ((last-command-event 'down)) (ghostel--send-event))))
-            (define-key map [?\C-c ?\C-c] #'ghostel--send-event)
-            (define-key map [?\C-c ?\C-e] #'ghostel-emacs-mode)
-            (key-chord-define map "jj" #'ghostel-emacs-mode)
-            map))
-
-    ;; (use-local-map claude-ghostel-semi-char-mode-map)
-    (setq claude-ghostel-semi-char-mode-map
           (let ((map (eat-term-make-keymap
                       #'ghostel--send-event
                       '(:ascii :arrow :navigation)
@@ -894,7 +879,7 @@ which require an initialization must be listed explicitly in the list.")
             (define-key map [?\C-c ?\C-e] #'ghostel-emacs-mode)
             (key-chord-define map "jj" #'ghostel-emacs-mode)
             map))
-    
+
     (setq ghostel-char-mode-map
           (let ((map (eat-term-make-keymap
                       #'ghostel--send-event
@@ -2019,4 +2004,4 @@ which require an initialization must be listed explicitly in the list.")
   (use-package eab-org-reftex :disabled)
   (use-package eab-org-extension)
   (use-package eab-postload
-    :after (org)))
+    :after (eab-hron-lib)))

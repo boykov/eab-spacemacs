@@ -41,7 +41,9 @@
                 (progn
                   (call-interactively 'dired-virtual-mode)
                   (setq mode-name "Dired"
+                        buffer-file-name nil
                         revert-buffer-function 'dired-revert)
+                  (rename-buffer (substring name 1 -1))
                   (revert-buffer 't 't))
               (execute-kbd-macro (read-kbd-macro "M-1 M-@ C-f c C-f c"))))
         (eab/wg-update-workgroup "dflt"))

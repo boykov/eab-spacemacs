@@ -1,0 +1,1 @@
+ssh -t chronos "cd ~/claude && export HTTPS_PROXY=http://192.168.2.19:8118; pi $*"

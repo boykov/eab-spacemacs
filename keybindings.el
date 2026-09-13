@@ -348,6 +348,7 @@
 (global-set-key (kbd "C-l") nil)
 (general-define-key
  :prefix "C-l"
+ "C-o"          'find-file
  "C-k"          (ilam (set-input-method nil) (setq default-input-method "russian-computer")) ;; "C-S-k" Disabled, bug
  "H"            'nil
  "C-h"          'nil
@@ -385,6 +386,7 @@
  "m"            'kmacro-keymap
  ","            'kmacro-end-or-call-macro-repeat
  "x"            'kmacro-keymap
+ "C-x"          ctl-x-map  ;; Control-X-prefix
  "M-a"          'eval-expression
  "u"            'rename-uniquely
  "S"            'toggle-truncate-lines
@@ -425,9 +427,11 @@
  "M-s"          (ilam (call-process-shell-command eab/sync-rsync-command nil 0))
  "M-S"          (ilam (call-process-shell-command eab/sync-zfs-command nil 0)))
 (setq eab/temacs-map (lookup-key global-map (kbd "C-l")))
+;; (lookup-key global-map (kbd "C-c")) ;; mode-specific-command-prefix
+;; (lookup-key global-map (kbd "C-x")) ;; Control-X-prefix
 
-(defvar eab/one-key-map (make-sparse-keymap)
-  "One-key keymap.")
+ (defvar eab/one-key-map (make-sparse-keymap)
+   "One-key keymap.")
 (global-set-key (kbd "C-e") nil)
 (general-define-key
  :prefix "C-e"

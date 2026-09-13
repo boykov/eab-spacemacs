@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.4.29
+
+feat(keybindings, gptel, packages): add new keybindings, gptel abort,
+pi backend, and improve helm mode
+
+- Add C-o and C-x keybindings to C-l prefix in keybindings.el
+- Add gptel-abort command bound to C-v s
+- Use ilam-no-def instead of ilam in eab-hron-lib for non-interactive use
+- Fix kill-ring manipulation in eab-minimal.el; add TODO for safety
+- Enhance dired-virtual-mode in eab-workgroups2.el with proper buffer setup
+- Add pi.sh and configure pi backend in packages.el, including Russian IM support
+- Update helm keybindings to include M-4, M-2, M-3, and ghostel C-r support
+- Refactor ghostel keymap definitions and fix duplicate browse-url
+  var/function declarations
+- Conditionally adjust helm idle delay for daemon contexts
+
 ## 0.4.28
 
 refactor: Modularize eab-* packages and simplify keybindings
