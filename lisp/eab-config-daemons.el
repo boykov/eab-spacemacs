@@ -1,4 +1,4 @@
-;;; eab-daemons.el --- eab daemons configure -*- lexical-binding: t -*-
+;;; eab-config-daemons.el --- eab-config daemons configure -*- lexical-binding: t -*-
 ;;
 ;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;

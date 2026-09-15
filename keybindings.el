@@ -8,7 +8,7 @@
 ;; Status: not intended to be distributed yet
 
 (use-package eab-minimal
-  :after (cl cl-macs))
+  :after (cl-macs eab-workgroups2 workgroups2))
 (use-package eab-workflow)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

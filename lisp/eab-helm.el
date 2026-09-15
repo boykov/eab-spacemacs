@@ -169,7 +169,7 @@
 (defun eab/helm-org-ql--heading (window-width &optional pseudo)
   "Return string for Helm for heading at point.
 WINDOW-WIDTH should be the width of the Helm window."
-  (font-lock-ensure (point-at-bol) (point-at-eol))
+  (font-lock-ensure (point-at-bol) (pos-eol))
   (let* ((prefix (concat (buffer-name) ":"))
          (width (- window-width (length prefix)))
          (dh (seconds-to-dhms

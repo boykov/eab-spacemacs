@@ -1,4 +1,4 @@
-;;; eab-simple.el --- eab simple configure -*- lexical-binding: t -*-
+;;; eab-config-simple.el --- eab-config simple configure -*- lexical-binding: t -*-
 ;;
 ;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;

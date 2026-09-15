@@ -1,4 +1,4 @@
-;;; eab-recentf.el --- eab recentf configure -*- lexical-binding: t -*-
+;;; eab-config-recentf.el --- eab-config recentf configure -*- lexical-binding: t -*-
 ;;
 ;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;

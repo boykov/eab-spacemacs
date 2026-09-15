@@ -83,8 +83,8 @@
  'extract-code
  nil nil
  ""
- "C-l C-k M-SPC M-m M-c M-s M-J M-A cpe DEL SPC eab-template.el SPC eab- M-v .el
- RET g M-; eab- M-v .el 2*RET M-; - RET M-v M-; eab RET M-l M-v M-L RET
- M-s M-p RET (load SPC \"eab- M-v .el\") M-h M-j M-h M-m M-j M-SPC M-:
- (load SPC \"eab- M-v .el\") RET M-p M-l M-x DEL M-s M-v RET M-SPC
+ "C-l C-k M-SPC M-m M-c M-s M-J M-A cpe DEL SPC eab-config-template.el SPC eab-config- M-v .el
+ RET g M-; eab-config- M-v .el 2*RET M-; -. RET M-j M-v M-; eab-config RET M-l M-v M-L RET
+ M-s M-p RET (load SPC \"eab-config- M-v .el\") M-h M-j M-h M-m M-j M-SPC M-:
+ (load SPC \"eab-config- M-v .el\") RET M-p M-l M-x DEL M-s M-v RET M-SPC
  M-J M-C-\\ C-s M-Q M-s")

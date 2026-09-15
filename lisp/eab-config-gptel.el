@@ -1,4 +1,4 @@
-;;; eab-gptel.el --- eab gptel configure -*- lexical-binding: t -*-
+;;; eab-config-gptel.el --- eab-config gptel configure -*- lexical-binding: t -*-
 ;;
 ;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;

@@ -1,4 +1,4 @@
-;;; eab-ergoemacs.el --- eab ergoemacs-mode configure -*- lexical-binding: t -*-
+;;; eab-config-ergoemacs.el --- eab-config ergoemacs-mode configure -*- lexical-binding: t -*-
 ;;
 ;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;

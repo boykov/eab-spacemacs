@@ -79,8 +79,12 @@ END")))
 
 (defun eab/loaded-ok (instance)
   (if configuration-layer-error-count
-      (eab/gotify instance "bad" 5)
-    (eab/gotify instance "OK" 0)))
+      (progn
+        (add-to-list 'mode-line-modes '(t " [ERROR] "))
+        (eab/gotify instance "bad" 5))
+    (progn
+      (eab/gotify instance "OK" 0)
+      (setq-default TeX-master t))))
 
 (defun eab/test-dotemacs ()
   (eab/loaded-ok "test-dotemacs")

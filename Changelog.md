@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.4.30
+
+refactor: rename config files to eab-config-* and modularize configurations
+
+- Rename all configuration files from eab-*.el to eab-config-*.el to clarify
+  their purpose as dedicated configuration units
+- Split large monolithic configs (compile, grep, dired, eat, ghostel) into
+  separate eab-config-*.el files with dedicated use-package blocks
+- Update keybindings to load renamed config files
+- Fix workgroups2 file cleanup logic and improve variable binding
+- Update eab-pmacros.el with corrected template references
+- Remove obsolete eab-postload.el and integrate its functionality into
+  eab-minimal.el and config.el
+- Minor formatting and comment cleanup
+
 ## 0.4.29
 
 feat(keybindings, gptel, packages): add new keybindings, gptel abort,

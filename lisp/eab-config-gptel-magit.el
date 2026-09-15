@@ -1,4 +1,4 @@
-;;; eab-gptel-magit.el --- eab gptel magit configure -*- lexical-binding: t -*-
+;;; eab-config-gptel-magit.el --- eab-config gptel magit configure -*- lexical-binding: t -*-
 ;;
 ;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;

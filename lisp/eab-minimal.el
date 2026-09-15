@@ -110,8 +110,8 @@
 
 (defun eab/load-personal ()
   (interactive)
-  (if (fboundp 'grep-a-lot-clear-stack)
-      (grep-a-lot-clear-stack))
+  ;; (if (fboundp 'grep-a-lot-clear-stack)
+  ;;     (grep-a-lot-clear-stack))
   (winner-mode)
   ;; (load-file eab/secrets-path)
   (cl-assert
@@ -119,11 +119,26 @@
            "prompt: " '("one" "two" "three" "four" "five") "t")
           '("two" "three")))
   (global-eldoc-mode 0)
+  (electric-indent-mode -1)
+  (electric-pair-mode -1)
   (yas-reload-all)
+  (setq default-input-method "russian-computer")
+  (setq system-time-locale "ru_RU.utf8")
+  (setq desktop-load-locked-desktop 't)
+  (if (and (or
+            (eab/ondaemon (eab/server-P))
+            (eab/ondaemon "server"))
+           (not noninteractive))
+      (load-theme 'spacemacs-dark 't))
+  (setq eab/org-file (concat org-directory "clock/current-time.el"))
+  (if (file-exists-p eab/org-file)
+      (load eab/org-file)) ;; (setq eab/hron-current-time ..
+  (eab/renew-agenda-files-1)
+  
   (eab/loaded-ok (concat (daemonp) " dotemacs"))
   )
 
-; TODO create function and hook after first start frame
+; TODO: create function and hook after first start frame
 (defun eab/load-gui ()
   (interactive)
   (when eab/first-emacsclient

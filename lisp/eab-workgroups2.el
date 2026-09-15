@@ -29,8 +29,7 @@
 
 (defun eab/wg-create-workgroup (path)
   (let* ((true-path (file-truename path))
-         (nondir (file-name-nondirectory path))
-         (name nondir))
+         (name (file-name-nondirectory path)))
     (when (and (file-exists-p true-path)
                (not (string-match ".*.dired$" path)))
       (unless (wg-get-workgroup name 't)
@@ -44,6 +43,11 @@
                         buffer-file-name nil
                         revert-buffer-function 'dired-revert)
                   (rename-buffer (substring name 1 -1))
+                  ;; rm .#tube.dired
+                  (delete-file
+                   (concat (file-name-directory true-path)
+                           ".#"
+                           (file-name-nondirectory  true-path)))
                   (revert-buffer 't 't))
               (execute-kbd-macro (read-kbd-macro "M-1 M-@ C-f c C-f c"))))
         (eab/wg-update-workgroup "dflt"))

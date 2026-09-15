@@ -461,7 +461,7 @@
             (add-to-list 'markers eab/helm-org-marker)
             ))
       (eab/hron-todo-setup (length markers))
-      (loop for cand in markers
+      (cl-loop for cand in markers
             do
             (progn
               (message "%s" cand)

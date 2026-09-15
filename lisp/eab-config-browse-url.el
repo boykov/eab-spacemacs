@@ -1,4 +1,4 @@
-;;; eab-browse-url.el --- eab browse-url configure -*- lexical-binding: t -*-
+;;; eab-config-browse-url.el --- eab-config browse-url configure -*- lexical-binding: t -*-
 ;;
 ;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;

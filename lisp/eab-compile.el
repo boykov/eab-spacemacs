@@ -194,7 +194,8 @@
                                     (toggle-truncate-lines ,istc?)
                                     (pop-to-buffer cb)))))))
 
-;; - TODO это closure, let over lambda? зачем здесь funcall? похоже, чтобы сразу выполнить lambda
+;; - TODO это closure, let over lambda? зачем здесь funcall? похоже,
+;;   чтобы сразу выполнить lambda
 ;; - а почему тогда не использовать просто defun? ясно, отложенные вычисления
 ;; - оператор compile-goto-error разрывает контекст: cwc нужен в одном
 ;;   окне, а после мы уже находимся в другом

@@ -7,6 +7,17 @@
 ;; Requirements:
 ;; Status: not intended to be distributed yet
 
+(use-package view)
+(use-package ps-print)
+(use-package ps-mule)
+(use-package uniquify
+  :config
+  (setq uniquify-buffer-name-style 'forward))
+(use-package savehist
+  :config
+  (eab/bind-path savehist-file)
+  (savehist-mode 1))
+
 (setq ring-bell-function 'ignore)
 
 (setq disabled-command-function nil)

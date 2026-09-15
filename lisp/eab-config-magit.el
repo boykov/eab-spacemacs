@@ -1,4 +1,4 @@
-;;; eab-magit.el --- eab magit configure -*- lexical-binding: t -*-
+;;; eab-config-magit.el --- eab-config magit configure -*- lexical-binding: t -*-
 ;;
 ;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;
@@ -7,6 +7,7 @@
 ;; Requirements:
 ;; Status: not intended to be distributed yet
 
+(use-package log-edit)
 (use-package magit
   :defer
   :config

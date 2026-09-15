@@ -205,7 +205,6 @@
     (python :location built-in)
     (eab-ui :location built-in)
     (eab-org :location built-in)
-    (eab-org-agenda :location built-in)
     )
   "List of all packages to install and/or initialize. Built-in packages
 which require an initialization must be listed explicitly in the list.")
@@ -310,19 +309,19 @@ which require an initialization must be listed explicitly in the list.")
     (setq spacemacs-theme-comment-bg nil))
 
 (defun eab-spacemacs/init-gptel nil
-  (load "eab-gptel.el"))
+  (load "eab-config-gptel.el"))
 (defun eab-spacemacs/init-gptel-magit nil
-  (load "eab-gptel-magit.el"))
+  (load "eab-config-gptel-magit.el"))
 (defun eab-spacemacs/init-ellama nil
-  (load "eab-ellama.el"))
+  (load "eab-config-ellama.el"))
 (defun eab-spacemacs/init-daemons nil
-  (load "eab-daemons.el"))
+  (load "eab-config-daemons.el"))
 (defun eab-spacemacs/init-ergoemacs-mode nil
-  (load "eab-ergoemacs.el"))
+  (load "eab-config-ergoemacs.el"))
 (defun eab-spacemacs/init-projectile nil
-  (load "eab-projectile.el"))
+  (load "eab-config-projectile.el"))
 (defun eab-spacemacs/init-browse-url ()
-  (load "eab-browse-url.el"))
+  (load "eab-config-browse-url.el"))
 
 (defun eab-spacemacs/init-epa ()
   (use-package epa)
@@ -408,7 +407,7 @@ which require an initialization must be listed explicitly in the list.")
                      (abbreviate-file-name (buffer-file-name))
                    "%b")))))
 (defun eab-spacemacs/init-simple ()
-  (load "eab-simple.el"))
+  (load "eab-config-simple.el"))
 
 
 (defun eab-spacemacs/init-ediff ()
@@ -491,7 +490,7 @@ which require an initialization must be listed explicitly in the list.")
                       "этих" "говорил" "вместе" "назад"))))
 
 (defun eab-spacemacs/init-recentf nil
-  (load "eab-recentf.el"))
+  (load "eab-config-recentf.el"))
 (defun eab-spacemacs/init-ansi-color nil
   (use-package ansi-color
     ;; see eab-compile.el
@@ -625,7 +624,7 @@ which require an initialization must be listed explicitly in the list.")
     (add-to-list 'smart-compile-alist '("\\.jira\\'" . "make push id=%n"))
     (add-to-list 'smart-compile-alist '("\\.html\\'" . "make push id=%n"))))
 (defun eab-spacemacs/init-popwin nil
-  (load "eab-popwin.el"))
+  (load "eab-config-popwin.el"))
 (defun eab-spacemacs/init-expand-region nil
   (use-package expand-region
     :config
@@ -701,7 +700,7 @@ which require an initialization must be listed explicitly in the list.")
      "B"  'dictionary-previous)))
 
 (defun eab-spacemacs/init-magit nil
-  (load "eab-magit.el"))
+  (load "eab-config-magit.el"))
 (defun eab-spacemacs/init-sqlite3 nil)
 (defun eab-spacemacs/init-forge nil
   (use-package forge
@@ -823,190 +822,11 @@ which require an initialization must be listed explicitly in the list.")
       (interactive)
       (vterm-send-key "b" nil t t))))
 (defun eab-spacemacs/init-eaf nil
-  (load "eab-eaf.el"))
+  (load "eab-config-eaf.el"))
 (defun eab-spacemacs/init-ghostel nil
-  (use-package ghostel
-    :after (eat key-chord eab-minimal)
-    :config
-    (setq ghostel-mode-map
-          (let ((map (make-sparse-keymap)))
-            (define-key map [?\C-c ?\M-d] #'ghostel-char-mode)
-            (define-key map [?\C-c ?\C-j] #'ghostel-semi-char-mode)
-            (define-key map [?\M-v] #'ghostel-yank)
-            ;; (key-chord-define map "jj" #'ghostel-semi-char-mode)
-            (define-key map [?\C-c ?\C-e] #'ghostel-emacs-mode)
-            (define-key map (kbd "C-r") #'ghostel--send-event)
-            map))
-
-    (define-key ghostel-readonly-fast-exit-mode-map (kbd "C-r") #'ghostel--send-event)
-    (define-key ghostel-readonly-mode-map (kbd "C-r") #'ghostel--send-event)
-
-    (key-chord-define ghostel-readonly-fast-exit-mode-map "jj" #'ghostel-readonly-exit)
-    (key-chord-define ghostel-readonly-mode-map "jj" #'ghostel-readonly-exit)
-
-    (setq ghostel-semi-char-mode-map
-          (let ((map (eat-term-make-keymap
-                      #'ghostel--send-event
-                      '(:ascii :arrow :navigation)
-                      '( [?\C-\\] [?\C-q] [?\C-c] [?\C-g] [?\C-h]
-                         [?\e ?\C-c] [?\C-u] [?\C-q] [?\e ?x] [?\e ?:]
-                         [?\C-a] [?\C-l] [?\e ?a] [?\e ?s] [?\C-b] [?\e ?1]
-                         [?\e ?c] [?\e ?v] [?\e ?g] [?\e ?h] [?\e ?p]
-                         [?\C-p] [?\C-n] [?\C-v] [?\C-o] [?\C-e]
-                         [?\e ?o] [?\e ?j] [?\e ?l] [?\e ?k] [?\e ?i]
-                         [?\e ?!] [?\e ?&] [?\C-y] [?\e ?y]))))
-            (define-key map (kbd "<C-return>") #'ghostel--send-event)
-            (define-key map (kbd "<backtab>") #'ghostel--send-event)
-            (define-key map (kbd "<escape>") #'ghostel--send-event)
-            (define-key map [?\C-o] #'ghostel--send-event)
-            (define-key map [?\C-k] #'toggle-input-method)
-            (define-key map [?\C-y] #'ghostel-yank)
-            (define-key map [?\M-v] #'ghostel-yank)
-            (define-key map [?\M-y] #'ghostel-yank)
-            (define-key map [?\M-m] (ilam-no-def (eab/eepitch-prepare-m-r)))
-            (define-key map [?\M-r] (ilam-no-def (eab/m-r-ghostel)))
-            (define-key map [?\M-j] (ilam-no-def (let ((last-command-event 'left)) (ghostel--send-event))))
-            (define-key map [?\M-l] (ilam-no-def (let ((last-command-event 'right)) (ghostel--send-event))))
-            (define-key map [?\M-k] (ilam-no-def (let ((last-command-event 'down)) (ghostel--send-event))))
-            (define-key map [?\M-i] (ilam-no-def (let ((last-command-event 'up)) (ghostel--send-event))))
-            (define-key map [?\M-K] (ilam-no-def (let ((last-command-event 'next)) (ghostel--send-event))))
-            (define-key map [?\M-I] (ilam-no-def (let ((last-command-event 'prior)) (ghostel--send-event))))
-            (define-key map [?\M-h] (ilam-no-def (let ((last-command-event 'home)) (ghostel--send-event))))
-            (define-key map [?\M-p] (ilam-no-def (let ((last-command-event 'end)) (ghostel--send-event))))
-            (define-key map [?\C-p] (ilam-no-def (let ((last-command-event 'up)) (ghostel--send-event))))
-            (define-key map [?\C-n] (ilam-no-def (let ((last-command-event 'down)) (ghostel--send-event))))
-            (define-key map [?\C-c ?\C-c] #'ghostel--send-event)
-            (define-key map [?\C-c ?\C-e] #'ghostel-emacs-mode)
-            (key-chord-define map "jj" #'ghostel-emacs-mode)
-            map))
-
-    (setq ghostel-char-mode-map
-          (let ((map (eat-term-make-keymap
-                      #'ghostel--send-event
-                      '(:ascii :arrow :navigation :function)
-                      '([?\e ?\C-m] [?\e ?s]))))
-            (define-key map [?\C-\M-m] #'ghostel-semi-char-mode)
-            map))
-
-    ;; C-] doesn't work inside container
-    (defun eab/m-r-ghostel ()
-      (interactive)
-      (execute-kbd-macro (read-kbd-macro "C-]"))
-      (sleep-for 0.2)
-      (ghostel-emacs-mode)
-      (move-beginning-of-line 1)
-      (call-interactively 'set-mark-command)
-      (re-search-backward "^> EOF")
-      (next-line)
-      (call-interactively 'kill-ring-save)
-      (ergoemacs-move-cursor-previous-pane -1)
-      (yank)
-      (ergoemacs-move-cursor-previous-pane -1)
-      (ghostel-semi-char-mode)
-      (sleep-for 0.2)
-      (let ((last-command-event 'right))
-        (ghostel--send-event)))
-
-    (add-hook 'ghostel-mode-hook (lambda () (setq input-method-function 'key-chord-input-method)))
-
-    ))
-
+  (load "eab-config-ghostel.el"))
 (defun eab-spacemacs/init-emacs-eat nil
-  (use-package eat
-    :after (key-chord eab-minimal)
-    :config
-    (setq eat-mode-map
-          (let ((map (make-sparse-keymap)))
-            (define-key map [?\C-c ?\M-d] #'eat-char-mode)
-            (define-key map [?\C-c ?\C-j] #'eat-semi-char-mode)
-            (define-key map [?\C-c ?\C-k] #'eat-kill-process)
-            (define-key map [?\C-c ?\C-p] #'eat-previous-shell-prompt)
-            (define-key map [?\C-c ?\C-n] #'eat-next-shell-prompt)
-            (key-chord-define map "jj" #'eat-semi-char-mode)
-            (define-key map [?\C-c ?\C-e] #'eat-semi-char-mode)
-            map))
-
-    (setq eat-semi-char-mode-map
-          (let ((map (eat-term-make-keymap
-                      #'eat-self-input
-                      '(:ascii :arrow :navigation)
-                      '( [?\C-\\] [?\C-q] [?\C-c] [?\C-x] [?\C-g] [?\C-h]
-                         [?\e ?\C-c] [?\C-u] [?\C-q] [?\e ?x] [?\e ?:]
-                         [?\C-a] [?\C-l] [?\e ?a] [?\e ?s] [?\C-b] [?\e ?1]
-                         [?\e ?c] [?\e ?v] [?\e ?g] [?\e ?h] [?\e ?p]
-                         [?\C-p] [?\C-n] [?\C-v] [?\C-o] [?\C-e]
-                         [?\e ?o] [?\e ?j] [?\e ?l] [?\e ?k] [?\e ?i] [?\e ?\s]
-                         [?\e ?!] [?\e ?&] [?\C-y] [?\e ?y]))))
-            (define-key map [?\C-q] #'eat-quoted-input)
-            (define-key map [?\C-y] #'eat-yank)
-            (define-key map [?\M-v] #'eat-yank)
-            (define-key map [?\M-y] #'eat-yank-from-kill-ring)
-            (define-key map [?\M-m] (ilam (eab/eepitch-prepare-m-r)))
-            (define-key map [?\M-r] (ilam (eab/m-r)))
-            (define-key map [?\M-j] (ilam (eat-self-input 1 'left)))
-            (define-key map [?\M-l] (ilam (eat-self-input 1 'right)))
-            (define-key map [?\M-k] (ilam (eat-self-input 1 'down)))
-            (define-key map [?\M-i] (ilam (eat-self-input 1 'up)))
-            (define-key map [?\M-h] (ilam (eat-self-input 1 'home)))
-            (define-key map [?\M-p] (ilam (eat-self-input 1 'end)))
-            (define-key map [?\C-p] (ilam (eat-self-input 1 'up)))
-            (define-key map [?\C-n] (ilam (eat-self-input 1 'down)))
-            (define-key map [?\C-c ?\C-c] #'eat-self-input)
-            (define-key map [?\C-c ?\C-e] #'eat-emacs-mode)
-            (define-key map [remap insert-char] #'eat-input-char)
-            (key-chord-define map "jj" #'eat-emacs-mode)
-            map))
-
-    (setq eat-char-mode-map
-          (let ((map (eat-term-make-keymap
-                      #'eat-self-input
-                      '(:ascii :arrow :navigation :function)
-                      '([?\e ?\C-m]))))
-            (define-key map [?\C-\M-m] #'eat-semi-char-mode)
-            map))
-
-    (define-minor-mode eat--semi-char-mode
-      "Minor mode for semi-char mode keymap."
-      :interactive nil
-      :keymap eat-semi-char-mode-map)
-
-    (define-minor-mode eat--char-mode
-      "Minor mode for char mode keymap."
-      :interactive nil
-      :keymap eat-char-mode-map)
-
-    (defun eab/m-r ()
-      (interactive)
-      (execute-kbd-macro (read-kbd-macro "C-]"))
-      (sleep-for 0.2)
-      (eat-emacs-mode)
-      (move-beginning-of-line 1)
-      (call-interactively 'set-mark-command)
-      (re-search-backward "^> EOF")
-      (next-line)
-      (call-interactively 'kill-ring-save)
-      (ergoemacs-move-cursor-previous-pane -1)
-      (yank)
-      (ergoemacs-move-cursor-previous-pane -1)
-      (eat-semi-char-mode)
-      (sleep-for 0.2)
-      (eat-self-input 1 'right))
-
-    (eab/patch-this-code
-     'eat
-     `((,(let ((print-quoted 't))
-           (prin1-to-string
-            `(format "%s<%d>" eat-buffer-name arg))) .
-            ,(let ((print-quoted 't))
-               (prin1-to-string
-                `(format "*ansi-term%d*" arg))))))
-
-    (add-hook 'eat--semi-char-mode-hook (lambda () (setq input-method-function 'key-chord-input-method)))
-    ;; (add-hook 'eat--char-mode-hook (lambda () (setq input-method-function 'key-chord-input-method)))
-    (add-hook 'eat-mode-hook (lambda () (setq input-method-function 'key-chord-input-method)))
-
-    (custom-set-faces
-     '(eat-term-color-4 ((t (:inherit eat-term-color-32)))))))
+  (load "eab-config-emacs-eat.el"))
 
 (defun eab-spacemacs/init-auctex nil
 ;; (load "auctex.el" nil t t)
@@ -1678,146 +1498,11 @@ which require an initialization must be listed explicitly in the list.")
   (use-package eab-server
     :after (org)))
 (defun eab-spacemacs/init-compile nil
-  (eab/add-hook compilation-mode-hook eab/compilation-hook
-    (general-define-key
-     :keymaps 'compilation-button-map
-     "M-RET"      'eab/compile-goto-error-same-window
-     "RET"        'eab/compile-goto-error)
-    (general-define-key
-     :keymaps 'compilation-mode-map
-     "g"          'eab/recompile
-     "B"          'compilation-a-lot-goto-prev
-     "F"          'compilation-a-lot-goto-next
-     "\C-d"       eab/compile-map
-     "\C-o"       'nil
-     "M-k"        'nil
-     "M-p"        'nil
-     "M-i"        'nil
-     "M-n"        'nil))
-  (use-package eab-compile
-    :after (ansi-color eab-depend)
-    :config
-    (defvar eab/compile-map (make-sparse-keymap)
-      "Compile keymap.")
-    (global-set-key (kbd "C-d") nil)
-    (general-define-key
-     :prefix "C-d"
-     "q"    'eab/nocommand
-     "a"    'eab/compile-helm
-     "e"    eab/explore-map
-     "d"    'eab/projectile-compile-project
-     "C-d"    'eab/projectile-compile-project
-     "s"    (ilam (smart-compile 4))
-     "S"    (ilam (eab/projectile-compile-project-custom "make push_unstaged"))
-     "l"    (ilam (TeX-command "LaTeX"   'TeX-master-file))
-     "b"    (ilam (TeX-command "BibTeX"  'TeX-master-file))
-     "L"    (ilam (TeX-command "LaTeX"   'TeX-master-file))
-     "p"    (ilam (eab/projectile-compile-project-custom "make push_all"))
-     "c"    (ilam (eab/projectile-compile-project-custom "make clear"))
-     "t"    (ilam (eab/projectile-compile-project-custom "make test"))
-     "2"    (ilam (eab/projectile-compile-project-custom "make test2")))
-    (setq eab/compile-map (lookup-key global-map (kbd "C-d")))
-    (setq compile-command "make ")
-    (setq compilation-exit-message-function 'compilation-exit-autoclose)
-    (setq compilation-exit-message-function nil)
-    (setq compilation-scroll-output 't)))
+  (load "eab-config-compile.el"))
 (defun eab-spacemacs/init-grep nil
-  (eab/add-hook grep-mode-hook eab/grep-hook
-    (general-define-key
-     :keymaps 'grep-mode-map
-     "B"          'eab/switch-grep-prev
-     "F"          'eab/switch-grep-next
-     "C-o"        'nil
-     "M-p"        'nil
-     "C-l b"      'eab/kill-last-grep
-     "b"          (ilam (eab/switch-grep-prev 't))
-     "M-RET"      'eab/compile-goto-error-same-window
-     "C-M-j"      'eab/compile-goto-error-same-window
-     "RET"        'eab/compile-goto-error
-     "g"          'eab/recompile
-     "u"          'eab/grep-utf
-     "s"          'eab/grep-switch
-     "l"          (ilam (so-long-minor-mode 1) (toggle-truncate-lines 1))
-     "M-n"        'nil
-     "C-w"        'eab/wgrep-change-to-wgrep-mode))
-  (use-package eab-grep
-    :after (grep-a-lot wgrep eab-depend)
-    :config
-    (defvar eab/grep-map (make-sparse-keymap)
-      "Grep keymap.")
-    (global-set-key (kbd "C-x G") nil)
-    (general-define-key
-     :prefix "C-x G"
-     "f"    'eab/find-grep
-     "g"    'eab/find-grep
-     "c"    'eab/clock-grep
-     "s"    (ilam
-             (call-interactively 'eab/grep)
-             (call-interactively 'eab/switch-grep)
-             ;; (setq-local eab/grep-switch-cycle 'full)
-             (sleep-for 0.4)
-             (progn
-               (eab/grep-switch-0 eab/grep-clock-left eab/grep-clock-right)
-               (setq-local eab/grep-switch-cycle 'full)))
-     "G"    'eab/clock-grep)
-    (setq eab/grep-map (lookup-key global-map (kbd "C-x G")))
-    ))
-
+  (load "eab-config-grep.el"))
 (defun eab-spacemacs/init-dired nil
-  (eab/add-hook dired-mode-hook eab/dired-hook
-    (general-define-key
-     :keymaps 'dired-mode-map
-     "C-M-b"      'nil
-     "M-a"        'nil
-     "M-i"        'nil
-     "M-j"        'nil
-     "C-n"        'nil
-     "M-c"        'nil
-     "M-g"        'nil
-     "M-G"        'nil
-     "M-v"        'nil
-     "M-!"        'nil
-     "M-l"        'nil
-     "M-p"        'nil
-     "M-o"        'nil
-     "M-s"        'nil
-     "M-u"        'nil
-     "M-m"        'nil
-     "C-o"        'nil
-     "C-p"        'nil
-     "C-k"        'nil
-     "C-S-a"      'nil
-     "C-c C-w"    'dired-do-rename
-     "C-w"        'wdired-change-to-wdired-mode
-     "b"          'browse-url-of-dired-file
-     "o"          'dired-find-file-other-window
-     "C-|"        'eab/dired-see-file
-     "s-SPC"      'eab/dired-see-file
-     "E"          'ediff-files
-     "SPC"        'open-in-external-app))
-  (eab/add-hook wdired-mode-hook eab/wdired-hook
-    (general-define-key
-     :keymaps 'wdired-mode-map
-     "s-w"        'wdired-finish-edit))
-  (use-package dired-async)
-  (use-package dired-x)
-  (use-package eab-dired
-    :after (dired eab-minimal eab-tramp eab-org eab-depend)
-    :config
-    (defvar eab/dired-map (make-sparse-keymap)
-      "keymap for fast dired")
-    (global-set-key (kbd "C-x d") nil)
-    (eab/bind-path eab/downloads-path)
-    (general-define-key
-     :prefix "C-x d"
-     "d" '(ido-dired :which-key "ido-dired")
-     "o" (ilam (dired eab/org-publish-directory))
-     "h" (ilam (dired "~/desktop"))
-     "s" (ilam (dired "~/share"))
-     "p" (ilam (dired eab/downloads-path))
-     "t" (ilam (dired "~/tmp")))
-    (setq eab/dired-map (lookup-key global-map (kbd "C-x d")))
-    (add-to-list 'auto-mode-alist '("\\.dired$" . dired-virtual-mode))))
+  (load "eab-config-dired.el"))
 
 (defun eab-spacemacs/init-ido nil
   (eab/add-hook ido-minibuffer-setup-hook eab/ido-minibuffer-hook
@@ -1948,10 +1633,9 @@ which require an initialization must be listed explicitly in the list.")
     (eab/bind-path org-id-locations-file)
     (eab/bind-path org-clock-persist-file)
     (eab/bind-path bibtex-files)
-    (eab/bind-path org-ditaa-jar-path)))
-(defun eab-spacemacs/init-eab-org-agenda ()
+    (eab/bind-path org-ditaa-jar-path))
   (use-package eab-org-agenda
-    :after (org org-agenda)
+    :after (org org-agenda eab-org)
     :config
     (add-hook 'org-agenda-mode-hook (lambda () (hl-line-mode 1)))
     (setq org-sort-agenda-notime-is-late nil)
@@ -1965,33 +1649,17 @@ which require an initialization must be listed explicitly in the list.")
     (setq org-agenda-include-diary nil)
     (setq org-agenda-archives-mode 't)
     (setq org-agenda-text-search-extra-files (quote (agenda-archives)))
-    (setq org-agenda-clockreport-parameter-plist (quote (:link nil :maxlevel 2)))))
-(defun eab-spacemacs/user-config ()
-  (use-package cl)
-  (use-package cl-macs)
-  (use-package view)
-  (use-package ps-print)
-  (use-package ps-mule)
-  (use-package uniquify
-    :config
-    (setq uniquify-buffer-name-style 'forward))
-  (use-package savehist
-    :config
-    (eab/bind-path savehist-file)
-    (savehist-mode 1))
-  (use-package log-edit)
-  (use-package tex)
-  (use-package tex-site)
-
-  (use-package eab-org-publish)
+    (setq org-agenda-clockreport-parameter-plist (quote (:link nil :maxlevel 2))))
+  (use-package eab-org-publish
+    :after (eab-org))
   (use-package eab-org-protocol
     :after (eab-org org-protocol))
   (use-package eab-org-src-babel
-    :after (org-src ob-tmux))
-  (use-package eab-org-todo)
-  (use-package eab-hron-lib
+    :after (org-src ob-tmux eab-org))
+  (use-package eab-org-todo
     :after (eab-org))
   (use-package eab-org-latex
+    :after (eab-org)
     :config
     (add-hook 'LaTeX-mode-hook 
               (lambda ()
@@ -2002,6 +1670,14 @@ which require an initialization must be listed explicitly in the list.")
                  "C-S-d"      eab/compile-map))))
   (use-package eab-greek-to-latex :disabled)
   (use-package eab-org-reftex :disabled)
-  (use-package eab-org-extension)
-  (use-package eab-postload
-    :after (eab-hron-lib)))
+  (use-package eab-org-extension
+    :after (eab-org))
+  )
+(defun eab-spacemacs/user-config ()
+  (use-package cl-macs)
+  (use-package tex)
+  (use-package tex-site)
+
+  (use-package eab-hron-lib
+    :after (eab-org))
+  )

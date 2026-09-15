@@ -1,4 +1,4 @@
-;;; eab-projectile.el --- eab projectile configure -*- lexical-binding: t -*-
+;;; eab-config-projectile.el --- eab-config projectile configure -*- lexical-binding: t -*-
 ;;
 ;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;

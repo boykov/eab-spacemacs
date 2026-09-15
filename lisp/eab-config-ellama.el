@@ -1,4 +1,4 @@
-;;; eab-ellama.el --- eab ellama configure -*- lexical-binding: t -*-
+;;; eab-config-ellama.el --- eab-config ellama configure -*- lexical-binding: t -*-
 ;;
 ;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;
