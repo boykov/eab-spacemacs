@@ -45,6 +45,5 @@
 (setq url-proxy-services
       '(("http"  . "192.168.2.19:8118")
         ("https" . "192.168.2.19:8118")))
-(setq eww-search-prefix "https://duckduckgo.com/html/?q=")
 
 (provide 'eab-ui)

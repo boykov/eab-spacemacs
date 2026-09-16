@@ -1,4 +1,4 @@
-;;; eab-words.el ---  eab words extension
+;;; eab-words.el ---  eab words extension -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;

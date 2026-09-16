@@ -1,4 +1,4 @@
-;;; eab-smex.el --- eab smex extension
+;;; eab-smex.el --- eab smex extension -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;

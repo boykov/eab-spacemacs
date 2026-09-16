@@ -1,4 +1,4 @@
-;;; eab-workflow.el ---  eab workflow extension
+;;; eab-workflow.el ---  eab workflow extension -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;

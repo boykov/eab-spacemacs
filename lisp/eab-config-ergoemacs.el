@@ -8,7 +8,7 @@
 ;; Status: not intended to be distributed yet
 
 (use-package ergoemacs-functions
-  :after (facemenu eab-depend)
+  :after (facemenu eab-minimal)
   :init
   (defun ergoemacs-handle-M-O ()
     "Handle meta+O input.

@@ -1,4 +1,4 @@
-;;; eab-shell.el ---  eab shell extension
+;;; eab-shell.el ---  eab shell extension -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;

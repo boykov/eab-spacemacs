@@ -8,7 +8,7 @@
 ;; Status: not intended to be distributed yet
 
 (use-package gptel
-  :after (eab-depend)
+  :after (eab-minimal)
   :config
   (global-set-key (kbd "C-v") nil)
   (general-define-key

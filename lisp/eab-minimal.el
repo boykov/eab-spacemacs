@@ -1,4 +1,4 @@
-;;; eab-minimal.el ---
+;;; eab-minimal.el --- eab minimal configure -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;
@@ -7,17 +7,37 @@
 ;; Requirements: cl
 ;; Status: not intended to be distributed yet
 
+(use-package cl-macs)
+
 (defmacro ilam (&rest body)
   "Interactive lambda"
   `'(:def (lambda ()
-           (interactive)
-           ,@body)))
+            (interactive)
+            ,@body)))
 
 (defmacro ilam-no-def (&rest body)
   "Interactive lambda"
   `(lambda ()
      (interactive)
      ,@body))
+
+(defvar eab/explore-map (make-sparse-keymap)
+  "Keymap for minimal configuration")
+(general-define-key
+ :keymaps 'eab/explore-map
+ "t"          'git-timemachine
+ "a"          'vc-annotate
+ "o"          'org-sort
+ "e"          'ediff-buffers
+ "c"          'eab/switch-or-clone-indirect-buffer
+ "C"          (ilam (call-interactively 'clone-a-lot-goto-prev))
+ "f"          'eab/magit-status
+ "C-f"        'eab/magit-status
+ "C-j"        'eab/magit-amend-modified
+ "s"          'sort-lines
+ "u"          'untabify
+ "C-w"        'whitespace-mode
+ "w"          'whitespace-mode)
 
 (defun eab/describe-key-briefly (key &optional insert untranslated)
   "Like `describe-key-briefly`, but prints the lambda definition if found."

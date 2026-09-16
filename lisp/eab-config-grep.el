@@ -26,7 +26,7 @@
    "M-n"        'nil
    "C-w"        'eab/wgrep-change-to-wgrep-mode))
 (use-package eab-grep
-  :after (grep-a-lot wgrep eab-depend)
+  :after (grep-a-lot wgrep eab-minimal)
   :config
   (defvar eab/grep-map (make-sparse-keymap)
     "Grep keymap.")

@@ -1,4 +1,4 @@
-;;; eab-dired.el --- eab dired extension
+;;; eab-dired.el --- eab dired extension -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;

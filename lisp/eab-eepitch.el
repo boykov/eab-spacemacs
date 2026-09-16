@@ -1,4 +1,4 @@
-;;; eab-eepitch.el ---  eab eev extension
+;;; eab-eepitch.el ---  eab eev extension -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;

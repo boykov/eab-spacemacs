@@ -1,4 +1,4 @@
-;;; eab-server.el ---  eab server extension
+;;; eab-server.el ---  eab server extension -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;

@@ -1,4 +1,4 @@
-;;; eab-outline.el --- eab outline extension
+;;; eab-outline.el --- eab outline extension -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;

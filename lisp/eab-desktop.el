@@ -1,4 +1,4 @@
-;;; eab-desktop.el ---  eab desktop extension
+;;; eab-desktop.el ---  eab desktop extension -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;

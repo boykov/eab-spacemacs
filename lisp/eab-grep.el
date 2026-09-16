@@ -1,4 +1,4 @@
-;;; eab-grep.el --- eab grep extension
+;;; eab-grep.el --- eab grep extension -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;

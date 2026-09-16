@@ -1,4 +1,4 @@
-;;; eab-compile.el --- eab compile extension
+;;; eab-compile.el --- eab compile extension -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;

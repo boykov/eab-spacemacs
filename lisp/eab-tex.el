@@ -1,4 +1,4 @@
-;;; eab-tex.el --- eab tex extension
+;;; eab-tex.el --- eab tex extension -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;
@@ -6,6 +6,9 @@
 ;; Keywords: 
 ;; Requirements: 
 ;; Status: not intended to be distributed yet
+
+(use-package tex)
+(use-package tex-site)
 
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)

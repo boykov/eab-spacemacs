@@ -45,7 +45,7 @@
 (use-package dired-async)
 (use-package dired-x)
 (use-package eab-dired
-  :after (dired eab-minimal eab-tramp eab-org eab-depend)
+  :after (dired eab-tramp eab-org eab-minimal)
   :config
   (defvar eab/dired-map (make-sparse-keymap)
     "keymap for fast dired")

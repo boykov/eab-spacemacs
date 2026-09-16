@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.4.31
+
+refactor: modularize config files and update dependencies
+
+- Split monolithic configurations into dedicated files:
+  eab-config-aaorg, eab-config-eab-misc, eab-config-region-bindings-mode,
+  eab-config-term, eab-config-workgroups2
+- Rename eab-depend to eab-minimal and move its logic there
+- Remove obsolete dependency references (eab-depend)
+- Add lexical-binding declarations to all lisp files
+- Update keybindings.el with new ilam macros and minor refactors
+- Reorganize auto-mode-alist and load-path entries
+- Adjust `:after` dependencies across modules to reflect new structure
+
 ## 0.4.30
 
 refactor: rename config files to eab-config-* and modularize configurations

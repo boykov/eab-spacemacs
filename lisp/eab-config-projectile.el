@@ -8,7 +8,7 @@
 ;; Status: not intended to be distributed yet
 
 (use-package projectile
-  :after (eab-depend)
+  :after (eab-minimal eab-workgroups2)
   :config
   (general-define-key
    :prefix "C-a"

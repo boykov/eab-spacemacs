@@ -1,4 +1,4 @@
-;;; eab-bookmark.el --- eab bookmark extension
+;;; eab-bookmark.el --- eab bookmark extension -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;

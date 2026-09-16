@@ -201,10 +201,13 @@
     (paragraphs :location built-in)
     (ibuffer :location built-in)
     (comint :location built-in)
+    (term :location built-in)
     (epa :location built-in)
     (python :location built-in)
     (eab-ui :location built-in)
     (eab-org :location built-in)
+    (eab-workflow :location built-in)
+    (eab-minimal :location built-in)
     )
   "List of all packages to install and/or initialize. Built-in packages
 which require an initialization must be listed explicitly in the list.")
@@ -254,6 +257,11 @@ which require an initialization must be listed explicitly in the list.")
   (use-package s))
 (defun eab-spacemacs/init-groovy-mode ()
   (use-package groovy-mode)
+  (eab/add-hook groovy-mode-hook eab/groovy-hook
+    (general-define-key
+     :keymaps 'groovy-mode-map
+     "C-i"        'eab/outline-toggle-children
+     "<backtab>"  'eab/outline-toggle-all))
   (add-hook 'groovy-mode-hook (lambda () (setq indent-tabs-mode nil))))
 (defun eab-spacemacs/init-terraform-mode ()
   (use-package terraform-mode))
@@ -336,6 +344,9 @@ which require an initialization must be listed explicitly in the list.")
     ;; gpg --import ~/.ssh/key_*.gpg
     (setq epg-gpg-program "gpg")
     (setq epa-pinentry-mode 'loopback)))
+(defun eab-spacemacs/init-term ()
+  (use-package eab-config-term
+    :after (eab-minimal)))
 (defun eab-spacemacs/init-comint ()
   (use-package comint
     :config
@@ -672,18 +683,7 @@ which require an initialization must be listed explicitly in the list.")
   (setq isearch-search-fun-function 'isearch-search-fun-default))
 
 (defun eab-spacemacs/init-workgroups2/src ()
-  (use-package eab-workgroups2
-    :config
-    (setq wg-use-default-session-file 't)
-    (setq wg-control-frames 'nil)
-    (setq wg-session-load-on-start nil)
-    (ignore-errors (workgroups-mode 1))
-    (setq wg-mode-line-decor-divider "")
-    (eab/bind-path eab/wg-path)
-    (setq eab/wg-update-list
-          (mapcar 'eab/wg-update-list-1 (file-expand-wildcards eab/wg-path)))
-    (eab/bind-path eab/workgroups-save)
-    (eab/wg-init)))
+  (load "eab-config-workgroups2.el"))
 
 (defun eab-spacemacs/init-dictionary nil
   (use-package dictionary
@@ -830,88 +830,15 @@ which require an initialization must be listed explicitly in the list.")
 
 (defun eab-spacemacs/init-auctex nil
 ;; (load "auctex.el" nil t t)
-  (use-package eab-tex))
+  (use-package eab-tex
+    :after (eab-minimal)))
 (defun eab-spacemacs/init-org-agenda-property nil
   (use-package org-agenda-property
     :after (org-agenda)
     :config
     (setq org-agenda-property-list '("Custom_BIB"))))
 (defun eab-spacemacs/init-region-bindings-mode nil
-  (use-package region-bindings-mode
-    :after (eab-minimal)
-    :config
-    (region-bindings-mode-enable)
-    ;; prevent annoying switching on rk in region-bindings-mode on set-mark-command
-    (add-hook 'window-configuration-change-hook
-              (lambda ()
-                (if (and mark-active (not (use-region-p)))
-                    (deactivate-mark))))
-    (define-advice winner-undo (:before (&rest args) eab-winner-undo-before)
-      (region-bindings-mode-disable))
-    (define-advice winner-undo (:after (&rest args) eab-winner-undo-after)
-      (region-bindings-mode-enable))
-    (define-advice winner-redo (:before (&rest args) eab-winner-redo-before)
-      (region-bindings-mode-disable))
-    (define-advice winner-redo (:after (&rest args) eab-winner-redo-after)
-      (region-bindings-mode-enable))
-    (define-advice region-bindings-mode-on (:before (&rest args) eab-region-bindings-mode-on)
-      (progn
-        (setq region-bindings-mode-disabled-modes '(magit-status-mode magit-diff-mode))
-        (general-define-key
-         :keymaps 'region-bindings-mode-map
-         "3"        'eab/gptel-one-shot-3
-         "w"        (ilam (shell-command-on-region (region-beginning) (region-end) "wc -l"))
-         "ц"        (ilam (shell-command-on-region (region-beginning) (region-end) "wc -l"))
-         "u"        'untabify
-         "г"        'untabify
-         "s"        'sort-lines
-         "ы"        'sort-lines
-         "o"        'org-sort
-         "щ"        'org-sort
-         "c"        'copy-rectangle-as-kill
-         "с"        'copy-rectangle-as-kill
-         "v"        'yank-rectangle
-         "м"        'yank-rectangle
-         "0"        (ilam (eab/or-self-insert-body (er/expand-region 0)))
-         "p"        (ilam (eab/or-self-insert-body (er/expand-region 1)))
-         "-"        (ilam (eab/or-self-insert-body (er/expand-region -1)))
-         "P"        (ilam (eab/or-self-insert-body (progn (er/expand-region 0) (org-mark-paragraph))))
-         "З"        (ilam (eab/or-self-insert-body (progn (er/expand-region 0) (org-mark-paragraph))))
-         "I"        (ilam (eab/or-self-insert 'indent-region))
-         "Ш"        (ilam (eab/or-self-insert 'indent-region))
-         "d"        (ilam (eab/or-self-insert-body (progn (er/expand-region 0) (mark-defun))))
-         "/"        (ilam (let ((this-command 'ergoemacs-toggle-letter-case)) (eab/or-self-insert 'ergoemacs-toggle-letter-case)))
-         "r"        (ilam (eab/or-self-insert 'string-rectangle))
-         "к"        (ilam (eab/or-self-insert 'string-rectangle))
-         "t"        'nil
-         ;; TODO: C-g неправильно работает с region-bindings-mode
-         ;; "C-g"   (ilam (eab/or-self-insert 'mc/keyboard-quit))
-         "g"        (ilam (eab/or-self-insert 'mc/keyboard-quit))
-         "п"        (ilam (eab/or-self-insert 'mc/keyboard-quit))
-         "G"        'google-region
-         "П"        'google-region
-         "l"        (ilam (eab/or-self-insert 'eab/replace-selection))
-         "д"        (ilam (eab/or-self-insert 'eab/replace-selection))
-         "R"        (ilam (eab/or-self-insert 'eab/replace-newline-by-space))
-         "К"        (ilam (eab/or-self-insert 'eab/replace-newline-by-space))
-         "e"        'mc/edit-lines
-         "у"        'mc/edit-lines
-         "x"        (ilam (eab/or-self-insert 'kill-rectangle))
-         "ч"        (ilam (eab/or-self-insert 'kill-rectangle))
-         "A"        (ilam
-                     (eab/or-self-insert-body
-                      (save-restriction
-                        (narrow-to-region (window-start) (window-end))
-                        (ignore-errors (mc/mark-all-like-this)))))
-         "D"        'ansible-vault-decrypt-region
-         "E"        'ansible-vault-encrypt-region
-         "a"        'mc/mark-all-like-this
-         "i"        'mc/mark-previous-like-this
-         "ш"        'mc/mark-previous-like-this
-         "k"        'mc/mark-next-like-this
-         "л"        'mc/mark-next-like-this
-         "C-c C-c"  'org-toggle-checkbox
-         "m"        'mc/mark-more-like-this-extended)))))
+  (load "eab-config-region-bindings-mode.el"))
 (defun eab-spacemacs/init-smex nil
   (use-package smex)
   (use-package eab-smex
@@ -1103,122 +1030,7 @@ which require an initialization must be listed explicitly in the list.")
     :config
     (add-to-list 'helm-org-ql-actions '("eab/hron-todo" . eab/helm-hron-todo))))
 (defun eab-spacemacs/init-aaorg nil
-  (use-package org
-    :config
-    (eab/bind-path org-directory)
-    (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-    (add-hook 'org-mode-hook (lambda () (setq indent-tabs-mode nil)))
-    ;; fix org-element performance degradation
-    (setq org-element--cache-self-verify 't)
-    (setq org-element-use-cache 't)
-    (if (string= (daemonp) "kairosC") (setq org-cycle-hide-drawer-startup nil))
-    '((setq org-element-cache-persistent nil))
-    '((setq org-element-use-cache nil))
-    ;; fix 'file is already exist' bug
-    (setq org-babel-temporary-directory "/tmp/user/1000/babel-aa5I6G"))
-  (use-package org-clock)
-  (use-package org-crypt)
-  (use-package org-capture)
-  (use-package org-id)
-  (use-package org-archive)
-  (use-package ox-latex)
-  (use-package ox-html)
-  (use-package ol-bbdb)
-  (use-package org-agenda)
-  (use-package org-protocol)
-  (use-package org-src)
-
-  (eab/add-hook orgtbl-mode-hook eab/orgtbl-mode-hook
-    (general-define-key
-     :keymaps 'orgtbl-mode-map
-     "M-a"        'nil))
-
-  (eab/add-hook org-mode-hook eab/org-hook
-    (general-define-key
-     :keymaps 'org-mode-map
-     "RET"                'eab/org-return
-     "M-D"                'ace-link-org
-     "C-d"                eab/compile-map
-     "<f6>"               'eab/revert-buffer
-     "s-'"                'org-edit-src-code
-     "s-k"                'undefined
-     "s-i"                'org-metaup
-     "s-p"                'org-priority-up
-     "s-j"                'org-metaleft
-     "s-l"                'org-metaright
-     "s-K"                'undefined
-     "s-I"                'org-shiftmetaup
-     "s-J"                'org-shiftmetaleft
-     "s-L"                'org-shiftmetaright
-     "s-<return>"         'org-insert-heading
-     "s-S-<return>"       'org-insert-todo-heading
-     "M-s-k"              'org-shiftdown
-     "M-s-i"              'org-shiftup
-     "M-s-j"              'org-shiftleft
-     "M-s-l"              'org-shiftright
-     "C-y"                'nil
-     "C-e"                'nil
-     "C-,"                'nil
-     "C-SPC"              'nil
-     "M-a"                'nil
-     "M-e"                'nil
-     "C-a"                'nil
-     "C-k"                'nil
-     "M-h"                'org-beginning-of-line
-     "M-p"                'org-end-of-line
-     "M-g"                'org-kill-line
-     "M-v"                'org-yank
-     "M-RET"              (ilam (org-insert-heading nil))
-     "C-M-n"              'org-backward-element
-     "C-M-m"              'org-forward-element
-     "M-n"                'sp-backward-sexp
-     "M-m"                'sp-forward-sexp
-     "M-N"                'org-backward-sentence
-     "M-M"                'org-forward-sentence
-     "M-U"                'eab/org-backward-paragraph
-     "M-O"                'eab/org-forward-paragraph
-     "M-u"                'eab/org-backward-page
-     "M-o"                'eab/org-forward-page
-     "C-M-S-u"            'org-backward-paragraph
-     "C-M-S-o"            'org-forward-paragraph
-     "C-M-u"              'outline-previous-visible-heading
-     "C-M-o"              'outline-next-visible-heading
-     "s-u"                'org-preview-latex-fragment
-     "C-c C-x M-c"        'org-copy-special
-     "C-c C-x M-x"        'org-cut-special
-     "C-c C-x M-v"        'org-paste-special
-     "s-x M-c"            'org-copy-special
-     "s-x M-x"            'org-cut-special
-     "s-x M-v"            'org-paste-special
-     "s-."                (kbd "C-c . RET"))
-
-    (key-chord-define org-mode-map "jj" 'org-edit-src-code)
-    (key-chord-define org-src-mode-map "jj" 'org-edit-src-exit)
-
-    (general-define-key
-     :keymaps 'org-src-mode-map
-     "s-'"        'org-edit-src-exit
-     "C-l '"      'org-edit-src-exit)
-
-    (general-define-key
-     :keymaps 'org-ql-view-map
-     "q" #'eab/bury-buffer
-     "g" #'eab/org-ql-view-refresh)
-
-    (general-define-key
-     :keymaps 'org-agenda-mode-map
-     "M-j"        'nil
-     "M-l"        'nil
-     "C-p"        'nil
-     "C-n"        'nil
-     "C-k"        'nil
-     "s"          'isearch-forward
-     "h"          'eab/hron-todo
-     "j"          'beginning-of-buffer
-     "M-g"        'org-agenda-kill
-     "M-k"        'org-agenda-next-line
-     "M-i"        'org-agenda-previous-line))
-  )
+  (load "eab-config-aaorg.el"))
 (defun eab-spacemacs/init-org-mode-fix/lisp nil
   ;; fix 'file is already exist' bug
   (setq org-babel-temporary-directory "/tmp/user/1000/babel-aa5I6G"))
@@ -1368,100 +1180,7 @@ which require an initialization must be listed explicitly in the list.")
   (use-package bbdb-loaddefs)
   (use-package bbdb-anniv))
 (defun eab-spacemacs/init-eab-misc nil
-  (use-package org-depend
-    :after (org))
-  (use-package power-macros
-    :after (eab-depend) ;; keybindings.el C-l vs eab-pmacros.el
-    :config
-    (eab/bind-path pm-macro-files)
-    (eab/bind-path power-macros-file)
-    (if (file-exists-p power-macros-file)
-        (load power-macros-file))
-    (defun eab/pm-write-last-kbd-macro (name)
-      (interactive "MName of macro: ")
-      (with-temp-buffer
-        (insert (format "
-
-(pm-def-macro
- '%s
- nil nil
- \"\"
- %s)
-" name (prin1-to-string (concat "C-l C-k " (format-kbd-macro)))))
-        (write-region (point-min) (point-max) power-macros-file t)))
-    (defun eab/pm-set-last-kbd-macro ()
-      (interactive)
-      (setq last-kbd-macro
-            (copy-sequence
-             (symbol-function
-              (intern
-               (ido-completing-read "Macro: "
-                                    (mapcar
-                                     (lambda (x) (symbol-name x))
-                                     (pm-get-available-macros)))))))))
-  
-  ;; dired+ нужен для привычной подсветки
-  (use-package dired+
-    :init
-    (setq diredp-hide-details-initially-flag nil))
-  (use-package dired-details)
-  (use-package alossage)
-  (use-package shell-command-queue)
-  (use-package one-key)
-  (use-package json-pretty-print)
-  (use-package rec-mode)
-  (use-package color-moccur)
-  (use-package moccur-edit)
-  (use-package smart-operator)
-  (use-package ido-better-flex)
-  (use-package ox-extra
-    :after (org))
-  
-  (defun multi-occur-in-all-buffers ()
-    "Show all lines matching REGEXP in all buffers."
-    (interactive)
-    (multi-occur
-     (buffer-list)
-     (car (occur-read-primary-args))))
-
-  (add-hook 'maplev-mode-hook
-            (lambda ()
-              ;;            (smart-operator-mode-on)
-              (general-define-key
-               :keymaps 'maplev-mode-map
-               "C-c d"      'maplev-help-at-point
-               "C-k"        'toggle-input-method)
-              (setq maplev-mint-start-options (list "-q" "-P"))
-              (setq maplev-executable-alist '(("11" "maple" nil "maple")
-                                              ("10" "maple" nil "mint")))))
-
-  (autoload 'cmaple "maplev" "Start maple process" t)
-  (autoload 'emaxima-mode "emaxima" "EMaxima mode" t)
-  (autoload 'maplev-mode "maplev" "Maple editing mode" t)
-  (autoload 'maxima "maxima" "Running Maxima interactively" t)
-  (autoload 'maxima-mode "maxima" "Maxima editing mode" t)
-  (add-to-list 'auto-mode-alist '("\\.max\\'" . maxima-mode))
-  (add-to-list 'auto-mode-alist '("\\.mpl\\'" . maplev-mode))
-  (add-to-list 'load-path (eab/bind-path eab/emaxima-path))
-  (add-hook 'maxima-mode-hook 
-            (lambda ()
-              (general-define-key
-               :keymaps 'maxima-mode-map
-               "C-M-a"      'nil
-               "C-M-b"      'nil
-               "C-M-e"      'nil
-               "C-M-f"      'nil
-               "M-;"        'nil
-               "C-d"        eab/compile-map
-               "M-h"        'nil)))
-
-  (use-package top-mode
-    :after (eab-minimal)
-    :config
-    (define-advice top-mode (:after (&rest args) eab-top-mode-after)
-      (general-define-key
-       :keymaps 'top-mode-map
-       "O"  (ilam (switch-to-buffer "*Proced*"))))))
+  (load "eab-config-eab-misc.el"))
 
 (defun eab-spacemacs/init-gnus nil
   (use-package eab-gnus :disabled
@@ -1601,6 +1320,10 @@ which require an initialization must be listed explicitly in the list.")
     :config
     (setq avy-timeout-seconds 0.25)))
 
+(defun eab-spacemacs/init-eab-minimal ()
+  (use-package eab-minimal))
+(defun eab-spacemacs/init-eab-workflow ()
+  (use-package eab-workflow))
 (defun eab-spacemacs/init-eab-ui ()
   (use-package eab-ui
     :config
@@ -1611,73 +1334,6 @@ which require an initialization must be listed explicitly in the list.")
     (setq find-function-C-source-directory source-directory)
     (eab/bind-path custom-file)))
 (defun eab-spacemacs/init-eab-org ()
-  (use-package eab-org
-    :init
-    (eab/bind-path eab/org-publish-directory-file)
-    (eab/bind-path eab/org-publish-directory)
-    :after (org
-            org-clock
-            org-crypt
-            org-capture
-            org-id
-            org-archive
-            ol-bbdb
-            ox-latex
-            ox-extra
-            ox-html
-            tex
-            tex-site
-            eab-minimal)
-    :config
-    (eab/bind-path org-link-abbrev-alist)
-    (eab/bind-path org-id-locations-file)
-    (eab/bind-path org-clock-persist-file)
-    (eab/bind-path bibtex-files)
-    (eab/bind-path org-ditaa-jar-path))
-  (use-package eab-org-agenda
-    :after (org org-agenda eab-org)
-    :config
-    (add-hook 'org-agenda-mode-hook (lambda () (hl-line-mode 1)))
-    (setq org-sort-agenda-notime-is-late nil)
-    (setq org-agenda-sorting-strategy
-          '((agenda habit-down time-up priority-down category-keep)
-            (todo timestamp-down)
-            (tags priority-down category-keep)
-            (search category-keep)))
-    (setq org-agenda-hide-tags-regexp nil)
-    (org-toggle-sticky-agenda t)
-    (setq org-agenda-include-diary nil)
-    (setq org-agenda-archives-mode 't)
-    (setq org-agenda-text-search-extra-files (quote (agenda-archives)))
-    (setq org-agenda-clockreport-parameter-plist (quote (:link nil :maxlevel 2))))
-  (use-package eab-org-publish
-    :after (eab-org))
-  (use-package eab-org-protocol
-    :after (eab-org org-protocol))
-  (use-package eab-org-src-babel
-    :after (org-src ob-tmux eab-org))
-  (use-package eab-org-todo
-    :after (eab-org))
-  (use-package eab-org-latex
-    :after (eab-org)
-    :config
-    (add-hook 'LaTeX-mode-hook 
-              (lambda ()
-                (general-define-key
-                 :keymaps 'LaTeX-mode-map
-                 "M-m"        'forward-sexp
-                 "C-d"        'nil
-                 "C-S-d"      eab/compile-map))))
-  (use-package eab-greek-to-latex :disabled)
-  (use-package eab-org-reftex :disabled)
-  (use-package eab-org-extension
-    :after (eab-org))
-  )
+  (load "eab-config-eab-org.el"))
 (defun eab-spacemacs/user-config ()
-  (use-package cl-macs)
-  (use-package tex)
-  (use-package tex-site)
-
-  (use-package eab-hron-lib
-    :after (eab-org))
   )

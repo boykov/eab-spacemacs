@@ -1,4 +1,4 @@
-;;; eab-workgroups2.el --- eab workgroup2 extension   -*- lexical-binding: t -*-
+;;; eab-workgroups2.el --- eab workgroup2 extension -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;

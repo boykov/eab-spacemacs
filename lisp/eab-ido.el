@@ -1,4 +1,4 @@
-;;; eab-ido.el --- eab ido extension
+;;; eab-ido.el --- eab ido extension -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;
