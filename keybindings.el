@@ -1,4 +1,4 @@
-;;; keybindings.el ---
+;;; keybindings.el --- -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;

@@ -74,11 +74,11 @@ called by `org-babel-execute-src-block'."
         (in-file (org-babel-temp-file "ledger-"))
 	(out-file (org-babel-temp-file "ledger-output-")))
     (with-temp-file in-file (insert body))
-    (message "%s" (concat "ssh chronos /home/eab/.local/bin/hledger -s"
+    (message "%s" (concat "hledger -s"
 			  " -f " (org-babel-process-file-name in-file)
 			  " " cmdline))
     (with-output-to-string
-      (shell-command (concat "ssh chronos /home/eab/.local/bin/hledger -s"
+      (shell-command (concat "hledger -s"
 			     " -f " (org-babel-process-file-name in-file)
 			     " " cmdline
 			     " > " (org-babel-process-file-name out-file))))

@@ -27,35 +27,36 @@
 ;; grep-command isn't parsed correctly
 ;; (setq grep-history '("grep -i -nH -e test  `git ls-files \\`git rev-parse --show-toplevel\\``"))
 
-(setq eab/grep-command-args (concat " --max-depth 0 --color never --no-heading "
-                                    "--pcre2 -M 1000 -U -i -nH -e "))
+(defvar eab/grep-command-args (concat " --max-depth 0 --color never --no-heading "
+                                    "--pcre2 -M 1000 -U -i -nH -e ") "")
 (defun eab/grep-command () (concat "rg" eab/grep-command-args))
-(setq eab/grep-ls "git ls-files `git rev-parse --show-toplevel`")
-(setq eab/grep-ls-recurse (concat "git ls-files --recurse-submodules "
-                                  "`git rev-parse --show-toplevel`"))
-(setq eab/grep-clock-left-bigchunk "")
+(defvar eab/grep-ls "git ls-files `git rev-parse --show-toplevel`" "")
+(defvar eab/grep-ls-recurse (concat "git ls-files --recurse-submodules "
+                                  "`git rev-parse --show-toplevel`") "")
+(defvar eab/grep-clock-left-bigchunk "" "")
+
 (defun eab/grep-clock-left ()
-    (concat "\"(^- |- <20|- \\[X|- \\[ |^\\*\\*\\*\\*\\*\\* )"
-            "(?:(?!(^- |- <20|- \\[X|- \\[ |^\\*+ "
-            eab/grep-clock-left-bigchunk
-            "))(.|\\n))*?"))
+  (concat "\"(^- |- <20|- \\[X|- \\[ |^\\*\\*\\*\\*\\*\\* )"
+          "(?:(?!(^- |- <20|- \\[X|- \\[ |^\\*+ "
+          eab/grep-clock-left-bigchunk
+          "))(.|\\n))*?"))
 (defun eab/grep-clock-right ()
   (concat
    (if (string= eab/grep-clock-left-bigchunk "")
        "(\\n|.)*?"
      (concat "(?:(?!(" (substring eab/grep-clock-left-bigchunk 1) "))(\\n|.))*?"))
    "((?= *- \\[X)|(?= *- \\[ )|(?= *- <)|(?=^- )|(?=\\n\\*+ )|(?=\\Z))\""))
-(setq eab/grep-clock-left-0 (concat "\"(^ *- |- \\[ |^\\*\\*\\*\\*\\*\\* )"
-                                    "(?:(?!(^ *- |^\\*+ ))(.|\\n))*?"))
-(setq eab/grep-clock-right-0
+(defvar eab/grep-clock-left-0 (concat "\"(^ *- |- \\[ |^\\*\\*\\*\\*\\*\\* )"
+                                    "(?:(?!(^ *- |^\\*+ ))(.|\\n))*?") "")
+(defvar eab/grep-clock-right-0
       (concat "(\\n|.)*?"
-              "((?=^ *- )|(?= *- <)|(?=\\n\\*+ )|(?=\\Z))\""))
-(setq eab/grep-sort " | LC_ALL=C sort -t ':' -k1,1 -k2n")
-(setq eab/grep-xargs " | xargs -d '\\n' ")
+              "((?=^ *- )|(?= *- <)|(?=\\n\\*+ )|(?=\\Z))\"") "")
+(defvar eab/grep-sort " | LC_ALL=C sort -t ':' -k1,1 -k2n" "")
+(defvar eab/grep-xargs " | xargs -d '\\n' " "")
+
 (defun eab/grep-ls-gitmode? ()
   (let ((arg nil))
     (eab/with-git-toplevel (not fatal-toplevel))))
-
 
 (defun eab/grep-align ()
   (interactive)
@@ -137,7 +138,7 @@
       "zgrep"
     "rg"))
 
-(defun eab/grep-gitmodules (arg)
+(defun eab/grep-gitmodules (arg top-level remote-prefix)
   (let* ((gitmodules-1 (concat
                         top-level
                         "/.gitmodules"))
@@ -165,7 +166,7 @@
           (extension (ignore-errors
                        (file-name-extension buffer-file-name)))
           (grep-with-args (concat (eab/gz-grep extension) eab/grep-command-args))
-          (target-files (eab/grep-gitmodules arg))
+          (target-files (eab/grep-gitmodules arg top-level remote-prefix))
           (grep-command-no-list
            (if (eab/grep-ls-gitmode?)
                (concat target-files eab/grep-xargs grep-with-args)

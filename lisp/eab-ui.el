@@ -1,4 +1,4 @@
-;;; eab-ui.el --- 
+;;; eab-ui.el --- eab ui extension -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;

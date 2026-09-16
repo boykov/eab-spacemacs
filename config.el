@@ -1,4 +1,4 @@
-;;; config.el --- Spacemacs Layer configuration File
+;;; config.el --- Spacemacs Layer configuration File -*- lexical-binding: t -*-
 ;;
 ;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;

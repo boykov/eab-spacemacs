@@ -28,6 +28,8 @@
 (add-to-list 'org-babel-default-header-args:dot '(:cmdline . "-Tsvg"))
 
 (setq org-confirm-babel-evaluate 't)
+(setq org-babel-default-header-args:org
+  '((:results . "raw") (:exports . "results")))
 
 (setq org-edit-src-content-indentation 0)
 (setq org-src-preserve-indentation 't)

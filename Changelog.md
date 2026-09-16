@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.4.32
+
+feat: add lexical-binding to config files and update dependencies
+
+- Add `lexical-binding: t` to all Elisp config files
+- Add `ob-markdown` use-package declaration
+- Enhance EAF keybindings with custom scroll functions
+- Improve clock handling with empty entry detection
+- Fix helm-org-goto-marker to avoid redundant navigation
+- Support remote org-clock targets via HRON property
+- Simplify ledger babel command by removing ssh
+- Update org-babel default args for org language
+- Switch org-protocol link resolution to use Firefox
+
 ## 0.4.31
 
 refactor: modularize config files and update dependencies

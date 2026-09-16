@@ -7,6 +7,7 @@
 ;; Requirements:
 ;; Status: not intended to be distributed yet
 
+(use-package ob-markdown)
 (use-package org-depend
   :after (org))
 (use-package power-macros

@@ -41,8 +41,8 @@
               (lambda (x)
                 (if (string= "ID" (car x)) 't nil)) (org-entry-properties)))
          (prefix (replace-regexp-in-string
-                  "eab\/git\/org" "eab/pub/org" (cdr path))))
-    (browse-url
+                  "eab\/git\/org-chronos" "eab/pub/org" (cdr path))))
+    (browse-url-firefox
      (concat "file://" (replace-regexp-in-string
                         "\.org$" ".html" prefix) "#ID-" (cdr id)))))
 

@@ -1,4 +1,4 @@
-;;; eab-org-agenda.el ---
+;;; eab-org-agenda.el --- eab org-agenda extension -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;

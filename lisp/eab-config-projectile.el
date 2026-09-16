@@ -31,4 +31,8 @@
            projectile-project-command-history)
   (ring-insert
    (projectile--get-command-history (eab/config "/home/eab/git/eab-system/portal/"))
-   (eab/config "make deploy-config li=\"--limit chronos,cyclos\"")))
+   (eab/config "make deploy-config li=\"--limit chronos,cyclos\""))
+  (ring-insert
+   (projectile--get-command-history (eab/config "/home/eab/git/eab-system/portal/"))
+   (eab/config "make deploy-anexp li=\"--limit chronos,kairos\" aa=\"\""))
+  )

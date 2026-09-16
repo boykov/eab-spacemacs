@@ -1,4 +1,4 @@
-;;; eab-org.el --- 
+;;; eab-org.el --- eab org extension -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;

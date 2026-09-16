@@ -1,4 +1,4 @@
-;;; eab-hron-lib.el --- 
+;;; eab-hron-lib.el --- eab hron library -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2010-2026 Evgeny Boykov
 ;;
@@ -251,14 +251,19 @@
         (org-agenda-switch-to))
     (setq eab/hron-todo-from-agenda nil))
   (unless (eq arg 2)
-    (eab/org-clock (apply 'encode-time
-                          (org-parse-time-string
-                           (eab/hron-current-time-stamp)))
-                   (apply 'encode-time
-                          (org-parse-time-string
-                           (eab/hron-add-current
-                            hour
-                            minute)))))
+    (if (or (org-ql--predicate-clocked)
+            (eab/org-clock-parent))
+        (eab/org-clock (apply 'encode-time
+                              (org-parse-time-string
+                               (eab/hron-current-time-stamp)))
+                       (apply 'encode-time
+                              (org-parse-time-string
+                               (eab/hron-add-current
+                                hour
+                                minute))))
+      (progn
+        (message "Empty CLOCK entry!")
+        (sleep-for 0.5))))
   (cl-case arg
     (4 (setq eab/hron-todo-pending 't))
     (2 (eab/hron-update-current-time))
@@ -418,14 +423,21 @@
   (if (not (eab/onhost "cyclos-emacs"))
       (eab/helm-org-agenda-files-headings)))
 
+;; DONE: если курсор уже находится в heading, то просто переключиться
+;; на буфер, без goto-char, если (point) и (marker-position marker) в одном heading
 (defun eab/helm-org-goto-marker (marker)
   "Go to MARKER in org buffer."
   (setq eab/helm-org-goto-flag 't)
   (switch-to-buffer (marker-buffer marker))
-  (goto-char (marker-position marker))
-  (org-show-context)
-  (org-show-entry)
-  (org-show-children))
+  (if (not (equal (org-get-heading)
+               (save-excursion
+                 (goto-char (marker-position marker))
+                 (org-get-heading))))
+      (progn
+        (goto-char (marker-position marker))
+        (org-show-context)
+        (org-show-entry)
+        (org-show-children))))
 
 (defun eab/helm-org-store-link (marker)
   "Store org link."
@@ -525,44 +537,47 @@
     (call-interactively 'eab/note-todo)))
 
 (defun eab/org-clock-parent ()
-  (if (string= (org-entry-get nil "HRON") "parent")
-      't nil))
+  (org-entry-get nil "HRON"))
 
 (defun eab/org-clock (&optional start-time at-time)
   "Insert clock string in current buffer"
-  (save-excursion
-    (if (eab/org-clock-parent)
-        (outline-up-heading 1))
-    (org-clock-find-position nil)
-    (insert-before-markers "\n")
-    (backward-char 1)
-    (org-indent-line)
-    (when (and (save-excursion
-                 (end-of-line 0)
-                 (org-in-item-p)))
-      (beginning-of-line 1)
-      (org-indent-line-to (- (org-get-indentation) 2)))
-    (insert org-clock-string " ")
-    (org-insert-time-stamp start-time 'with-hm 'inactive)
-    (insert "--")
-    (org-insert-time-stamp at-time 'with-hm 'inactive)
-    (let (s h m)
-      (setq s (- (org-float-time at-time)
-                 (org-float-time start-time))
-            ss (cl-signum s)
-            s (abs s)
-            h (floor (/ s 3600))
-            s (- s (* 3600 h))
-            m (floor (/ s 60))
-            s (- s (* 60 s)))
-      (insert " => " (let ((fh (cond
-                                ((and (= ss -1) (< h 10))
-                                 "-%1d")
-                                ((and (= ss -1) (> h 9))
-                                 "-%2d")
-                                (t
-                                 "%2d"))))
-                       (format (concat fh ":%02d") h m))))))
+  (save-window-excursion
+    (save-excursion
+      (let ((remote (eab/org-clock-parent)))
+        (if remote
+            (if (string= remote "parent")
+                (outline-up-heading 1)
+              (org-id-goto remote))))
+      (org-clock-find-position nil)
+      (insert-before-markers "\n")
+      (backward-char 1)
+      (org-indent-line)
+      (when (and (save-excursion
+                   (end-of-line 0)
+                   (org-in-item-p)))
+        (beginning-of-line 1)
+        (org-indent-line-to (- (org-get-indentation) 2)))
+      (insert org-clock-string " ")
+      (org-insert-time-stamp start-time 'with-hm 'inactive)
+      (insert "--")
+      (org-insert-time-stamp at-time 'with-hm 'inactive)
+      (let (s h m)
+        (setq s (- (org-float-time at-time)
+                   (org-float-time start-time))
+              ss (cl-signum s)
+              s (abs s)
+              h (floor (/ s 3600))
+              s (- s (* 3600 h))
+              m (floor (/ s 60))
+              s (- s (* 60 s)))
+        (insert " => " (let ((fh (cond
+                                  ((and (= ss -1) (< h 10))
+                                   "-%1d")
+                                  ((and (= ss -1) (> h 9))
+                                   "-%2d")
+                                  (t
+                                   "%2d"))))
+                         (format (concat fh ":%02d") h m)))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                _   _ _       _     _   _
