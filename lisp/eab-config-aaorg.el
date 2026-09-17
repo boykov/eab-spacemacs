@@ -8,8 +8,12 @@
 ;; Status: not intended to be distributed yet
 
 (use-package org
+  :init
+  (eab/config
+   (if (eab/ondaemon (eab/server-P))
+       (setq org-directory "~/git/org-chronos/")
+     (setq org-directory "/home/eab/git/org/")))
   :config
-  (eab/bind-path org-directory)
   (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
   (add-hook 'org-mode-hook (lambda () (setq indent-tabs-mode nil)))
   ;; fix org-element performance degradation
@@ -18,6 +22,13 @@
   (if (string= (daemonp) "kairosC") (setq org-cycle-hide-drawer-startup nil))
   '((setq org-element-cache-persistent nil))
   '((setq org-element-use-cache nil))
+  (defun eab/papers-eaf (tag)
+    (eab/config (concat "/home/eab/pnt/data/read/papers/" tag ".pdf")))
+  (defun eab/papers-firefox (tag)
+    (eab/config (concat "https://share.eab.su/papers/" tag ".pdf")))
+  (put 'eab/papers-eaf 'org-link-abbrev-safe t)
+  (put 'eab/papers-firefox 'org-link-abbrev-safe t)
+
   ;; fix 'file is already exist' bug
   (setq org-babel-temporary-directory "/tmp/user/1000/babel-aa5I6G"))
 (use-package org-clock)
@@ -44,22 +55,6 @@
    "M-D"                'ace-link-org
    "C-d"                eab/compile-map
    "<f6>"               'eab/revert-buffer
-   "s-'"                'org-edit-src-code
-   "s-k"                'undefined
-   "s-i"                'org-metaup
-   "s-p"                'org-priority-up
-   "s-j"                'org-metaleft
-   "s-l"                'org-metaright
-   "s-K"                'undefined
-   "s-I"                'org-shiftmetaup
-   "s-J"                'org-shiftmetaleft
-   "s-L"                'org-shiftmetaright
-   "s-<return>"         'org-insert-heading
-   "s-S-<return>"       'org-insert-todo-heading
-   "M-s-k"              'org-shiftdown
-   "M-s-i"              'org-shiftup
-   "M-s-j"              'org-shiftleft
-   "M-s-l"              'org-shiftright
    "C-y"                'nil
    "C-e"                'nil
    "C-,"                'nil
@@ -87,21 +82,16 @@
    "C-M-S-o"            'org-forward-paragraph
    "C-M-u"              'outline-previous-visible-heading
    "C-M-o"              'outline-next-visible-heading
-   "s-u"                'org-preview-latex-fragment
    "C-c C-x M-c"        'org-copy-special
    "C-c C-x M-x"        'org-cut-special
    "C-c C-x M-v"        'org-paste-special
-   "s-x M-c"            'org-copy-special
-   "s-x M-x"            'org-cut-special
-   "s-x M-v"            'org-paste-special
-   "s-."                (kbd "C-c . RET"))
+   )
 
   (key-chord-define org-mode-map "jj" 'org-edit-src-code)
   (key-chord-define org-src-mode-map "jj" 'org-edit-src-exit)
 
   (general-define-key
    :keymaps 'org-src-mode-map
-   "s-'"        'org-edit-src-exit
    "C-l '"      'org-edit-src-exit)
 
   (general-define-key

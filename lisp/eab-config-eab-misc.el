@@ -13,8 +13,8 @@
 (use-package power-macros
   :after (eab-config-term) ;; keybindings.el C-l vs eab-pmacros.el
   :config
-  (eab/bind-path pm-macro-files)
-  (eab/bind-path power-macros-file)
+  (setq pm-macro-files (eab/config '`(,(concat eab-spacemacs-path "lisp/eab-pmacros.el"))))
+  (setq power-macros-file (eab/config (concat eab-spacemacs-path "lisp/eab-pmacros.el")))
   (if (file-exists-p power-macros-file)
       (load power-macros-file))
   (defun eab/pm-write-last-kbd-macro (name)
@@ -91,7 +91,7 @@
 (autoload 'maxima-mode "maxima" "Maxima editing mode" t)
 (add-to-list 'auto-mode-alist '("\\.max\\'" . maxima-mode))
 (add-to-list 'auto-mode-alist '("\\.mpl\\'" . maplev-mode))
-(add-to-list 'load-path (eab/bind-path eab/emaxima-path))
+(add-to-list 'load-path (eab/config (concat eab-spacemacs-path "local/eab-misc/emaxima")))
 (add-hook 'maxima-mode-hook 
           (lambda ()
             (general-define-key

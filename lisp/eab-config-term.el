@@ -7,6 +7,93 @@
 ;; Requirements:
 ;; Status: not intended to be distributed yet
 
+(let ((emacs-alist
+       (eab/config
+        '`(
+           ("kairosP"         . "docker-compose-emacs")
+           ("chronosP"        . "docker-compose-emacs")
+           ("microcyclos"     . "docker-compose-micro")
+           ("cyclos"          . "cyclos-emacs")
+           ("chronosC"        . "docker-compose-clocksum")
+           ("chronosCclient"  . "docker-clocksum-gui")
+           ))))
+  (setq eab/emacs-service-command
+        (eab/config
+         (concat
+          eab/ssh-host-local
+          " 'sudo systemctl restart "
+          (cdr
+           (assoc eab/daemon-name emacs-alist)))))
+  (setq eab/emacs-client-command
+        (eab/config
+         (concat
+          eab/ssh-host-local
+          " 'systemctl --user restart "
+          (cdr (assoc (concat eab/daemon-name "client") emacs-alist))))))
+
+;; mini keyboard
+(general-define-key
+ "<kp-insert>"  'nil
+ "<kp-enter>"   'winner-undo
+ "<kp-add>"     'nil
+ "<kp-begin>"   'nil
+ "<M-kp-equal>" 'nil
+ "<kp-delete>"  (ilam (kill-buffer-and-window)))
+
+(defvar eab/one-key-map (make-sparse-keymap)
+  "One-key keymap.")
+(global-set-key (kbd "C-e") nil)
+(general-define-key
+ :prefix "C-e"
+ "b"    'eab/switch-browser
+ "v"    'eab/switch-viewer
+ "t"    'eab/switch-eepitch-target
+ "a"    (ilam (eepitch-ansi-term "1"))
+ "1"    (ilam (eepitch-ansi-term "1"))
+ "2"    (ilam (eepitch-ansi-term "2"))
+ "3"    (ilam (eepitch-ansi-term "3"))
+ "4"    (ilam (eepitch-ansi-term "4"))
+ "5"    (ilam (eepitch-ansi-term "5"))
+ "6"    (ilam (eepitch-ansi-term "6"))
+ "7"    (ilam (eepitch-ansi-term "7"))
+ "8"    (ilam (eepitch-ansi-term "8"))
+ "9"    (ilam (eepitch-ansi-term "9"))
+ "c"    'eab/switch-compile
+ "d c"  '(:def (ilam-no-def
+                (setq eab/daemons-host "chronos")
+                (call-interactively 'eab/daemons))
+               :which-key "(c)hronos")
+ "d k"  (ilam (setq eab/daemons-host "kairos") (call-interactively 'eab/daemons))
+ "d y"  (ilam (setq eab/daemons-host "cyclos") (call-interactively 'eab/daemons))
+ "x"    (ilam
+         (eab/sh-over-bash eab/emacs-service-command "" 't))
+ "X"    (ilam
+         (desktop-save (eab/desktop-dir))
+         (run-with-timer 0.1 nil 'kill-emacs)
+         (eab/sh-over-bash
+          (concat "sleep 0.3 && emacs --daemon=" eab/daemon-name) "" 't))
+ "h"    'eab/switch-help
+ "z"    'undo-tree-visualize
+ "s"    'eab/switch-async
+ "S"    'eab/switch-shell
+ "m"    'eab/switch-message
+ "k"    (ilam (eepitch-kill))
+ "o"    'proced
+ "g"    'eab/switch-grep
+ "G"    'eab/kill-last-grep
+ "l"    'helm-locate
+ "C"    'docker-containers
+ "I"    'docker-images)
+(setq eab/one-key-map (lookup-key global-map (kbd "C-e")))
+
+(general-define-key
+ :keymaps 'kmacro-keymap
+ "m"    'kmacro-start-macro
+ ","    'kmacro-end-or-call-macro-repeat
+ "i"    'kmacro-insert-counter
+ "s"    'kmacro-set-counter
+ "v"    'insert-kbd-macro)
+
 (defvar eab/temacs-map (make-sparse-keymap)
   "Keymap for console temacs.")
 (global-set-key (kbd "C-l") nil)

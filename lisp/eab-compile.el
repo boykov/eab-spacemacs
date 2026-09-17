@@ -84,8 +84,16 @@
 (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
 ;; (add-hook 'compilation-mode-hook 'rename-uniquely)
 
+(setq eab/gr-command
+      (eab/config (concat eab/ssh-host-local " bash ~/bin/gr status")))
 (setq eab/gr-buffer "*gr status*")
 (setq eab/gr-ready? nil)
+(setq eab/update-gr-command
+      (eab/config (concat eab/ssh-host-local " bash ~/bin/gr @fz git fetch")))
+(setq eab/check-gr-command
+      (eab/config
+       (concat eab/ssh-host-local " bash ~/bin/gr @fz ~/git/auto/gr-git-log.sh | wc -l")))
+
 (defun eab/gr-status ()
   (interactive)
   (let* ((compilation-buffer-name-function

@@ -132,7 +132,19 @@ END
 Формат ответа -- только 3 слова через дефис, например: деньги-дата-отложить.
 "))
     (execute-kbd-macro
-     (read-kbd-macro "C-v m d M-v RET k m RET RET"))
+     (read-kbd-macro "C-v m d M-v RET k RET"))
+    (setq gptel-model eab/gptel-one-shot-model))
+  (defun eab/gptel-one-shot-fix-garbage ()
+    (interactive)
+    (setq eab/gptel-one-shot-model gptel-model)
+    (setq gptel-model 'google/gemini-3.5-flash-lite:nitro)
+    ;; (setq gptel-model 'openai/gpt-oss-120b:nitro)
+    (let ((inhibit-message t))
+      (kill-new
+       "Убери лишние мусорные символы. Остальной текст повтори в точности.
+"))
+    (execute-kbd-macro
+     (read-kbd-macro "C-v m d M-v RET i RET"))
     (setq gptel-model eab/gptel-one-shot-model))
   (setq eab/gptel-rewrite-note
         "Rewrite: Все текстовые блоки должны стать элементами org-mode списка.

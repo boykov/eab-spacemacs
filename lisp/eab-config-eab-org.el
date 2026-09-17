@@ -9,8 +9,11 @@
 
 (use-package eab-org
   :init
-  (eab/bind-path eab/org-publish-directory-file)
-  (eab/bind-path eab/org-publish-directory)
+  (eab/config
+   (if (eab/ondaemon (eab/server-P))
+       (setq eab/org-publish-directory "/home/eab/pub/org/")
+     (setq eab/org-publish-directory "~/pub/org/"))
+   (setq eab/org-publish-directory-file "file:///home/eab/pub/org/"))
   :after (org
           org-clock
           org-crypt
@@ -23,15 +26,21 @@
           ox-html
           eab-minimal)
   :config
-  (eab/bind-path org-link-abbrev-alist)
-  (eab/bind-path org-id-locations-file)
-  (eab/bind-path org-clock-persist-file)
+  (setq org-link-abbrev-alist
+        (eab/config 
+         '`(("bib" . "~/git/lit/boykov.bib::%s")
+            ("papers" . "%(eab/papers-firefox)")
+            ("google" . "https://www.google.com/search?q=")
+            )))
+  ;; See also eab-header in ~/texmf/tex/latex/eab-styles/eab-header.sty
+  (setq org-id-locations-file (eab/config (concat (eab/history-dir) ".org-id-locations")))
+  (setq org-clock-persist-file (eab/config (concat (eab/history-dir) "org-clock-save.el")))
   (eab/add-hook bibtex-mode-hook eab/bibtex-hook
     (general-define-key
      :keymaps 'bibtex-mode-map
      "C-M-\\"     'bibtex-fill-entry))
-  (eab/bind-path bibtex-files)
-  (eab/bind-path org-ditaa-jar-path))
+  (setq bibtex-files (eab/config '`("~/git/lit/boykov.bib")))
+  (setq org-ditaa-jar-path (eab/config "/usr/bin/ditaa")))
 (use-package eab-org-agenda
   :after (org org-agenda eab-org)
   :config

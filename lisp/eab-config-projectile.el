@@ -17,7 +17,7 @@
    )
   (setq projectile-require-project-root t)
   (setq projectile-per-project-compilation-buffer t)
-  (eab/bind-path projectile-known-projects-file)
+  (setq projectile-known-projects-file (eab/config (concat (eab/history-dir) "projectile-bookmarks.eld")))
   (setq projectile-project-root-files-bottom-up
         '(".git"                      ; Git VCS root dir
           ".projectile"               ; projectile project marker

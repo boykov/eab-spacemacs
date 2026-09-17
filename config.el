@@ -7,13 +7,16 @@
 ;; Requirements:
 ;; Status: not intended to be distributed yet
 
+(defmacro eab/config (&rest body)
+  `(eval ,@body))
+
 (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (add-to-list 'load-path (concat eab-spacemacs-path "lisp"))
 (add-to-list 'load-path (concat eab-spacemacs-path "features"))
 
 (defvar eab/first-emacsclient 't "nil if run again")
-(defvar eab/ssh-host "ssh -o ConnectTimeout=10 kairos" "current host")
+(defvar eab/ssh-host (eab/config "ssh -o ConnectTimeout=10 kairos") "current host")
 
 '((let ((server-use-tcp server-C-use-tcp))
     (list (server-eval-at "chronosC" '(eab/gotify-token))
@@ -21,9 +24,6 @@
           (server-eval-at "kairosC" '(eab/gotify-token))
           (server-eval-at "kairosC" '(eab/gotify-client-token))))
   )
-
-(defun eab/config (str)
-  str)
 
 (defmacro eab/add-hook (hookname funcname &rest body)
   "add-hook with lambda progn"
@@ -35,11 +35,16 @@
 (defvar eab/gotify-token-cache "" "")
 (defun eab/gotify-token ()
   (if (not (equal (length eab/gotify-token-cache) 15))
-      (setq eab/gotify-token-cache (substring (shell-command-to-string (concat eab/ssh-host " bash <<'END'
+      (setq eab/gotify-token-cache
+            (substring (shell-command-to-string
+                        (eab/config (concat eab/ssh-host " bash <<'END'
 ~/git/auto/keepass.sh \"portal/gotify\" -a app-test-token
 END
-" )) 0 -1)))
+" ))) 0 -1)))
   eab/gotify-token-cache)
+
+;; TODO: not in eab/config due to async-start and args
+;; maybe ,(eab/config ...)?
 (defun eab/gotify (title message priority)
   (async-start
    `(lambda ()
@@ -49,33 +54,37 @@ END
         " -t \"" ,title "\""
         " -m \"" ,message "\""
         " -p " ,(number-to-string priority))) nil 0)))
+
 (defvar eab/gotify-client-token-cache "" "")
 (defun eab/gotify-client-token ()
   (if (not (equal (length eab/gotify-client-token-cache) 15))
       (setq eab/gotify-client-token-cache
             (substring
              (shell-command-to-string
-              (concat eab/ssh-host " bash <<'END'
+              (eab/config (concat eab/ssh-host " bash <<'END'
 ~/git/auto/keepass.sh \"portal/gotify\" -a client-token
 END
-" )) 0 -1)))
+" ))) 0 -1)))
   eab/gotify-client-token-cache)
 (setq eab/gotify-command
-      (concat "ssh kairos" " 'sqlite3 -column /var/gotify/data/gotify.db \"select datetime(date,\\\"localtime\\\"),title,message from messages order by date desc limit 20;\"'"))
+      (eab/config
+       (concat
+        "ssh kairos"
+        " 'sqlite3 -column /var/gotify/data/gotify.db \"select datetime(date,\\\"localtime\\\"),title,message from messages order by date desc limit 20;\"'")))
 ;; (eab/gotify "test" "test" 0)
 
 (setq eab/dl.sh-command
-      (concat "ssh chronos" " dl.sh "))
+      (eab/config (concat "ssh chronos" " dl.sh ")))
 
 (setq eab/test-dotemacs-command
       ;; host=`dig test-dotemacs.salmon.eab.su TXT +short | tr -d '"'`
-      (concat "ssh chronos" " ~/git/auto/test-dotemacs.sh"))
+      (eab/config (concat "ssh chronos" " ~/git/auto/test-dotemacs.sh")))
 
 (defun eab/update-site ()
   (shell-command
-   (concat "ssh chronos" " <<'END'
+   (eab/config (concat "ssh chronos" " <<'END'
 sudo docker exec eab-node bash -c \"cd ~/pub/eab-kb/js && node update-client.js\"
-END")))
+END"))))
 
 (defun eab/loaded-ok (instance)
   (if configuration-layer-error-count
@@ -142,26 +151,26 @@ END")))
 (if (eab/ondaemon "cyclos")
     (progn
       (setq eab/sync-rsync-command
-            (concat "ssh cyclos"
+            (eab/config (concat "ssh cyclos"
                     " screen -d -m bash -c \"echo; "
                     "rsync -WavR --files-from=/home/eab/.emacs.d/historyCyclos/recentf-eabpool /mnt/lion/ kairos:/mnt/lion/; "
                     "rsync -WavR --files-from=/home/eab/.emacs.d/historyCyclos/recentf-eabpool /mnt/lion/ chronos:/mnt/lion/; "
                     "/home/eab/git/auto/notify.sh -a " (eab/gotify-token) " -t \"OK\" -m \"rsync\" -p 0; "
-                    "\""))
+                    "\"")))
       (setq eab/sync-zfs-command
-            (concat "ssh cyclos" " screen -d -m bash -c \"echo; syncoid.sh chronos kairos\""))))
+            (eab/config (concat "ssh cyclos" " screen -d -m bash -c \"echo; syncoid.sh chronos kairos\"")))))
 
 (if (eab/ondaemon "chronosP")
     (progn
       (setq eab/sync-rsync-command
-            (concat "ssh cyclos"
+            (eab/config (concat "ssh cyclos"
                     " screen -d -m bash -c \"echo; "
                     "rsync -WavR --files-from=/home/eab/.emacs.d/historyCyclos/recentf-eabpool /mnt/lion/ kairos:/mnt/lion/; "
                     "rsync -WavR --files-from=/home/eab/.emacs.d/historyCyclos/recentf-eabpool /mnt/lion/ cyclos:/mnt/lion/; "
                     "/home/eab/git/auto/notify.sh -a " (eab/gotify-token) " -t \"OK\" -m \"rsync\" -p 0; "
-                    "\""))
+                    "\"")))
       (setq eab/sync-zfs-command
-            (concat "ssh chronos" " screen -d -m bash -c \"echo; syncoid.sh cyclos kairos\""))))
+            (eab/config (concat "ssh chronos" " screen -d -m bash -c \"echo; syncoid.sh cyclos kairos\"")))))
 
 (if (eab/ondaemon (eab/server-C))
     (progn
@@ -183,34 +192,24 @@ END")))
 ;;     (setq debug-on-error 't))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defvar eab/paths-hash nil "symbol : value")
-
-(setq eab/paths-hash (make-hash-table :test 'equal))
-
-(defmacro setq-put (name value)
-  `(puthash ',name ,value eab/paths-hash))
-
-(defun eab/get-path (name)
-  (gethash name eab/paths-hash))
-
-(defmacro eab/bind-path (name)
-  `(setq ,name (gethash ',name eab/paths-hash)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defun eab/read-lines (file)
-  "Return a list of lines of a file at at FPATH."
-  (if (file-exists-p file)
-      (with-temp-buffer
-        (insert-file-contents file)
-        (split-string (buffer-string) "\n" t))))
-
 (defun eab/onhost (def)
   (if (string= system-name def) 't))
 
 (defun eab/history-dir ()
   (let ((dir
-         (cdr (assoc eab/daemon-name (gethash 'eab/history-dir-alist eab/paths-hash)))))
+         (cdr
+          (assoc eab/daemon-name
+                 (eab/config
+                  '`(
+                     ("server"        . ,(concat user-emacs-directory "history/"))
+                     ("serverM"       . ,(concat user-emacs-directory "historyM/"))
+                     ("kairosP"       . ,(concat user-emacs-directory "historyP/"))
+                     ("chronosP"      . ,(concat user-emacs-directory "historyChronosP/"))
+                     ("microcyclos"   . ,(concat user-emacs-directory "historyMicrocyclos/"))
+                     ("cyclos"        . ,(concat user-emacs-directory "historyCyclos/"))
+                     ("chronosC"      . ,(concat user-emacs-directory "historyChronosC/"))
+                     ("kairosC"       . ,(concat user-emacs-directory "kairosC/"))
+                     ))))))
     (unless (file-exists-p dir)
       (ignore-errors (make-directory dir)))
     dir))
@@ -218,102 +217,24 @@ END")))
 (defun eab/desktop-dir ()
   (eab/history-dir))
 
-(setq-put eab/history-dir-alist
-          `(
-            ("server"        . ,(concat user-emacs-directory "history/"))
-            ("serverM"       . ,(concat user-emacs-directory "historyM/"))
-            ("kairosP"       . ,(concat user-emacs-directory "historyP/"))
-            ("chronosP"      . ,(concat user-emacs-directory "historyChronosP/"))
-            ("microcyclos"   . ,(concat user-emacs-directory "historyMicrocyclos/"))
-            ("cyclos"        . ,(concat user-emacs-directory "historyCyclos/"))
-            ("chronosC"      . ,(concat user-emacs-directory "historyChronosC/"))
-            ("kairosC"       . ,(concat user-emacs-directory "kairosC/"))
-            ))
+(eab/config
+ (cond ((eab/onhost "kairos-emacs")    (setq eab/ssh-host-local "ssh -o ConnectTimeout=10 kairos"))
+       ((eab/onhost "kairos-clocksum")  (setq eab/ssh-host-local "ssh -o ConnectTimeout=10 kairos"))
+       ((eab/onhost "chronos-clocksum") (setq eab/ssh-host-local "ssh -o ConnectTimeout=10 chronos"))
+       ((eab/onhost "chronos-emacs")(setq eab/ssh-host-local "ssh -o ConnectTimeout=10 chronos"))
+       ((eab/onhost "cyclos-emacs") (setq eab/ssh-host-local "ssh -o ConnectTimeout=10 cyclos"))
+       (t (setq eab/ssh-host-local eab/ssh-host))))
 
-(setq-put eab/emacs-service-alist
-          `(
-            ("kairosP"         . "docker-compose-emacs")
-            ("chronosP"        . "docker-compose-emacs")
-            ("microcyclos"     . "docker-compose-micro")
-            ("cyclos"          . "cyclos-emacs")
-            ("chronosC"        . "docker-compose-clocksum")
-            ("chronosCclient"  . "docker-clocksum-gui")
-          ))
-
-(cond ((eab/onhost "kairos-emacs")    (setq eab/ssh-host-local "ssh -o ConnectTimeout=10 kairos"))
-      ((eab/onhost "kairos-clocksum")  (setq eab/ssh-host-local "ssh -o ConnectTimeout=10 kairos"))
-      ((eab/onhost "chronos-clocksum") (setq eab/ssh-host-local "ssh -o ConnectTimeout=10 chronos"))
-      ((eab/onhost "chronos-emacs")(setq eab/ssh-host-local "ssh -o ConnectTimeout=10 chronos"))
-      ((eab/onhost "cyclos-emacs") (setq eab/ssh-host-local "ssh -o ConnectTimeout=10 cyclos"))
-      (t (setq eab/ssh-host-local eab/ssh-host)))
-
-(setq eab/xdg-open (concat eab/ssh-host-local " 'DISPLAY=:0 xdg-open"))
-
-(setq eab/gr-command
-      (concat eab/ssh-host-local " bash ~/bin/gr status"))
-
-(setq eab/update-gr-command
-      (concat eab/ssh-host-local " bash ~/bin/gr @fz git fetch"))
-
-(setq eab/check-gr-command
-      (concat eab/ssh-host-local " bash ~/bin/gr @fz ~/git/auto/gr-git-log.sh | wc -l"))
-
-(setq eab/emacs-service-command
-      (concat
-       eab/ssh-host-local
-       " 'sudo systemctl restart "
-       (cdr (assoc eab/daemon-name (gethash 'eab/emacs-service-alist eab/paths-hash)))))
-
-(setq eab/emacs-client-command
-      (concat
-       eab/ssh-host-local
-       " 'systemctl --user restart "
-       (cdr (assoc (concat eab/daemon-name "client")
-                   (gethash 'eab/emacs-service-alist eab/paths-hash)))))
-
-;; TODO можно ли подобные настройки не считать "путями" и убрать из path?
-(setq-put org-clock-persist-file (concat (eab/history-dir) "org-clock-save.el"))
-(setq-put org-id-locations-file (concat (eab/history-dir) ".org-id-locations"))
-(setq-put projectile-known-projects-file (concat (eab/history-dir) "projectile-bookmarks.eld"))
-(setq-put eab/wg-path "~/git/eab-system/wg/*")
-
-(if (eab/ondaemon (eab/server-P))
-    (setq-put org-directory "~/git/org-chronos/")
-  (setq-put org-directory "/home/eab/git/org/"))
-
-;; TODO почему не срабатывает exclude для ссылок?
+;; DONE: почему не срабатывает exclude для ссылок?
 ;; из-за распределенности? копируется не оттуда, откуда ожидаю? задержка st?
 (defun eab/rsync-org-directory (&optional from-host)
   (unless from-host
     (setq from-host ""))
   (shell-command
-   (concat eab/ssh-host-local
-           " rsync --delete -avzl --no-links --exclude \".git\" --exclude \"gen\" " from-host "~/git/org-chronos/ " org-directory)))
-
-(setq eab/batch-publish-command
-      (concat eab/ssh-host " " (eab/get-path 'org-directory) "misc/batch-publish.sh"))
-
-(if (eab/ondaemon (eab/server-P))
-    (setq-put eab/org-publish-directory "/home/eab/pub/org/")
-  (setq-put eab/org-publish-directory "~/pub/org/"))
-
-(setq-put eab/org-publish-directory-file "file:///home/eab/pub/org/")
-(setq-put org-ditaa-jar-path "/usr/bin/ditaa")
-
-(defun eab/papers-eaf (tag)
-  (concat "/home/eab/pnt/data/read/papers/" tag ".pdf"))
-(defun eab/papers-firefox (tag)
-  (concat "https://share.eab.su/papers/" tag ".pdf"))
-(put 'eab/papers-eaf 'org-link-abbrev-safe t)
-(put 'eab/papers-firefox 'org-link-abbrev-safe t)
-
-(setq-put org-link-abbrev-alist
-          '(("bib" . "~/git/lit/boykov.bib::%s")
-            ("papers" . "%(eab/papers-firefox)")
-            ("google" . "https://www.google.com/search?q=")
-            ))
-;; See also eab-header in ~/texmf/tex/latex/eab-styles/eab-header.sty
-
+   (eab/config
+    (concat eab/ssh-host-local
+            " rsync --delete -avzl --no-links --exclude \".git\" --exclude \"gen\" "
+            from-host "~/git/org-chronos/ " org-directory))))
 
 (defun eab/wg-update-list-1 (path)
   (let* ((true-path (file-truename path))
@@ -321,43 +242,9 @@ END")))
          (name nondir))
     `(,true-path ,name)))
 
-(setq-put eab/workgroups-save (concat (eab/history-dir) ".emacs_workgroups"))
-(setq-put wg-session-file (eab/get-path 'eab/workgroups-save))
-
-
-(setq-put ac-comphist-file (concat (eab/history-dir) "ac-comphist.dat"))
-(setq-put save-place-file (concat (eab/history-dir) ".emacs-places"))
-(setq-put savehist-file (concat (eab/history-dir) "history"))
-(setq-put smex-save-file (concat (eab/history-dir) ".smex-items"))
-(setq-put eab/trans-path "~/git/python/trans.py")
-(setq-put eab/translate-path "~/bin/translate")
-
-(setq-put eab/eeansi-path (expand-file-name "~/.eev/eeansi.sh"))
-(setq-put eab/eegchannel-path (expand-file-name (concat eab-spacemacs-path "local/eev-current/eegchannel")))
-
-
-(setq-put abbrev-file-name (concat (eab/history-dir) ".abbrev_defs"))
-(setq-put ido-save-directory-list-file (concat (eab/history-dir) ".ido.last"))
-(setq-put mc/list-file (concat (eab/history-dir) ".mc-lists.el"))
-(setq-put pm-macro-files `(,(concat eab-spacemacs-path "lisp/eab-pmacros.el")))
-(setq-put power-macros-file (concat eab-spacemacs-path "lisp/eab-pmacros.el"))
-(setq eab/secrets-path (concat user-emacs-directory "eab-private/eab-secrets.el.gpg"))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(cond ((eab/onhost "kairos")       (setq-put source-directory "~/data/github/emacs/src"))
-      ((eab/onhost "chronos")      (setq-put source-directory "~/data/github/emacs/src"))
-      ((eab/onhost "kairos-emacs") (setq-put source-directory "~/data/github/emacs/src"))
-      ((eab/onhost "chronos-emacs")(setq-put source-directory "~/data/github/emacs/src"))
-      ((eab/onhost "cyclos-emacs") (setq-put source-directory "~/data/github/emacs/src")))
-
-
-(setq-put custom-file (concat (eab/history-dir) "custom.el"))
-(setq-put eab/emaxima-path (concat eab-spacemacs-path "local/eab-misc/emaxima"))
-
-(setq-put auto-save-list-file-prefix (concat (eab/history-dir) "auto-save-list/.saves-"))
-
-;; TODO auto-save и торможение при C-s
+;; DONE: auto-save и торможение при C-s
 (defconst emacs-tmp-dir
   (format "%s/%s%s/"
           (concat (eab/history-dir) "backup")
@@ -365,36 +252,6 @@ END")))
           (user-uid)))
 
 (ignore-errors (make-directory emacs-tmp-dir))
-
-(setq-put backup-directory-alist `((".*" . ,emacs-tmp-dir)))
-(setq-put auto-save-file-name-transforms `((".*" ,emacs-tmp-dir t)))
-
-(setq-put keyfreq-file (concat (eab/history-dir) ".emacs.keyfreq." system-name))
-(setq-put keyfreq-file-lock (concat (eab/history-dir) ".emacs.keyfreq.lock." system-name))
-
-(setq-put eab/downloads-path "~/downloads/")
-
-(setq-put eab/american-english (eab/read-lines "/usr/share/dict/american-english"))
-
-(setq-put achievements-file (concat (eab/history-dir) ".achievements"))
-(setq-put auto-install-directory (concat user-emacs-directory "auto-install/"))
-(setq-put bbdb-file (concat user-emacs-directory "eab-private/.bbdb"))
-(setq-put bibtex-files '("~/git/lit/boykov.bib"))
-(setq-put bookmark-default-file (concat (eab/history-dir) ".emacs.bmk"))
-(setq-put ebib-file-search-dirs '("~/git/lit/"))
-(setq-put ebib-preload-bib-files '("~/git/lit/boykov.bib"))
-(setq-put eshell-history-file-name "~/.bash_history")
-(setq-put helm-c-adaptative-history-file (concat (eab/history-dir) "helm-adaptive-history"))
-(setq-put helm-locate-command (concat eab/ssh-host-local " plocate %s -e %s"))
-(setq-put tramp-persistency-file-name (concat (eab/history-dir) "tramp"))
-(setq-put url-configuration-directory (concat (eab/history-dir) "url/"))
-(setq-put transient-history-file (concat (eab/history-dir) "transient/history.el"))
-(setq-put recentf-save-file (concat (eab/history-dir) "recentf"))
-(setq-put ansible-vault-pass-file "/home/eab/.ansible/passwd_cc")
-(setq-put ansible-vault-pass-file "/home/eab/.ansible/passwd_fz")
-
-(setq-put eab/yasnippets-path (concat eab-spacemacs-path "local/yasnippet-snippets"))
-(setq-put eab/eab-snippets-path (concat eab-spacemacs-path "snippets"))
  
 (eval-after-load "enriched"
   '(defun enriched-decode-display-prop (start end &optional param)

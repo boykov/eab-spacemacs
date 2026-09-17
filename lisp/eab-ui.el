@@ -15,7 +15,7 @@
   (setq uniquify-buffer-name-style 'forward))
 (use-package savehist
   :config
-  (eab/bind-path savehist-file)
+  (setq savehist-file (eab/config (concat (eab/history-dir) "history")))
   (savehist-mode 1))
 
 (setq ring-bell-function 'ignore)

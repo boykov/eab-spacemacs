@@ -15,6 +15,7 @@
           (define-key map [?\C-c ?\M-d] #'ghostel-char-mode)
           (define-key map [?\C-c ?\C-j] #'ghostel-semi-char-mode)
           (define-key map [?\M-v] #'ghostel-yank)
+          (define-key map (kbd "C-a") 'nil)
           ;; (key-chord-define map "jj" #'ghostel-semi-char-mode)
           (define-key map [?\C-c ?\C-e] #'ghostel-emacs-mode)
           (define-key map (kbd "C-r") #'ghostel--send-event)

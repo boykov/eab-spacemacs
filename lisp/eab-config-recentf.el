@@ -9,7 +9,7 @@
 
 (use-package recentf
   :config
-  (eab/bind-path recentf-save-file)
+  (setq recentf-save-file (eab/config (concat (eab/history-dir) "recentf")))
   (setq recentf-max-saved-items 200)
   (defun eab/recentf-eabpool ()
     (mapcar

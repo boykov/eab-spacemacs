@@ -133,6 +133,7 @@
   ;; (if (fboundp 'grep-a-lot-clear-stack)
   ;;     (grep-a-lot-clear-stack))
   (winner-mode)
+  ;; (setq eab/secrets-path (concat user-emacs-directory "eab-private/eab-secrets.el.gpg"))
   ;; (load-file eab/secrets-path)
   (cl-assert
    (equal (ido-completing-read-silent

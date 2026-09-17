@@ -7,6 +7,8 @@
 ;; Requirements:
 ;; Status: not intended to be distributed yet
 
+(general-define-key  "C-x M-g"    (ilam (eab/grep 2)))
+
 (eab/add-hook grep-mode-hook eab/grep-hook
   (general-define-key
    :keymaps 'grep-mode-map

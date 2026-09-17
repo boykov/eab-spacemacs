@@ -31,10 +31,11 @@ END
 (use-package ellama
   :after (llm llm-openai)
   :config
-  (setq eab-llm (make-llm-openai-compatible
-                 :url "https://llm.api.cloud.yandex.net/v1"
-                 :chat-model (concat "gpt://" (eab/yc-id) "/yandexgpt/rc")
-                 :key (eab/ycai-token)))
+  (setq eab-llm (eab/config
+                 (make-llm-openai-compatible
+                  :url "https://llm.api.cloud.yandex.net/v1"
+                  :chat-model (concat "gpt://" (eab/yc-id) "/yandexgpt/rc")
+                  :key (eab/ycai-token))))
   (setopt ellama-language "Russian")
   (setopt ellama-provider eab-llm)
   (setopt ellama-coding-provider eab-llm))

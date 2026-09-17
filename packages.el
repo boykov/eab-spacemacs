@@ -196,7 +196,6 @@
     (ediff-diff :location built-in)
     (browse-url :location built-in)
     (simple :location built-in)
-    (files :location built-in)
     (subr :location built-in)
     (paragraphs :location built-in)
     (ibuffer :location built-in)
@@ -398,28 +397,9 @@ which require an initialization must be listed explicitly in the list.")
     (define-key arrow-keys-map "B" 'next-line)
     (define-key arrow-keys-map "C" 'forward-char)
     (define-key arrow-keys-map "D" 'backward-char)))
-(defun eab-spacemacs/init-files ()
-  (eab/bind-path backup-directory-alist)
-  (eab/bind-path auto-save-file-name-transforms)
-  (setq mode-require-final-newline nil)
-  (setq require-final-newline nil)
-  (setq make-backup-files nil)
-  ;; DONE теперь не работают TeX-master "main" в LaTeX-mode
-  ;; уже привык их задавать вручную
-  (setq enable-local-variables nil)
-  (setq frame-title-format
-        `("emacs"
-          ,(if (stringp (daemonp)) (daemonp) "")
-          "@"
-          ,(system-name)
-          " "
-          ;; ": -<{" (:eval (ignore-errors (eab/wg-current-workgroup))) "}>- "
-          (:eval (if (buffer-file-name)
-                     (abbreviate-file-name (buffer-file-name))
-                   "%b")))))
+
 (defun eab-spacemacs/init-simple ()
   (load "eab-config-simple.el"))
-
 
 (defun eab-spacemacs/init-ediff ()
   (use-package ediff
@@ -534,7 +514,6 @@ which require an initialization must be listed explicitly in the list.")
        "C-k"        'toggle-input-method
        "M-H"        'helm-select-2nd-action-or-end-of-line
        "M-g"        'helm-delete-minibuffer-contents
-       "s-SPC"      'eab/helm-select-action
        "C-|"        'eab/helm-select-action
        "<C-return>" (ilam
                      (with-helm-alive-p
@@ -566,8 +545,8 @@ which require an initialization must be listed explicitly in the list.")
       (general-define-key
        :keymaps 'helm-generic-files-map
        "M-i"        'helm-previous-line))
-    (eab/bind-path helm-c-adaptative-history-file)
-    (eab/bind-path helm-locate-command)
+    (setq helm-c-adaptative-history-file (eab/config (concat (eab/history-dir) "helm-adaptive-history")))
+    (setq helm-locate-command (eab/config (concat eab/ssh-host-local " plocate %s -e %s")))
     (defun eab/helm-find-file-or-marked (candidate)
       (helm-find-file-or-marked (concat "/ssh:chronos:" candidate)))
     (let ((addr (cdr (rassoc 'helm-find-file-or-marked helm-type-file-actions))))
@@ -670,7 +649,7 @@ which require an initialization must be listed explicitly in the list.")
                  "M-I"        'mc/cycle-backward
                  "M-v"        'nil
                  "C-v"        'nil)))
-    (eab/bind-path mc/list-file)
+    (setq mc/list-file (eab/config (concat (eab/history-dir) ".mc-lists.el")))
     (if (boundp 'mc--default-cmds-to-run-for-all)
         (setq mc--cmds mc--default-cmds-to-run-for-all))
     ;; TODO: mc/cmds-to-run-for-all переназначается (sp-backward-sexp sp-forward-sexp)
@@ -783,7 +762,8 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-ansible ())
 (defun eab-spacemacs/init-ansible-doc ())
 (defun eab-spacemacs/init-ansible-vault ()
-  (eab/bind-path ansible-vault-pass-file)
+  (setq ansible-vault-pass-file (eab/config "/home/eab/.ansible/passwd_cc"))
+  (setq ansible-vault-pass-file (eab/config "/home/eab/.ansible/passwd_fz"))
   (with-temp-buffer (ansible-vault-mode))
   (add-hook 'ansible-vault-mode-hook (lambda () (setq indent-tabs-mode nil)))
   (add-to-list 'auto-mode-alist '("/keys.yml" . ansible-vault-mode)))
@@ -844,7 +824,7 @@ which require an initialization must be listed explicitly in the list.")
   (use-package eab-smex
     :after (helm smex eab-minimal)
     :config
-    (eab/bind-path smex-save-file)))
+    (setq smex-save-file (eab/config (concat (eab/history-dir) ".smex-items")))))
 (defun eab-spacemacs/init-smartparens nil
   (use-package smartparens
     :config
@@ -869,7 +849,7 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-auto-install nil
   (use-package auto-install
     :config
-    (eab/bind-path auto-install-directory)))
+    (setq auto-install-directory (eab/config (concat user-emacs-directory "auto-install/")))))
 (defun eab-spacemacs/init-flx-ido nil
   (use-package flx-ido))
 (defun eab-spacemacs/init-ido-at-point nil
@@ -881,15 +861,6 @@ which require an initialization must be listed explicitly in the list.")
               (lambda ()
                 (general-define-key
                  :keymaps 'emacs-lisp-mode-map
-                 "s-r"        'paredit-raise-sexp
-                 "s-L"        'paredit-forward-barf-sexp
-                 "s-J"        'paredit-backward-barf-sexp
-                 "s-l"        'paredit-forward-slurp-sexp
-                 "s-j"        'paredit-backward-slurp-sexp
-                 "s-I"        'paredit-splice-sexp
-                 "s-K"        'undefined
-                 "s-i"        'paredit-splice-sexp-killing-backward
-                 "s-k"        'undefined
                  "M-("        'paredit-wrap-round
                  "M-r"        'paredit-forward-kill-word
                  "M-e"        'paredit-backward-kill-word
@@ -964,8 +935,8 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-ebib nil
   (use-package ebib
     :config
-    (eab/bind-path ebib-file-search-dirs)
-    (eab/bind-path ebib-preload-bib-files)
+    (setq ebib-file-search-dirs (eab/config '`("~/git/lit/")))
+    (setq ebib-preload-bib-files (eab/config '`("~/git/lit/boykov.bib")))
     (autoload 'ebib "ebib" "Ebib, a BibTeX database manager." t)))
 (defun eab-spacemacs/init-dockerfile-mode nil)
 (defun eab-spacemacs/init-ewmctrl nil)
@@ -1005,7 +976,7 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-achievements nil
   (use-package achievements
     :config
-    (eab/bind-path achievements-file)))
+    (setq achievements-file (eab/config (concat (eab/history-dir) ".achievements")))))
 (defun eab-spacemacs/init-org-grep nil)
 (defun eab-spacemacs/init-ov nil)
 (defun eab-spacemacs/init-peg nil)
@@ -1038,8 +1009,8 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-keyfreq nil
   (use-package keyfreq
     :config
-    (eab/bind-path keyfreq-file)
-    (eab/bind-path keyfreq-file-lock)
+    (setq keyfreq-file (eab/config (concat (eab/history-dir) ".emacs.keyfreq." system-name)))
+    (setq keyfreq-file-lock (eab/config (concat (eab/history-dir) ".emacs.keyfreq.lock." system-name)))
     (keyfreq-mode 1)
     (keyfreq-autosave-mode 1)))
 (defun eab-spacemacs/init-cask nil
@@ -1104,8 +1075,14 @@ which require an initialization must be listed explicitly in the list.")
   (use-package eab-auto-complete
     :after (org)
     :config
-    (eab/bind-path ac-comphist-file)
-    (eab/bind-path eab/american-english)
+    (setq ac-comphist-file (eab/config (concat (eab/history-dir) "ac-comphist.dat")))
+    (defun eab/read-lines (file)
+      "Return a list of lines of a file at at FPATH."
+      (if (file-exists-p file)
+          (with-temp-buffer
+            (insert-file-contents file)
+            (split-string (buffer-string) "\n" t))))
+    (setq eab/american-english (eab/config '(eab/read-lines "/usr/share/dict/american-english")))
     (defvar-mode-local org-mode ac-auto-start nil)
     (defvar-mode-local org-mode ac-use-quick-help nil)))
 (defun eab-spacemacs/init-yasnippet nil
@@ -1115,7 +1092,7 @@ which require an initialization must be listed explicitly in the list.")
 
     (setq yas-snippet-dirs '())
     ;; cd el-get && git clone https://github.com/AndreaCrotti/yasnippet-snippets
-    (add-to-list 'yas-snippet-dirs (eab/bind-path eab/eab-snippets-path))
+    (add-to-list 'yas-snippet-dirs (eab/config (concat eab-spacemacs-path "snippets")))
 
     (setq yas-key-syntaxes '("w_" "w_." "w_.()" "^ "))
 
@@ -1168,13 +1145,15 @@ which require an initialization must be listed explicitly in the list.")
   (use-package eab-eepitch
     :after (eev-all eev-browse-url eev-mini-steps)
     :config
-    (eab/bind-path eab/eeansi-path)
-    (eab/bind-path eab/eegchannel-path)
+    (setq eab/eeansi-path (eab/config (expand-file-name "~/.eev/eeansi.sh")))
+    (setq eab/eegchannel-path
+          (eab/config
+           (expand-file-name (concat eab-spacemacs-path "local/eev-current/eegchannel"))))
     (setq vterm-shell eab/eeansi-path)))
 (defun eab-spacemacs/init-bbdb/lisp nil
   (use-package bbdb
     :config
-    (eab/bind-path bbdb-file)
+    (setq bbdb-file (eab/config (concat user-emacs-directory "eab-private/.bbdb")))
     (bbdb-initialize 'gnus 'message 'sc) ;; 'w3m)
     (setq bbdb-north-american-phone-numbers-p nil))
   (use-package bbdb-loaddefs)
@@ -1192,7 +1171,7 @@ which require an initialization must be listed explicitly in the list.")
   (use-package tramp
     :config
     (setq tramp-default-method "ssh")
-    (eab/bind-path tramp-persistency-file-name))
+    (setq tramp-persistency-file-name (eab/config (concat (eab/history-dir) "tramp"))))
   (use-package eab-tramp
     :config
     (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
@@ -1212,7 +1191,7 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-desktop nil
   (use-package desktop)
   (use-package eab-desktop
-    :after (desktop appt autorevert)))
+    :after (desktop appt autorevert eab-workgroups2)))
 (defun eab-spacemacs/init-server nil
   (use-package eab-server
     :after (org)))
@@ -1237,7 +1216,7 @@ which require an initialization must be listed explicitly in the list.")
                       "C-x C-f / 2*s h : k a i r o s - h o s t | s u d o : k a i r o s - h o s t : / C-x Q"))))
      "C-d"        'eab/ace-ibuffer
      "C-|"        'eab/ido-see-file
-     "s-SPC"      'eab/ido-see-file)
+     )
     (general-define-key
      :keymaps 'ido-common-completion-map
      "C-v"        'eab/toggle-cxb-ido-item
@@ -1252,12 +1231,14 @@ which require an initialization must be listed explicitly in the list.")
   (use-package eab-ido
     :after (flx-ido projectile eab-minimal)
     :config
-    (eab/bind-path ido-save-directory-list-file)))
+    (setq ido-save-directory-list-file
+          (eab/config (concat (eab/history-dir) ".ido.last")))))
 (defun eab-spacemacs/init-abbrev nil
   (use-package eab-words
     :after (abbrev simple)
     :config
-    (eab/bind-path abbrev-file-name)
+    (setq abbrev-file-name
+          (eab/config (concat (eab/history-dir) ".abbrev_defs")))
     (if (file-exists-p abbrev-file-name)
         (progn
           (setq save-abbrevs 'silently)
@@ -1273,7 +1254,7 @@ which require an initialization must be listed explicitly in the list.")
   (use-package eab-bookmark
     :after (bookmark eab-minimal eab-workgroups2)
     :config
-    (eab/bind-path bookmark-default-file)
+    (setq bookmark-default-file (eab/config (concat (eab/history-dir) ".emacs.bmk")))
     (general-define-key
      :keymaps 'bookmark-minibuffer-read-name-map
      "C-l" (ilam
@@ -1327,12 +1308,17 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-eab-ui ()
   (use-package eab-ui
     :config
-    (eab/bind-path auto-save-list-file-prefix)
-    (eab/bind-path save-place-file)
-    (eab/bind-path url-configuration-directory)
-    (eab/bind-path source-directory)
+    (setq auto-save-list-file-prefix (eab/config (concat (eab/history-dir) "auto-save-list/.saves-")))
+    (setq save-place-file (eab/config (concat (eab/history-dir) ".emacs-places")))
+    (setq url-configuration-directory (eab/config (concat (eab/history-dir) "url/")))
+    (eab/config
+     (cond ((eab/onhost "kairos")       (setq source-directory "~/data/github/emacs/src"))
+           ((eab/onhost "chronos")      (setq source-directory "~/data/github/emacs/src"))
+           ((eab/onhost "kairos-emacs") (setq source-directory "~/data/github/emacs/src"))
+           ((eab/onhost "chronos-emacs")(setq source-directory "~/data/github/emacs/src"))
+           ((eab/onhost "cyclos-emacs") (setq source-directory "~/data/github/emacs/src"))))
     (setq find-function-C-source-directory source-directory)
-    (eab/bind-path custom-file)))
+    (setq custom-file (eab/config (concat (eab/history-dir) "custom.el")))))
 (defun eab-spacemacs/init-eab-org ()
   (load "eab-config-eab-org.el"))
 (defun eab-spacemacs/user-config ()

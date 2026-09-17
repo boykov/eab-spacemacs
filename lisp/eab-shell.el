@@ -13,6 +13,7 @@
 (setq async-shell-command-buffer 'new-buffer)
 (if (file-exists-p "/bin/bash") (setq shell-file-name "/bin/bash"))
 (setq explicit-bash-args '("--noediting" "-i"))
+(setq eab/xdg-open (eab/config (concat eab/ssh-host-local " 'DISPLAY=:0 xdg-open")))
 
 (defvar eab/translate-path nil)
 
@@ -126,6 +127,6 @@ process: e.g. nautilus or gnome-terminals"
   (suspend-frame))
 
 (defun eab/gnome-terminal ()
-  (eab/shell-command "gnome-terminal" nil 0))
+  (eab/shell-command (concat eab/ssh-host-local " gnome-terminal") nil 0))
 
 (provide 'eab-shell)

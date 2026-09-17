@@ -7,18 +7,6 @@
 ;; Requirements:
 ;; Status: not intended to be distributed yet
 
-(defmacro ilam (&rest body)
-  "Interactive lambda"
-  `'(:def (lambda ()
-            (interactive)
-            ,@body)))
-
-(defmacro ilam-no-def (&rest body)
-  "Interactive lambda"
-  `(lambda ()
-     (interactive)
-     ,@body))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;           ____ _       _           _
 ;;          / ___| | ___ | |__   __ _| |
@@ -33,25 +21,20 @@
  "C-M-f"        'toggle-frame-maximized
  "C-M-:"        'isearch-backward-regexp
  "C-M-;"        'isearch-forward-regexp
- "C-s-k"        '(:def (lambda (ch)
-                         "insert ch" (interactive "c") (insert ch)) :which-key "insert ch")
  "C-h C-c"      'describe-command
  "C-h c"        'eab/describe-key-briefly
  "C-h C-f"      'eab/find-function-at-point
  "C-h C-k"      'eab/describe-key-find
  "C-h C-v"      'eab/find-variable-at-point
- "C-x M-g"      (ilam (eab/grep 2))
 )
 
 (general-define-key
- "s-o"          'org-open-at-point
  "C-c a"        'org-agenda
  "C-c C-M-p"    'org-open-at-point-global
  "C-c C-l"      'org-insert-link
  "C-c l"        'org-store-link
  "C-c r"        'org-capture
  "C-x C-M-p"    'org-open-at-point-global
- "s-c"          'org-store-link
  "M-z"          'undo
  "C-b"          'switch-to-buffer
  "M-a"          'execute-extended-command
@@ -70,7 +53,6 @@
  "C-c M-f"      'find-file-at-point
  "C-k"          'toggle-input-method
  "C-o"          'find-file
- "C-s-i"        'imenu
  "C-x C-d"      'dired-jump
  "C-x C-e"      'eval-defun
  "C-x C-k k"    'kill-region
@@ -82,12 +64,11 @@
  "C-x Q"        'eab/kbd-macro-query
  "C-z"          'repeat
  "M-!"          'delete-window
- "s-0"          'delete-window
- "s-2"          'split-window-below
  "M-%"          'query-replace-regexp
  "M-&"          'count-matches
  "M-'"          'comment-dwim
  "M-<"          'kmacro-start-macro
+ "M-."          'kmacro-edit-macro
  "M-,"          'eab/kmacro-end-or-call-macro
  "C-M-,"        'eab/pm-write-last-kbd-macro
  "M-/"          'dabbrev-expand
@@ -132,11 +113,7 @@
  "M-v"          'yank
  "M-x"          'kill-region
  ;; "M-y"               'god-mode-all
- "s-,"          'kmacro-end-or-call-macro-repeat
- "s-."          nil
- "s-m"          'kmacro-keymap
- "<kp-insert>"  'nil
- "s-a"          'append-to-buffer)
+)
 
 (general-define-key
  "<f10>"        'eab/flyspell-buffer
@@ -167,30 +144,19 @@
  "C-x C-g"      (kbd "C-u C-x g")
  "M-."          'nil
  "M-A"          'eab/call-shell-command
- "s-v"          'eab/org-insert-link-fast
- "s-h"          'eab/hron-todo)
+)
 
 ;; shell and shell-utils
 (general-define-key
  "C-c T"        'eab/google-translate
  "C-x T"        'eab/google-translate
- "s-f"          'eab/see-file
  "C-S-f"        'eab/gr-status)
 
 (general-define-key
- "s-z"          'org-archive-set-tag
- "s-y"          'yas-minor-mode
  "C-c i"        'yas-expand)
 
 (general-define-key
- "<f8>"         'eepitch-this-line
- "<kp-enter>"   'winner-undo
- "<kp-add>"     'nil
- "<kp-begin>"   'nil
- "<M-kp-equal>" 'nil
- "<kp-delete>"  (ilam (kill-buffer-and-window)))
-
-(general-define-key
+ "M-?"          'auto-complete
  "C-c g"        'eab/google
  "M-z"          'undo-tree-undo
  "C-b"          'eab/cxb
@@ -198,23 +164,16 @@
  "C-t"          'sp-transpose-sexp
  "M-m"          'sp-forward-sexp
  "M-n"          'sp-backward-sexp
- "M-?"          (ilam (auto-complete))
- "s-k"          (ilam (if (equal current-input-method "TeX") (set-input-method "russian-computer") (set-input-method "TeX")) (setq default-input-method "russian-computer"))
- "C-s"          (ilam (save-some-buffers 't))
  "C-:"          'isearch-moccur
  "C-c t"        'dictionary-search
  "C-f"          eab/explore-map
  "C-p"          'er/expand-region
- "C-s-l"        'helm-locate
  "C-x C-k d"    'pm-define
  "C-x C-k e"    'pm-switch-buf
  "C-x t"        'dictionary-search
  "M-V"          'helm-show-kill-ring
  "M-Z"          'undo-tree-redo
  "M-d"          'avy-goto-word-1
- "s-Y"          'auto-complete-mode
- "s-g"          'helm-google-suggest
- "s-/"          'ac-start
  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -251,131 +210,13 @@
  "M-g"  'nil)
 
 (general-define-key
- :keymaps 'minibuffer-local-completion-map
- "M-g"  'nil
- "C-r"  'nil
- "M-n"  'nil
- "M-p"  'nil
- "M-v"  'nil
- "M-s"  'nil)
-
-(general-define-key
- :keymaps 'minibuffer-local-map
- "C-q"          'quoted-insert
- "M-;"          'isearch-backward
- "C-l M-i"      'previous-line
- "C-l M-k"      'next-line
- "M-RET"        (ilam
-                 (run-with-timer
-                  0.01 nil
-                  `(lambda ()
-                     (eab/helm-org-goto-marker ,eab/helm-org-goto-marker)))
-                 (if (string= (minibuffer-contents) "")
-                     (abort-recursive-edit)
-                   (exit-minibuffer)))
- "M-c"          (ilam
-                 (run-with-timer
-                  0.01 nil
-                  `(lambda ()
-                     (save-window-excursion
-                       (eab/helm-org-goto-marker ,eab/helm-org-goto-marker)
-                       (call-interactively 'org-store-link))))
-                 (if (string= (minibuffer-contents) "")
-                     (abort-recursive-edit)
-                   (exit-minibuffer)))
- "M-i"          'previous-history-element
- "M-r"          'nil
- "M-p"          'nil
- "M-n"          'nil
- "M-x"          'nil
- "M-I"          'previous-matching-history-element
- "M-K"          'next-matching-history-element
- "M-v"          'nil
- "M-:"          'helm-minibuffer-history
- "M-k"          'next-history-element
- "C-d"          'eab/clear-extended-history
- "C-|"          'eab/minibuffer-see-file
- "s-SPC"        'eab/ido-see-file
- "M-a"          'eab/smex-extended
- "C-w"          'eab/smex-repeat
- "M-E"          (ilam (delete-minibuffer-contents)))
-
-(general-define-key
- :keymaps 'kmacro-keymap
- "m"    'kmacro-start-macro
- ","    'kmacro-end-or-call-macro-repeat
- "i"    'kmacro-insert-counter
- "s"    'kmacro-set-counter
- "v"    'insert-kbd-macro)
-
-(general-define-key
  :keymaps 'isearch-mode-map
  "M-d" 'eab/isearch-ace-jump)
-
-(general-define-key
- :keymaps 'minibuffer-inactive-mode-map
- "o"    'eab/screen-off
- "t"    (ilam (eab/gnome-terminal) (suspend-frame))
- "q"    'suspend-frame)
 
 (general-define-key
  :keymaps 'query-replace-map
  "C-e"  'edit
  "C-r"  'delete-and-edit)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;       _  __
-;;      | |/ /___ _   _ _ __ ___   __ _ _ __  ___
-;;      | ' // _ \ | | | '_ ` _ \ / _` | '_ \/ __|
-;;      | . \  __/ |_| | | | | | | (_| | |_) \__ \
-;;      |_|\_\___|\__, |_| |_| |_|\__,_| .__/|___/
-;;                |___/                |_|
-;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Keymaps
-
- (defvar eab/one-key-map (make-sparse-keymap)
-   "One-key keymap.")
-(global-set-key (kbd "C-e") nil)
-(general-define-key
- :prefix "C-e"
- "b"    'eab/switch-browser
- "v"    'eab/switch-viewer
- "t"    'eab/switch-eepitch-target
- "a"    (ilam (eepitch-ansi-term "1"))
- "1"    (ilam (eepitch-ansi-term "1"))
- "2"    (ilam (eepitch-ansi-term "2"))
- "3"    (ilam (eepitch-ansi-term "3"))
- "4"    (ilam (eepitch-ansi-term "4"))
- "5"    (ilam (eepitch-ansi-term "5"))
- "6"    (ilam (eepitch-ansi-term "6"))
- "7"    (ilam (eepitch-ansi-term "7"))
- "8"    (ilam (eepitch-ansi-term "8"))
- "9"    (ilam (eepitch-ansi-term "9"))
- "c"    'eab/switch-compile
- "d c"  '(:def (ilam-no-def (setq eab/daemons-host "chronos") (call-interactively 'eab/daemons)) :which-key "(c)hronos")
- "d k"  (ilam (setq eab/daemons-host "kairos") (call-interactively 'eab/daemons))
- "d y"  (ilam (setq eab/daemons-host "cyclos") (call-interactively 'eab/daemons))
- "x"    (ilam
-         (eab/sh-over-bash eab/emacs-service-command "" 't))
- "X"    (ilam
-         (desktop-save (eab/desktop-dir))
-         (run-with-timer 0.1 nil 'kill-emacs)
-         (eab/sh-over-bash
-          (concat "sleep 0.3 && emacs --daemon=" eab/daemon-name) "" 't))
- "h"    'eab/switch-help
- "z"    'undo-tree-visualize
- "s"    'eab/switch-async
- "S"    'eab/switch-shell
- "m"    'eab/switch-message
- "k"    (ilam (eepitch-kill))
- "o"    'proced
- "g"    'eab/switch-grep
- "G"    'eab/kill-last-grep
- "l"    'helm-locate
- "C"    'docker-containers
- "I"    'docker-images)
-(setq eab/one-key-map (lookup-key global-map (kbd "C-e")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                 _     _       _                 _

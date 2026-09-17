@@ -30,6 +30,7 @@
       (general-define-key
        :keymaps 'region-bindings-mode-map
        "3"        'eab/gptel-one-shot-3
+       "f"        'eab/gptel-one-shot-fix-garbage
        "w"        (ilam (shell-command-on-region (region-beginning) (region-end) "wc -l"))
        "ц"        (ilam (shell-command-on-region (region-beginning) (region-end) "wc -l"))
        "u"        'untabify

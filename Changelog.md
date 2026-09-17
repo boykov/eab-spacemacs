@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.4.33
+
+refactor(config.el): encapsulate shell commands with eab/config macro
+
+- Wrap shell commands using `eab/config` to abstract remote host execution
+- Remove obsolete `config` functional and related path hash table machinery
+- Replace `eab/bind-path` calls with direct `setq` and `eab/config` forms
+- Move path and host configuration into `eab/config` blocks for clarity
+
 ## 0.4.32
 
 feat: add lexical-binding to config files and update dependencies

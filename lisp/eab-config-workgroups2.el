@@ -22,6 +22,8 @@
 (use-package eab-workgroups2
   :after (eab-minimal)
   :init
+  (setq eab/workgroups-save
+          (eab/config (concat (eab/history-dir) ".emacs_workgroups")))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; TODO таки приходим постепенно к модальным режимам, как в vim
   ;; альтернативой может служить специальный minor-mode, в котором
@@ -86,8 +88,7 @@
   (setq wg-session-load-on-start nil)
   (ignore-errors (workgroups-mode 1))
   (setq wg-mode-line-decor-divider "")
-  (eab/bind-path eab/wg-path)
+  (setq eab/wg-path (eab/config "~/git/eab-system/wg/*"))
   (setq eab/wg-update-list
         (mapcar 'eab/wg-update-list-1 (file-expand-wildcards eab/wg-path)))
-  (eab/bind-path eab/workgroups-save)
   (eab/wg-init))

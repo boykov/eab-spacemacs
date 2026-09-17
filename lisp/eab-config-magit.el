@@ -53,11 +53,8 @@
      "M-g"        'magit-fetch-all
      "C-d"        'nil
      "C-D"        'magit-section-show-level-4-all
-     "s-1"        'magit-section-show-level-1-all
-     "s-2"        'magit-section-show-level-2-all
      "<backtab>"  'magit-section-show-level-2-all
-     "s-3"        'magit-section-show-level-3-all
-     "s-4"        'magit-section-show-level-4-all)
+     )
     (general-define-key
      :keymaps 'git-commit-mode-map
      "C-v c"      'gptel-magit-generate-message
@@ -83,5 +80,5 @@
   (add-to-list 'magit-status-sections-hook 'magit-insert-modules 't))
 (define-advice vc-annotate (:before (&rest args) eab-vc-annotate)
   (vc-refresh-state))
-(eab/bind-path transient-history-file)
+(setq transient-history-file (eab/config (concat (eab/history-dir) "transient/history.el")))
 (use-package git-wip)

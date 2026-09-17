@@ -35,13 +35,8 @@
    "b"          'browse-url-of-dired-file
    "o"          'dired-find-file-other-window
    "C-|"        'eab/dired-see-file
-   "s-SPC"      'eab/dired-see-file
    "E"          'ediff-files
    "SPC"        'open-in-external-app))
-(eab/add-hook wdired-mode-hook eab/wdired-hook
-  (general-define-key
-   :keymaps 'wdired-mode-map
-   "s-w"        'wdired-finish-edit))
 (use-package dired-async)
 (use-package dired-x)
 (use-package eab-dired
@@ -50,7 +45,7 @@
   (defvar eab/dired-map (make-sparse-keymap)
     "keymap for fast dired")
   (global-set-key (kbd "C-x d") nil)
-  (eab/bind-path eab/downloads-path)
+  (setq eab/downloads-path (eab/config "~/downloads/"))
   (general-define-key
    :prefix "C-x d"
    "d" '(ido-dired :which-key "ido-dired")
