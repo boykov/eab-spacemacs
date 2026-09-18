@@ -46,9 +46,6 @@ It currently identifies PDF, videos, images, and mindmap file extensions."
    "C-o"   'nil
    "C-c b" 'nil
    ))
-;; doesn't work in eaf + remote vnc
-;; (eaf-create-send-sequence-function "ctrl-t" "C-t") ;; needs eaf--buffer-id ?
-;; (eaf-create-send-sequence-function "ctrl-v" "C-v") ;; needs eaf--buffer-id ?
 (use-package eaf-browser
   :if (eab/ondaemon "cyclos")
   :after (eaf)
@@ -59,7 +56,12 @@ It currently identifies PDF, videos, images, and mindmap file extensions."
   (setq eaf-browser-chrome-browser-name "chrome")
   (setq eaf-browser-dark-mode-theme "light")
   (setq eaf-browser-dark-mode nil)
-  ;; (eaf-create-send-sequence-function "ctrl-f" "C-f") ;; needs eaf--buffer-id ?
+  ;; FIXED: doesn't work in eaf + remote vnc
+  (eaf-create-send-sequence-function "ctrl-home" "C-<home>")
+  (eaf-create-send-sequence-function "ctrl-end" "C-<end>")
+  (eaf-create-send-sequence-function "ctrl-t" "C-t")
+  ;; (eaf-create-send-sequence-function "ctrl-v" "C-v")
+  (eaf-create-send-sequence-function "ctrl-f" "C-f")
   (defun eab/eaf-send-prior ()
     (interactive)
     (eaf-call-async "send_key" eaf--buffer-id "<prior>"))
@@ -71,20 +73,20 @@ It currently identifies PDF, videos, images, and mindmap file extensions."
     (mapc (lambda (x)
             (eval `(eab/eaf-bind-key ,x ,kb)))
           '(
-            ("C-t" . "eab/eaf-browser-ctrl-t")
-            ("C-f" . "eab/eaf-browser-ctrl-f")
+            ("M-<left>" . "eaf-send-key-sequence")
+            ("C-<home>" . "eaf-send-ctrl-home-sequence")
+            ("C-<end>" . "eaf-send-ctrl-end-sequence")
+            ("C-t" . "eaf-send-ctrl-t-sequence")
+            ("C-f" . "eaf-send-ctrl-f-sequence")
+            ("C-v" . "eab/eaf-browser-paste-clip")
             ("C-v" . "eab/eaf-browser-paste-clip")
             ("C-<escape>" . "eaf-browser-send-esc-or-exit-fullscreen")
             ("<escape>" . "eaf-browser-send-esc-or-exit-fullscreen")
-            ;; ("C-t" . "eaf-send-ctrl-t-sequence")
-            ;; ("C-v" . "eaf-send-ctrl-v-sequence")
             ("M-b" . "browser-a-lot-goto-prev")
             ;; ("0" . "insert_or_zoom_reset")
             ;; ("=" . "insert_or_zoom_in")
             ;; ("-" . "insert_or_zoom_out")
-            ("C-<home>" . "scroll_to_begin")
             ("M-J" . "scroll_to_begin")
-            ("C-<end>" . "scroll_to_bottom")
             ("M-L" . "scroll_to_bottom")
             ("M-l" . "toggle_dark_mode_light_theme")
             ("M-D" . "open_link")

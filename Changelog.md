@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.4.36
+
+## 0.4.35
+
+refactor(gr): extract gr functionality into eab-gr.el module
+
+- Move gr-related code from eab-compile.el to new eab-gr.el module
+- Update .gitmodules to use SSH URL for local/eaf submodule
+- Add eab-gr to packages.el dependencies and init function
+- Remove outdated commentary and dead code in eab-compile.el
+- Rename eab/special-buffer-displaedp to eab/special-buffer-displaed-p for consistency
+- Fix eab/toggle-recompile-on-save to properly remove hook when toggling off
+- Improve eab/eab-gr-tag-default-directory M-b binding to support region
+- Enhance eab-org-protocol to support both local file:// and remote https:// URLs
+- Generalize eab/eval-last-sexp-remote to work across multiple servers
+- Add missing eab/translate-path variable definition in eab-words.el
+- Cleanup and add missing eaf keybindings (ctrl-t, ctrl-f, ctrl-home, ctrl-end)
+- Update claude.sh and pi.sh to run CLI tools in Docker container
+
 ## 0.4.34
 
 refactor(config.el): extract notification functions into eab-notify package

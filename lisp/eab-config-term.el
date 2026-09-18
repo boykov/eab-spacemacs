@@ -206,7 +206,12 @@
  "f"            'eab/see-file
  "SPC"          'eab/gr-tag-default-directory
  "M-d"          (ilam (call-process-shell-command eab/test-dotemacs-command nil 0))
- "M-b"          (ilam (call-process-shell-command (concat eab/dl.sh-command (current-kill 0))  nil 0))
+ "M-b"          (ilam
+                 (call-process-shell-command
+                  (concat eab/dl.sh-command
+                          (if region-bindings-mode
+                              (buffer-substring (mark) (point))
+                            (current-kill 0)))  nil 0))
  "M-s"          (ilam (call-process-shell-command eab/sync-rsync-command nil 0))
  "M-S"          (ilam (call-process-shell-command eab/sync-zfs-command nil 0)))
 (setq eab/temacs-map (lookup-key global-map (kbd "C-l")))

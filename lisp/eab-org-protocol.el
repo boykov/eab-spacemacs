@@ -32,31 +32,25 @@
 
 (defun eab/open-heading-browser ()
   (interactive)
-  (let* ((prop (org-entry-properties))
+  (let* ((fname (file-name-nondirectory (buffer-file-name)))
+         (prop (org-entry-properties))
          (path (if prop
                    (cl-find-if
                     (lambda (x) (if (string= "FILE" (car x)) 't nil)) prop)
                  (cons 'bogus (buffer-file-name))))
          (id (cl-find-if
               (lambda (x)
-                (if (string= "ID" (car x)) 't nil)) (org-entry-properties)))
+                (if (string= "ID" (car x)) 't nil))
+              (org-entry-properties nil 'standard)))
          (prefix (replace-regexp-in-string
                   "eab\/git\/org-chronos" "eab/pub/org" (cdr path))))
-    (browse-url-firefox
-     (concat "file://" (replace-regexp-in-string
-                        "\.org$" ".html" prefix) "#ID-" (cdr id)))))
-
-(defun eab/open-heading-browser ()
-  (interactive)
-  (let* ((fname (file-name-nondirectory (buffer-file-name)))
-         (id (cl-find-if (lambda (x)
-                           (if (string= "ID" (car x))
-                               't nil))
-                         (org-entry-properties nil 'standard)))
-         (current-prefix-arg 't))
-    (browse-url
-     (concat "https://my.eab.su/org/clock/"
-             (replace-regexp-in-string "\.org$" ".html" fname) "#ID-" (cdr id)))))
+    (if current-prefix-arg
+        (browse-url-firefox
+         (concat "file://" (replace-regexp-in-string
+                            "\.org$" ".html" prefix) "#ID-" (cdr id)))
+      (browse-url-firefox
+       (concat "https://my.eab.su/org/clock/"
+               (replace-regexp-in-string "\.org$" ".html" fname) "#ID-" (cdr id))))))
 
 (defun eab/open-corresponding-html ()
   (interactive)

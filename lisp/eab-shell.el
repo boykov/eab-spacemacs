@@ -15,8 +15,6 @@
 (setq explicit-bash-args '("--noediting" "-i"))
 (setq eab/xdg-open (eab/config (concat eab/ssh-host-local " 'DISPLAY=:0 xdg-open")))
 
-(defvar eab/translate-path nil)
-
 (defun eab/over-bash (comhead comstr)
   "Run comhead with comstr over bash -i -c."
   (concat "bash -i -c \"" comhead " \\\"" (expand-file-name comstr) "\\\"'\""))

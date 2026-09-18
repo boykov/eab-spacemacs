@@ -87,10 +87,19 @@
 (defun eab/eepitch-this-line ()
   (interactive)
   (eab/eepitch-buffer-end)
-  (let* ((prepare (eab/this-line (buffer-substring (ee-bol) (ee-eol))))
-         (line (concat (car prepare) "\n")))
+  (let* ((claude? (string-match-p "Claude"
+                                  (shell-command-to-string
+                                   "ssh kairos \"tmux display -p '#{pane_title}'\"")))
+         (prepare (eab/this-line (buffer-substring (ee-bol) (ee-eol))))
+         (line (concat (car prepare) (if claude? "" "\n"))))
     (if (cadr prepare)
-        (eab/wrap-eepitch-this line))
+        (progn
+          (eab/wrap-eepitch-this line)
+          (if claude?
+              (save-window-excursion
+                (switch-to-buffer-other-window eepitch-target-buffer)
+                (let ((last-command-event 13)) (ghostel--send-event))))
+          ))
     (ee-next-line 1)))
 
 ;; doesn't work inside container, ash instead of bash

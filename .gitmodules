@@ -36,7 +36,7 @@
 	url = https://github.com/boykov/workgroups2.git
 [submodule "local/eaf"]
 	path = local/eaf
-	url = https://github.com/emacs-eaf/emacs-application-framework
+	url = git@github.com:boykov/emacs-application-framework
 [submodule "local/consult-omni"]
 	path = local/consult-omni
 	url = https://github.com/armindarvish/consult-omni

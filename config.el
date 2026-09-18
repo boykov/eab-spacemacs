@@ -138,15 +138,6 @@ END"))))
             from-host "~/git/org-chronos/ " org-directory))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; DONE: auto-save и торможение при C-s
-(defconst emacs-tmp-dir
-  (format "%s/%s%s/"
-          (concat (eab/history-dir) "backup")
-          (concat "emacs" eab/daemon-name)
-          (user-uid)))
-
-(ignore-errors (make-directory emacs-tmp-dir))
  
 (eval-after-load "enriched"
   '(defun enriched-decode-display-prop (start end &optional param)

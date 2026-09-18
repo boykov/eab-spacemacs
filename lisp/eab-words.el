@@ -51,6 +51,8 @@
          (append '(("\n" . " ")) query-replace-defaults)))
     (call-interactively 'replace-regexp)))
 
+(defvar eab/translate-path (eab/config "~/bin/translate") "")
+
 ;; TODO баг: зацикливание (много bash процессов) trying with detected language
 ;; пример со словом hunchentoot
 ;; убить можно pkill -f bash

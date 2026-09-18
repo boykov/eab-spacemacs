@@ -146,12 +146,16 @@
   (interactive "P")
   (if (string= (eab/org-get-link-type-at-point) "file")
       (setq current-prefix-arg (not current-prefix-arg)))
+  (if (equal current-prefix-arg 2)
+      (let ((org-link-frame-setup
+             (quote ((file . find-file)))))
+        (org-return)))
   (if current-prefix-arg
       (let ((org-link-abbrev-alist
              '(("papers" . "%(eab/papers-firefox)"))))
         (org-return))
     (let ((org-link-frame-setup
-             (quote ((file . eab/eaf-open-viewer-other-window))))
+           (quote ((file . eab/eaf-open-viewer-other-window))))
           (org-link-abbrev-alist
            '(("papers" . "%(eab/papers-eaf)"))))
       (org-return))))

@@ -7,47 +7,27 @@
 ;; Requirements: none
 ;; Status: not intended to be distributed yet
 
-(defun eab/eval-last-sexp-server-M ()
-  "Evaluate sexp before point on serverM; print value in minibuffer."
-  (interactive)
-  (let ((sexp (call-interactively (lambda () (interactive) (preceding-sexp)))))
-    (message "%s" (server-eval-at "serverM"
-                                  `(eval ',sexp)))))
-
 '((let ((server-use-tcp 't))
     (server-eval-at "kairosP" '(symbol-function 'eab/eval-last-sexp-server-M)))
   )
 
-(defun eab/eval-last-sexp-kairos-P ()
-  "Evaluate sexp before point on kairosP; print value in minibuffer."
-  (interactive)
-  (let ((sexp (call-interactively (lambda () (interactive) (preceding-sexp)))))
-    (message "%s" (let ((server-use-tcp 't))
-                    (server-eval-at "kairosP"
-                                    `(eval ',sexp))))))
+(defun eab/eval-last-sexp-remote (server &optional use-tcp)
+  "Evaluate sexp before point on SERVER; print value in minibuffer.
+If USE-TCP is non-nil, bind `server-use-tcp' to USE-TCP.
+When called interactively, USE-TCP is determined automatically for
+known servers."
+  (let ((sexp (call-interactively
+               (lambda () (interactive) (preceding-sexp)))))
+    (message "%s" (if use-tcp
+                      (let ((server-use-tcp use-tcp))
+                        (server-eval-at server `(eval ',sexp)))
+                    (server-eval-at server `(eval ',sexp))))))
 
-(defun eab/eval-last-sexp-chronos-P ()
-  "Evaluate sexp before point on chronosP; print value in minibuffer."
-  (interactive)
-  (let ((sexp (call-interactively (lambda () (interactive) (preceding-sexp)))))
-    (message "%s" (server-eval-at "chronosP"
-                                  `(eval ',sexp)))))
-
-(defun eab/eval-last-sexp-chronos-C ()
-  "Evaluate sexp before point on chronosC; print value in minibuffer."
-  (interactive)
-  (let ((sexp (call-interactively (lambda () (interactive) (preceding-sexp)))))
-    (let ((server-use-tcp server-C-use-tcp))
-      (message "%s" (server-eval-at "chronosC"
-                                    `(eval ',sexp))))))
-
-(defun eab/eval-last-sexp-kairos-C ()
-  "Evaluate sexp before point on kairosC; print value in minibuffer."
-  (interactive)
-  (let ((sexp (call-interactively (lambda () (interactive) (preceding-sexp)))))
-    (let ((server-use-tcp server-C-use-tcp))
-      (message "%s" (server-eval-at "kairosC"
-                                    `(eval ',sexp))))))
+(defun eab/eval-last-sexp-kairos-C ()  (interactive) (eab/eval-last-sexp-remote "kairosC" server-C-use-tcp))
+(defun eab/eval-last-sexp-kairos-P ()  (interactive) (eab/eval-last-sexp-remote "kairosP"))
+(defun eab/eval-last-sexp-chronos-C () (interactive) (eab/eval-last-sexp-remote "chronosC" server-C-use-tcp))
+(defun eab/eval-last-sexp-chronos-P () (interactive) (eab/eval-last-sexp-remote "chronosP"))
+(defun eab/eval-last-sexp-server-M ()  (interactive) (eab/eval-last-sexp-remote "serverM"))
 
 ;; TODO обобщить формирование body и выполнение remote
 (defun eab/org-publish-current-file-remote ()
@@ -71,8 +51,8 @@
                         (eab/update-site))))
                   )))
     (eval `(async-start
-               ,body
-             (lambda (result) (message "async result: <%s>" result))))))
+            ,body
+            (lambda (result) (message "async result: <%s>" result))))))
 
 (defun eab/shell-translate-remote (phrase)
   (interactive)

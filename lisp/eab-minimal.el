@@ -71,9 +71,6 @@
                                           (pop kill-ring)
                                           (setq kill-ring-yank-pointer kill-ring)))
     (recursive-edit)))
-;; TODO unsafe (setq kill-ring (cdr kill-ring))? see kill-new
-;; (pop kill-ring)
-;; (setq kill-ring-yank-pointer kill-ring)
 
 
 (defun eab/or-self-insert (command)

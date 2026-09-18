@@ -10,7 +10,7 @@
 (use-package browse-url
   :config
   (setq browse-url-browser-function (quote eab/browse-url))
-  (setq browse-url-firefox-program "/usr/local/bin/browser-remote")
+  (setq browse-url-firefox-program (eab/config "/usr/local/bin/browser-remote"))
   (defun eab/eaf-open-browser (url)
     (call-process-shell-command
      (concat "
@@ -35,18 +35,6 @@ bash -c \"ssh chronos\" <<EOF
  sleep 0.1; xdotool key ctrl+v \"
 EOF")
      nil 0))
-  (defun eab/eaf-browser-ctrl-f ()
-    (interactive)
-    (call-process-shell-command
-     (concat "
-ssh chronos docker exec \
-   firefox xdotool key ctrl+f")  nil 0))
-  (defun eab/eaf-browser-ctrl-t ()
-    (interactive)
-    (call-process-shell-command
-     (concat "
-ssh chronos docker exec \
-   firefox xdotool key ctrl+t")  nil 0))
   (defun eab/browse-url (url &optional arg)
     (interactive)
     (cond

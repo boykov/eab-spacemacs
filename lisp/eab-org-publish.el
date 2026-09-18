@@ -92,6 +92,8 @@ END"))))))
 
 (setq org-html-head-include-default-style nil)
 
-(defun org-dblock-write:dynamic (params))
+(defun org-dblock-write:dynamic (params)
+  (when-let ((content (plist-get params :content)))
+    (insert content)))
 
 (provide 'eab-org-publish)

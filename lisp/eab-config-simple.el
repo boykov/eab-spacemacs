@@ -10,10 +10,18 @@
 (use-package eab-shell
   :after (eab-minimal files)
   :init
-  (setq eab/translate-path (eab/config "~/bin/translate"))
   (setq eab/trans-path (eab/config "~/git/python/trans.py")))
 
 (general-define-key  "C-s"          (ilam (save-some-buffers 't)))
+
+;; DONE: auto-save и торможение при C-s
+(defconst emacs-tmp-dir
+  (format "%s/%s%s/"
+          (concat (eab/history-dir) "backup")
+          (concat "emacs" eab/daemon-name)
+          (user-uid)))
+
+(ignore-errors (make-directory emacs-tmp-dir))
 
 ;; Also files.el
 (setq backup-directory-alist (eab/config '`((".*" . ,emacs-tmp-dir))))

@@ -14,7 +14,7 @@
 
   (generate-new-buffer "special-buffer")
 
-  (setq eab/special-buffer-displaedp nil)
+  (setq eab/special-buffer-displaed-p nil)
   (setq eab/special-buffer "special-buffer")
 
   (setq popwin:special-display-config nil)
@@ -25,13 +25,13 @@
   ;; see also toggle-window-dedicated
   (defun eab/special-buffer-toggle ()
     (interactive)
-    (if eab/special-buffer-displaedp
+    (if eab/special-buffer-displaed-p
         (progn
           ;; (ignore-errors (delete-window (get-buffer-window eab/special-buffer)))
           (popwin:close-popup-window)
-          (setq eab/special-buffer-displaedp nil))
+          (setq eab/special-buffer-displaed-p nil))
       (progn
         (ignore-errors (popwin:display-buffer eab/special-buffer))
-        (setq eab/special-buffer-displaedp 't))))
+        (setq eab/special-buffer-displaed-p 't))))
 
   (global-set-key (kbd "<f3>") 'eab/special-buffer-toggle))

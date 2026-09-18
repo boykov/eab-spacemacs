@@ -177,6 +177,7 @@
     (tramp :location built-in)
     (outline :location built-in)
     (compile :location built-in)
+    (eab-gr :location built-in)
     (window :location built-in)
     (desktop :location built-in)
     (appt :location built-in)
@@ -237,7 +238,7 @@ which require an initialization must be listed explicitly in the list.")
     (setq ai-code-backends-infra-terminal-backend 'ghostel)
     (ai-code-set-backend 'claude-code)
     ;; russian lang
-    (setq ai-code-backends-infra-ghostel-enable-ime-integration nil)
+    ;; (setq ai-code-backends-infra-ghostel-enable-ime-integration nil)
     (ai-code-set-backend 'pi)
     ))
 (defun eab-spacemacs/init-gptel-agent nil
@@ -1197,6 +1198,9 @@ which require an initialization must be listed explicitly in the list.")
     :after (org eab-notify)))
 (defun eab-spacemacs/init-compile nil
   (load "eab-config-compile.el"))
+(defun eab-spacemacs/init-eab-gr nil
+  (use-package eab-gr
+    :after (eab-compile eab-notify)))
 (defun eab-spacemacs/init-grep nil
   (load "eab-config-grep.el"))
 (defun eab-spacemacs/init-dired nil
