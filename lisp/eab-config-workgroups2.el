@@ -20,7 +20,7 @@
      ,@body))
 
 (use-package eab-workgroups2
-  :after (eab-minimal)
+  :after (eab-minimal eab-notify)
   :init
   (setq eab/workgroups-save
           (eab/config (concat (eab/history-dir) ".emacs_workgroups")))
@@ -89,6 +89,11 @@
   (ignore-errors (workgroups-mode 1))
   (setq wg-mode-line-decor-divider "")
   (setq eab/wg-path (eab/config "~/git/eab-system/wg/*"))
+  (defun eab/wg-update-list-1 (path)
+    (let* ((true-path (file-truename path))
+           (nondir (file-name-nondirectory path))
+           (name nondir))
+      `(,true-path ,name)))
   (setq eab/wg-update-list
         (mapcar 'eab/wg-update-list-1 (file-expand-wildcards eab/wg-path)))
   (eab/wg-init))

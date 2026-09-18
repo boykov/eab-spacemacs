@@ -133,58 +133,6 @@
         (sleep-for 3)))
   (eab/async-update-gr :recompile 't :notify 't))
 
-(setq eab/gotify-ready? nil)
-(defvar eab/gotify-websocket nil "gotify websocket")
-(defun eab/gotify-status (&optional arg)
-  (interactive)
-  (unless (websocket-openp eab/gotify-websocket)
-    (eab/gotify-create))
-  (let ((gotify-buffer "*compilation*<gotify>"))
-    (if eab/gotify-ready?
-        (progn
-          (if (not (eab/gotify-check))
-              (progn
-                (websocket-close eab/gotify-websocket)
-                (eab/gotify-create)
-                (switch-to-buffer gotify-buffer nil 't)
-                (let ((compilation-buffer-name-function nil))
-                  (recompile)))
-            (switch-to-buffer gotify-buffer nil 't)))
-      (progn
-        (let ((compilation-buffer-name-function
-               `(lambda (mode) ,gotify-buffer)))
-          (save-window-excursion
-            (eab/compile eab/gotify-command)))
-        (setq eab/gotify-ready? 't)
-        (switch-to-buffer gotify-buffer nil 't)))))
-
-'((eab/gotify "Hello" "from emacs" 0)
-  (websocket-close eab/gotify-websocket)
-  (websocket-openp eab/gotify-websocket)
-  )
-
-(defun eab/gotify-create ()
-  (let ((gotify-buffer "*compilation*<gotify>"))
-    (setq eab/gotify-websocket
-          (websocket-open
-           (concat "wss://notify.eab.su/stream?token=" (eab/gotify-client-token))
-           :on-message `(lambda (_websocket frame)
-                          (let ((text (websocket-frame-text frame)))
-                            (save-window-excursion
-                              (switch-to-buffer ,gotify-buffer)
-                              (let ((compilation-buffer-name-function nil)
-                                    (compilation-ask-about-save nil))
-                                (recompile)))))
-           :on-close (lambda (_websocket) (message "websocket closed"))))))
-
-(defun eab/gotify-check ()
-  (let ((event (car
-                (split-string
-                 (shell-command-to-string eab/gotify-command) "         "))))
-    (with-current-buffer "*compilation*<gotify>"
-      (s-contains? event
-                   (buffer-substring-no-properties (point-min) (point-max))))))
-
 (defun eab/compile-goto-error ()
   (interactive)
   (let ((istc? truncate-lines))

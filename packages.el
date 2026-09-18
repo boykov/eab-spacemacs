@@ -345,7 +345,7 @@ which require an initialization must be listed explicitly in the list.")
     (setq epa-pinentry-mode 'loopback)))
 (defun eab-spacemacs/init-term ()
   (use-package eab-config-term
-    :after (eab-minimal)))
+    :after (eab-minimal eab-notify)))
 (defun eab-spacemacs/init-comint ()
   (use-package comint
     :config
@@ -1194,7 +1194,7 @@ which require an initialization must be listed explicitly in the list.")
     :after (desktop appt autorevert eab-workgroups2)))
 (defun eab-spacemacs/init-server nil
   (use-package eab-server
-    :after (org)))
+    :after (org eab-notify)))
 (defun eab-spacemacs/init-compile nil
   (load "eab-config-compile.el"))
 (defun eab-spacemacs/init-grep nil
@@ -1302,7 +1302,8 @@ which require an initialization must be listed explicitly in the list.")
     (setq avy-timeout-seconds 0.25)))
 
 (defun eab-spacemacs/init-eab-minimal ()
-  (use-package eab-minimal))
+  (use-package eab-minimal
+    :after (eab-notify)))
 (defun eab-spacemacs/init-eab-workflow ()
   (use-package eab-workflow))
 (defun eab-spacemacs/init-eab-ui ()

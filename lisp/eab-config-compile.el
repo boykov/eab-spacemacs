@@ -8,7 +8,7 @@
 ;; Status: not intended to be distributed yet
 
 (use-package eab-compile
-  :after (ansi-color eab-minimal)
+  :after (ansi-color eab-minimal eab-notify)
   :init
   (defvar eab/compile-map (make-sparse-keymap)
     "Compile keymap.")

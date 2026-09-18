@@ -26,6 +26,13 @@
                     (server-eval-at "kairosP"
                                     `(eval ',sexp))))))
 
+(defun eab/eval-last-sexp-chronos-P ()
+  "Evaluate sexp before point on chronosP; print value in minibuffer."
+  (interactive)
+  (let ((sexp (call-interactively (lambda () (interactive) (preceding-sexp)))))
+    (message "%s" (server-eval-at "chronosP"
+                                  `(eval ',sexp)))))
+
 (defun eab/eval-last-sexp-chronos-C ()
   "Evaluate sexp before point on chronosC; print value in minibuffer."
   (interactive)

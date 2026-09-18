@@ -18,13 +18,6 @@
 (defvar eab/first-emacsclient 't "nil if run again")
 (defvar eab/ssh-host (eab/config "ssh -o ConnectTimeout=10 kairos") "current host")
 
-'((let ((server-use-tcp server-C-use-tcp))
-    (list (server-eval-at "chronosC" '(eab/gotify-token))
-          (server-eval-at "chronosC" '(eab/gotify-client-token))
-          (server-eval-at "kairosC" '(eab/gotify-token))
-          (server-eval-at "kairosC" '(eab/gotify-client-token))))
-  )
-
 (defmacro eab/add-hook (hookname funcname &rest body)
   "add-hook with lambda progn"
   (declare (indent defun))
@@ -32,73 +25,11 @@
           (defun ,funcname ()
             (progn ,@body))))
 
-(defvar eab/gotify-token-cache "" "")
-(defun eab/gotify-token ()
-  (if (not (equal (length eab/gotify-token-cache) 15))
-      (setq eab/gotify-token-cache
-            (substring (shell-command-to-string
-                        (eab/config (concat eab/ssh-host " bash <<'END'
-~/git/auto/keepass.sh \"portal/gotify\" -a app-test-token
-END
-" ))) 0 -1)))
-  eab/gotify-token-cache)
-
-;; TODO: not in eab/config due to async-start and args
-;; maybe ,(eab/config ...)?
-(defun eab/gotify (title message priority)
-  (async-start
-   `(lambda ()
-      (call-process-shell-command
-       (concat
-        "/home/eab/git/auto/notify.sh -a " ,(eab/gotify-token)
-        " -t \"" ,title "\""
-        " -m \"" ,message "\""
-        " -p " ,(number-to-string priority))) nil 0)))
-
-(defvar eab/gotify-client-token-cache "" "")
-(defun eab/gotify-client-token ()
-  (if (not (equal (length eab/gotify-client-token-cache) 15))
-      (setq eab/gotify-client-token-cache
-            (substring
-             (shell-command-to-string
-              (eab/config (concat eab/ssh-host " bash <<'END'
-~/git/auto/keepass.sh \"portal/gotify\" -a client-token
-END
-" ))) 0 -1)))
-  eab/gotify-client-token-cache)
-(setq eab/gotify-command
-      (eab/config
-       (concat
-        "ssh kairos"
-        " 'sqlite3 -column /var/gotify/data/gotify.db \"select datetime(date,\\\"localtime\\\"),title,message from messages order by date desc limit 20;\"'")))
-;; (eab/gotify "test" "test" 0)
-
-(setq eab/dl.sh-command
-      (eab/config (concat "ssh chronos" " dl.sh ")))
-
-(setq eab/test-dotemacs-command
-      ;; host=`dig test-dotemacs.salmon.eab.su TXT +short | tr -d '"'`
-      (eab/config (concat "ssh chronos" " ~/git/auto/test-dotemacs.sh")))
-
 (defun eab/update-site ()
   (shell-command
    (eab/config (concat "ssh chronos" " <<'END'
 sudo docker exec eab-node bash -c \"cd ~/pub/eab-kb/js && node update-client.js\"
 END"))))
-
-(defun eab/loaded-ok (instance)
-  (if configuration-layer-error-count
-      (progn
-        (add-to-list 'mode-line-modes '(t " [ERROR] "))
-        (eab/gotify instance "bad" 5))
-    (progn
-      (eab/gotify instance "OK" 0)
-      (setq-default TeX-master t))))
-
-(defun eab/test-dotemacs ()
-  (eab/loaded-ok "test-dotemacs")
-  (sleep-for 0.5)
-  (kill-emacs))
 
 (defun display-startup-echo-area-message ()
   "Change the default welcome message of minibuffer to another one."
@@ -148,30 +79,6 @@ END"))))
         (revert-buffer t t t))))
   (message "Refreshed open files."))
 
-(if (eab/ondaemon "cyclos")
-    (progn
-      (setq eab/sync-rsync-command
-            (eab/config (concat "ssh cyclos"
-                    " screen -d -m bash -c \"echo; "
-                    "rsync -WavR --files-from=/home/eab/.emacs.d/historyCyclos/recentf-eabpool /mnt/lion/ kairos:/mnt/lion/; "
-                    "rsync -WavR --files-from=/home/eab/.emacs.d/historyCyclos/recentf-eabpool /mnt/lion/ chronos:/mnt/lion/; "
-                    "/home/eab/git/auto/notify.sh -a " (eab/gotify-token) " -t \"OK\" -m \"rsync\" -p 0; "
-                    "\"")))
-      (setq eab/sync-zfs-command
-            (eab/config (concat "ssh cyclos" " screen -d -m bash -c \"echo; syncoid.sh chronos kairos\"")))))
-
-(if (eab/ondaemon "chronosP")
-    (progn
-      (setq eab/sync-rsync-command
-            (eab/config (concat "ssh cyclos"
-                    " screen -d -m bash -c \"echo; "
-                    "rsync -WavR --files-from=/home/eab/.emacs.d/historyCyclos/recentf-eabpool /mnt/lion/ kairos:/mnt/lion/; "
-                    "rsync -WavR --files-from=/home/eab/.emacs.d/historyCyclos/recentf-eabpool /mnt/lion/ cyclos:/mnt/lion/; "
-                    "/home/eab/git/auto/notify.sh -a " (eab/gotify-token) " -t \"OK\" -m \"rsync\" -p 0; "
-                    "\"")))
-      (setq eab/sync-zfs-command
-            (eab/config (concat "ssh chronos" " screen -d -m bash -c \"echo; syncoid.sh cyclos kairos\"")))))
-
 (if (eab/ondaemon (eab/server-C))
     (progn
       (setq server-port 5001)
@@ -181,12 +88,6 @@ END"))))
     (progn
       (setq server-port 5001)
       (setq server-use-tcp 't)))
-
-'((let ((server-use-tcp 't))
-    (list (server-eval-at "kairosP" '(eab/gotify-token))
-          (server-eval-at "kairosP" '(eab/gotify-client-token))))
-  )
-
 
 ;; (if (eab/ondaemon (eab/server-C))
 ;;     (setq debug-on-error 't))
@@ -236,12 +137,6 @@ END"))))
             " rsync --delete -avzl --no-links --exclude \".git\" --exclude \"gen\" "
             from-host "~/git/org-chronos/ " org-directory))))
 
-(defun eab/wg-update-list-1 (path)
-  (let* ((true-path (file-truename path))
-         (nondir (file-name-nondirectory path))
-         (name nondir))
-    `(,true-path ,name)))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; DONE: auto-save и торможение при C-s
@@ -256,3 +151,5 @@ END"))))
 (eval-after-load "enriched"
   '(defun enriched-decode-display-prop (start end &optional param)
      (list start end)))
+
+(use-package eab-notify)

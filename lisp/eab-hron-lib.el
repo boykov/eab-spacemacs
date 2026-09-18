@@ -251,8 +251,6 @@
         (org-agenda-switch-to))
     (setq eab/hron-todo-from-agenda nil))
   (unless (eq arg 2)
-    (if (or (org-ql--predicate-clocked)
-            (eab/org-clock-parent))
         (eab/org-clock (apply 'encode-time
                               (org-parse-time-string
                                (eab/hron-current-time-stamp)))
@@ -260,10 +258,7 @@
                               (org-parse-time-string
                                (eab/hron-add-current
                                 hour
-                                minute))))
-      (progn
-        (message "Empty CLOCK entry!")
-        (sleep-for 0.5))))
+                                minute)))))
   (cl-case arg
     (4 (setq eab/hron-todo-pending 't))
     (2 (eab/hron-update-current-time))

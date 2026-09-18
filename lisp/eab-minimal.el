@@ -128,6 +128,20 @@
         (native-compile (eval func-code lexical))
       (eval func-code lexical))))
 
+(defun eab/loaded-ok (instance)
+  (if configuration-layer-error-count
+      (progn
+        (add-to-list 'mode-line-modes '(t " [ERROR] "))
+        (eab/gotify instance "bad" 5))
+    (progn
+      (eab/gotify instance "OK" 0)
+      (setq-default TeX-master t))))
+
+(defun eab/test-dotemacs ()
+  (eab/loaded-ok "test-dotemacs")
+  (sleep-for 0.5)
+  (kill-emacs))
+
 (defun eab/load-personal ()
   (interactive)
   ;; (if (fboundp 'grep-a-lot-clear-stack)

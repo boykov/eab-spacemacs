@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.4.34
+
+refactor(config.el): extract notification functions into eab-notify package
+
+- Move all gotify-related functions and variables from config.el to new
+  package eab-notify.el
+- Encapsulate shell commands using eab/config macro
+- Reorganize related sync and test commands in config-term.el
+- Update package dependencies to load eab-notify before config modules
+- Re-add load-time hooks (eab/loaded-ok, eab/test-dotemacs) to eab-minimal.el
+
 ## 0.4.33
 
 refactor(config.el): encapsulate shell commands with eab/config macro

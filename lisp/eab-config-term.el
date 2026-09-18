@@ -31,6 +31,38 @@
           " 'systemctl --user restart "
           (cdr (assoc (concat eab/daemon-name "client") emacs-alist))))))
 
+(if (eab/ondaemon "cyclos")
+    (progn
+      (setq eab/sync-rsync-command
+            (eab/config (concat "ssh cyclos"
+                    " screen -d -m bash -c \"echo; "
+                    "rsync -WavR --files-from=/home/eab/.emacs.d/historyCyclos/recentf-eabpool /mnt/lion/ kairos:/mnt/lion/; "
+                    "rsync -WavR --files-from=/home/eab/.emacs.d/historyCyclos/recentf-eabpool /mnt/lion/ chronos:/mnt/lion/; "
+                    "/home/eab/git/auto/notify.sh -a " (eab/gotify-token) " -t \"OK\" -m \"rsync\" -p 0; "
+                    "\"")))
+      (setq eab/sync-zfs-command
+            (eab/config (concat "ssh cyclos" " screen -d -m bash -c \"echo; syncoid.sh chronos kairos\"")))))
+
+(if (eab/ondaemon "chronosP")
+    (progn
+      (setq eab/sync-rsync-command
+            (eab/config (concat "ssh cyclos"
+                    " screen -d -m bash -c \"echo; "
+                    "rsync -WavR --files-from=/home/eab/.emacs.d/historyCyclos/recentf-eabpool /mnt/lion/ kairos:/mnt/lion/; "
+                    "rsync -WavR --files-from=/home/eab/.emacs.d/historyCyclos/recentf-eabpool /mnt/lion/ cyclos:/mnt/lion/; "
+                    "/home/eab/git/auto/notify.sh -a " (eab/gotify-token) " -t \"OK\" -m \"rsync\" -p 0; "
+                    "\"")))
+      (setq eab/sync-zfs-command
+            (eab/config (concat "ssh chronos" " screen -d -m bash -c \"echo; syncoid.sh cyclos kairos\"")))))
+
+(setq eab/dl.sh-command
+      (eab/config (concat "ssh chronos" " dl.sh ")))
+
+(setq eab/test-dotemacs-command
+      ;; host=`dig test-dotemacs.salmon.eab.su TXT +short | tr -d '"'`
+      (eab/config (concat "ssh chronos" " ~/git/auto/test-dotemacs.sh")))
+
+
 ;; mini keyboard
 (general-define-key
  "<kp-insert>"  'nil
