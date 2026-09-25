@@ -7,7 +7,12 @@
 ;; Requirements: 
 ;; Status: not intended to be distributed yet
 
-(setq tramp-show-ad-hoc-proxies 't)
+(use-package tramp
+  :config
+  (setq tramp-default-method "ssh")
+  (setq tramp-show-ad-hoc-proxies 't)
+  (setq tramp-persistency-file-name (eab/config (concat (eab/history-dir) "tramp"))))
+
 
 (setq eab/sussh
       '("sussh"
@@ -28,5 +33,10 @@
         (tramp-login-args         (("--writable") (,(concat dir "%h"))))
         (tramp-remote-shell       "/bin/sh")
         (tramp-remote-shell-args  ("-i" "-c"))))
+
+(with-eval-after-load 'tramp
+  (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
+  (add-to-list 'tramp-methods eab/sussh)
+  (add-to-list 'tramp-methods (eab/singularity "`pwd`/")))
 
 (provide 'eab-tramp)

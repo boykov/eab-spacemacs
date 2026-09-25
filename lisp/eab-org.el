@@ -160,8 +160,15 @@
            '(("papers" . "%(eab/papers-eaf)"))))
       (org-return))))
 
+'((setq org-fold-core-style 'overlays))
+
 (add-hook 'org-mode-hook (lambda () (toggle-truncate-lines)))
-(add-hook 'org-mode-hook (lambda () (if (and (fboundp 'org-fold-hide-drawer-all) (not (eab/ondaemon "kairosC"))) (org-fold-hide-drawer-all))))
+(add-hook 'org-mode-hook
+          (lambda ()
+            (if (and
+                 (fboundp 'org-fold-hide-drawer-all)
+                 (not (eab/ondaemon "kairosC")))
+                (org-fold-hide-drawer-all))))
 
 (setq org-export-default-language "ru")
 (setq org-export-with-broken-links 't)

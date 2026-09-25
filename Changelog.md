@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.4.37
+
+chore: update changelog and refactor configuration files
+
+- Remove `--name eab-claude` from claude.sh and pi.sh (temporary cleanup)
+- Extract shell translation functionality to dedicated `eab-shell-translate.el`
+- Move bookmark and ediff configs to standalone files (`eab-bookmark.el`, `eab-config-ediff.el`)
+- Centralize server and host detection in `eab-server.el`
+- Simplify packages.el: load new configs instead of inline setup
+- Improve tramp and notify configurations
+
 ## 0.4.36
 
 restructure: move legacy config into packages.el and refine desktop/session handling

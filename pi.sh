@@ -1,6 +1,5 @@
 ssh -t chronos "
    docker run --rm -it  \
-     --name eab-claude \
      -e HTTPS_PROXY=http://192.168.2.19:8118 \
      -v /home/eab/claude:/home/eab/claude \
      -v /home/eab/.claude:/home/eab/.claude \

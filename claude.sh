@@ -1,6 +1,5 @@
 ssh -t chronos "
    docker run --rm -it  \
-     --name eab-claude \
      -v /home/eab/claude:/home/eab/claude \
      -v /home/eab/.claude:/home/eab/.claude \
      -v /home/eab/.claude-code-router:/home/eab/.claude-code-router \

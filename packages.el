@@ -28,85 +28,11 @@
              (buffer-substring-no-properties (point-min) (point-max))))
   (message "Spacemacs is ready."))
 
-(setq eab/homedir (getenv "HOME"))
-(setq eab/daemon-name (daemonp))
-
-(unless (stringp eab/daemon-name)
-  (setq eab/daemon-name "server"))
-
-(defun eab/onhomedir (def)
-  (if (string= eab/homedir def) 't))
-
-(defun eab/ondaemon (def)
-  (if (string= eab/daemon-name def) 't))
-
-(defun eab/server-P ()
-  (if (or (eab/ondaemon "kairosP")
-          (eab/ondaemon "chronosP")
-          (eab/ondaemon "cyclos")
-          (eab/ondaemon "microcyclos"))
-          eab/daemon-name))
-
-(defun eab/server-C ()
-  (if (or (eab/ondaemon "chronosC")
-          (eab/ondaemon "kairosC"))
-      eab/daemon-name))
-
-(defun eab/target-C ()
-  "chronosC")
-
-(setq server-C-use-tcp 't)
-'((setq org-fold-core-style 'overlays))
-
-(if (eab/ondaemon (eab/server-C))
-    (progn
-      (setq server-port 5001)
-      (setq server-use-tcp 't)))
-
-(if (eab/ondaemon (eab/server-P))
-    (progn
-      (setq server-port 5001)
-      (setq server-use-tcp 't)))
-
-;; (if (eab/ondaemon (eab/server-C))
-;;     (setq debug-on-error 't))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defun eab/onhost (def)
-  (if (string= system-name def) 't))
-
-(defun eab/history-dir ()
-  (let ((dir
-         (cdr
-          (assoc eab/daemon-name
-                 (eab/config
-                  '`(
-                     ("server"        . ,(concat user-emacs-directory "history/"))
-                     ("serverM"       . ,(concat user-emacs-directory "historyM/"))
-                     ("kairosP"       . ,(concat user-emacs-directory "historyP/"))
-                     ("chronosP"      . ,(concat user-emacs-directory "historyChronosP/"))
-                     ("microcyclos"   . ,(concat user-emacs-directory "historyMicrocyclos/"))
-                     ("cyclos"        . ,(concat user-emacs-directory "historyCyclos/"))
-                     ("chronosC"      . ,(concat user-emacs-directory "historyChronosC/"))
-                     ("kairosC"       . ,(concat user-emacs-directory "kairosC/"))
-                     ))))))
-    (unless (file-exists-p dir)
-      (ignore-errors (make-directory dir)))
-    dir))
-
-(defvar eab/ssh-host (eab/config "ssh -o ConnectTimeout=10 kairos") "current host")
-
-(eab/config
- (cond ((eab/onhost "kairos-emacs")    (setq eab/ssh-host-local "ssh -o ConnectTimeout=10 kairos"))
-       ((eab/onhost "kairos-clocksum")  (setq eab/ssh-host-local "ssh -o ConnectTimeout=10 kairos"))
-       ((eab/onhost "chronos-clocksum") (setq eab/ssh-host-local "ssh -o ConnectTimeout=10 chronos"))
-       ((eab/onhost "chronos-emacs")(setq eab/ssh-host-local "ssh -o ConnectTimeout=10 chronos"))
-       ((eab/onhost "cyclos-emacs") (setq eab/ssh-host-local "ssh -o ConnectTimeout=10 cyclos"))
-       (t (setq eab/ssh-host-local eab/ssh-host))))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package eab-notify)
+(use-package eab-server
+  :after (eab-notify))
 
 (defvar eab-spacemacs-packages
   `(
@@ -337,10 +263,11 @@ which require an initialization must be listed explicitly in the list.")
     (setq ai-code-pi-program "bash")
     (setq ai-code-pi-program-switches '("/home/eab/git/eab-system/eab-spacemacs/pi.sh"))
     ;; (setq ai-code--session-project-root-override "/ssh:chronos:/home/eab/claude/")
+    (setq ai-code--session-project-root-override "/home/eab/git/eab-system/eab-spacemacs/")
     (setq ai-code-backends-infra-terminal-backend 'ghostel)
     (ai-code-set-backend 'claude-code)
     ;; russian lang
-    ;; (setq ai-code-backends-infra-ghostel-enable-ime-integration nil)
+    (setq ai-code-backends-infra-ghostel-enable-ime-integration nil)
     (ai-code-set-backend 'pi)
     ))
 (defun eab-spacemacs/init-gptel-agent nil
@@ -358,13 +285,14 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-s ()
   (use-package s))
 (defun eab-spacemacs/init-groovy-mode ()
-  (use-package groovy-mode)
-  (eab/add-hook groovy-mode-hook eab/groovy-hook
-    (general-define-key
-     :keymaps 'groovy-mode-map
-     "C-i"        'eab/outline-toggle-children
-     "<backtab>"  'eab/outline-toggle-all))
-  (add-hook 'groovy-mode-hook (lambda () (setq indent-tabs-mode nil))))
+  (use-package groovy-mode
+    :config
+    (eab/add-hook groovy-mode-hook eab/groovy-hook
+      (general-define-key
+       :keymaps 'groovy-mode-map
+       "C-i"        'eab/outline-toggle-children
+       "<backtab>"  'eab/outline-toggle-all))
+    (add-hook 'groovy-mode-hook (lambda () (setq indent-tabs-mode nil)))))
 (defun eab-spacemacs/init-terraform-mode ()
   (use-package terraform-mode))
 (defun eab-spacemacs/init-kubernetes nil)
@@ -466,27 +394,6 @@ which require an initialization must be listed explicitly in the list.")
      "M-r"        'nil
      "C-p"        'comint-previous-input
      "C-n"        'comint-next-input)))
-(defun eab-spacemacs/init-ibuffer ()
-  (use-package ibuffer
-    :config
-    (setq ibuffer-formats
-          '((mark modified read-only " "
-                  (name 18 18 :left :elide))
-            (mark modified read-only " " (name 18 18 :left :elide) " "
-                  (size 9 -1 :right) " " (mode 16 16 :left :elide) " "
-                  filename-and-process)))
-    (general-define-key
-     :keymaps 'ibuffer-mode-map
-     "C-d"        'nil
-     "C-k"        'nil
-     "C-o"        'nil
-     "C-y"        'nil
-     "M-g"        'nil
-     "M-j"        'nil
-     "M-n"        'nil
-     "M-o"        'nil
-     "M-p"        'nil
-     "M-s"        'nil)))
 (defun eab-spacemacs/init-paragraphs ()
   ;; (setq paragraph-start ...)
   ;; (setq paragraph-separate ...)
@@ -505,47 +412,9 @@ which require an initialization must be listed explicitly in the list.")
   (load "eab-config-simple.el"))
 
 (defun eab-spacemacs/init-ediff ()
-  (eab/add-hook diff-mode-hook eab/diff-hook
-    (general-define-key
-     :keymaps 'diff-mode-map
-     "M-SPC"      'nil
-     "M-1"        'nil
-     "M-2"        'nil
-     "M-5"        'nil
-     "M-k"        'nil
-     "M-<"        'nil
-     "M->"        'nil
-     "M-K"        'nil
-     "M-h"        'nil
-     "M-n"        'nil
-     "M-N"        'nil
-     "M-o"        'nil
-     "M-p"        'nil))
-  (use-package ediff
-    :config
-    (eab/add-hook ediff-after-setup-control-frame-hook eab/ediff-hook
-      (general-define-key
-       :keymaps 'ediff-mode-map
-       "d"  'nil))
-    (defun eab/ediff-dired-directories ()
-      (interactive)
-      (when (= (length (window-list)) 2)
-        (let ((dirs (mapcar
-                     (lambda (w) 
-                       (buffer-local-value 'default-directory (window-buffer w)))
-                     (window-list))))
-          (ediff-directories (car dirs) (cadr dirs) nil))))))
-(defun eab-spacemacs/init-ediff-wind ()
-  (use-package ediff-wind
-    :after (ediff)
-    :config
-    (setq ediff-window-setup-function 'ediff-setup-windows-plain)
-    (setq ediff-split-window-function 'split-window-horizontally)))
-(defun eab-spacemacs/init-ediff-diff ()
-  (use-package ediff-diff
-    :after (ediff)
-    :config
-    (setq ediff-diff-options "-w")))
+  (load "eab-config-ediff.el"))
+(defun eab-spacemacs/init-ediff-wind ())
+(defun eab-spacemacs/init-ediff-diff ())
 (defun eab-spacemacs/init-ispell ()
   (use-package ispell
     :config
@@ -1287,15 +1156,7 @@ which require an initialization must be listed explicitly in the list.")
     (add-hook 'gnus-summary-prepare-hook 'gnus-summary-sort-by-most-recent-date)))
 
 (defun eab-spacemacs/init-tramp nil
-  (use-package tramp
-    :config
-    (setq tramp-default-method "ssh")
-    (setq tramp-persistency-file-name (eab/config (concat (eab/history-dir) "tramp"))))
-  (use-package eab-tramp
-    :config
-    (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
-    (add-to-list 'tramp-methods eab/sussh)
-    (add-to-list 'tramp-methods (eab/singularity "`pwd`/"))))
+  (use-package eab-tramp))
 
 (defun eab-spacemacs/init-outline nil
   (use-package eab-outline
@@ -1311,9 +1172,7 @@ which require an initialization must be listed explicitly in the list.")
   (use-package desktop)
   (use-package eab-desktop
     :after (desktop appt autorevert eab-workgroups2)))
-(defun eab-spacemacs/init-server nil
-  (use-package eab-server
-    :after (org eab-notify)))
+(defun eab-spacemacs/init-server nil)
 (defun eab-spacemacs/init-compile nil
   (load "eab-config-compile.el"))
 (defun eab-spacemacs/init-eab-gr nil
@@ -1341,26 +1200,31 @@ which require an initialization must be listed explicitly in the list.")
           (setq save-abbrevs 'silently)
           (quietly-read-abbrev-file abbrev-file-name)))))
 (defun eab-spacemacs/init-bookmark nil
-  (use-package bookmark
-    :config
-    (setq bookmark-watch-bookmark-file 'silent)
-    (bookmark-maybe-load-default-file)
-    (setq bookmark-history bookmark-alist)
-    (setq bookmark-automatically-show-annotations nil)
-    (setq bookmark-fringe-mark nil))
+  (use-package bookmark)
   (use-package eab-bookmark
-    :after (bookmark eab-minimal eab-workgroups2)
-    :config
-    (setq bookmark-default-file (eab/config (concat (eab/history-dir) ".emacs.bmk")))
-    (general-define-key
-     :keymaps 'bookmark-minibuffer-read-name-map
-     "C-l" (ilam
-            (let ((string
-                   (with-current-buffer
-                       bookmark-current-buffer
-                     (eab/replace-in-string "{{{kb_hide}}}" "" (thing-at-point 'line)))))
-              (insert (substring string 0 -1)))))))
+    :after (bookmark eab-minimal eab-workgroups2)))
 
+(defun eab-spacemacs/init-ibuffer ()
+  (use-package ibuffer
+    :config
+    (setq ibuffer-formats
+          '((mark modified read-only " "
+                  (name 18 18 :left :elide))
+            (mark modified read-only " " (name 18 18 :left :elide) " "
+                  (size 9 -1 :right) " " (mode 16 16 :left :elide) " "
+                  filename-and-process)))
+    (general-define-key
+     :keymaps 'ibuffer-mode-map
+     "C-d"        'nil
+     "C-k"        'nil
+     "C-o"        'nil
+     "C-y"        'nil
+     "M-g"        'nil
+     "M-j"        'nil
+     "M-n"        'nil
+     "M-o"        'nil
+     "M-p"        'nil
+     "M-s"        'nil)))
 (defun eab-spacemacs/init-eab-ace-jump-mode ()
   (use-package ace-jump-mode
     :init

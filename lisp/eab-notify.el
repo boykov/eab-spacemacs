@@ -45,7 +45,9 @@ END
       (eab/config
        (concat
         "ssh kairos"
-        " 'sqlite3 -column /var/gotify/data/gotify.db \"select datetime(date,\\\"localtime\\\"),title,message from messages order by date desc limit 20;\"'")))
+        " 'sqlite3 -column /var/gotify/data/gotify.db \
+  \"select datetime(date,\\\"localtime\\\"),SUBSTR(title, 1, 50) as title,message \
+  from messages order by date desc limit 20;\"'")))
 ;; (eab/gotify "test" "test" 0)
 
 

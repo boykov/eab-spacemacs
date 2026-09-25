@@ -40,4 +40,19 @@
       (bookmark-jump
        bm))))
 
+(setq bookmark-watch-bookmark-file 'silent)
+(bookmark-maybe-load-default-file)
+(setq bookmark-history bookmark-alist)
+(setq bookmark-automatically-show-annotations nil)
+(setq bookmark-fringe-mark nil)
+(setq bookmark-default-file (eab/config (concat (eab/history-dir) ".emacs.bmk")))
+(general-define-key
+ :keymaps 'bookmark-minibuffer-read-name-map
+ "C-l" (ilam
+        (let ((string
+               (with-current-buffer
+                   bookmark-current-buffer
+                 (eab/replace-in-string "{{{kb_hide}}}" "" (thing-at-point 'line)))))
+          (insert (substring string 0 -1)))))
+
 (provide 'eab-bookmark)
