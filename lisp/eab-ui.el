@@ -18,6 +18,13 @@
   (setq savehist-file (eab/config (concat (eab/history-dir) "history")))
   (savehist-mode 1))
 
+(eab/add-hook help-mode-hook eab/help-hook
+    (general-define-key
+     :keymaps 'help-mode-map
+     "o"  'ace-link-help
+     "B"  'help-go-back
+     "F"  'help-go-forward))
+
 (setq ring-bell-function 'ignore)
 
 (setq disabled-command-function nil)

@@ -104,6 +104,13 @@
  global-mark-ring-max 64
  indent-tabs-mode nil
  )
+
+(eab/add-hook eshell-mode-hook eab/eshell-hook
+    (general-define-key
+     :keymaps 'eshell-mode-map
+     "M-s"        'nil
+     "M-s"        'nil))
+
 (setq eshell-history-file-name (eab/config "~/.bash_history"))
 (setq
  history-length 500
@@ -111,6 +118,7 @@
  max-lisp-eval-depth 10000
  eshell-history-size 1000
  )
+
 (mapc (lambda (x) (add-to-list 'extended-command-history x))
       '(
         "tramp-cleanup-this-connection"

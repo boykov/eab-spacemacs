@@ -29,31 +29,6 @@ known servers."
 (defun eab/eval-last-sexp-chronos-P () (interactive) (eab/eval-last-sexp-remote "chronosP"))
 (defun eab/eval-last-sexp-server-M ()  (interactive) (eab/eval-last-sexp-remote "serverM"))
 
-;; TODO обобщить формирование body и выполнение remote
-(defun eab/org-publish-current-file-remote ()
-  (interactive)
-  (let* ((name (replace-regexp-in-string
-                "git/org-chronos"
-                "git/org"
-                (file-truename (buffer-file-name))))
-         (body `(lambda ()
-                  (require 'server)
-                  (let ((server-use-tcp ,server-C-use-tcp))
-                    (server-eval-at
-                     ,(eab/target-C)
-                     '(progn
-                        (shell-command (concat "cd " org-directory))
-                        (eab/rsync-org-directory "cyclos:")
-                        (revert-all-buffers)
-                        (let ((org-publish-use-timestamps-flag nil)
-                              (org-confirm-babel-evaluate nil))
-                          (org-publish-file ,name))
-                        (eab/update-site))))
-                  )))
-    (eval `(async-start
-            ,body
-            (lambda (result) (message "async result: <%s>" result))))))
-
 (defun eab/shell-translate-remote (phrase)
   (interactive)
   (funcall

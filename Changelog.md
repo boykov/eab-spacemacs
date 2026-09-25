@@ -2,6 +2,18 @@
 
 ## 0.4.36
 
+restructure: move legacy config into packages.el and refine desktop/session handling
+
+- Delete config.el and keybindings.el, moving their contents into packages.el
+- Consolidate keybindings and misc config into `eab-spacemacs/user-config`
+- Relocate desktop/session save/restore logic from eab-config-term.el to eab-desktop.el
+- Safeguard C-e key binding removal by checking its current definition before overriding
+- Add missing hooks (shell-mode, eshell-mode, help-mode) directly in packages.el
+- Update eab-config-eab-org.el to depend on eab-org-publish
+- Refactor eab-org-publish.el to include previously duplicated functions (eab/update-site, eab/rsync-org-directory, revert-all-buffers) and add remote org-publish helper
+- Remove duplicate definitions of the same functions from eab-server.el and eab-config-term.el
+- Ensure build/load order and avoid redefining macros/hooks multiple times
+
 ## 0.4.35
 
 refactor(gr): extract gr functionality into eab-gr.el module

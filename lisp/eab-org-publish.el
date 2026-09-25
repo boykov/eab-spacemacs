@@ -70,6 +70,12 @@
 (if (eab/ondaemon (eab/server-P))
     (setq org-html-htmlize-output-type 'css))
 
+(defun eab/update-site ()
+  (shell-command
+   (eab/config (concat "ssh chronos" " <<'END'
+sudo docker exec eab-node bash -c \"cd ~/pub/eab-kb/js && node update-client.js\"
+END"))))
+
 (defun eab/org-publish-current-file ()
   (interactive)
   (let ((org-publish-use-timestamps-flag nil)
@@ -89,6 +95,54 @@
            (concat eab/ssh-host-local " <<'END'
 screen -d -m bash -c \"cd ~/git/eabmisc/eablatex && make resume\"
 END"))))))
+
+;; DONE: почему не срабатывает exclude для ссылок?
+;; из-за распределенности? копируется не оттуда, откуда ожидаю? задержка st?
+(defun eab/rsync-org-directory (&optional from-host)
+  (unless from-host
+    (setq from-host ""))
+  (shell-command
+   (eab/config
+    (concat eab/ssh-host-local
+            " rsync --delete -avzl --no-links --exclude \".git\" --exclude \"gen\" "
+            from-host "~/git/org-chronos/ " org-directory))))
+
+(defun revert-all-buffers ()
+  "Refreshes all open buffers from their respective files."
+  (interactive)
+  (dolist (buf (buffer-list))
+    (with-current-buffer buf
+      (when (and
+             (buffer-file-name)
+             (file-exists-p (buffer-file-name))
+             (not (buffer-modified-p)))
+        (revert-buffer t t t))))
+  (message "Refreshed open files."))
+
+;; TODO обобщить формирование body и выполнение remote
+(defun eab/org-publish-current-file-remote ()
+  (interactive)
+  (let* ((name (replace-regexp-in-string
+                "git/org-chronos"
+                "git/org"
+                (file-truename (buffer-file-name))))
+         (body `(lambda ()
+                  (require 'server)
+                  (let ((server-use-tcp ,server-C-use-tcp))
+                    (server-eval-at
+                     ,(eab/target-C)
+                     '(progn
+                        (shell-command (concat "cd " org-directory))
+                        (eab/rsync-org-directory "cyclos:")
+                        (revert-all-buffers)
+                        (let ((org-publish-use-timestamps-flag nil)
+                              (org-confirm-babel-evaluate nil))
+                          (org-publish-file ,name))
+                        (eab/update-site))))
+                  )))
+    (eval `(async-start
+            ,body
+            (lambda (result) (message "async result: <%s>" result))))))
 
 (setq org-html-head-include-default-style nil)
 

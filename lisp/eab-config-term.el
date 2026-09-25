@@ -74,7 +74,8 @@
 
 (defvar eab/one-key-map (make-sparse-keymap)
   "One-key keymap.")
-(global-set-key (kbd "C-e") nil)
+(if (eq (lookup-key global-map (kbd "C-e")) 'move-end-of-line)
+    (global-set-key (kbd "C-e") nil))
 (general-define-key
  :prefix "C-e"
  "b"    'eab/switch-browser
@@ -99,11 +100,6 @@
  "d y"  (ilam (setq eab/daemons-host "cyclos") (call-interactively 'eab/daemons))
  "x"    (ilam
          (eab/sh-over-bash eab/emacs-service-command "" 't))
- "X"    (ilam
-         (desktop-save (eab/desktop-dir))
-         (run-with-timer 0.1 nil 'kill-emacs)
-         (eab/sh-over-bash
-          (concat "sleep 0.3 && emacs --daemon=" eab/daemon-name) "" 't))
  "h"    'eab/switch-help
  "z"    'undo-tree-visualize
  "s"    'eab/switch-async

@@ -170,7 +170,9 @@
   (eab/loaded-ok (concat (daemonp) " dotemacs"))
   )
 
-; TODO: create function and hook after first start frame
+(defvar eab/first-emacsclient 't "nil if run again")
+
+;; TODO: create function and hook after first start frame
 (defun eab/load-gui ()
   (interactive)
   (when eab/first-emacsclient
@@ -190,6 +192,10 @@
                       :height (if (eq (display-pixel-width) 1920) 130 150)
                       :weight 'normal
                       :width 'normal))
+
+(eval-after-load "enriched"
+  '(defun enriched-decode-display-prop (start end &optional param)
+     (list start end)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

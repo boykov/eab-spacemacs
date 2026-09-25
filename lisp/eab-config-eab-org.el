@@ -80,5 +80,5 @@
 (use-package eab-org-extension
   :after (eab-org))
 (use-package eab-hron-lib
-  :after (eab-org))
+  :after (eab-org eab-org-publish))
 

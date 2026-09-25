@@ -7,6 +7,20 @@
 ;; Requirements:
 ;; Status: ready
 
+(defun eab/desktop-dir ()
+  (eab/history-dir))
+
+(if (eq (lookup-key global-map (kbd "C-e")) 'move-end-of-line)
+    (global-set-key (kbd "C-e") nil))
+
+(general-define-key
+ :prefix "C-e"
+ "X"    (ilam
+         (desktop-save (eab/desktop-dir))
+         (run-with-timer 0.1 nil 'kill-emacs)
+         (eab/sh-over-bash
+          (concat "sleep 0.3 && emacs --daemon=" eab/daemon-name) "" 't)))
+
 (if (or
      (eab/ondaemon (eab/server-P))
      (eab/ondaemon (eab/server-C))
