@@ -110,8 +110,7 @@
  "g"    'eab/switch-grep
  "G"    'eab/kill-last-grep
  "l"    'helm-locate
- "C"    'docker-containers
- "I"    'docker-images)
+)
 (setq eab/one-key-map (lookup-key global-map (kbd "C-e")))
 
 (general-define-key

@@ -7,9 +7,6 @@
 ;; Requirements: none
 ;; Status: not intended to be distributed yet
 
-(defmacro eab/config (&rest body)
-  `(eval ,@body))
-
 (setq eab/homedir (getenv "HOME"))
 (setq eab/daemon-name (daemonp))
 

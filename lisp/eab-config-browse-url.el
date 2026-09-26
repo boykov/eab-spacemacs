@@ -22,7 +22,8 @@ ssh chronos docker exec -u 1000:1000 \
     (if (get-buffer "Firefox")
         (switch-to-buffer-other-window "Firefox")
       (progn
-        (eaf-open-browser "https://eaf-browser.eab.su"))))
+        ;; (eaf-open-browser "https://eaf-browser.eab.su/?resize=remote&host_clipboard_sync=true")
+        (eaf-open-browser "https://eaf-browser.eab.su/?resize=remote"))))
   (defun eab/eaf-browser-paste-clip ()
     (interactive)
     (with-temp-file "/tmp/clip.txt"

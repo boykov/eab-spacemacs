@@ -146,3 +146,41 @@
   (setq mc/cmds-to-run-for-all (append mc/cmds-to-run-for-all
                                        '(org-delete-char
                                          org-self-insert-command))))
+
+(use-package smartparens
+  :config
+  (add-hook 'smartparens-enabled-hook
+            (lambda ()
+              (general-define-key
+               :keymaps 'sp-keymap
+               "/"  'nil
+               "b"  'sp--self-insert-command ;; for latex sp-local-tag
+               "B"  'nil
+               "f"  'nil
+               "g"  'nil
+               "h"  'nil
+               "l"  'nil
+               "t"  'nil
+               "i"  'nil
+               "e"  'nil
+               "r"  'nil
+               "к"  'nil)
+              (setq sp-ignore-modes-list nil))))
+
+;; fix boundp sp-keymap
+(use-package smartparens-latex)
+
+(use-package paredit
+  :config
+  (add-hook 'emacs-lisp-mode-hook 
+            (lambda ()
+              (general-define-key
+               :keymaps 'emacs-lisp-mode-map
+               "M-("        'paredit-wrap-round
+               "M-r"        'paredit-forward-kill-word
+               "M-e"        'paredit-backward-kill-word
+               "M-g"        'paredit-kill
+               "M-'"        'paredit-comment-dwim
+               "RET"        'paredit-newline)))
+  (autoload 'enable-paredit-mode
+    "paredit" "Turn on pseudo-structural editing of Lisp code." t))

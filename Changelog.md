@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.4.39
+
+chore: split and reorganize config files, update changelog
+
+- Create eab-config-avy.el with avy, ibuffer, and ace-jump-mode config
+- Move gptel-magit config from deleted file into eab-config-gptel.el
+- Update ai-code config in eab-config-ellama.el, move token functions back
+- Refactor docker config into eab-config-daemons.el
+- Remove duplicate config in packages.el for affected modules
+- Clean up eab-notify.el and eab-server.el by removing redundant macro
+- Update eab-tramp.el: define eab/sussh earlier, move tramp-term setup
+- Remove legacy bindings and configs moved elsewhere (avy-goto-word-1, etc.)
+
 ## 0.4.38
 
 chore: split eab-words.el into config files

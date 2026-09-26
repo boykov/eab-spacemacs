@@ -18,7 +18,7 @@
            (require 'dired-x)
            (require 'tramp)
            (require 'tramp-container)
-           ;; TODO разве eab/sussh в async доступна? Добавить
+           ;; DONE eab/sussh в async доступна? подставляется
            (add-to-list 'tramp-methods ',eab/sussh))))))
  :lexical 't)
 

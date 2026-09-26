@@ -7,9 +7,32 @@
 ;; Requirements:
 ;; Status: not intended to be distributed yet
 
+(use-package docker)
+(use-package docker-container
+  :after (docker)
+  :config
+  (if (eq (lookup-key global-map (kbd "C-e")) 'move-end-of-line)
+    (global-set-key (kbd "C-e") nil))
+  (general-define-key
+   :prefix "C-e"
+   "C"    'docker-containers
+   "I"    'docker-images)
+  (defun eab/tramp-docker-cleanup ()
+    (interactive)
+    (tramp-cleanup-connection
+     (tramp-dissect-file-name
+      ;; TODO: tramp default-directory path
+      (concat "/docker:"
+              (car (progn
+                     (docker-utils-get-marked-items-ids))) ":"))))
+  (general-define-key
+   :keymaps 'docker-container-mode-map
+   "c"  'eab/tramp-docker-cleanup))
+
 (use-package daemons
   :config
   (setq daemons-init-system-submodules '(daemons-systemd)))
+
 (use-package daemons-systemd
   :after (daemons)
   :config

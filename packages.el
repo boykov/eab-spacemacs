@@ -251,25 +251,7 @@ which require an initialization must be listed explicitly in the list.")
     :after (iedit zoutline)))
 (defun eab-spacemacs/init-ox-pandoc nil)
 (defun eab-spacemacs/init-elisa nil)
-(defun eab-spacemacs/init-ai-code nil
-  ;; TODO: remote claude, which path
-  (use-package ai-code
-    :config
-    (setq ai-code-backends-infra-use-side-window nil)
-    (setq ai-code-mcp-agent-enabled-backends
-          (remove 'claude-code ai-code-mcp-agent-enabled-backends))
-    (setq ai-code-claude-code-program "bash")
-    (setq ai-code-claude-code-program-switches '("/home/eab/git/eab-system/eab-spacemacs/claude.sh"))
-    (setq ai-code-pi-program "bash")
-    (setq ai-code-pi-program-switches '("/home/eab/git/eab-system/eab-spacemacs/pi.sh"))
-    ;; (setq ai-code--session-project-root-override "/ssh:chronos:/home/eab/claude/")
-    (setq ai-code--session-project-root-override "/home/eab/git/eab-system/eab-spacemacs/")
-    (setq ai-code-backends-infra-terminal-backend 'ghostel)
-    (ai-code-set-backend 'claude-code)
-    ;; russian lang
-    (setq ai-code-backends-infra-ghostel-enable-ime-integration nil)
-    (ai-code-set-backend 'pi)
-    ))
+(defun eab-spacemacs/init-ai-code nil )
 (defun eab-spacemacs/init-gptel-agent nil )
 (defun eab-spacemacs/init-llm ())
 (defun eab-spacemacs/init-prodigy nil
@@ -301,8 +283,7 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-git-wip-timemachine ())
 (defun eab-spacemacs/init-xterm-color ()
   (use-package xterm-color))
-(defun eab-spacemacs/init-tramp-term ()
-    (use-package tramp-term))
+(defun eab-spacemacs/init-tramp-term () )
 (defun eab-spacemacs/init-vagrant nil)
 (defun eab-spacemacs/init-vagrant-tramp nil)
 (defun eab-spacemacs/init-csv-mode nil)
@@ -341,8 +322,7 @@ which require an initialization must be listed explicitly in the list.")
 
 (defun eab-spacemacs/init-gptel nil
   (load "eab-config-gptel.el"))
-(defun eab-spacemacs/init-gptel-magit nil
-  (load "eab-config-gptel-magit.el"))
+(defun eab-spacemacs/init-gptel-magit nil)
 (defun eab-spacemacs/init-ellama nil
   (load "eab-config-ellama.el"))
 (defun eab-spacemacs/init-daemons nil
@@ -440,18 +420,8 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-magit nil
   (load "eab-config-magit.el"))
 (defun eab-spacemacs/init-sqlite3 nil)
-(defun eab-spacemacs/init-forge nil
-  (use-package forge
-    :config
-    (add-to-list 'forge-alist '("gitlab-local.boos.solutions" "gitlab-local.boos.solutions/api/v4"
-                                "gitlab-local.boos.solutions" forge-gitlab-repository))
-    (setq bug-reference-auto-setup-functions nil)))
-(defun eab-spacemacs/init-orgit nil
-  ;; TODO: cancel rev-export disabling
-  (use-package orgit
-    :after (magit)
-    :config
-    (defun orgit-rev-export (path desc format))))
+(defun eab-spacemacs/init-forge nil)
+(defun eab-spacemacs/init-orgit nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;               __  __           _           
@@ -580,27 +550,7 @@ which require an initialization must be listed explicitly in the list.")
     :after (helm smex eab-minimal)
     :config
     (setq smex-save-file (eab/config (concat (eab/history-dir) ".smex-items")))))
-(defun eab-spacemacs/init-smartparens nil
-  (use-package smartparens
-    :config
-    (add-hook 'smartparens-enabled-hook
-              (lambda ()
-                (general-define-key
-                 :keymaps 'sp-keymap
-                 "/"  'nil
-                 "b"  'sp--self-insert-command ;; for latex sp-local-tag
-                 "B"  'nil
-                 "f"  'nil
-                 "g"  'nil
-                 "h"  'nil
-                 "l"  'nil
-                 "t"  'nil
-                 "i"  'nil
-                 "e"  'nil
-                 "r"  'nil
-                 "к"  'nil)
-                (setq sp-ignore-modes-list nil)))) ;; fix boundp sp-keymap
-  (use-package smartparens-latex))
+(defun eab-spacemacs/init-smartparens nil )
 (defun eab-spacemacs/init-auto-install nil
   (use-package auto-install
     :config
@@ -609,21 +559,7 @@ which require an initialization must be listed explicitly in the list.")
   (use-package flx-ido))
 (defun eab-spacemacs/init-ido-at-point nil
   (use-package ido-at-point))
-(defun eab-spacemacs/init-paredit nil
-  (use-package paredit
-    :config
-    (add-hook 'emacs-lisp-mode-hook 
-              (lambda ()
-                (general-define-key
-                 :keymaps 'emacs-lisp-mode-map
-                 "M-("        'paredit-wrap-round
-                 "M-r"        'paredit-forward-kill-word
-                 "M-e"        'paredit-backward-kill-word
-                 "M-g"        'paredit-kill
-                 "M-'"        'paredit-comment-dwim
-                 "RET"        'paredit-newline)))
-    (autoload 'enable-paredit-mode
-      "paredit" "Turn on pseudo-structural editing of Lisp code." t)))
+(defun eab-spacemacs/init-paredit nil)
 (defun eab-spacemacs/init-grep-a-lot nil
   (use-package grep-a-lot))
 (defun eab-spacemacs/init-wgrep nil
@@ -657,21 +593,7 @@ which require an initialization must be listed explicitly in the list.")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun eab-spacemacs/init-docker ()
-  (use-package docker)
-  (use-package docker-container
-    :config
-    (defun eab/tramp-docker-cleanup ()
-      (interactive)
-      (tramp-cleanup-connection
-       (tramp-dissect-file-name
-        ;; TODO: tramp default-directory path
-        (concat "/docker:"
-                (car (progn
-                       (docker-utils-get-marked-items-ids))) ":"))))
-    (general-define-key
-     :keymaps 'docker-container-mode-map
-     "c"  'eab/tramp-docker-cleanup)))
+(defun eab-spacemacs/init-docker ())
 
 (defun eab-spacemacs/init-compat nil)
 (defun eab-spacemacs/init-elpa-mirror nil)
@@ -964,63 +886,10 @@ which require an initialization must be listed explicitly in the list.")
   (use-package eab-bookmark
     :after (bookmark eab-minimal eab-workgroups2)))
 
-(defun eab-spacemacs/init-ibuffer ()
-  (use-package ibuffer
-    :config
-    (setq ibuffer-formats
-          '((mark modified read-only " "
-                  (name 18 18 :left :elide))
-            (mark modified read-only " " (name 18 18 :left :elide) " "
-                  (size 9 -1 :right) " " (mode 16 16 :left :elide) " "
-                  filename-and-process)))
-    (general-define-key
-     :keymaps 'ibuffer-mode-map
-     "C-d"        'nil
-     "C-k"        'nil
-     "C-o"        'nil
-     "C-y"        'nil
-     "M-g"        'nil
-     "M-j"        'nil
-     "M-n"        'nil
-     "M-o"        'nil
-     "M-p"        'nil
-     "M-s"        'nil)))
-(defun eab-spacemacs/init-eab-ace-jump-mode ()
-  (use-package ace-jump-mode
-    :init
-    (evil-mode -1)
-    :config
-    (setq ace-jump-mode-gray-background nil) ;; it is faster
-
-    (defun eab/ace-ibuffer ()
-      (interactive)
-      (setq ido-exit 'eab-ido-exit)
-      (exit-minibuffer))
-
-    (defun eab/call-ibuffer ()
-      (if (equal (buffer-name (current-buffer)) "*Ibuffer*")
-          (ibuffer-visit-buffer)))
-
-    (add-hook 'ace-jump-mode-end-hook 'eab/call-ibuffer)
-
-    (defun eab/isearch-ace-jump ()
-      "Invoke `ace-jump' from isearch within `current-buffer'."
-      (interactive)
-      (let ((case-fold-search isearch-case-fold-search)
-            (isearch-buffer (current-buffer))
-            (isearch-update-post-hook
-             (lambda ()
-               (interactive)
-               (unless (equal isearch-string "")
-                 (isearch-exit)))))
-        (isearch-exit)
-        ;; TODO: ace -> avy
-        (ace-jump-do (concat "\\b" isearch-string))))))
-
+(defun eab-spacemacs/init-ibuffer ())
+(defun eab-spacemacs/init-eab-ace-jump-mode ())
 (defun eab-spacemacs/init-eab-avy ()
-  (use-package avy
-    :config
-    (setq avy-timeout-seconds 0.25)))
+  (load "eab-config-avy.el"))
 
 (defun eab-spacemacs/init-eab-minimal ()
   (use-package eab-minimal
@@ -1208,7 +1077,6 @@ which require an initialization must be listed explicitly in the list.")
    "C-x t"        'dictionary-search
    "M-V"          'helm-show-kill-ring
    "M-Z"          'undo-tree-redo
-   "M-d"          'avy-goto-word-1
    )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1243,11 +1111,7 @@ which require an initialization must be listed explicitly in the list.")
   (general-define-key
    :keymaps 'read-expression-map
    "M-g"  'nil)
-
-  (general-define-key
-   :keymaps 'isearch-mode-map
-   "M-d" 'eab/isearch-ace-jump)
-
+  
   (general-define-key
    :keymaps 'query-replace-map
    "C-e"  'edit

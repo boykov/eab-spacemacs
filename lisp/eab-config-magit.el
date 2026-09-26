@@ -69,16 +69,42 @@
     (interactive)
     (magit-stage-modified)
     (call-interactively 'magit-commit-amend)))
-(eab/add-hook magit-file-mode-hook eab/magit-file-mode-hook
-  (general-define-key
-   :keymaps 'magit-file-mode-map
-   "C-x g"      'nil
-   ))
+
+(use-package magit-base
+  :after (magit)
+  (eab/add-hook magit-file-mode-hook eab/magit-file-mode-hook
+    (general-define-key
+     :keymaps 'magit-file-mode-map
+     "C-x g"      'nil
+     )))
+
 (use-package magit-status
   :after (magit)
   :config
   (add-to-list 'magit-status-sections-hook 'magit-insert-modules 't))
-(define-advice vc-annotate (:before (&rest args) eab-vc-annotate)
-  (vc-refresh-state))
-(setq transient-history-file (eab/config (concat (eab/history-dir) "transient/history.el")))
+
+(use-package vc-annotate
+  :config
+  (define-advice vc-annotate (:before (&rest args) eab-vc-annotate)
+    (vc-refresh-state)))
+
+(use-package transient
+  :config
+  (setq transient-history-file
+        (eab/config (concat (eab/history-dir) "transient/history.el"))))
+
 (use-package git-wip)
+
+(use-package forge
+  :config
+  (add-to-list 'forge-alist '("gitlab-local.boos.solutions"
+                              "gitlab-local.boos.solutions/api/v4"
+                              "gitlab-local.boos.solutions"
+                              forge-gitlab-repository))
+  (setq bug-reference-auto-setup-functions nil))
+
+;; TODO: cancel rev-export disabling
+(use-package orgit
+  :after (magit)
+  :config
+  (defun orgit-rev-export (path desc format)))
