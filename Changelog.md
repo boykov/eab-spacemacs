@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.4.38
+
+chore: split eab-words.el into config files
+
+- Refactor eab-words.el: move reusable macros and functions into dedicated
+  config files (eab-config-helm.el, eab-config-spell.el,
+  eab-config-region-bindings-mode.el, eab-config-simple.el)
+- Add missing `:after` dependencies and minor configuration tweaks across
+  several packages (helm, smart-compile, ansi-color, ellama, gptel-agent,
+  org-agenda-property, dictionary, abbrev, expand-region, multiple-cursors,
+  browse-url, org-babel)
+- Remove eab-words.el as its contents have been migrated to individual configs
+- Simplify packages.el init functions by loading new config files instead of
+  inlining definitions
+
 ## 0.4.37
 
 chore: update changelog and refactor configuration files

@@ -7,6 +7,9 @@
 ;; Requirements:
 ;; Status: not intended to be distributed yet
 
+(defmacro eab/config (&rest body)
+  `(eval ,@body))
+
 (defvar eab/gotify-token-cache "" "")
 (defun eab/gotify-token ()
   (if (not (equal (length eab/gotify-token-cache) 15))

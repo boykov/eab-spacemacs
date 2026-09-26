@@ -184,6 +184,8 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(eab/search-word eab/ido-at-point "Ido at point" eab/ido-at-point-1 (word))
+
 (defun eab/ido-at-point-1 (word)
   (insert (ido-completing-read "Ido at point: " (ac-symbol-candidates) nil nil word)))
 

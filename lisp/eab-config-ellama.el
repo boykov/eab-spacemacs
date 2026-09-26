@@ -28,6 +28,10 @@ END
 END
 " ))) 0 -1)))
   eab/yc-id-cache)
+
+(use-package llm)
+(use-package llm-openai)
+
 (use-package ellama
   :after (llm llm-openai)
   :config

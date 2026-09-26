@@ -31,6 +31,7 @@
 
   ;; fix 'file is already exist' bug
   (setq org-babel-temporary-directory "/tmp/user/1000/babel-aa5I6G"))
+
 (use-package org-clock)
 (use-package org-crypt)
 (use-package org-capture)
@@ -42,6 +43,10 @@
 (use-package org-agenda)
 (use-package org-protocol)
 (use-package org-src)
+(use-package org-agenda-property
+    :after (org-agenda)
+    :config
+    (setq org-agenda-property-list '("Custom_BIB")))
 
 (eab/add-hook orgtbl-mode-hook eab/orgtbl-mode-hook
   (general-define-key

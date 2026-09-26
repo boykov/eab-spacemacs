@@ -83,6 +83,15 @@
          ,@body
      (call-interactively 'self-insert-command)))
 
+(defmacro eab/search-word (funcname name function &optional funargs)
+  "Wrapper for search word interface."
+  `(defun ,funcname (&optional arg)
+     (interactive "P")
+     (let ((word (if arg
+                     (read-string (concat ,name " word: ") (current-word))
+                   (current-word))))
+       (,function ,@funargs))))
+
 (define-advice kmacro-end-macro (:after (&rest args) fix-kmacro-input)
   (setq last-kbd-macro (cl-remove 'with-input-method last-kbd-macro)))
 

@@ -7,6 +7,34 @@
 ;; Requirements:
 ;; Status: not intended to be distributed yet
 
+(use-package smart-compile
+  :config
+  (setq-default smart-compile-check-makefile nil)
+  (setq-default smart-compile-check-build-system nil)
+  (add-to-list 'smart-compile-alist '(graphviz-dot-mode . "xdot.py %F"))
+  (add-to-list 'smart-compile-alist '(python-mode . "python %F"))
+  (add-to-list 'smart-compile-alist '(textile-mode . "make push id=%f"))
+  (add-to-list 'smart-compile-alist '("\\.xml\\'" . "cd `git rev-parse --show-toplevel` && make push id=%F"))
+  (add-to-list 'smart-compile-alist '("\\.jira\\'" . "make push id=%n"))
+  (add-to-list 'smart-compile-alist '("\\.html\\'" . "make push id=%n")))
+
+(use-package ansi-color
+  ;; see eab-compile.el
+  :config
+  (defun colorize-compilation-buffer ()
+    (read-only-mode 'toggle)
+    (ansi-color-apply-on-region (point-min) (point-max))
+    (read-only-mode 'toggle))
+
+  ;; TODO: why concrete buffer-name only?
+  (define-advice display-message-or-buffer (:before (&rest args) ansi-color)
+    "Process ANSI color codes in shell output."
+    (let ((buf (car args)))
+      (and (bufferp buf)
+           (string= (buffer-name buf) "*Shell Command Output*")
+           (with-current-buffer buf
+             (ansi-color-apply-on-region (point-min) (point-max)))))))
+
 (use-package eab-compile
   :after (ansi-color eab-minimal eab-notify)
   :init

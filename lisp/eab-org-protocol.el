@@ -75,4 +75,6 @@
     "https://share.eab.su/papers/"
     word ".pdf")))
 
+(eab/search-word eab/browse-paper-at-point "browse paper" eab/browse-paper-1 (word))
+
 (provide 'eab-org-protocol)

@@ -270,15 +270,8 @@ which require an initialization must be listed explicitly in the list.")
     (setq ai-code-backends-infra-ghostel-enable-ime-integration nil)
     (ai-code-set-backend 'pi)
     ))
-(defun eab-spacemacs/init-gptel-agent nil
-  (use-package gptel-agent
-    :after (gptel)
-    :config
-    (add-to-list 'gptel-agent-dirs (eab/config (concat eab-spacemacs-path "agents")))
-    (gptel-agent-update)))
-(defun eab-spacemacs/init-llm ()
-  (use-package llm)
-  (use-package llm-openai))
+(defun eab-spacemacs/init-gptel-agent nil )
+(defun eab-spacemacs/init-llm ())
 (defun eab-spacemacs/init-prodigy nil
   (use-package prodigy))
 (defun eab-spacemacs/init-solarized-theme nil)
@@ -416,255 +409,33 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-ediff-wind ())
 (defun eab-spacemacs/init-ediff-diff ())
 (defun eab-spacemacs/init-ispell ()
-  (use-package ispell
-    :config
-    (setq ispell-dictionary "english")))
-(defun eab-spacemacs/init-flyspell ()
-  (use-package flyspell
-    :after (ispell)
-    :config
-    (eab/add-hook flyspell-mode-hook eab/flyspell-hook
-      (general-define-key
-       :keymaps 'flyspell-mode-map
-       "C-k"        'toggle-input-method))
-    (autoload 'tex-mode-flyspell-verify "flyspell" "" t)
-    (setq flyspell-default-dictionary "english")
-    (defun eab/flyspell-buffer (arg)
-      (interactive "P")
-      (let ((ispell-local-dictionary (if arg "en" "ru")))
-        (flyspell-buffer)))
-    (autoload 'flyspell-auto-correct-previous-word "flyspell" "Auto correct the first mispelled" t)
-    (autoload 'flyspell-delay-command "flyspell" "Delay on command." t)
-    (autoload 'flyspell-mode "flyspell" "On-the-fly spelling checker." t)))
-(defun eab-spacemacs/init-auto-dictionary ()
-  (use-package auto-dictionary
-    :config
-    ;; (add-hook 'flyspell-mode-hook (lambda () (auto-dictionary-mode 1)))
-    ;; (flyspell-delete-all-overlays)
-    (add-to-list 'adict-language-list "ru" 't)
-    (add-to-list 'adict-dictionary-list
-                 `("ru" . ,(adict-guess-dictionary-name '("ru"))) 't)
-    (let ((hash adict-hash))
-      (adict-add-word hash 19 "и" "в" "не" "на" "что" "с" "то" "я" "он" "как" "а"
-                      "по" "к" "его" "все" "из" "за" "это" "у" "же" "от" "но" "было" "так"
-                      "бы" "о" "еще" "меня" "был" "только" "она" "уже" "ее" "мне" "сказал" "ты"
-                      "для" "мы" "они" "до" "их" "когда" "или" "ему" "ни" "вы" "даже" "под"
-                      "него" "если" "чтобы" "вот" "чем" "где" "себя" "была" "нас" "время"
-                      "ли" "быть" "раз" "может" "есть" "со" "были" "там" "нет" "очень"
-                      "кто" "без" "тут" "во" "будет" "тоже" "этого" "надо" "себе"
-                      "да" "ничего" "при" "тебя" "них" "этом" "того" "можно" "этот"
-                      "потом" "человек" "вас" "сейчас" "один" "здесь" "теперь" "тебе"
-                      "через" "больше" "всех" "лет" "том" "после" "сам" "нибудь" "ним"
-                      "просто" "вдруг" "над" "потому" "ведь" "вам" "дело" "тогда"
-                      "спросил" "жизни" "два" "чего" "который" "тем" "нам" "перед"
-                      "глаза" "всего" "уж" "им" "своей" "несколько" "день" "всегда"
-                      "какой" "ей" "более" "такой" "тот" "этой" "нее" "которые"
-                      "ней" "эти" "стал" "жизнь" "сразу" "мог" "совсем" "свою" "об"
-                      "почему" "пока" "конечно" "люди" "года" "человека" "куда" "почти"
-                      "руки" "людей" "хотя" "три" "снова" "хорошо" "знаю" "много" "сказать"
-                      "будто" "лишь" "голову" "про" "сказала" "всем" "между" "говорит"
-                      "никогда" "опять" "свои" "другой" "мой" "своих" "эту" "такое" "знал"
-                      "своего" "таки" "собой" "дома" "времени" "чуть" "свой" "лучше" "именно"
-                      "друг" "лицо" "руку" "вообще" "свое" "которой" "никто" "кого"
-                      "этих" "говорил" "вместе" "назад"))))
+  (load "eab-config-spell.el"))
+(defun eab-spacemacs/init-flyspell ())
+(defun eab-spacemacs/init-auto-dictionary () )
 
 (defun eab-spacemacs/init-recentf nil
   (load "eab-config-recentf.el"))
-(defun eab-spacemacs/init-ansi-color nil
-  (use-package ansi-color
-    ;; see eab-compile.el
-    :config
-    (defun colorize-compilation-buffer ()
-      (read-only-mode 'toggle)
-      (ansi-color-apply-on-region (point-min) (point-max))
-      (read-only-mode 'toggle))
-
-    ;; TODO: why concrete buffer-name only?
-    (define-advice display-message-or-buffer (:before (&rest args) ansi-color)
-      "Process ANSI color codes in shell output."
-      (let ((buf (car args)))
-        (and (bufferp buf)
-             (string= (buffer-name buf) "*Shell Command Output*")
-             (with-current-buffer buf
-               (ansi-color-apply-on-region (point-min) (point-max))))))))
+(defun eab-spacemacs/init-ansi-color nil)
 (defun eab-spacemacs/init-helm nil
-  (use-package eab-helm
-    :after (eab-org ergoemacs-functions)
-    :init
-    (defvar browse-url-galeon-program nil)
-    (defun browse-url-galeon nil)
-    (defvar browse-url-netscape-program nil)
-    (defun browse-url-netscape nil)
-    :config
-    (eab/add-hook helm-before-initialize-hook eab/helm-hook
-      (general-define-key
-       :keymaps 'helm-map
-       "C-k"        'toggle-input-method
-       "M-H"        'helm-select-2nd-action-or-end-of-line
-       "M-g"        'helm-delete-minibuffer-contents
-       "C-|"        'eab/helm-select-action
-       "<C-return>" (ilam
-                     (with-helm-alive-p
-                       (helm-exit-and-execute-action 'eab/helm-note-todo)))
-       "M-4"        (ilam
-                     (with-helm-alive-p
-                       (helm-exit-and-execute-action 'eab/helm-note-todo)))
-       "M-RET"      (ilam
-                     (with-helm-alive-p
-                       (helm-exit-and-execute-action 'eab/helm-org-goto-marker)))
-       "M-j"        'nil
-       "M-v"        'nil
-       "M-l"        'nil
-       "M-m"        'eab/helm-toggle-visible-mark
-       "M-2"        'eab/helm-toggle-visible-mark
-       "M-3"        (ilam
-                     (with-helm-alive-p
-                       (helm-exit-and-execute-action 'eab/helm-org-switch-ql)))
-       "M-k"        'helm-next-line
-       "M-i"        'helm-previous-line
-       "C-n"        'next-history-element
-       "C-p"        'previous-history-element
-       "C-SPC"      'eab/helm-toggle-visible-mark
-       "M-K"        'helm-next-page
-       "M-J"        'helm-beginning-of-buffer
-       "M-L"        'helm-end-of-buffer
-       "M-I"        'helm-previous-page)
-      (ergoemacs-fix-arrow-keys helm-map)
-      (general-define-key
-       :keymaps 'helm-generic-files-map
-       "M-i"        'helm-previous-line))
-    (setq helm-c-adaptative-history-file (eab/config (concat (eab/history-dir) "helm-adaptive-history")))
-    (setq helm-locate-command (eab/config (concat eab/ssh-host-local " plocate %s -e %s")))
-    (defun eab/helm-find-file-or-marked (candidate)
-      (helm-find-file-or-marked (concat "/ssh:chronos:" candidate)))
-    (let ((addr (cdr (rassoc 'helm-find-file-or-marked helm-type-file-actions))))
-      (if addr
-          (setf addr 'eab/helm-find-file-or-marked)))))
+  (load "eab-config-helm.el"))
 (defun eab-spacemacs/init-helm-descbinds nil)
 (defun eab-spacemacs/init-helm-helm-commands nil)
-(defun eab-spacemacs/init-helm-org nil
-  (use-package helm-org
-    :after (eab-helm eab-org)
-    :config
-    ;; see also minibuffer-local-map
-    (add-to-list 'helm-org-headings-actions '("eab/helm-org-goto-marker" . eab/helm-org-goto-marker))
-    (add-to-list 'helm-org-headings-actions '("eab/helm-note-todo" . eab/helm-note-todo))
-    (add-to-list 'helm-org-headings-actions '("eab/helm-org-switch-ql" . eab/helm-org-switch-ql))
-    (add-to-list 'helm-org-headings-actions '("eab/helm-org-store-link" . eab/helm-org-store-link))
-    (add-to-list 'helm-org-headings-actions '("eab/helm-hron-todo" . eab/helm-hron-todo))))
-(defun eab-spacemacs/init-helm-org-rifle nil
-  (use-package helm-org-rifle
-    :after (general ergoemacs-functions helm org eab-minimal)
-    :config
-    (general-define-key
-     :keymaps 'helm-org-rifle-map
-     "<C-return>" (ilam
-                   (with-helm-alive-p
-                     (helm-exit-and-execute-action 'eab/rifle-note-todo)))
-     "RET"        (ilam
-                   (with-helm-alive-p
-                     (helm-exit-and-execute-action 'eab/rifle-hron-todo)))
-     "M-RET"      (ilam
-                   (with-helm-alive-p
-                     (helm-exit-and-execute-action
-                      'helm-org-rifle-show-entry-in-real-buffer)))
-     "M-c"        (ilam
-                   (with-helm-alive-p
-                     (helm-exit-and-execute-action
-                      'eab/helm-rifle-store-link)))
-     "M-n"        'helm-next-source
-     "M-p"        'helm-previous-source
-     "C-k"        'toggle-input-method
-     "M-k"        'helm-next-line
-     "C-n"        'next-history-element
-     "M-K"        'helm-next-page
-     "M-J"        'helm-beginning-of-buffer
-     "C-p"        'previous-history-element
-     "M-i"        'helm-previous-line
-     )
-    (ergoemacs-fix-arrow-keys helm-org-rifle-map)
-    (setq helm-org-rifle-ellipsis-string "\n")
-    (setq helm-org-rifle-context-characters 200)
-    (setq helm-org-rifle-input-idle-delay 0.5)
-    (if (eab/ondaemon (eab/server-P))
-        (setq helm-org-rifle-input-idle-delay 1))
-    (add-to-list 'helm-org-rifle-actions '("eab/hron-todo" . eab/rifle-hron-todo))
-    (add-to-list 'helm-org-rifle-actions '("eab/note-todo" . eab/rifle-note-todo))))
-(defun eab-spacemacs/init-smart-compile nil
-  (use-package smart-compile
-    :config
-    (setq-default smart-compile-check-makefile nil)
-    (setq-default smart-compile-check-build-system nil)
-    (add-to-list 'smart-compile-alist '(graphviz-dot-mode . "xdot.py %F"))
-    (add-to-list 'smart-compile-alist '(python-mode . "python %F"))
-    (add-to-list 'smart-compile-alist '(textile-mode . "make push id=%f"))
-    (add-to-list 'smart-compile-alist '("\\.xml\\'" . "cd `git rev-parse --show-toplevel` && make push id=%F"))
-    (add-to-list 'smart-compile-alist '("\\.jira\\'" . "make push id=%n"))
-    (add-to-list 'smart-compile-alist '("\\.html\\'" . "make push id=%n"))))
+(defun eab-spacemacs/init-helm-org nil )
+(defun eab-spacemacs/init-helm-org-rifle nil )
+(defun eab-spacemacs/init-smart-compile nil)
 (defun eab-spacemacs/init-popwin nil
   (load "eab-config-popwin.el"))
-(defun eab-spacemacs/init-expand-region nil
-  (use-package expand-region
-    :config
-    (defun er/add-org-mode-expansions ()
-      "Adds org-specific expansions for buffers in org-mode"
-      (set (make-local-variable 'er/try-expand-list)
-           (append
-            (remove #'mark-paragraph (remove #'er/mark-defun er/try-expand-list))
-            '(org-mark-subtree
-              er/mark-org-element
-              er/mark-org-element-parent
-              er/mark-org-code-block
-              er/mark-sentence
-              er/mark-org-parent)))
-      (set (make-local-variable 'er/save-mode-excursion)
-           #'er/save-org-mode-excursion))
-    (defun er/add-text-mode-expansions ()
-      (make-variable-buffer-local 'er/try-expand-list)
-      (setq er/try-expand-list (append
-                                er/try-expand-list
-                                '(mark-paragraph
-                                  mark-page))))
-    (add-hook 'text-mode-hook 'er/add-text-mode-expansions)))
-(defun eab-spacemacs/init-multiple-cursors nil
-  (use-package multiple-cursors ;; fix mc/keymap
-    :config
-    (add-hook 'multiple-cursors-mode-enabled-hook 
-              (lambda ()
-                (general-define-key
-                 :keymaps 'mc/keymap
-                 "M-K"        'mc/cycle-forward
-                 "M-I"        'mc/cycle-backward
-                 "M-v"        'nil
-                 "C-v"        'nil)))
-    (setq mc/list-file (eab/config (concat (eab/history-dir) ".mc-lists.el")))
-    (if (boundp 'mc--default-cmds-to-run-for-all)
-        (setq mc--cmds mc--default-cmds-to-run-for-all))
-    ;; TODO: mc/cmds-to-run-for-all переназначается (sp-backward-sexp sp-forward-sexp)
-    (setq mc/cmds-to-run-for-all (append mc/cmds-to-run-for-all
-                                         '(org-delete-char
-                                           org-self-insert-command)))))
+(defun eab-spacemacs/init-expand-region nil )
+(defun eab-spacemacs/init-multiple-cursors nil )
 (defun eab-spacemacs/init-flx-isearch ()
-  ;; TODO: поробовать разрешить в agenda?
+  ;; TODO: попробовать разрешить в agenda?
   (flx-isearch-mode 0)
   (setq isearch-search-fun-function 'isearch-search-fun-default))
 
 (defun eab-spacemacs/init-workgroups2/src ()
   (load "eab-config-workgroups2.el"))
 
-(defun eab-spacemacs/init-dictionary nil
-  (use-package dictionary
-    :config
-    (setq dictionary-server "localhost")
-    (define-advice dictionary-search (:after (&rest args) eab-dictionary-abbrev)
-      "Put searched word for dictionary to eab-abbrev-table"
-      (let ((word (car args)))
-        (unless (string-equal word "")
-          (define-abbrev eab-abbrev-table word word))))
-    (general-define-key
-     :keymaps 'dictionary-mode-map
-     "t"  'dictionary-search
-     "B"  'dictionary-previous)))
+(defun eab-spacemacs/init-dictionary nil)
 
 (defun eab-spacemacs/init-magit nil
   (load "eab-config-magit.el"))
@@ -800,11 +571,7 @@ which require an initialization must be listed explicitly in the list.")
 ;; (load "auctex.el" nil t t)
   (use-package eab-tex
     :after (eab-minimal)))
-(defun eab-spacemacs/init-org-agenda-property nil
-  (use-package org-agenda-property
-    :after (org-agenda)
-    :config
-    (setq org-agenda-property-list '("Custom_BIB"))))
+(defun eab-spacemacs/init-org-agenda-property nil)
 (defun eab-spacemacs/init-region-bindings-mode nil
   (load "eab-config-region-bindings-mode.el"))
 (defun eab-spacemacs/init-smex nil
@@ -882,7 +649,9 @@ which require an initialization must be listed explicitly in the list.")
     (diminish 'undo-tree-mode "UT")))
 (defun eab-spacemacs/init-edit-list ()
   (use-package edit-list
+    :after (eab-minimal)
     :config
+    (eab/search-word eab/edit-list-at-point "Edit-list at point" eab/edit-list-1 (word))
     (defun eab/edit-list-1 (word)
       (edit-list (intern word)))))
 
@@ -1189,16 +958,7 @@ which require an initialization must be listed explicitly in the list.")
     :config
     (setq ido-save-directory-list-file
           (eab/config (concat (eab/history-dir) ".ido.last")))))
-(defun eab-spacemacs/init-abbrev nil
-  (use-package eab-words
-    :after (abbrev simple)
-    :config
-    (setq abbrev-file-name
-          (eab/config (concat (eab/history-dir) ".abbrev_defs")))
-    (if (file-exists-p abbrev-file-name)
-        (progn
-          (setq save-abbrevs 'silently)
-          (quietly-read-abbrev-file abbrev-file-name)))))
+(defun eab-spacemacs/init-abbrev nil)
 (defun eab-spacemacs/init-bookmark nil
   (use-package bookmark)
   (use-package eab-bookmark
@@ -1425,8 +1185,6 @@ which require an initialization must be listed explicitly in the list.")
 
   ;; shell and shell-utils
   (general-define-key
-   "C-c T"        'eab/google-translate
-   "C-x T"        'eab/google-translate
    "C-S-f"        'eab/gr-status)
 
   (general-define-key

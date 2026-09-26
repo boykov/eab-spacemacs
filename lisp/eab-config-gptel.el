@@ -160,3 +160,9 @@ calls the gptel-rewrite interactive command."
     (interactive)
     (call-interactively 'org-mode)
     (call-interactively 'gptel-mode)))
+
+(use-package gptel-agent
+  :after (gptel)
+  :config
+  (add-to-list 'gptel-agent-dirs (eab/config (concat eab-spacemacs-path "agents")))
+  (gptel-agent-update))

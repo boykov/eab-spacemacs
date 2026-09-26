@@ -41,6 +41,7 @@
      "C-M-\\"     'bibtex-fill-entry))
   (setq bibtex-files (eab/config '`("~/git/lit/boykov.bib")))
   (setq org-ditaa-jar-path (eab/config "/usr/bin/ditaa")))
+
 (use-package eab-org-agenda
   :after (org org-agenda eab-org)
   :config
@@ -57,6 +58,7 @@
   (setq org-agenda-archives-mode 't)
   (setq org-agenda-text-search-extra-files (quote (agenda-archives)))
   (setq org-agenda-clockreport-parameter-plist (quote (:link nil :maxlevel 2))))
+
 (use-package eab-org-publish
   :after (eab-org))
 (use-package eab-org-protocol

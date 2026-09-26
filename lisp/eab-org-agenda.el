@@ -235,6 +235,8 @@ update search arguments."
 (define-advice org-agenda (:after (&rest args) eab-advice-agenda)
   (eab/short-name-agenda))
 
+(eab/search-word eab/org-agenda-search "agenda search" org-search-view (nil word))
+
 ;; (define-advice org-ql-search (:after (&rest args) eab-org-ql-search)
 ;;   (eab/fix-agenda-buffer-name))
 ;; (advice-remove 'org-ql-search #'eab-org-ql-search)

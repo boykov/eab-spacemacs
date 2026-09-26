@@ -8,6 +8,7 @@
 ;; Status: not intended to be distributed yet
 
 (use-package browse-url
+  :after (eab-minimal)
   :config
   (setq browse-url-browser-function (quote eab/browse-url))
   (setq browse-url-firefox-program (eab/config "/usr/local/bin/browser-remote"))
@@ -50,6 +51,7 @@ EOF")
     (if current-prefix-arg
         (browse-url-firefox url)
       (eab/eaf-open-browser url)))
+  (eab/search-word eab/google "google" google (word))
   (defun google (phrase)
     "Search Google for a given phrase.
 Prompts the user to enter a search query, defaulting to PHRASE if provided.

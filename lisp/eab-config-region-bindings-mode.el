@@ -24,6 +24,28 @@
     (region-bindings-mode-disable))
   (define-advice winner-redo (:after (&rest args) eab-winner-redo-after)
     (region-bindings-mode-enable))
+
+  ;; TODO see eab/paper-link
+  (defun eab/abbrev-link (abbrev name)
+    (if (string= name "")
+        ""
+      (concat "[[" abbrev ":" name "][" name "]]")))
+
+  (defun eab/replace-selection ()
+    (interactive)
+    (let* ((text (if mark-active
+                     (buffer-substring (region-beginning) (region-end))
+                   ""))
+           (link (eab/abbrev-link "google" text)))
+      (delete-region (region-beginning) (region-end))
+      (insert link)))
+
+  (defun eab/replace-newline-by-space ()
+    (interactive)
+    (let ((query-replace-defaults
+           (append '(("\n" . " ")) query-replace-defaults)))
+      (call-interactively 'replace-regexp)))
+
   (define-advice region-bindings-mode-on (:before (&rest args) eab-region-bindings-mode-on)
     (progn
       (setq region-bindings-mode-disabled-modes '(magit-status-mode magit-diff-mode))
@@ -83,3 +105,44 @@
        "л"        'mc/mark-next-like-this
        "C-c C-c"  'org-toggle-checkbox
        "m"        'mc/mark-more-like-this-extended))))
+
+(use-package expand-region
+  :config
+  (defun er/add-org-mode-expansions ()
+    "Adds org-specific expansions for buffers in org-mode"
+    (set (make-local-variable 'er/try-expand-list)
+         (append
+          (remove #'mark-paragraph (remove #'er/mark-defun er/try-expand-list))
+          '(org-mark-subtree
+            er/mark-org-element
+            er/mark-org-element-parent
+            er/mark-org-code-block
+            er/mark-sentence
+            er/mark-org-parent)))
+    (set (make-local-variable 'er/save-mode-excursion)
+         #'er/save-org-mode-excursion))
+  (defun er/add-text-mode-expansions ()
+    (make-variable-buffer-local 'er/try-expand-list)
+    (setq er/try-expand-list (append
+                              er/try-expand-list
+                              '(mark-paragraph
+                                mark-page))))
+  (add-hook 'text-mode-hook 'er/add-text-mode-expansions))
+
+(use-package multiple-cursors ;; fix mc/keymap
+  :config
+  (add-hook 'multiple-cursors-mode-enabled-hook 
+            (lambda ()
+              (general-define-key
+               :keymaps 'mc/keymap
+               "M-K"        'mc/cycle-forward
+               "M-I"        'mc/cycle-backward
+               "M-v"        'nil
+               "C-v"        'nil)))
+  (setq mc/list-file (eab/config (concat (eab/history-dir) ".mc-lists.el")))
+  (if (boundp 'mc--default-cmds-to-run-for-all)
+      (setq mc--cmds mc--default-cmds-to-run-for-all))
+  ;; TODO: mc/cmds-to-run-for-all переназначается (sp-backward-sexp sp-forward-sexp)
+  (setq mc/cmds-to-run-for-all (append mc/cmds-to-run-for-all
+                                       '(org-delete-char
+                                         org-self-insert-command))))

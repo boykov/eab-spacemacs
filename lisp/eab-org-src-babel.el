@@ -23,6 +23,8 @@
    (screen . t)
    (emacs-lisp . t)
    (shell . t)
+   (org . t)
+   (markdown . t)
    ))
 
 (add-to-list 'org-babel-default-header-args:dot '(:cmdline . "-Tsvg"))

@@ -12,6 +12,30 @@
   :init
   (setq eab/trans-path (eab/config "~/git/python/trans.py")))
 
+(use-package abbrev
+  :after (eab-minimal simple)
+  :config
+  (eab/search-word eab/add-eab-abbrev "abbrev save" define-abbrev (eab-abbrev-table word word))
+  (setq abbrev-file-name
+        (eab/config (concat (eab/history-dir) ".abbrev_defs")))
+  (if (file-exists-p abbrev-file-name)
+      (progn
+        (setq save-abbrevs 'silently)
+        (quietly-read-abbrev-file abbrev-file-name))))
+
+(use-package dictionary
+  :config
+  (setq dictionary-server "localhost")
+  (define-advice dictionary-search (:after (&rest args) eab-dictionary-abbrev)
+    "Put searched word for dictionary to eab-abbrev-table"
+    (let ((word (car args)))
+      (unless (string-equal word "")
+        (define-abbrev eab-abbrev-table word word))))
+  (general-define-key
+   :keymaps 'dictionary-mode-map
+   "t"  'dictionary-search
+   "B"  'dictionary-previous))
+
 (general-define-key  "C-s"          (ilam (save-some-buffers 't)))
 
 ;; DONE: auto-save и торможение при C-s
