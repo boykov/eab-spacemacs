@@ -17,7 +17,10 @@
   (setq ai-code-pi-program "bash")
   (setq ai-code-pi-program-switches '("/home/eab/git/eab-system/eab-spacemacs/pi.sh"))
   ;; (setq ai-code--session-project-root-override "/ssh:chronos:/home/eab/claude/")
-  (setq ai-code--session-project-root-override "/home/eab/git/eab-system/eab-spacemacs/")
+  (defun ai-code-backends-infra--session-working-directory (&optional prompt-p)
+    "Return the working directory, preferring the current project root.
+When PROMPT-P is non-nil, prompt with the computed directory as the default."
+    "/home/eab/git/eab-system/eab-spacemacs/")
   (setq ai-code-backends-infra-terminal-backend 'ghostel)
   (ai-code-set-backend 'claude-code)
   ;; russian lang

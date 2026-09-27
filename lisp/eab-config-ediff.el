@@ -23,6 +23,9 @@
    "M-N"        'nil
    "M-o"        'nil
    "M-p"        'nil))
+
+(use-package diff-hl)
+
 (use-package ediff
   :config
   (eab/add-hook ediff-after-setup-control-frame-hook eab/ediff-hook

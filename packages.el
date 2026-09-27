@@ -33,6 +33,7 @@
 (use-package eab-notify)
 (use-package eab-server
   :after (eab-notify))
+(load "eab-config-mode.el")
 
 (defvar eab-spacemacs-packages
   `(
@@ -247,8 +248,7 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-iedit nil
   (use-package iedit))
 (defun eab-spacemacs/init-lispy nil
-  (use-package lispy
-    :after (iedit zoutline)))
+  (use-package lispy))
 (defun eab-spacemacs/init-ox-pandoc nil)
 (defun eab-spacemacs/init-elisa nil)
 (defun eab-spacemacs/init-ai-code nil )
@@ -291,7 +291,6 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-consult nil)
 (defun eab-spacemacs/init-consult-omni nil
   (use-package consult-omni
-    :after (consult)
     :init
     (add-to-list 'load-path (eab/config (concat eab-spacemacs-path "local/consult-omni")))
     (add-to-list 'load-path (eab/config (concat eab-spacemacs-path "local/consult-omni/sources")))
@@ -423,15 +422,6 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-forge nil)
 (defun eab-spacemacs/init-orgit nil)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;               __  __           _           
-;;              |  \/  | ___   __| | ___  ___ 
-;;              | |\/| |/ _ \ / _` |/ _ \/ __|
-;;              | |  | | (_) | (_| |  __/\__ \
-;;              |_|  |_|\___/ \__,_|\___||___/
-;;                                            
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (defun eab-spacemacs/init-logstash-conf nil)
 (defun eab-spacemacs/init-nginx-mode nil)
 (defun eab-spacemacs/init-julia-mode nil
@@ -449,45 +439,10 @@ which require an initialization must be listed explicitly in the list.")
               (setq-local tab-width 2)
               ))
   (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode)))
-(defun eab-spacemacs/init-ssh-config-mode ()
-  (use-package ssh-config-mode
-    :config
-    (eab/add-hook ssh-config-mode-hook eab/ssh-config-hook
-      (general-define-key
-       :keymaps 'ssh-config-mode-map
-       "C-i"        'eab/outline-toggle-children
-       "<backtab>"  'eab/outline-toggle-all))
-    (add-to-list 'auto-mode-alist '("/\\.ssh/config\\'"     . ssh-config-mode))
-    (add-to-list 'auto-mode-alist '("/sshd?_config\\'"      . ssh-config-mode))
-    (add-to-list 'auto-mode-alist '("/known_hosts\\'"       . ssh-known-hosts-mode))
-    (add-to-list 'auto-mode-alist '("/authorized_keys2?\\'" . ssh-authorized-keys-mode))))
-(defun eab-spacemacs/init-textile-mode ()
-  (use-package textile-mode
-    :config
-    (eab/add-hook textile-mode-hook eab/textile-hook
-      (general-define-key
-       :keymaps 'textile-mode-map
-       "C-i"        'eab/outline-toggle-children
-       "<backtab>"  'eab/outline-toggle-all))
-    (add-hook 'textile-mode-hook (lambda () (toggle-truncate-lines -1)))
-    (add-to-list 'auto-mode-alist '("\\.textile\\'" . textile-mode))
-    (set-face-foreground 'textile-link-face "deep sky blue")
-    (set-face-foreground 'textile-code-face "ivory4")
-    (set-face-foreground 'textile-style-face "orange red")
-    (set-face-foreground 'textile-ul-bullet-face "deep sky blue")))
-(defun eab-spacemacs/init-puppet-mode ()
-  (use-package puppet-mode
-    :config
-    (add-to-list 'auto-mode-alist '("\\.pp\\'" . puppet-mode))))
-(defun eab-spacemacs/init-yaml-mode ()
-  (use-package yaml-mode
-    :config
-    (eab/add-hook yaml-mode-hook eab/yaml-hook
-      (general-define-key
-       :keymaps 'yaml-mode-map
-       "C-i"        'eab/outline-toggle-children
-       "<backtab>"  'eab/outline-toggle-all))
-    (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))))
+(defun eab-spacemacs/init-ssh-config-mode () )
+(defun eab-spacemacs/init-textile-mode ())
+(defun eab-spacemacs/init-puppet-mode ())
+(defun eab-spacemacs/init-yaml-mode ())
 (defun eab-spacemacs/init-ansible ())
 (defun eab-spacemacs/init-ansible-doc ())
 (defun eab-spacemacs/init-ansible-vault ()
@@ -496,10 +451,7 @@ which require an initialization must be listed explicitly in the list.")
   (with-temp-buffer (ansible-vault-mode))
   (add-hook 'ansible-vault-mode-hook (lambda () (setq indent-tabs-mode nil)))
   (add-to-list 'auto-mode-alist '("/keys.yml" . ansible-vault-mode)))
-(defun eab-spacemacs/init-restclient nil
-  (use-package restclient
-    :config
-    (add-to-list 'auto-mode-alist '("\\.redmine\\'" . restclient-mode))))
+(defun eab-spacemacs/init-restclient nil)
 (defun eab-spacemacs/init-python-mode nil)
 (defun eab-spacemacs/init-python nil
   (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
@@ -520,8 +472,7 @@ which require an initialization must be listed explicitly in the list.")
 
 (defun eab-spacemacs/init-emamux nil)
 (defun eab-spacemacs/init-esup nil)
-(defun eab-spacemacs/init-diff-hl nil
-  (use-package diff-hl))
+(defun eab-spacemacs/init-diff-hl nil)
 (defun eab-spacemacs/init-vterm nil
   (use-package vterm
     :config
@@ -539,8 +490,7 @@ which require an initialization must be listed explicitly in the list.")
 
 (defun eab-spacemacs/init-auctex nil
 ;; (load "auctex.el" nil t t)
-  (use-package eab-tex
-    :after (eab-minimal)))
+  (use-package eab-tex))
 (defun eab-spacemacs/init-org-agenda-property nil)
 (defun eab-spacemacs/init-region-bindings-mode nil
   (load "eab-config-region-bindings-mode.el"))
@@ -587,6 +537,8 @@ which require an initialization must be listed explicitly in the list.")
   (use-package edit-list
     :after (eab-minimal)
     :config
+    (general-define-key
+     "C-c e"        'eab/edit-list-at-point)
     (eab/search-word eab/edit-list-at-point "Edit-list at point" eab/edit-list-1 (word))
     (defun eab/edit-list-1 (word)
       (edit-list (intern word)))))
@@ -594,7 +546,6 @@ which require an initialization must be listed explicitly in the list.")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun eab-spacemacs/init-docker ())
-
 (defun eab-spacemacs/init-compat nil)
 (defun eab-spacemacs/init-elpa-mirror nil)
 (defun eab-spacemacs/init-ace-window nil)
@@ -630,14 +581,7 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-web-server nil)
 (defun eab-spacemacs/init-take-off nil)
 (defun eab-spacemacs/init-wide-n nil)
-(defun eab-spacemacs/init-god-mode nil
-  (use-package god-mode
-    :disabled
-    :config
-    (setq god-mod-alist
-          '(("g" . "C-")
-            (nil . "M-")
-            ("G" . "C-M-")))))
+(defun eab-spacemacs/init-god-mode nil)
 (defun eab-spacemacs/init-fancy-narrow nil)
 (defun eab-spacemacs/init-goto-chg nil)
 (defun eab-spacemacs/init-epc nil)
@@ -646,16 +590,12 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-python-environment nil)
 (defun eab-spacemacs/init-jedi nil)
 (defun eab-spacemacs/init-bibretrieve nil)
-(defun eab-spacemacs/init-websocket nil
-  (use-package websocket))
+(defun eab-spacemacs/init-websocket nil )
 
 (defun eab-spacemacs/init-pkg-info nil)
 (defun eab-spacemacs/init-epl nil)
 (defun eab-spacemacs/init-python-info nil)
-(defun eab-spacemacs/init-achievements nil
-  (use-package achievements
-    :config
-    (setq achievements-file (eab/config (concat (eab/history-dir) ".achievements")))))
+(defun eab-spacemacs/init-achievements nil )
 (defun eab-spacemacs/init-org-grep nil)
 (defun eab-spacemacs/init-ov nil)
 (defun eab-spacemacs/init-peg nil)
@@ -685,13 +625,7 @@ which require an initialization must be listed explicitly in the list.")
   ;; fix 'file is already exist' bug
   (setq org-babel-temporary-directory "/tmp/user/1000/babel-aa5I6G"))
 (defun eab-spacemacs/init-f nil)
-(defun eab-spacemacs/init-keyfreq nil
-  (use-package keyfreq
-    :config
-    (setq keyfreq-file (eab/config (concat (eab/history-dir) ".emacs.keyfreq." system-name)))
-    (setq keyfreq-file-lock (eab/config (concat (eab/history-dir) ".emacs.keyfreq.lock." system-name)))
-    (keyfreq-mode 1)
-    (keyfreq-autosave-mode 1)))
+(defun eab-spacemacs/init-keyfreq nil )
 (defun eab-spacemacs/init-cask nil
   (use-package cask
     :config
@@ -719,73 +653,10 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-org-ehtml nil)
 (defun eab-spacemacs/init-noflet nil)
 (defun eab-spacemacs/init-minimap nil)
-(defun eab-spacemacs/init-markdown-mode nil
-  (use-package markdown-mode
-    :config
-    (eab/add-hook markdown-mode-hook eab/markdown-hook
-      (general-define-key
-       :keymaps 'markdown-mode-map
-       "C-M-b"      'nil
-       "C-M-f"      'nil
-       "M-l"        'nil
-       "M-i"        'nil
-       "M-n"        'nil
-       "M-p"        'nil
-       "<tab>"      'nil))
-    (push '("\\.md\\'" . markdown-mode) auto-mode-alist)
-    (add-hook 'markdown-mode-hook (lambda () (setq indent-tabs-mode nil)))
-    (add-to-list 'auto-mode-alist
-                 '("stack\\(exchange\\|overflow\\)\\.com\\.[a-z0-9]+\\.txt"
-                   . markdown-mode))))
+(defun eab-spacemacs/init-markdown-mode nil )
 (defun eab-spacemacs/init-auto-complete nil
-  (use-package auto-complete
-    :config
-    (eab/add-hook auto-complete-mode-hook eab/ac-complete-mode-hook
-      (general-define-key
-       :keymaps 'ac-completing-map
-       "\C-s"       'ac-isearch)
-      (general-define-key
-       :keymaps 'ac-complete-mode-map
-       "M-c"        'ac-expand-common
-       "M-k"        'ac-next
-       "M-i"        'ac-previous)))
-  (use-package auto-complete-config)
-  (use-package mode-local)
-  (use-package eab-auto-complete
-    :after (org)
-    :config
-    (setq ac-comphist-file (eab/config (concat (eab/history-dir) "ac-comphist.dat")))
-    (defun eab/read-lines (file)
-      "Return a list of lines of a file at at FPATH."
-      (if (file-exists-p file)
-          (with-temp-buffer
-            (insert-file-contents file)
-            (split-string (buffer-string) "\n" t))))
-    (setq eab/american-english (eab/config '(eab/read-lines "/usr/share/dict/american-english")))
-    (defvar-mode-local org-mode ac-auto-start nil)
-    (defvar-mode-local org-mode ac-use-quick-help nil)))
-(defun eab-spacemacs/init-yasnippet nil
-  (use-package yasnippet
-    :after (org)
-    :config
-
-    (setq yas-snippet-dirs '())
-    ;; cd el-get && git clone https://github.com/AndreaCrotti/yasnippet-snippets
-    (add-to-list 'yas-snippet-dirs (eab/config (concat eab-spacemacs-path "snippets")))
-
-    (setq yas-key-syntaxes '("w_" "w_." "w_.()" "^ "))
-
-    (defun yas-org-very-safe-expand ()
-      (yas-minor-mode 't)
-      (let ((yas-fallback-behavior 'return-nil))
-        (yas-expand)))
-
-    (add-hook 'org-mode-hook
-              (lambda ()
-                (make-variable-buffer-local 'yas-trigger-key)
-                (setq yas-trigger-key [tab])
-                (add-to-list 'org-tab-first-hook 'yas-org-very-safe-expand)
-                (define-key yas-keymap [tab] 'yas-next-field)))))
+  (load "eab-config-complete.el"))
+(defun eab-spacemacs/init-yasnippet nil)
 (defun eab-spacemacs/init-kv nil)
 (defun eab-spacemacs/init-ignoramus nil
   (use-package ignoramus
@@ -840,11 +711,7 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-eab-misc nil
   (load "eab-config-eab-misc.el"))
 
-(defun eab-spacemacs/init-gnus nil
-  (use-package eab-gnus :disabled
-    :config
-    (add-hook 'gnus-summary-prepared-hook 'gnus-summary-hide-all-threads)
-    (add-hook 'gnus-summary-prepare-hook 'gnus-summary-sort-by-most-recent-date)))
+(defun eab-spacemacs/init-gnus nil )
 
 (defun eab-spacemacs/init-tramp nil
   (use-package eab-tramp))
@@ -895,7 +762,12 @@ which require an initialization must be listed explicitly in the list.")
   (use-package eab-minimal
     :after (eab-notify)))
 (defun eab-spacemacs/init-eab-workflow ()
-  (use-package eab-workflow))
+  (use-package eab-workflow
+    :config
+    (general-define-key
+     "C-c u"        'eab/unbound-var
+     "C-c U"        'eab/unbound-fun
+     )))
 (defun eab-spacemacs/init-eab-ui ()
   (use-package eab-ui
     :config
@@ -1018,11 +890,9 @@ which require an initialization must be listed explicitly in the list.")
    "M-u"          'backward-word
    "M-v"          'yank
    "M-x"          'kill-region
-   ;; "M-y"               'god-mode-all
    )
 
   (general-define-key
-   "<f10>"        'eab/flyspell-buffer
    "<f12>"        'eab/make-list-paths
    "<f6>"         'eab/revert-buffer
    "<f7>"         'eab/fix-windows-coding
@@ -1030,20 +900,14 @@ which require an initialization must be listed explicitly in the list.")
    "C-,"          'eab/eepitch-this-line
    "C-r"          'eab/eepitch-this-line
    "C-M-r"        'eab/eepitch-paragraph
-   "M-DEL"        'eab/completion-at-point
-   "C-j"          'eab/completion-at-point
    "C-c RET"      'org-return
-   "C-c c"        'eab/add-eab-abbrev
    "C-c d"        'nil
    "C-c O"        'eab/open-corresponding-html
    "C-c B"        'eab/open-heading-browser
    "C-c b"        'browse-url
    "C-c s"        'eab/org-agenda-search
-   "C-c u"        'eab/unbound-var
-   "C-c U"        'eab/unbound-fun
    "C-c v"        'nil
    "C-c w"        'nil
-   "C-c e"        'eab/edit-list-at-point
    "C-x b"        'switch-to-buffer
    "C-x C-b"      'ibuffer
    "C-x g"        'eab/grep
@@ -1052,16 +916,7 @@ which require an initialization must be listed explicitly in the list.")
    "M-A"          'eab/call-shell-command
    )
 
-  ;; shell and shell-utils
   (general-define-key
-   "C-S-f"        'eab/gr-status)
-
-  (general-define-key
-   "C-c i"        'yas-expand)
-
-  (general-define-key
-   "M-?"          'auto-complete
-   "C-c g"        'eab/google
    "M-z"          'undo-tree-undo
    "C-b"          'eab/cxb
    "M-a"          'eab/smex-limited-commands
@@ -1069,7 +924,6 @@ which require an initialization must be listed explicitly in the list.")
    "M-m"          'sp-forward-sexp
    "M-n"          'sp-backward-sexp
    "C-:"          'isearch-moccur
-   "C-c t"        'dictionary-search
    "C-f"          eab/explore-map
    "C-p"          'er/expand-region
    "C-x C-k d"    'pm-define
@@ -1117,111 +971,4 @@ which require an initialization must be listed explicitly in the list.")
    "C-e"  'edit
    "C-r"  'delete-and-edit)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;;                 _     _       _                 _
-  ;;        __ _  __| | __| |     | |__   ___   ___ | | __
-  ;;       / _` |/ _` |/ _` |_____| '_ \ / _ \ / _ \| |/ /
-  ;;      | (_| | (_| | (_| |_____| | | | (_) | (_) |   <
-  ;;       \__,_|\__,_|\__,_|     |_| |_|\___/ \___/|_|\_\
-  ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;; add-hook
-
-  (eab/add-hook fortran-mode-hook eab/fortran-hook
-    (general-define-key
-     :keymaps 'fortran-mode-map
-     "C-d"        eab/compile-map))
-
-  (eab/add-hook text-mode-hook eab/text-hook
-    (general-define-key
-     :keymaps 'text-mode-map
-     "C-c C-c"    'server-edit))
-
-  (define-advice artist-mode (:before (&rest args) eab-artist-mode)
-    (general-define-key
-     :keymaps 'artist-mode-map
-     "C-b"        'nil))
-
-  (eab/add-hook nroff-mode-hook eab/nroff-hook
-    (general-define-key
-     :keymaps 'nroff-mode-map
-     "M-s"        'nil
-     "M-n"        'nil
-     "M-p"        'nil))
-  
-  (eab/add-hook f90-mode-hook eab/f90-hook
-    (general-define-key
-     :keymaps 'f90-mode-map
-     "C-j"        'nil
-     "C-d"        eab/compile-map))
-
-  (eab/add-hook message-mode-hook eab/message-hook
-    (general-define-key
-     :keymaps 'message-mode-map
-     "C-c C-c"    'eab/message-send
-     "M-;"        'nil
-     "M-n"        'nil))
-
-  (eab/add-hook makefile-gmake-mode-hook eab/makefile-gmake-mode
-    (general-define-key
-     :keymaps 'makefile-gmake-mode-map
-     "\C-d"       eab/compile-map
-     "M-n"        'nil
-     "M-p"        'nil))
-
-  (eab/add-hook java-mode-hook eab/java-hook
-    (general-define-key
-     :keymaps 'java-mode-map
-     "M-M"        'c-end-of-defun
-     "M-N"        'c-beginning-of-defun
-     "M-j"        'nil
-     "M-a"        'nil
-     "M-e"        'nil))
-
-  (eab/add-hook c-mode-hook eab/c-hook
-    (general-define-key
-     :keymaps 'c-mode-map
-     "C-d"        eab/compile-map
-     "C-M-a"      'nil
-     "C-M-e"      'nil
-     "M-a"        'nil
-     "M-M"        'nil
-     "M-N"        'nil
-     "M-j"        'nil
-     "M-q"        'nil
-     "M-M"        'c-end-of-defun
-     "M-N"        'c-beginning-of-defun
-     "M-e"        'nil))
-
-  (eab/add-hook c++-mode-hook eab/c++-hook
-    (general-define-key
-     :keymaps 'c++-mode-map
-     "C-d"        eab/compile-map
-     "C-M-a"      'nil
-     "C-M-e"      'nil
-     "M-a"        'nil
-     "M-M"        'nil
-     "M-N"        'nil
-     "M-j"        'nil
-     "M-q"        'nil
-     "M-M"        'c-end-of-defun
-     "M-N"        'c-beginning-of-defun
-     "M-e"        'nil))
-
-  (eab/add-hook ruby-mode-hook eab/ruby-hook
-    (general-define-key
-     :keymaps 'ruby-mode-map
-     "C-d"        eab/compile-map
-     "C-M-b"      'nil))
-  
-  (add-to-list 'auto-mode-alist '("\\.tmpl$" . conf-mode))
-  (add-to-list 'auto-mode-alist '("AUTOEXEC\\." . 'bat-mode))
-  (add-to-list 'auto-mode-alist '("CONFIG\\." . 'bat-mode))
-  (add-to-list 'auto-mode-alist '("\\.F90\\'" . f90-mode))
-  (add-to-list 'auto-mode-alist '("\\.[bB][aA][tT]$" . 'bat-mode))
-  (add-to-list 'auto-mode-alist '("\\.lsp\\'" . lisp-mode))
-  (add-to-list 'auto-mode-alist '("\\.rtf\\'" . rtf-mode))
-
-  (autoload 'rtf-mode "rtf-mode" "RTF" t)
-  (autoload 'bat-mode "bat-mode" "DOS and WIndows BAT files" t)
   )

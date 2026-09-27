@@ -17,6 +17,10 @@
       (eab/config
        (concat eab/ssh-host-local " bash ~/bin/gr @fz ~/git/auto/gr-git-log.sh | wc -l")))
 
+;; shell and shell-utils
+(general-define-key
+ "C-S-f"        'eab/gr-status)
+
 (defun eab/gr-status ()
   (interactive)
   (let* ((compilation-buffer-name-function

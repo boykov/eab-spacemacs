@@ -14,6 +14,8 @@
 (use-package flyspell
   :after (ispell)
   :config
+  (general-define-key
+   "<f10>"        'eab/flyspell-buffer)
   (eab/add-hook flyspell-mode-hook eab/flyspell-hook
     (general-define-key
      :keymaps 'flyspell-mode-map

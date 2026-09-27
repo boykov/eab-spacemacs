@@ -135,13 +135,24 @@
       (eval func-code lexical))))
 
 (defun eab/loaded-ok (instance)
-  (if configuration-layer-error-count
+  (let ((numerrors
+         (save-window-excursion
+           (switch-to-buffer "*Messages*")
+           (beginning-of-buffer)
+           (count-matches "Error"))))
+    (if (or configuration-layer-error-count
+            (< 0 numerrors))
+        (progn
+          (add-to-list 'mode-line-modes '(t " [ERROR] "))
+          (eab/gotify
+           (concat instance " errors "
+                   (if configuration-layer-error-count
+                       (number-to-string configuration-layer-error-count) "0")
+                   " " (number-to-string numerrors))
+           "bad" 5))
       (progn
-        (add-to-list 'mode-line-modes '(t " [ERROR] "))
-        (eab/gotify instance "bad" 5))
-    (progn
-      (eab/gotify instance "OK" 0)
-      (setq-default TeX-master t))))
+        (eab/gotify instance "OK" 0)
+        (setq-default TeX-master t)))))
 
 (defun eab/test-dotemacs ()
   (eab/loaded-ok "test-dotemacs")

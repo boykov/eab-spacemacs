@@ -15,6 +15,8 @@
 (use-package abbrev
   :after (eab-minimal simple)
   :config
+  (general-define-key
+   "C-c c"        'eab/add-eab-abbrev)
   (eab/search-word eab/add-eab-abbrev "abbrev save" define-abbrev (eab-abbrev-table word word))
   (setq abbrev-file-name
         (eab/config (concat (eab/history-dir) ".abbrev_defs")))
@@ -25,6 +27,9 @@
 
 (use-package dictionary
   :config
+  (general-define-key
+   "C-c t"        'dictionary-search
+   )
   (setq dictionary-server "localhost")
   (define-advice dictionary-search (:after (&rest args) eab-dictionary-abbrev)
     "Put searched word for dictionary to eab-abbrev-table"

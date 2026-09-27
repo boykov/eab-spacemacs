@@ -7,6 +7,8 @@
 ;; Requirements:
 ;; Status: not intended to be distributed yet
 
+(use-package websocket)
+
 (defvar eab/gotify-token-cache "" "")
 (defun eab/gotify-token ()
   (if (not (equal (length eab/gotify-token-cache) 15))

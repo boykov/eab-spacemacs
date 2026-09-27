@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.4.40
+
+feat(config): reorganize mode and completion configs, add new keybindings, update changelog
+
+- Introduce new `eab-config-mode.el` for major mode keybindings and `auto-mode-alist` entries
+- Extract completion logic into new `eab-config-complete.el` with
+  `auto-complete`, `yasnippet`, and `eab-auto-complete` setup
+- Simplify `eab-config-browse-url.el`, `eab-config-eaf.el`,
+  `eab-config-ediff.el`, `eab-config-ellama.el`,
+  `eab-config-magit.el`, `eab-config-simple.el`, and
+  `eab-config-spell.el` by adding focused keybindings
+- Update `eab-minimal.el` to detect and report configuration errors more robustly
+- Refactor `packages.el`: move mode and completion package loading
+  into dedicated init functions, remove redundant `:after`
+  constraints, and disable complex initializations where appropriate
+
 ## 0.4.39
 
 chore: split and reorganize config files, update changelog

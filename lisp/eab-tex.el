@@ -14,7 +14,6 @@
 (setq TeX-parse-self t)
 (setq TeX-PDF-mode t)
 (setq-default TeX-master 't)
-(unless (eab/ondaemon (eab/server-P)) (setq-default TeX-master 't))
 (setq TeX-open-quote "<<")
 (setq TeX-close-quote ">>")
 ;; (load "preview-latex.el" nil t t)

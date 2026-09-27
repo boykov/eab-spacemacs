@@ -67,11 +67,12 @@
   (setq magit-section-visibility-indicator nil)
   (defun eab/magit-amend-modified ()
     (interactive)
-    (magit-stage-modified)
+    (magit-stage-modified 't)
     (call-interactively 'magit-commit-amend)))
 
 (use-package magit-base
   :after (magit)
+  :config
   (eab/add-hook magit-file-mode-hook eab/magit-file-mode-hook
     (general-define-key
      :keymaps 'magit-file-mode-map

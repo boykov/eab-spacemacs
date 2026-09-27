@@ -109,6 +109,9 @@
    "bind '\"\\C-]\":\"\\C-e\\C-u echo m-r123 > /dev/null; cat <<\"EOF\"\\n\\C-y\\nEOF\\n\"'\n")
   )
 
+;; TODO: it doesn't work for e.g.
+;; sudo iptables -A INPUT -d 192.168.1.107 -j DROP
+;; sudo iptables -A OUTPUT -s 192.168.1.107 -j DROP
 (defun eab/eepitch-paragraph ()
   (interactive)
   (flet ((forward ()

@@ -10,6 +10,9 @@
 (use-package browse-url
   :after (eab-minimal)
   :config
+  (general-define-key
+   "C-c g"        'eab/google
+   )
   (setq browse-url-browser-function (quote eab/browse-url))
   (setq browse-url-firefox-program (eab/config "/usr/local/bin/browser-remote"))
   (defun eab/eaf-open-browser (url)
