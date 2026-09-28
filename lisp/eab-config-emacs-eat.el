@@ -8,6 +8,7 @@
 ;; Status: not intended to be distributed yet
 
 (use-package eat
+  :load-path "~/.emacs.d/private/eab-spacemacs/local/emacs-eat"
   :after (key-chord eab-minimal)
   :config
   (setq eat-mode-map
@@ -102,3 +103,4 @@
 
   (custom-set-faces
    '(eat-term-color-4 ((t (:inherit eat-term-color-32))))))
+

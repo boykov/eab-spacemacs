@@ -1,5 +1,29 @@
 # Changelog
 
+## 0.4.41
+
+chore: update changelog and add new configurations and fixes
+
+- Introduce :load-path declarations for several local packages
+- Reorganize and remove redundant configurations (isearch, key-chord,
+  autorevert, edit-list, etc.)
+- Enhance isearch-mode-map keybindings for improved search and edit capabilities
+- Add flx-isearch and consult-omni support
+- Enable color-moccur with keybinding
+- Update eab/config macro for simplified evaluation
+- Improve recentf filtering by using file-truename and path normalization
+- Add support for more file modes: julia, racket, rpm-spec, crontab, feature
+- Extend compile and explore keymaps
+- Fix eab/onhost function to compare against system-name
+- Adjust server-eval-at for elisp--preceding-sexp
+- Enhance eab/load-gui and eab/load-personal functions
+- Simplify and remove duplicate configurations across multiple files
+- Add new keybindings and keymap support in eab-workflow.el
+- Add general package, disable redundant defuns, align init functions
+- Reuse existing buffers for browser switching instead of always launching EAF
+- Standardize path configuration in several config files
+- Add ebib and gnuplot packages with minimal setup
+
 ## 0.4.40
 
 feat(config): reorganize mode and completion configs, add new keybindings, update changelog

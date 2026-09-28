@@ -1,3 +1,5 @@
+(use-package htmlize)
+
 (add-to-list 'org-publish-project-alist
              `("html-fz" :components
                ("html-fz-base")))

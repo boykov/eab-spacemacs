@@ -38,6 +38,26 @@
 (use-package eab-compile
   :after (ansi-color eab-minimal eab-notify)
   :init
+  (defvar eab/explore-map (make-sparse-keymap)
+    "Keymap for minimal configuration")
+  (general-define-key
+   :keymaps 'eab/explore-map
+   "t"          'git-timemachine
+   "a"          'vc-annotate
+   "o"          'org-sort
+   "e"          'ediff-buffers
+   "c"          'eab/switch-or-clone-indirect-buffer
+   "C"          (ilam (call-interactively 'clone-a-lot-goto-prev))
+   "f"          'eab/magit-status
+   "C-f"        'eab/magit-status
+   "C-j"        'eab/magit-amend-modified
+   "s"          'sort-lines
+   "u"          'untabify
+   "C-w"        'whitespace-mode
+   "w"          'whitespace-mode)
+  (general-define-key
+   "C-f"          eab/explore-map
+   )
   (defvar eab/compile-map (make-sparse-keymap)
     "Compile keymap.")
   (global-set-key (kbd "C-d") nil)

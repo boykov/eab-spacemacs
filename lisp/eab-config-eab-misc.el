@@ -13,7 +13,7 @@
 (use-package power-macros
   :after (eab-config-term) ;; keybindings.el C-l vs eab-pmacros.el
   :config
-  (setq pm-macro-files (eab/config '`(,(concat eab-spacemacs-path "lisp/eab-pmacros.el"))))
+  (setq pm-macro-files (eab/config `(,(concat eab-spacemacs-path "lisp/eab-pmacros.el"))))
   (setq power-macros-file (eab/config (concat eab-spacemacs-path "lisp/eab-pmacros.el")))
   (if (file-exists-p power-macros-file)
       (load power-macros-file))
@@ -51,7 +51,11 @@
 (use-package json-pretty-print)
 (use-package rec-mode)
 
-(use-package color-moccur)
+(use-package color-moccur
+  :config
+  (general-define-key
+   "C-:"          'isearch-moccur
+   ))
 (use-package moccur-edit)
 (eab/add-hook moccur-mode eab/moccur-hook
   (general-define-key
@@ -115,3 +119,5 @@
     (general-define-key
      :keymaps 'top-mode-map
      "O"  (ilam (switch-to-buffer "*Proced*")))))
+
+(provide 'eab-config-eab-misc)

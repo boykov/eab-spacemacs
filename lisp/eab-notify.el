@@ -8,6 +8,7 @@
 ;; Status: not intended to be distributed yet
 
 (use-package websocket)
+(defmacro eab/config (&rest body) (car `,@body))
 
 (defvar eab/gotify-token-cache "" "")
 (defun eab/gotify-token ()
@@ -20,17 +21,19 @@ END
 " ))) 0 -1)))
   eab/gotify-token-cache)
 
-;; TODO: not in eab/config due to async-start and args
+;; DONE: not in eab/config due to async-start and args
 ;; maybe ,(eab/config ...)?
 (defun eab/gotify (title message priority)
-  (async-start
-   `(lambda ()
-      (call-process-shell-command
-       (concat
-        "/home/eab/git/auto/notify.sh -a " ,(eab/gotify-token)
-        " -t \"" ,title "\""
-        " -m \"" ,message "\""
-        " -p " ,(number-to-string priority))) nil 0)))
+  (let ((command
+         (eab/config
+          (concat
+           "/home/eab/git/auto/notify.sh -a " (eab/gotify-token)
+           " -t \"" title "\""
+           " -m \"" message "\""
+           " -p " (number-to-string priority)))))
+    (async-start
+     `(lambda ()
+        (call-process-shell-command ,command)))))
 
 (defvar eab/gotify-client-token-cache "" "")
 (defun eab/gotify-client-token ()
@@ -38,11 +41,13 @@ END
       (setq eab/gotify-client-token-cache
             (substring
              (shell-command-to-string
-              (eab/config (concat eab/ssh-host " bash <<'END'
+              (eab/config
+               (concat eab/ssh-host " bash <<'END'
 ~/git/auto/keepass.sh \"portal/gotify\" -a client-token
 END
 " ))) 0 -1)))
   eab/gotify-client-token-cache)
+
 (setq eab/gotify-command
       (eab/config
        (concat
@@ -55,7 +60,7 @@ END
 
 (setq eab/gotify-ready? nil)
 (defvar eab/gotify-websocket nil "gotify websocket")
-(defun eab/gotify-status (&optional arg)
+(defun eab/gotify-status ()
   (interactive)
   (unless (websocket-openp eab/gotify-websocket)
     (eab/gotify-create))
@@ -82,7 +87,7 @@ END
   (let ((gotify-buffer "*compilation*<gotify>"))
     (setq eab/gotify-websocket
           (websocket-open
-           (concat "wss://notify.eab.su/stream?token=" (eab/gotify-client-token))
+           (concat (eab/config "wss://notify.eab.su/stream?token=") (eab/gotify-client-token))
            :on-message `(lambda (_websocket frame)
                           (let ((text (websocket-frame-text frame)))
                             (save-window-excursion
@@ -96,6 +101,7 @@ END
   (let ((event (car
                 (split-string
                  (shell-command-to-string eab/gotify-command) "         "))))
+    (require 's)
     (with-current-buffer "*compilation*<gotify>"
       (s-contains? event
                    (buffer-substring-no-properties (point-min) (point-max))))))

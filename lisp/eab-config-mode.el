@@ -104,6 +104,12 @@
    "C-d"        eab/compile-map
    "C-M-b"      'nil))
 
+(eab/add-hook graphviz-dot-mode-hook eab/graphviz-hook
+  (general-define-key
+   :keymaps 'graphviz-dot-mode-map
+   "C-d"        eab/compile-map)
+  (set (make-local-variable 'compile-command) nil))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;               __  __           _           
 ;;              |  \/  | ___   __| | ___  ___ 
@@ -120,9 +126,79 @@
 (add-to-list 'auto-mode-alist '("\\.[bB][aA][tT]$" . 'bat-mode))
 (add-to-list 'auto-mode-alist '("\\.lsp\\'" . lisp-mode))
 (add-to-list 'auto-mode-alist '("\\.rtf\\'" . rtf-mode))
+(add-to-list 'auto-mode-alist '("\\.jl\\'" . julia-mode))
+(add-to-list 'auto-mode-alist '("\\.rkt\\'" . racket-mode))
+(add-to-list 'auto-mode-alist '("\\.spec\\|\\.spec\\.in" . rpm-spec-mode))
+(add-to-list 'auto-mode-alist '("cron\\(tab\\)?\\."    . crontab-mode))
+(add-to-list 'auto-mode-alist '("\\.feature\\'" . feature-mode))
 
 (autoload 'rtf-mode "rtf-mode" "RTF" t)
 (autoload 'bat-mode "bat-mode" "DOS and WIndows BAT files" t)
+
+(use-package typescript-mode)
+
+(use-package ansible-vault
+  :config
+  (setq ansible-vault-pass-file (eab/config "/home/eab/.ansible/passwd_cc"))
+  (setq ansible-vault-pass-file (eab/config "/home/eab/.ansible/passwd_fz"))
+  (with-temp-buffer (ansible-vault-mode))
+  (add-hook 'ansible-vault-mode-hook (lambda () (setq indent-tabs-mode nil)))
+  (add-to-list 'auto-mode-alist '("/keys.yml" . ansible-vault-mode)))
+
+(use-package python
+  :config
+  (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
+  (autoload 'python-mode "python-mode" "Python Mode." t)
+  (add-hook 'python-mode-hook
+            (lambda ()
+              (general-define-key
+               :keymaps 'python-mode-map
+               "C-d"        eab/compile-map
+               "C-j"        'nil
+               "M-RET"      'newline
+               "RET"        'newline))))
+
+(use-package go-mode
+  :config
+  (add-hook 'go-mode-hook
+            (lambda ()
+              (setq indent-tabs-mode nil)
+              (setq-local tab-width 2)
+              ))
+  (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode)))
+
+(use-package groovy-mode
+  :config
+  (eab/add-hook groovy-mode-hook eab/groovy-hook
+    (general-define-key
+     :keymaps 'groovy-mode-map
+     "C-i"        'eab/outline-toggle-children
+     "<backtab>"  'eab/outline-toggle-all))
+  (add-hook 'groovy-mode-hook (lambda () (setq indent-tabs-mode nil))))
+
+(use-package comint
+  :config
+  (add-hook 'ielm-mode-hook (lambda () (setq comint-process-echoes nil)))
+  (add-hook 'comint-mode-hook (lambda () (setq comint-process-echoes t)))
+  (general-define-key
+   :keymaps 'comint-mode-map
+   "M-p"        'comint-previous-matching-input-from-input
+   "M-n"        'comint-next-matching-input-from-input
+   "C-M-n"      'comint-next-input
+   "C-M-p"      'comint-previous-input
+   "M-s"        'nil
+   "M-p"        'nil
+   "M-n"        'nil
+   "M-r"        'nil
+   "C-p"        'comint-previous-input
+   "C-n"        'comint-next-input))
+
+(use-package consult-omni
+  :init
+  (add-to-list 'load-path (eab/config (concat eab-spacemacs-path "local/consult-omni")))
+  (add-to-list 'load-path (eab/config (concat eab-spacemacs-path "local/consult-omni/sources")))
+  :config
+  (setq consult-omni-multi-sources '("DuckDuckGo API")))
 
 (use-package ssh-config-mode
   :config
@@ -176,6 +252,10 @@
   (add-to-list 'auto-mode-alist
                '("stack\\(exchange\\|overflow\\)\\.com\\.[a-z0-9]+\\.txt"
                  . markdown-mode)))
+
+(use-package so-long
+    :config
+    (global-so-long-mode 1))
 
 (use-package restclient
   :config

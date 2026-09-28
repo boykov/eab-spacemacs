@@ -1,3 +1,5 @@
+(use-package gnuplot)
+
 (defun eab/detangle ()
   (interactive)
   (save-window-excursion

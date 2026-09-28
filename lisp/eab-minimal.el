@@ -21,39 +21,6 @@
      (interactive)
      ,@body))
 
-(defvar eab/explore-map (make-sparse-keymap)
-  "Keymap for minimal configuration")
-(general-define-key
- :keymaps 'eab/explore-map
- "t"          'git-timemachine
- "a"          'vc-annotate
- "o"          'org-sort
- "e"          'ediff-buffers
- "c"          'eab/switch-or-clone-indirect-buffer
- "C"          (ilam (call-interactively 'clone-a-lot-goto-prev))
- "f"          'eab/magit-status
- "C-f"        'eab/magit-status
- "C-j"        'eab/magit-amend-modified
- "s"          'sort-lines
- "u"          'untabify
- "C-w"        'whitespace-mode
- "w"          'whitespace-mode)
-
-(defun eab/describe-key-briefly (key &optional insert untranslated)
-  "Like `describe-key-briefly`, but prints the lambda definition if found."
-  (interactive "kDescribe key briefly: \nP")
-  (let* ((binding (key-binding key t)))
-    (if (and (listp binding) (eq (car binding) 'lambda))
-        (message "%s runs an anonymous function: %s"
-                 (key-description key)
-                 (if (fboundp 'lispy-alt-multiline)
-                     (with-temp-buffer
-                       (insert (prin1-to-string binding))
-                       (call-interactively 'lispy-alt-multiline)
-                       (buffer-string))
-                   (prin1-to-string binding)))
-      (describe-key-briefly key insert untranslated))))
-
 ;; DONE: timers depend on keboard speed
 (defmacro eab/do-action (&rest body)
   ""
@@ -135,11 +102,19 @@
       (eval func-code lexical))))
 
 (defun eab/loaded-ok (instance)
-  (let ((numerrors
-         (save-window-excursion
-           (switch-to-buffer "*Messages*")
-           (beginning-of-buffer)
-           (count-matches "Error"))))
+  (let* ((aaorg
+          (if (string= (locate-library "org")
+                       "/home/eab/.emacs.d/private/eab-spacemacs/local/aaorg/org.elc")
+              0
+            1))
+         (numerrors
+          (save-window-excursion
+            (switch-to-buffer "*Messages*")
+            (goto-char (point-min))
+            (+ aaorg
+               (count-matches "Error")
+               (count-matches "is void")
+               (count-matches "Invalid")))))
     (if (or configuration-layer-error-count
             (< 0 numerrors))
         (progn
@@ -181,7 +156,10 @@
             (eab/ondaemon (eab/server-P))
             (eab/ondaemon "server"))
            (not noninteractive))
-      (load-theme 'spacemacs-dark 't))
+      (progn
+        (setq spacemacs-theme-comment-bg nil)
+        (disable-theme 'solarized-light)
+        (load-theme 'spacemacs-dark 't)))
   (setq eab/org-file (concat org-directory "clock/current-time.el"))
   (if (file-exists-p eab/org-file)
       (load eab/org-file)) ;; (setq eab/hron-current-time ..
@@ -195,18 +173,20 @@
 ;; TODO: create function and hook after first start frame
 (defun eab/load-gui ()
   (interactive)
-  (when eab/first-emacsclient
-    (iconify-frame)
-    (disable-theme 'solarized-light)
-    (eab/load-personal)
-    ;; (eab/load-desktop)
-    (wg-change-modeline)
-    (eab/create-workgroups)
-    (eab/wg-switch-to-workgroup ":clock:")
-    (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
-    (iconify-frame)
-    (execute-kbd-macro (read-kbd-macro "C-a h C-g"))
-    (setq eab/first-emacsclient nil))
+  (if eab/first-emacsclient
+      (progn
+        (setq eab/first-emacsclient nil)
+        (iconify-frame)
+        (eab/load-personal)
+        ;; (eab/load-desktop)
+        (wg-change-modeline)
+        (eab/create-workgroups)
+        (eab/wg-switch-to-workgroup ":clock:")
+        (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
+        (iconify-frame)
+        (execute-kbd-macro (read-kbd-macro "C-a h C-g"))
+        )
+    (eab/loaded-ok (concat (daemonp) " dotemacs")))
   (set-face-attribute 'default nil
                       :family "Source Code Pro"
                       :height (if (eq (display-pixel-width) 1920) 130 150)

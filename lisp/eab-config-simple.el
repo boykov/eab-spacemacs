@@ -29,6 +29,7 @@
   :config
   (general-define-key
    "C-c t"        'dictionary-search
+   "C-x t"        'dictionary-search
    )
   (setq dictionary-server "localhost")
   (define-advice dictionary-search (:after (&rest args) eab-dictionary-abbrev)
@@ -53,8 +54,8 @@
 (ignore-errors (make-directory emacs-tmp-dir))
 
 ;; Also files.el
-(setq backup-directory-alist (eab/config '`((".*" . ,emacs-tmp-dir))))
-(setq auto-save-file-name-transforms (eab/config '`((".*" ,emacs-tmp-dir t))))
+(setq backup-directory-alist (eab/config `((".*" . ,emacs-tmp-dir))))
+(setq auto-save-file-name-transforms (eab/config `((".*" ,emacs-tmp-dir t))))
 (setq mode-require-final-newline nil)
 (setq require-final-newline nil)
 (setq make-backup-files nil)
@@ -160,3 +161,5 @@
         "(setq input-method-function 'key-chord-input-method)"
         "(tramp-term--initialize \"jupiter\")"
         ))
+
+(provide 'eab-config-simple)

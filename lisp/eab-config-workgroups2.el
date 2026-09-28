@@ -20,6 +20,7 @@
      ,@body))
 
 (use-package eab-workgroups2
+  :load-path "~/.emacs.d/private/eab-spacemacs/local/workgroups2/src"
   :after (eab-minimal eab-notify)
   :init
   (setq eab/workgroups-save

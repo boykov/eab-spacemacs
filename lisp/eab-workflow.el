@@ -9,6 +9,15 @@
 
 (defvar eab/revert-buffer "u")
 
+(general-define-key
+ "C-M-f"        'toggle-frame-maximized
+ "C-h C-c"      'describe-command
+ "C-h c"        'eab/describe-key-briefly
+ "C-h C-f"      'eab/find-function-at-point
+ "C-h C-k"      'eab/describe-key-find
+ "C-h C-v"      'eab/find-variable-at-point
+ )
+
 (defun eab/unbound-var ()
   (interactive)
   (let ((sym (symbol-at-point)))
@@ -20,6 +29,22 @@
   (let ((sym (symbol-at-point)))
     (setq eab/unbound-fun-temp (list sym (symbol-function sym)))
     (fmakunbound sym)))
+
+(defun eab/describe-key-briefly (key &optional insert untranslated)
+  "Like `describe-key-briefly`, but prints the lambda definition if found."
+  (interactive "kDescribe key briefly: \nP")
+  (let* ((binding (key-binding key t)))
+    (if (and (listp binding) (eq (car binding) 'lambda))
+        (message "%s runs an anonymous function: %s"
+                 (key-description key)
+                 (require 'lispy)
+                 (if (fboundp 'lispy-alt-multiline)
+                     (with-temp-buffer
+                       (insert (prin1-to-string binding))
+                       (call-interactively 'lispy-alt-multiline)
+                       (buffer-string))
+                   (prin1-to-string binding)))
+      (describe-key-briefly key insert untranslated))))
 
 (defun eab/find-function-at-point ()
   (interactive)

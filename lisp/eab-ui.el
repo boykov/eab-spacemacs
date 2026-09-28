@@ -7,6 +7,7 @@
 ;; Requirements:
 ;; Status: not intended to be distributed yet
 
+(use-package xterm-color)
 (use-package view)
 (use-package ps-print)
 (use-package ps-mule)

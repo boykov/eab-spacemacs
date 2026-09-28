@@ -8,7 +8,7 @@
 ;; Status: not intended to be distributed yet
 
 (use-package eab-helm
-  :after (eab-org ergoemacs-functions)
+  :after (eab-org ergoemacs-functions helm)
   :init
   (defvar browse-url-galeon-program nil)
   (defun browse-url-galeon nil)

@@ -28,10 +28,10 @@
   :config
   (setq org-link-abbrev-alist
         (eab/config 
-         '`(("bib" . "~/git/lit/boykov.bib::%s")
-            ("papers" . "%(eab/papers-firefox)")
-            ("google" . "https://www.google.com/search?q=")
-            )))
+         `(("bib" . "~/git/lit/boykov.bib::%s")
+           ("papers" . "%(eab/papers-firefox)")
+           ("google" . "https://www.google.com/search?q=")
+           )))
   ;; See also eab-header in ~/texmf/tex/latex/eab-styles/eab-header.sty
   (setq org-id-locations-file (eab/config (concat (eab/history-dir) ".org-id-locations")))
   (setq org-clock-persist-file (eab/config (concat (eab/history-dir) "org-clock-save.el")))
@@ -39,7 +39,7 @@
     (general-define-key
      :keymaps 'bibtex-mode-map
      "C-M-\\"     'bibtex-fill-entry))
-  (setq bibtex-files (eab/config '`("~/git/lit/boykov.bib")))
+  (setq bibtex-files (eab/config `("~/git/lit/boykov.bib")))
   (setq org-ditaa-jar-path (eab/config "/usr/bin/ditaa")))
 
 (use-package eab-org-agenda
@@ -83,3 +83,4 @@
   :after (eab-org))
 (use-package eab-hron-lib
   :after (eab-org eab-org-publish))
+

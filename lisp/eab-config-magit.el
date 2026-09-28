@@ -94,7 +94,8 @@
   (setq transient-history-file
         (eab/config (concat (eab/history-dir) "transient/history.el"))))
 
-(use-package git-wip)
+(use-package git-wip
+  :after (eab-config-eab-misc))
 
 (use-package forge
   :config

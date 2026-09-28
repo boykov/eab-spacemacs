@@ -93,3 +93,4 @@
   (add-hook 'ghostel-mode-hook (lambda () (setq input-method-function 'key-chord-input-method)))
 
   )
+

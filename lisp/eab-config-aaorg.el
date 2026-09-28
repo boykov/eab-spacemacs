@@ -8,6 +8,7 @@
 ;; Status: not intended to be distributed yet
 
 (use-package org
+  :load-path "~/.emacs.d/private/eab-spacemacs/local/aaorg"
   :init
   (eab/config
    (if (eab/ondaemon (eab/server-P))

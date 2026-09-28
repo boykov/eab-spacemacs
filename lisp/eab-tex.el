@@ -10,6 +10,12 @@
 (use-package tex)
 (use-package tex-site)
 
+(use-package ebib
+  :config
+  (setq ebib-file-search-dirs (eab/config `("~/git/lit/")))
+  (setq ebib-preload-bib-files (eab/config `("~/git/lit/boykov.bib")))
+  (autoload 'ebib "ebib" "Ebib, a BibTeX database manager." t))
+
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 (setq TeX-PDF-mode t)

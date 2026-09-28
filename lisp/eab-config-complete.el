@@ -7,6 +7,28 @@
 ;; Requirements:
 ;; Status: not intended to be distributed yet
 
+;; aka config workflow
+
+(use-package edit-list
+  :after (eab-minimal)
+  :config
+  (general-define-key
+   "C-c e"        'eab/edit-list-at-point)
+  (eab/search-word eab/edit-list-at-point "Edit-list at point" eab/edit-list-1 (word))
+  (defun eab/edit-list-1 (word)
+    (edit-list (intern word))))
+
+(use-package autorevert
+  :config
+  (global-auto-revert-mode)
+  (setq auto-revert-use-notify nil))
+
+(use-package key-chord
+  :config
+  (setq key-chord-two-keys-delay 0.05)
+  (add-hook 'term-mode-hook
+            (lambda () (setq input-method-function 'key-chord-input-method))))
+
 (use-package auto-complete
   :config
   (eab/add-hook auto-complete-mode-hook eab/ac-complete-mode-hook
@@ -22,7 +44,7 @@
 (use-package mode-local)
 
 (use-package eab-auto-complete
-  :after (org)
+  :after (org auto-complete)
   :config
   (general-define-key
    "M-?"          'auto-complete

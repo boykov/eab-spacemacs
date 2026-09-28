@@ -133,7 +133,9 @@ MODE-SYMBOL should be a symbol, e.g., 'emacs-lisp-mode'."
 
 (defun eab/switch-browser ()
   (interactive)
-  (eab/switch-common 'browser-a-lot-buffer-p))
+  (if (get-buffer "Firefox")
+      (eab/switch-common 'browser-a-lot-buffer-p)
+    (eaf-open-browser "https://eaf-browser.eab.su/?resize=remote")))
   
 (defun eab/switch-viewer ()
   (interactive)

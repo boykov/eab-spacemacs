@@ -15,26 +15,30 @@
     (mapcar
      (lambda (x)
        (replace-regexp-in-string
-        (concat "^" (regexp-quote "~/")) ""
+        (concat "^" (regexp-quote "/home/eab/")) ""
         (replace-regexp-in-string
-         (concat "^" (regexp-quote "~/pnt/lion/")) "" x)))
+         (concat "^" (regexp-quote "/home/eab/pnt/lion/")) "" x)))
      (seq-filter
       (lambda (x)
         (file-exists-p x))
       (seq-filter
        (lambda (x)
          (or
-          (let ((s "~/git/"))
+          (let ((s "/home/eab/git/"))
             (and (length> x (length s)) (string= (substring x 0 (length s)) s)))
-          (let ((s "~/pnt/lion/data/"))
+          (let ((s "/home/eab/pnt/lion/data/"))
             (and (length> x (length s)) (string= (substring x 0 (length s)) s)))))
        (seq-filter
         (lambda (x)
-          (let ((s "~/git/org"))
+          (let ((s "/home/eab/git/org"))
             (and
              (length> x (length s))
              (not (string= (substring x 0 (length s)) s)))))
-        recentf-list)))))
+        (cl-remove-duplicates
+         (mapcar
+          'file-truename
+          recentf-list)
+         :test #'string=))))))
   (add-hook 'after-save-hook
             (lambda ()
               (f-write-text

@@ -8,6 +8,7 @@
 ;; Status: not intended to be distributed yet
 
 (use-package eaf
+  :load-path "~/.emacs.d/private/eab-spacemacs/local/eaf"
   :if (eab/ondaemon "cyclos")
   :config
   (setq eaf-webengine-pc-user-agent "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36")
@@ -143,3 +144,4 @@ It currently identifies PDF, videos, images, and mindmap file extensions."
             ("C-<end>" . "scroll_to_end")
             ("M-L" . "scroll_to_end")
             ))))
+

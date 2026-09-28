@@ -9,7 +9,7 @@
 
 (let ((emacs-alist
        (eab/config
-        '`(
+        `(
            ("kairosP"         . "docker-compose-emacs")
            ("chronosP"        . "docker-compose-emacs")
            ("microcyclos"     . "docker-compose-micro")

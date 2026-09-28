@@ -7,6 +7,8 @@
 ;; Requirements: none
 ;; Status: not intended to be distributed yet
 
+(defmacro eab/config (&rest body) (car `,@body))
+
 (setq eab/homedir (getenv "HOME"))
 (setq eab/daemon-name (daemonp))
 
@@ -46,23 +48,23 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun eab/onhost (def)
-  (if (string= system-name def) 't))
+  (if (string= (system-name) def) 't))
 
 (defun eab/history-dir ()
   (let ((dir
          (cdr
           (assoc eab/daemon-name
                  (eab/config
-                  '`(
-                     ("server"        . ,(concat user-emacs-directory "history/"))
-                     ("serverM"       . ,(concat user-emacs-directory "historyM/"))
-                     ("kairosP"       . ,(concat user-emacs-directory "historyP/"))
-                     ("chronosP"      . ,(concat user-emacs-directory "historyChronosP/"))
-                     ("microcyclos"   . ,(concat user-emacs-directory "historyMicrocyclos/"))
-                     ("cyclos"        . ,(concat user-emacs-directory "historyCyclos/"))
-                     ("chronosC"      . ,(concat user-emacs-directory "historyChronosC/"))
-                     ("kairosC"       . ,(concat user-emacs-directory "kairosC/"))
-                     ))))))
+                  `(
+                    ("server"        . ,(concat user-emacs-directory "history/"))
+                    ("serverM"       . ,(concat user-emacs-directory "historyM/"))
+                    ("kairosP"       . ,(concat user-emacs-directory "historyP/"))
+                    ("chronosP"      . ,(concat user-emacs-directory "historyChronosP/"))
+                    ("microcyclos"   . ,(concat user-emacs-directory "historyMicrocyclos/"))
+                    ("cyclos"        . ,(concat user-emacs-directory "historyCyclos/"))
+                    ("chronosC"      . ,(concat user-emacs-directory "historyChronosC/"))
+                    ("kairosC"       . ,(concat user-emacs-directory "kairosC/"))
+                    ))))))
     (unless (file-exists-p dir)
       (ignore-errors (make-directory dir)))
     dir))
@@ -83,7 +85,7 @@ If USE-TCP is non-nil, bind `server-use-tcp' to USE-TCP.
 When called interactively, USE-TCP is determined automatically for
 known servers."
   (let ((sexp (call-interactively
-               (lambda () (interactive) (preceding-sexp)))))
+               (lambda () (interactive) (elisp--preceding-sexp)))))
     (message "%s" (if use-tcp
                       (let ((server-use-tcp use-tcp))
                         (server-eval-at server `(eval ',sexp)))
