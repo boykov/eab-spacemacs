@@ -15,6 +15,8 @@
   (defvar browse-url-netscape-program nil)
   (defun browse-url-netscape nil)
   :config
+  (general-define-key
+   "M-V"          'helm-show-kill-ring)
   (eab/add-hook helm-before-initialize-hook eab/helm-hook
     (general-define-key
      :keymaps 'helm-map
@@ -70,40 +72,45 @@
   (add-to-list 'helm-org-headings-actions '("eab/helm-org-store-link" . eab/helm-org-store-link))
   (add-to-list 'helm-org-headings-actions '("eab/helm-hron-todo" . eab/helm-hron-todo)))
 
+(use-package helm-org-ql
+  :after (org-ql)
+  :config
+  (add-to-list 'helm-org-ql-actions '("eab/hron-todo" . eab/helm-hron-todo)))
+
 (use-package helm-org-rifle
-    :after (general ergoemacs-functions helm org eab-minimal)
-    :config
-    (general-define-key
-     :keymaps 'helm-org-rifle-map
-     "<C-return>" (ilam
-                   (with-helm-alive-p
-                     (helm-exit-and-execute-action 'eab/rifle-note-todo)))
-     "RET"        (ilam
-                   (with-helm-alive-p
-                     (helm-exit-and-execute-action 'eab/rifle-hron-todo)))
-     "M-RET"      (ilam
-                   (with-helm-alive-p
-                     (helm-exit-and-execute-action
-                      'helm-org-rifle-show-entry-in-real-buffer)))
-     "M-c"        (ilam
-                   (with-helm-alive-p
-                     (helm-exit-and-execute-action
-                      'eab/helm-rifle-store-link)))
-     "M-n"        'helm-next-source
-     "M-p"        'helm-previous-source
-     "C-k"        'toggle-input-method
-     "M-k"        'helm-next-line
-     "C-n"        'next-history-element
-     "M-K"        'helm-next-page
-     "M-J"        'helm-beginning-of-buffer
-     "C-p"        'previous-history-element
-     "M-i"        'helm-previous-line
-     )
-    (ergoemacs-fix-arrow-keys helm-org-rifle-map)
-    (setq helm-org-rifle-ellipsis-string "\n")
-    (setq helm-org-rifle-context-characters 200)
-    (setq helm-org-rifle-input-idle-delay 0.5)
-    (if (eab/ondaemon (eab/server-P))
-        (setq helm-org-rifle-input-idle-delay 1))
-    (add-to-list 'helm-org-rifle-actions '("eab/hron-todo" . eab/rifle-hron-todo))
-    (add-to-list 'helm-org-rifle-actions '("eab/note-todo" . eab/rifle-note-todo)))
+  :after (general ergoemacs-functions helm org eab-minimal)
+  :config
+  (general-define-key
+   :keymaps 'helm-org-rifle-map
+   "<C-return>" (ilam
+                 (with-helm-alive-p
+                   (helm-exit-and-execute-action 'eab/rifle-note-todo)))
+   "RET"        (ilam
+                 (with-helm-alive-p
+                   (helm-exit-and-execute-action 'eab/rifle-hron-todo)))
+   "M-RET"      (ilam
+                 (with-helm-alive-p
+                   (helm-exit-and-execute-action
+                    'helm-org-rifle-show-entry-in-real-buffer)))
+   "M-c"        (ilam
+                 (with-helm-alive-p
+                   (helm-exit-and-execute-action
+                    'eab/helm-rifle-store-link)))
+   "M-n"        'helm-next-source
+   "M-p"        'helm-previous-source
+   "C-k"        'toggle-input-method
+   "M-k"        'helm-next-line
+   "C-n"        'next-history-element
+   "M-K"        'helm-next-page
+   "M-J"        'helm-beginning-of-buffer
+   "C-p"        'previous-history-element
+   "M-i"        'helm-previous-line
+   )
+  (ergoemacs-fix-arrow-keys helm-org-rifle-map)
+  (setq helm-org-rifle-ellipsis-string "\n")
+  (setq helm-org-rifle-context-characters 200)
+  (setq helm-org-rifle-input-idle-delay 0.5)
+  (if (eab/ondaemon (eab/server-P))
+      (setq helm-org-rifle-input-idle-delay 1))
+  (add-to-list 'helm-org-rifle-actions '("eab/hron-todo" . eab/rifle-hron-todo))
+  (add-to-list 'helm-org-rifle-actions '("eab/note-todo" . eab/rifle-note-todo)))

@@ -7,6 +7,8 @@
 ;; Requirements: bookmark
 ;; Status: not intended to be distributed yet
 
+(use-package bookmark)
+
 (defun eab/bookmark-set ()
   (interactive)
   (call-interactively 'bookmark-set)

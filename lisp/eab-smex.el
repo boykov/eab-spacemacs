@@ -7,6 +7,8 @@
 ;; Requirements: helm smex
 ;; Status: not intended to be distributed yet
 
+(use-package smex)
+
 (smex-initialize)
 
 (define-advice smex-show-key-advice (:around (&rest args) eab-advice-smex)

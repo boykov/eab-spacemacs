@@ -7,6 +7,13 @@
 ;; Requirements: eev vterm
 ;; Status: not intended to be distributed yet
 
+(use-package eev-all
+    :load-path "~/.emacs.d/private/eab-spacemacs/local/eev-current")
+(use-package eev-browse-url
+  :after (eev-all))
+(use-package eev-mini-steps
+  :after (eev-all))
+
 (defvar eab/run-ansi-kind "ghostel" "Choose eat/ansi/ghostel")
 
 (defun eab/run-tmux (sym)

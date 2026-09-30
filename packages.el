@@ -33,7 +33,20 @@
 (use-package eab-server
   :after (eab-notify))
 (use-package general)
+(use-package auto-install
+  :config
+  (setq auto-install-directory
+        (eab/config (concat user-emacs-directory "auto-install/"))))
 (load "eab-config-mode.el")
+(use-package eab-minimal
+  :after (eab-notify)
+  :config
+  (general-define-key
+   "M-<"          'kmacro-start-macro
+   "M-."          'kmacro-edit-macro
+   "M-,"          'eab/kmacro-end-or-call-macro
+   "C-x Q"        'eab/kbd-macro-query)
+  )
 (use-package eab-config-simple
   :after (eab-minimal))
 (load "eab-config-aaorg.el")
@@ -61,9 +74,217 @@
 (load "eab-config-compile.el")
 (load "eab-config-grep.el")
 (load "eab-config-dired.el")
-
 (load "eab-config-avy.el")
 (load "eab-config-eab-org.el")
+(use-package eab-bookmark
+  :after (eab-minimal eab-workgroups2))
+(use-package eab-gr
+  :after (eab-compile eab-notify))
+(use-package eab-workflow
+  :config
+  (general-define-key
+   "<f7>"         'eab/fix-windows-coding
+   "<f6>"         'eab/revert-buffer
+   "C-c u"        'eab/unbound-var
+   "C-c U"        'eab/unbound-fun
+   ))
+(use-package eab-ui
+  :config
+  (setq auto-save-list-file-prefix (eab/config (concat (eab/history-dir) "auto-save-list/.saves-")))
+  (setq save-place-file (eab/config (concat (eab/history-dir) ".emacs-places")))
+  (setq url-configuration-directory (eab/config (concat (eab/history-dir) "url/")))
+  (eab/config
+   (cond ((eab/onhost "kairos")       (setq source-directory "~/data/github/emacs/src"))
+         ((eab/onhost "chronos")      (setq source-directory "~/data/github/emacs/src"))
+         ((eab/onhost "kairos-emacs") (setq source-directory "~/data/github/emacs/src"))
+         ((eab/onhost "chronos-emacs")(setq source-directory "~/data/github/emacs/src"))
+         ((eab/onhost "cyclos-emacs") (setq source-directory "~/data/github/emacs/src"))))
+  (setq find-function-C-source-directory source-directory)
+  (setq custom-file (eab/config (concat (eab/history-dir) "custom.el"))))
+(use-package eab-ido
+  :after (projectile eab-minimal)
+  :config
+  (general-define-key
+   "C-b"          'eab/cxb
+   )
+  (setq ido-save-directory-list-file
+        (eab/config (concat (eab/history-dir) ".ido.last"))))
+(use-package eab-desktop
+  :after (desktop appt autorevert eab-workgroups2))
+(use-package eab-window)
+(use-package eab-outline
+  :after (eab-minimal))
+(use-package eab-tramp)
+(use-package eab-eepitch
+  :config
+  (general-define-key
+   "C-,"          'eab/eepitch-this-line
+   "C-r"          'eab/eepitch-this-line
+   "C-M-r"        'eab/eepitch-paragraph
+   )
+  (setq eab/eeansi-path (eab/config (expand-file-name "~/.eev/eeansi.sh")))
+  (setq eab/eegchannel-path
+        (eab/config
+         (expand-file-name (concat eab-spacemacs-path "local/eev-current/eegchannel"))))
+  (setq vterm-shell eab/eeansi-path))
+
+(use-package epa)
+(use-package epa-file
+  :after (epa)
+  :config
+  (epa-file-enable)
+  (setq epa-file-select-keys 'silent))
+(use-package epg
+  :config
+  (setenv "GPG_AGENT_INFO" nil)       ; use gpg without gui window
+  ;; gpg --import ~/.ssh/key_*.gpg
+  (setq epg-gpg-program "gpg")
+  (setq epa-pinentry-mode 'loopback))
+
+(use-package vterm
+  :config
+  (setq vterm-keymap-exceptions '("C-c" "C-x" "C-u" "C-g" "C-h" "C-l" "M-x" "M-o" "C-v" "M-v" "C-y" "M-y" "M-s" "M-a" "M-i" "M-k" "M-j" "M-l" "C-a" "M-c" "M-p"))
+  (defun vterm-send-meta-c-b ()
+    "Send `M-<backspace>' to the libvterm."
+    (interactive)
+    (vterm-send-key "b" nil t t)))
+
+;; (load "auctex.el" nil t t)
+(use-package eab-tex)
+
+
+(use-package eab-smex
+  :after (helm smex eab-minimal)
+  :config
+  (general-define-key
+   :keymaps 'minibuffer-local-map
+   "M-a"          'eab/smex-extended
+   "C-w"          'eab/smex-repeat)
+  (general-define-key
+   "M-a"          'eab/smex-limited-commands)
+  (setq smex-save-file (eab/config (concat (eab/history-dir) ".smex-items"))))
+(use-package undo-tree
+  :config
+  (general-define-key
+   "M-z"          'undo-tree-undo
+   "M-Z"          'undo-tree-redo
+   )
+  (global-undo-tree-mode))
+(use-package which-key
+  :defer
+  :config
+  (setq which-key-idle-delay 2)
+  (which-key-mode))
+(use-package diminish
+  :after (undo-tree which-key)
+  :config
+  (diminish 'which-key-mode "WK")
+  (diminish 'undo-tree-mode "UT"))
+(use-package buffer-move
+  :config
+  (defun buf-move ()
+    "Begin moving the current buffer to different windows.
+
+Use the arrow keys to move in the desired direction.  Pressing
+any other key exits this function."
+    (interactive)
+    (let ((map (make-sparse-keymap)))
+      (dolist (x '(("M-i" . buf-move-up)
+                   ("M-j" . buf-move-left)
+                   ("M-k" . buf-move-down)
+                   ("M-l" . buf-move-right)))
+        (define-key map (read-kbd-macro (car x)) (cdr x)))
+      (set-transient-map map t))))
+(use-package guide-key
+  :config
+  (guide-key-mode 1))
+(use-package string-edit-at-point)
+(use-package redo+
+  :config
+  (general-define-key
+   "M-z"          'undo))
+
+(general-define-key
+ "C-t"          'transpose-sexps
+ "M-m"          'forward-sexp
+ "M-n"          'backward-sexp
+ "M-q"          'kill-current-buffer
+ "C-i"          'indent-for-tab-command
+ "C-m"          'newline
+ "C-@"          'set-mark-command
+ "C-S-a"        'eval-expression
+ "C-S-b"        'select-frame-by-name
+ "C-S-s"        'write-file
+ "C-SPC"        'set-mark-command
+ "S-SPC"        'nil
+ "C-c M-f"      'find-file-at-point
+ "C-k"          'toggle-input-method
+ "C-o"          'find-file
+ "C-x C-e"      'eval-defun
+ "C-x C-k k"    'kill-region
+ "C-x M-f"      'find-file-at-point
+ "C-x c"        'customize-variable
+ "C-x e"        'eval-last-sexp
+ "C-x j"        'comment-region
+ "C-x o"        'other-window
+ "C-z"          'repeat
+ "M-!"          'delete-window
+ "M-%"          'query-replace-regexp
+ "M-&"          'count-matches
+ "M-'"          'comment-dwim
+ "M-/"          'dabbrev-expand
+ "M-1"          'delete-other-windows
+ "M-2"          'split-window-vertically
+ "M-5"          'query-replace
+ "M-@"          'split-window-horizontally
+ "M-B"          'backward-kill-sexp
+ "M-C"          'copy-all
+ "M-H"          'move-end-of-line
+ "M-I"          'scroll-down
+ "M-J"          'beginning-of-buffer
+ "M-K"          'scroll-up
+ "M-L"          'end-of-buffer
+ "M-M"          'end-of-defun
+ "M-N"          'beginning-of-defun
+ "M-O"          'forward-paragraph
+ "C-S-SPC"      'mark-defun
+ "M-SPC"        'set-mark-command
+ "C-M-@"        'set-rectangular-region-anchor
+ "M-U"          'backward-paragraph
+ "M-X"          'delete-region
+ "M-b"          'kill-sexp
+ "M-c"          'kill-ring-save
+ "M-e"          'backward-kill-word
+ "M-f"          'delete-char
+ "M-F"          'delete-backward-char
+ "M-g"          'kill-line
+ "M-h"          'move-beginning-of-line
+ "M-i"          'previous-line
+ "M-j"          'backward-char
+ "C-M-j"        'delete-backward-char
+ "M-k"          'next-line
+ "M-l"          'forward-char
+ "M-o"          'forward-word
+ "M-p"          'move-end-of-line
+ "M-r"          'kill-word
+ "M-u"          'backward-word
+ "M-v"          'yank
+ "M-x"          'kill-region
+ )
+
+(general-define-key
+ "C-c d"        'nil
+ "C-c b"        'browse-url
+ "C-c v"        'nil
+ "C-c w"        'nil
+ "C-x b"        'switch-to-buffer
+ "M-."          'nil
+ )
+
+(general-define-key
+ :keymaps 'query-replace-map
+ "C-e"  'edit
+ "C-r"  'delete-and-edit)
 
 (defvar eab-spacemacs-packages
   `(
@@ -318,38 +539,11 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-ergoemacs-mode nil)
 (defun eab-spacemacs/init-projectile nil)
 (defun eab-spacemacs/init-browse-url ())
-
-(defun eab-spacemacs/init-epa ()
-  (use-package epa)
-  (use-package epa-file
-    :after (epa)
-    :config
-    (epa-file-enable)
-    (setq epa-file-select-keys 'silent))
-  (use-package epg
-    :config
-    (setenv "GPG_AGENT_INFO" nil)       ; use gpg without gui window
-    ;; gpg --import ~/.ssh/key_*.gpg
-    (setq epg-gpg-program "gpg")
-    (setq epa-pinentry-mode 'loopback)))
-(defun eab-spacemacs/init-term ()
- )
+(defun eab-spacemacs/init-epa ())
+(defun eab-spacemacs/init-term ())
 (defun eab-spacemacs/init-comint ())
-(defun eab-spacemacs/init-paragraphs ()
-  ;; (setq paragraph-start ...)
-  ;; (setq paragraph-separate ...)
-  (setq page-delimiter "^$"))
-(defun eab-spacemacs/init-subr ()
-  (setq max-specpdl-size 10000)
-  (unless window-system ;; Only use in tty-sessions.
-    (defvar arrow-keys-map (make-sparse-keymap) "Keymap for arrow keys")
-    (define-key esc-map "O" arrow-keys-map)
-    (define-key arrow-keys-map "A" 'previous-line)
-    (define-key arrow-keys-map "B" 'next-line)
-    (define-key arrow-keys-map "C" 'forward-char)
-    (define-key arrow-keys-map "D" 'backward-char)))
-
-
+(defun eab-spacemacs/init-paragraphs ())
+(defun eab-spacemacs/init-subr ())
 (defun eab-spacemacs/init-simple ())
 (defun eab-spacemacs/init-ediff ())
 (defun eab-spacemacs/init-ediff-wind ())
@@ -399,67 +593,28 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-emamux nil)
 (defun eab-spacemacs/init-esup nil)
 (defun eab-spacemacs/init-diff-hl nil)
-(defun eab-spacemacs/init-vterm nil
-  (use-package vterm
-    :config
-    (setq vterm-keymap-exceptions '("C-c" "C-x" "C-u" "C-g" "C-h" "C-l" "M-x" "M-o" "C-v" "M-v" "C-y" "M-y" "M-s" "M-a" "M-i" "M-k" "M-j" "M-l" "C-a" "M-c" "M-p"))
-    (defun vterm-send-meta-c-b ()
-      "Send `M-<backspace>' to the libvterm."
-      (interactive)
-      (vterm-send-key "b" nil t t))))
+(defun eab-spacemacs/init-vterm nil)
 (defun eab-spacemacs/init-eaf nil)
 (defun eab-spacemacs/init-ghostel nil)
 (defun eab-spacemacs/init-emacs-eat nil)
 
-(defun eab-spacemacs/init-auctex nil
-;; (load "auctex.el" nil t t)
-  (use-package eab-tex))
+(defun eab-spacemacs/init-auctex nil)
 (defun eab-spacemacs/init-org-agenda-property nil)
 (defun eab-spacemacs/init-region-bindings-mode nil)
-(defun eab-spacemacs/init-smex nil
-  (use-package smex)
-  (use-package eab-smex
-    :after (helm smex eab-minimal)
-    :config
-    (setq smex-save-file (eab/config (concat (eab/history-dir) ".smex-items")))))
+(defun eab-spacemacs/init-smex nil)
 (defun eab-spacemacs/init-smartparens nil )
-(defun eab-spacemacs/init-auto-install nil
-  (use-package auto-install
-    :config
-    (setq auto-install-directory (eab/config (concat user-emacs-directory "auto-install/")))))
-(defun eab-spacemacs/init-flx-ido nil
-  (use-package flx-ido))
-(defun eab-spacemacs/init-ido-at-point nil
-  (use-package ido-at-point))
+(defun eab-spacemacs/init-auto-install nil)
+(defun eab-spacemacs/init-flx-ido nil)
+(defun eab-spacemacs/init-ido-at-point nil)
 (defun eab-spacemacs/init-paredit nil)
-(defun eab-spacemacs/init-grep-a-lot nil
-  (use-package grep-a-lot))
-(defun eab-spacemacs/init-wgrep nil
-  (use-package wgrep))
+(defun eab-spacemacs/init-grep-a-lot nil)
+(defun eab-spacemacs/init-wgrep nil)
 (defun eab-spacemacs/init-ag nil)
-(defun eab-spacemacs/init-rg nil
-    (use-package rg))
+(defun eab-spacemacs/init-rg nil)
 (defun eab-spacemacs/init-wgrep-ag nil)
-(defun eab-spacemacs/init-undo-tree nil
-  (use-package undo-tree
-    :config
-    (general-define-key
-     "M-z"          'undo-tree-undo
-     "M-Z"          'undo-tree-redo
-     )
-    (global-undo-tree-mode)))
-(defun eab-spacemacs/init-which-key nil
-  (use-package which-key
-    :defer
-    :config
-    (setq which-key-idle-delay 2)
-    (which-key-mode)))
-(defun eab-spacemacs/init-diminish nil
-  (use-package diminish
-    :after (undo-tree which-key)
-    :config
-    (diminish 'which-key-mode "WK")
-    (diminish 'undo-tree-mode "UT")))
+(defun eab-spacemacs/init-undo-tree nil)
+(defun eab-spacemacs/init-which-key nil)
+(defun eab-spacemacs/init-diminish nil)
 (defun eab-spacemacs/init-edit-list ())
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -472,11 +627,9 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-ace-link nil)
 (defun eab-spacemacs/init-request nil)
 (defun eab-spacemacs/init-popup nil)
-(defun eab-spacemacs/init-idle-highlight-mode nil
-  (use-package idle-highlight-mode))
+(defun eab-spacemacs/init-idle-highlight-mode nil)
 (defun eab-spacemacs/init-fuzzy nil)
-(defun eab-spacemacs/init-buffer-move nil
-  (use-package buffer-move))
+(defun eab-spacemacs/init-buffer-move nil)
 
 (defun eab-spacemacs/init-shut-up nil)
 (defun eab-spacemacs/init-parsebib nil)
@@ -513,56 +666,23 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-peg nil)
 (defun eab-spacemacs/init-org-super-agenda nil)
 (defun eab-spacemacs/init-org-special-block-extras nil)
-(defun eab-spacemacs/init-org-sql nil
-  (use-package org-sql
-    :defer))
-(defun eab-spacemacs/init-org-transclusion nil
-  (use-package org-transclusion))
-(defun eab-spacemacs/init-org-ql nil
-  (use-package org-ql)
-  (use-package org-ql-search
-    :config
-    (setq org-link-parameters
-          (remove
-           '("org-ql-search" :follow org-ql-view--link-follow
-             :store org-ql-view--link-store)
-           org-link-parameters)))
-  (use-package helm-org-ql
-    :after (org-ql)
-    :config
-    (add-to-list 'helm-org-ql-actions '("eab/hron-todo" . eab/helm-hron-todo))))
+(defun eab-spacemacs/init-org-sql nil)
+(defun eab-spacemacs/init-org-transclusion nil)
+(defun eab-spacemacs/init-org-ql nil)
 (defun eab-spacemacs/init-aaorg nil)
-(defun eab-spacemacs/init-org-mode-fix/lisp nil
-  ;; fix 'file is already exist' bug
-  (setq org-babel-temporary-directory "/tmp/user/1000/babel-aa5I6G"))
+(defun eab-spacemacs/init-org-mode-fix/lisp nil)
 (defun eab-spacemacs/init-f nil)
 (defun eab-spacemacs/init-keyfreq nil )
-(defun eab-spacemacs/init-cask nil
-  (use-package cask
-    :config
-    (cask-initialize)))
-(defun eab-spacemacs/init-pallet nil
-  (use-package pallet
-    :config
-    (pallet-init)))
-(defun eab-spacemacs/init-ob-tmux nil
-    (use-package ob-tmux))
-(defun eab-spacemacs/init-purty-mode nil
-  (use-package purty-mode))
+(defun eab-spacemacs/init-cask nil)
+(defun eab-spacemacs/init-pallet nil)
+(defun eab-spacemacs/init-ob-tmux nil)
+(defun eab-spacemacs/init-purty-mode nil)
 (defun eab-spacemacs/init-flx nil)
-(defun eab-spacemacs/init-guide-key nil
-  (use-package guide-key
-    :config
-    (guide-key-mode 1)))
+(defun eab-spacemacs/init-guide-key nil)
 (defun eab-spacemacs/init-xml-rpc nil)
 (defun eab-spacemacs/init-web nil)
-(defun eab-spacemacs/init-string-edit-at-point nil
-  (use-package string-edit-at-point))
-(defun eab-spacemacs/init-redo+ nil
-  (use-package redo+
-    :config
-    (general-define-key
-     "M-z"          'undo)))
+(defun eab-spacemacs/init-string-edit-at-point nil)
+(defun eab-spacemacs/init-redo+ nil)
 (defun eab-spacemacs/init-pcache nil)
 (defun eab-spacemacs/init-org-ehtml nil)
 (defun eab-spacemacs/init-noflet nil)
@@ -571,10 +691,7 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-auto-complete nil)
 (defun eab-spacemacs/init-yasnippet nil)
 (defun eab-spacemacs/init-kv nil)
-(defun eab-spacemacs/init-ignoramus nil
-  (use-package ignoramus
-    :config
-    (ignoramus-setup)))
+(defun eab-spacemacs/init-ignoramus nil)
 (defun eab-spacemacs/init-ibuffer-vc nil)
 (defun eab-spacemacs/init-highlight nil)
 (defun eab-spacemacs/init-highlight-indentation nil)
@@ -592,248 +709,35 @@ which require an initialization must be listed explicitly in the list.")
 (defun eab-spacemacs/init-clojure-mode nil)
 (defun eab-spacemacs/init-browse-kill-ring nil)
 (defun eab-spacemacs/init-bm nil)
-(defun eab-spacemacs/init-org-link-minor-mode nil
-  (use-package org-link-minor-mode
-    :after (org)))
-(defun eab-spacemacs/init-eev-current nil
-  (use-package eev-all)
-  (use-package eev-browse-url)
-  (use-package eev-mini-steps)
-  (use-package eab-eepitch
-    :after (eev-all eev-browse-url eev-mini-steps)
-    :config
-    (general-define-key
-     "C-,"          'eab/eepitch-this-line
-     "C-r"          'eab/eepitch-this-line
-     "C-M-r"        'eab/eepitch-paragraph
-     )
-    (setq eab/eeansi-path (eab/config (expand-file-name "~/.eev/eeansi.sh")))
-    (setq eab/eegchannel-path
-          (eab/config
-           (expand-file-name (concat eab-spacemacs-path "local/eev-current/eegchannel"))))
-    (setq vterm-shell eab/eeansi-path)))
-(defun eab-spacemacs/init-bbdb/lisp nil
-  (use-package bbdb
-    :config
-    (setq bbdb-file (eab/config (concat user-emacs-directory "eab-private/.bbdb")))
-    (bbdb-initialize 'gnus 'message 'sc) ;; 'w3m)
-    (setq bbdb-north-american-phone-numbers-p nil))
-  (use-package bbdb-loaddefs)
-  (use-package bbdb-anniv))
+(defun eab-spacemacs/init-org-link-minor-mode nil)
+(defun eab-spacemacs/init-eev-current nil)
+(defun eab-spacemacs/init-bbdb/lisp nil)
 (defun eab-spacemacs/init-eab-misc nil)
 
 (defun eab-spacemacs/init-gnus nil )
 
-(defun eab-spacemacs/init-tramp nil
-  (use-package eab-tramp))
+(defun eab-spacemacs/init-tramp nil)
 
-(defun eab-spacemacs/init-outline nil
-  (use-package eab-outline
-    :after (eab-minimal)))
-(defun eab-spacemacs/init-window nil
-  (use-package eab-window))
-(defun eab-spacemacs/init-appt nil
-  (use-package appt
-    :config
-    (setq appt-message-warning-time 12)
-    (setq appt-display-interval 12)))
-(defun eab-spacemacs/init-desktop nil
-  (use-package desktop)
-  (use-package eab-desktop
-    :after (desktop appt autorevert eab-workgroups2)))
+(defun eab-spacemacs/init-outline nil)
+(defun eab-spacemacs/init-window nil)
+(defun eab-spacemacs/init-appt nil)
+(defun eab-spacemacs/init-desktop nil)
 (defun eab-spacemacs/init-server nil)
 (defun eab-spacemacs/init-compile nil)
-(defun eab-spacemacs/init-eab-gr nil
-  (use-package eab-gr
-    :after (eab-compile eab-notify)))
+(defun eab-spacemacs/init-eab-gr nil)
 (defun eab-spacemacs/init-grep nil)
 (defun eab-spacemacs/init-dired nil)
 
-(defun eab-spacemacs/init-ido nil
-  (use-package eab-ido
-    :after (flx-ido projectile eab-minimal)
-    :config
-    (setq ido-save-directory-list-file
-          (eab/config (concat (eab/history-dir) ".ido.last")))))
+(defun eab-spacemacs/init-ido nil)
 (defun eab-spacemacs/init-abbrev nil)
-(defun eab-spacemacs/init-bookmark nil
-  (use-package bookmark)
-  (use-package eab-bookmark
-    :after (bookmark eab-minimal eab-workgroups2)))
+(defun eab-spacemacs/init-bookmark nil)
 
 (defun eab-spacemacs/init-ibuffer ())
 (defun eab-spacemacs/init-eab-ace-jump-mode ())
 (defun eab-spacemacs/init-eab-avy ())
 
-(defun eab-spacemacs/init-eab-minimal ()
-  (use-package eab-minimal
-    :after (eab-notify)))
-(defun eab-spacemacs/init-eab-workflow ()
-  (use-package eab-workflow
-    :config
-    (general-define-key
-     "C-c u"        'eab/unbound-var
-     "C-c U"        'eab/unbound-fun
-     )))
-(defun eab-spacemacs/init-eab-ui ()
-  (use-package eab-ui
-    :config
-    (setq auto-save-list-file-prefix (eab/config (concat (eab/history-dir) "auto-save-list/.saves-")))
-    (setq save-place-file (eab/config (concat (eab/history-dir) ".emacs-places")))
-    (setq url-configuration-directory (eab/config (concat (eab/history-dir) "url/")))
-    (eab/config
-     (cond ((eab/onhost "kairos")       (setq source-directory "~/data/github/emacs/src"))
-           ((eab/onhost "chronos")      (setq source-directory "~/data/github/emacs/src"))
-           ((eab/onhost "kairos-emacs") (setq source-directory "~/data/github/emacs/src"))
-           ((eab/onhost "chronos-emacs")(setq source-directory "~/data/github/emacs/src"))
-           ((eab/onhost "cyclos-emacs") (setq source-directory "~/data/github/emacs/src"))))
-    (setq find-function-C-source-directory source-directory)
-    (setq custom-file (eab/config (concat (eab/history-dir) "custom.el")))))
+(defun eab-spacemacs/init-eab-minimal ())
+(defun eab-spacemacs/init-eab-workflow ())
+(defun eab-spacemacs/init-eab-ui ())
 (defun eab-spacemacs/init-eab-org ())
-(defun eab-spacemacs/user-config ()
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;;           ____ _       _           _
-  ;;          / ___| | ___ | |__   __ _| |
-  ;;         | |  _| |/ _ \| '_ \ / _` | |
-  ;;         | |_| | | (_) | |_) | (_| | |
-  ;;          \____|_|\___/|_.__/ \__,_|_|
-  ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;; Global
-  
-  (general-define-key
-   "C-c a"        'org-agenda
-   "C-c C-M-p"    'org-open-at-point-global
-   "C-c C-l"      'org-insert-link
-   "C-c l"        'org-store-link
-   "C-c r"        'org-capture
-   "C-x C-M-p"    'org-open-at-point-global
-   "C-b"          'switch-to-buffer
-   "M-a"          'execute-extended-command
-   "C-t"          'transpose-sexps
-   "M-m"          'forward-sexp
-   "M-n"          'backward-sexp
-   "M-q"          'kill-current-buffer
-   "C-i"          'indent-for-tab-command
-   "C-m"          'newline
-   "C-@"          'set-mark-command
-   "C-S-a"        'eval-expression
-   "C-S-b"        'select-frame-by-name
-   "C-S-s"        'write-file
-   "C-SPC"        'set-mark-command
-   "S-SPC"        'nil
-   "C-c M-f"      'find-file-at-point
-   "C-k"          'toggle-input-method
-   "C-o"          'find-file
-   "C-x C-d"      'dired-jump
-   "C-x C-e"      'eval-defun
-   "C-x C-k k"    'kill-region
-   "C-x M-f"      'find-file-at-point
-   "C-x c"        'customize-variable
-   "C-x e"        'eval-last-sexp
-   "C-x j"        'comment-region
-   "C-x o"        'other-window
-   "C-x Q"        'eab/kbd-macro-query
-   "C-z"          'repeat
-   "M-!"          'delete-window
-   "M-%"          'query-replace-regexp
-   "M-&"          'count-matches
-   "M-'"          'comment-dwim
-   "M-<"          'kmacro-start-macro
-   "M-."          'kmacro-edit-macro
-   "M-,"          'eab/kmacro-end-or-call-macro
-   "C-M-,"        'eab/pm-write-last-kbd-macro
-   "M-/"          'dabbrev-expand
-   "M-1"          'delete-other-windows
-   "M-2"          'split-window-vertically
-   "M-5"          'query-replace
-   "M-@"          'split-window-horizontally
-   "M-B"          'backward-kill-sexp
-   "M-C"          'copy-all
-   "M-H"          'move-end-of-line
-   "M-I"          'scroll-down
-   "M-J"          'beginning-of-buffer
-   "M-K"          'scroll-up
-   "M-L"          'end-of-buffer
-   "M-M"          'end-of-defun
-   "M-N"          'beginning-of-defun
-   "M-O"          'forward-paragraph
-   "C-S-SPC"      'mark-defun
-   "M-S-SPC"      'org-mark-paragraph
-   "M-SPC"        'set-mark-command
-   "C-M-@"        'set-rectangular-region-anchor
-   "M-U"          'backward-paragraph
-   "M-X"          'delete-region
-   "M-b"          'kill-sexp
-   "M-c"          'kill-ring-save
-   "M-e"          'backward-kill-word
-   "M-f"          'delete-char
-   "M-F"          'delete-backward-char
-   "M-g"          'kill-line
-   "M-h"          'move-beginning-of-line
-   "M-i"          'previous-line
-   "M-j"          'backward-char
-   "C-M-j"        'delete-backward-char
-   "M-k"          'next-line
-   "M-l"          'forward-char
-   "M-o"          'forward-word
-   "M-p"          'move-end-of-line
-   "M-r"          'kill-word
-   "M-u"          'backward-word
-   "M-v"          'yank
-   "M-x"          'kill-region
-   )
-
-  (general-define-key
-   "<f12>"        'eab/make-list-paths
-   "<f6>"         'eab/revert-buffer
-   "<f7>"         'eab/fix-windows-coding
-   "<print>"      'eab/make-list-paths
-   "C-c RET"      'org-return
-   "C-c d"        'nil
-   "C-c O"        'eab/open-corresponding-html
-   "C-c B"        'eab/open-heading-browser
-   "C-c b"        'browse-url
-   "C-c s"        'eab/org-agenda-search
-   "C-c v"        'nil
-   "C-c w"        'nil
-   "C-x b"        'switch-to-buffer
-   "C-x C-b"      'ibuffer
-   "C-x g"        'eab/grep
-   "C-x C-g"      (kbd "C-u C-x g")
-   "M-."          'nil
-   "M-A"          'eab/call-shell-command
-   )
-
-  (general-define-key
-   "C-b"          'eab/cxb
-   "M-a"          'eab/smex-limited-commands
-   "C-t"          'sp-transpose-sexp
-   "M-m"          'sp-forward-sexp
-   "M-n"          'sp-backward-sexp
-   "C-p"          'er/expand-region
-   "C-x C-k d"    'pm-define
-   "C-x C-k e"    'pm-switch-buf
-   "M-V"          'helm-show-kill-ring
-   )
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;;        _           _ _ _        _
-  ;;       | |__  _   _(_) | |_     (_)_ __
-  ;;       | '_ \| | | | | | __|____| | '_ \
-  ;;       | |_) | |_| | | | ||_____| | | | |
-  ;;       |_.__/ \__,_|_|_|\__|    |_|_| |_|
-  ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;; built-in
-
-  (general-define-key
-   :keymaps 'read-expression-map
-   "M-g"  'nil)
-  
-  (general-define-key
-   :keymaps 'query-replace-map
-   "C-e"  'edit
-   "C-r"  'delete-and-edit)
-
-  )
+(defun eab-spacemacs/user-config ())

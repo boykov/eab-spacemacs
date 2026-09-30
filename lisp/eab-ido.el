@@ -7,6 +7,9 @@
 ;; Requirements: ido ido-at-point flx-ido projectile workgroups2 helm
 ;; Status: not intended to be distributed yet
 
+(use-package flx-ido)
+(use-package ido-at-point)
+
 (ido-mode t) ;; fix boundp ido-buffer-completion-map
 (setq ido-enable-flex-matching t)
 (setq ido-everywhere t)

@@ -42,6 +42,11 @@
 (use-package eab-dired
   :after (dired eab-tramp eab-org eab-minimal)
   :config
+  (general-define-key
+   "C-x C-d"      'dired-jump
+   "<f12>"        'eab/make-list-paths
+   "<print>"      'eab/make-list-paths
+   )
   (defvar eab/dired-map (make-sparse-keymap)
     "keymap for fast dired")
   (global-set-key (kbd "C-x d") nil)

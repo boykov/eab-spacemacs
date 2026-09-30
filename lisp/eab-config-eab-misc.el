@@ -13,6 +13,11 @@
 (use-package power-macros
   :after (eab-config-term) ;; keybindings.el C-l vs eab-pmacros.el
   :config
+  (general-define-key
+   "C-x C-k d"    'pm-define
+   "C-x C-k e"    'pm-switch-buf
+   "C-M-,"        'eab/pm-write-last-kbd-macro
+   )
   (setq pm-macro-files (eab/config `(,(concat eab-spacemacs-path "lisp/eab-pmacros.el"))))
   (setq power-macros-file (eab/config (concat eab-spacemacs-path "lisp/eab-pmacros.el")))
   (if (file-exists-p power-macros-file)

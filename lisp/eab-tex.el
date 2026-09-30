@@ -9,6 +9,8 @@
 
 (use-package tex)
 (use-package tex-site)
+(use-package purty-mode
+  :disabled)
 
 (use-package ebib
   :config

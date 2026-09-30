@@ -108,6 +108,9 @@
 
 (use-package expand-region
   :config
+  (general-define-key
+   "C-p"          'er/expand-region
+   )
   (defun er/add-org-mode-expansions ()
     "Adds org-specific expansions for buffers in org-mode"
     (set (make-local-variable 'er/try-expand-list)
@@ -149,6 +152,11 @@
 
 (use-package smartparens
   :config
+  (general-define-key
+   "C-t"          'sp-transpose-sexp
+   "M-m"          'sp-forward-sexp
+   "M-n"          'sp-backward-sexp
+   )
   (add-hook 'smartparens-enabled-hook
             (lambda ()
               (general-define-key

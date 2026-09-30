@@ -136,6 +136,16 @@
 (autoload 'bat-mode "bat-mode" "DOS and WIndows BAT files" t)
 
 (use-package typescript-mode)
+(use-package idle-highlight-mode)
+
+(use-package bbdb
+  :load-path "~/.emacs.d/private/eab-spacemacs/local/bbdb/lisp"
+  :config
+  (setq bbdb-file (eab/config (concat user-emacs-directory "eab-private/.bbdb")))
+  (bbdb-initialize 'gnus 'message 'sc) ;; 'w3m)
+  (setq bbdb-north-american-phone-numbers-p nil))
+(use-package bbdb-loaddefs)
+(use-package bbdb-anniv)
 
 (use-package ansible-vault
   :config
@@ -194,6 +204,7 @@
    "C-n"        'comint-next-input))
 
 (use-package consult-omni
+  :load-path "~/.emacs.d/private/eab-spacemacs/local/consult-omni"
   :init
   (add-to-list 'load-path (eab/config (concat eab-spacemacs-path "local/consult-omni")))
   (add-to-list 'load-path (eab/config (concat eab-spacemacs-path "local/consult-omni/sources")))
@@ -291,3 +302,18 @@
   :config
   (add-hook 'gnus-summary-prepared-hook 'gnus-summary-hide-all-threads)
   (add-hook 'gnus-summary-prepare-hook 'gnus-summary-sort-by-most-recent-date))
+
+(use-package cask
+  :disabled
+  :config
+  (cask-initialize))
+
+(use-package pallet
+  :disabled
+  :config
+  (pallet-init))
+
+(use-package ignoramus
+  :disabled
+  :config
+  (ignoramus-setup))

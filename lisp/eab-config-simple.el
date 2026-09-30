@@ -10,7 +10,11 @@
 (use-package eab-shell
   :after (eab-minimal files)
   :init
-  (setq eab/trans-path (eab/config "~/git/python/trans.py")))
+  (setq eab/trans-path (eab/config "~/git/python/trans.py"))
+  :config
+  (general-define-key
+    "M-A"          'eab/call-shell-command
+    ))
 
 (use-package abbrev
   :after (eab-minimal simple)
@@ -42,8 +46,6 @@
    "t"  'dictionary-search
    "B"  'dictionary-previous))
 
-(general-define-key  "C-s"          (ilam (save-some-buffers 't)))
-
 ;; DONE: auto-save и торможение при C-s
 (defconst emacs-tmp-dir
   (format "%s/%s%s/"
@@ -72,6 +74,14 @@
         (:eval (if (buffer-file-name)
                    (abbreviate-file-name (buffer-file-name))
                  "%b"))))
+
+(general-define-key
+ "C-s"          (ilam (save-some-buffers 't))
+ )
+
+(general-define-key
+ :keymaps 'read-expression-map
+ "M-g"  'nil)
 
 (general-define-key
  :keymaps 'minibuffer-inactive-mode-map
@@ -124,8 +134,6 @@
  "M-k"          'next-history-element
  "C-d"          'eab/clear-extended-history
  "C-|"          'eab/minibuffer-see-file
- "M-a"          'eab/smex-extended
- "C-w"          'eab/smex-repeat
  "M-E"          (ilam (delete-minibuffer-contents)))
 
 (column-number-mode 1)
@@ -146,6 +154,7 @@
  history-length 500
  kill-ring-max 500
  max-lisp-eval-depth 10000
+ max-specpdl-size 10000
  eshell-history-size 1000
  )
 

@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.4.42
+
+feat: add new packages and reorganize configuration
+
+- Add use-package declarations for new packages: bookmark, org-ql,
+  org-sql, org-transclusion, org-link-minor-mode, ob-tmux, grep-a-lot,
+  wgrep, rg, idle-highlight-mode, bbdb, and cask/pallet/ignoramus
+  (disabled)
+- Introduce keybindings for various functionalities across multiple config files
+- Reorganize package loading and initialization in packages.el
+- Remove redundant initialization functions in packages.el to align with use-package approach
+
 ## 0.4.41
 
 chore: update changelog and add new configurations and fixes

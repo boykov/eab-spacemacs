@@ -7,6 +7,10 @@
 ;; Requirements:
 ;; Status: not intended to be distributed yet
 
+(use-package grep-a-lot)
+(use-package wgrep)
+(use-package rg)
+
 (general-define-key  "C-x M-g"    (ilam (eab/grep 2)))
 
 (eab/add-hook grep-mode-hook eab/grep-hook
@@ -30,6 +34,10 @@
 (use-package eab-grep
   :after (grep-a-lot wgrep eab-minimal)
   :config
+  (general-define-key
+   "C-x g"        'eab/grep
+   "C-x C-g"      (kbd "C-u C-x g")
+   )
   (defvar eab/grep-map (make-sparse-keymap)
     "Grep keymap.")
   (global-set-key (kbd "C-x G") nil)

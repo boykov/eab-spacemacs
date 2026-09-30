@@ -26,6 +26,16 @@
           ox-html
           eab-minimal)
   :config
+  (general-define-key
+   "M-S-SPC"      'org-mark-paragraph
+   "C-c RET"      'org-return
+   "C-c a"        'org-agenda
+   "C-c C-M-p"    'org-open-at-point-global
+   "C-c C-l"      'org-insert-link
+   "C-c l"        'org-store-link
+   "C-c r"        'org-capture
+   "C-x C-M-p"    'org-open-at-point-global
+   )
   (setq org-link-abbrev-alist
         (eab/config 
          `(("bib" . "~/git/lit/boykov.bib::%s")
@@ -45,6 +55,9 @@
 (use-package eab-org-agenda
   :after (org org-agenda eab-org)
   :config
+  (general-define-key
+   "C-c s"        'eab/org-agenda-search
+   )
   (add-hook 'org-agenda-mode-hook (lambda () (hl-line-mode 1)))
   (setq org-sort-agenda-notime-is-late nil)
   (setq org-agenda-sorting-strategy
@@ -62,7 +75,12 @@
 (use-package eab-org-publish
   :after (eab-org))
 (use-package eab-org-protocol
-  :after (eab-org org-protocol))
+  :after (eab-org org-protocol)
+  :config
+  (general-define-key
+   "C-c O"        'eab/open-corresponding-html
+   "C-c B"        'eab/open-heading-browser
+   ))
 (use-package eab-org-src-babel
   :after (org-src ob-tmux eab-org))
 (use-package eab-org-todo

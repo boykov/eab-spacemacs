@@ -123,9 +123,11 @@
 
 (defvar eab/temacs-map (make-sparse-keymap)
   "Keymap for console temacs.")
-(global-set-key (kbd "C-l") nil)
+(if (eq (lookup-key global-map (kbd "C-l")) 'recenter-top-bottom)
+    (global-set-key (kbd "C-l") nil))
 (general-define-key
  :prefix "C-l"
+ "s"            'buf-move
  "C-o"          'find-file
  "C-k"          (ilam (set-input-method nil) (setq default-input-method "russian-computer")) ;; "C-S-k" Disabled, bug
  "H"            'nil

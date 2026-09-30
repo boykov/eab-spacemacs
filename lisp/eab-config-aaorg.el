@@ -49,6 +49,28 @@
     :config
     (setq org-agenda-property-list '("Custom_BIB")))
 
+(use-package org-ql
+  :load-path "~/.emacs.d/private/eab-spacemacs/local/org-ql")
+(use-package org-ql-search
+  :after (org-ql)
+  :config
+  (setq org-link-parameters
+        (remove
+         '("org-ql-search" :follow org-ql-view--link-follow
+           :store org-ql-view--link-store)
+         org-link-parameters)))
+
+(use-package org-sql
+  :defer)
+
+(use-package org-transclusion)
+
+(use-package org-link-minor-mode
+  :load-path "~/.emacs.d/private/eab-spacemacs/local/org-link-minor-mode"
+  :after (org))
+
+(use-package ob-tmux)
+
 (eab/add-hook orgtbl-mode-hook eab/orgtbl-mode-hook
   (general-define-key
    :keymaps 'orgtbl-mode-map

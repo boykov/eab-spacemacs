@@ -7,6 +7,12 @@
 ;; Requirements:
 ;; Status: ready
 
+(use-package desktop)
+(use-package appt
+  :config
+  (setq appt-message-warning-time 12)
+  (setq appt-display-interval 12))
+
 (defun eab/desktop-dir ()
   (eab/history-dir))
 

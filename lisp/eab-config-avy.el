@@ -48,6 +48,9 @@
 
 (use-package ibuffer
   :config
+  (general-define-key
+   "C-x C-b"      'ibuffer
+   )
   (setq ibuffer-formats
         '((mark modified read-only " "
                 (name 18 18 :left :elide))
