@@ -70,19 +70,19 @@
 (use-package color-moccur
   :load-path "~/.emacs.d/private/eab-spacemacs/local/eab-misc"
   :config
+  (eab/add-hook moccur-mode eab/moccur-hook
+    :load-path "~/.emacs.d/private/eab-spacemacs/local/eab-misc"
+    (general-define-key
+     :keymaps 'moccur-mode-map
+     "M-n"        'nil
+     "M-p"        'nil
+     "M-m"        'nil
+     "M-d"        'nil))
   (general-define-key
    "C-:"          'isearch-moccur
    ))
 (use-package moccur-edit
   :load-path "~/.emacs.d/private/eab-spacemacs/local/eab-misc")
-(eab/add-hook moccur-mode eab/moccur-hook
-  :load-path "~/.emacs.d/private/eab-spacemacs/local/eab-misc"
-  (general-define-key
-   :keymaps 'moccur-mode-map
-   "M-n"        'nil
-   "M-p"        'nil
-   "M-m"        'nil
-   "M-d"        'nil))
 
 (use-package smart-operator
   :load-path "~/.emacs.d/private/eab-spacemacs/local/eab-misc")
@@ -92,48 +92,49 @@
   :load-path "~/.emacs.d/private/eab-spacemacs/local/eab-misc"
   :after (org))
 
-(defun multi-occur-in-all-buffers ()
-  "Show all lines matching REGEXP in all buffers."
-  (interactive)
-  (multi-occur
-   (buffer-list)
-   (car (occur-read-primary-args))))
+(use-package maplev
+  :disabled
+  :config
+  (add-to-list 'auto-mode-alist '("\\.mpl\\'" . maplev-mode))
+  (add-hook 'maplev-mode-hook
+            (lambda ()
+              ;;            (smart-operator-mode-on)
+              (general-define-key
+               :keymaps 'maplev-mode-map
+               "C-c d"      'maplev-help-at-point
+               "C-k"        'toggle-input-method)
+              (setq maplev-mint-start-options (list "-q" "-P"))
+              (setq maplev-executable-alist '(("11" "maple" nil "maple")
+                                              ("10" "maple" nil "mint")))))
+  (autoload 'cmaple "maplev" "Start maple process" t)
+  (autoload 'maplev-mode "maplev" "Maple editing mode" t))
 
-(add-hook 'maplev-mode-hook
-          (lambda ()
-            ;;            (smart-operator-mode-on)
-            (general-define-key
-             :keymaps 'maplev-mode-map
-             "C-c d"      'maplev-help-at-point
-             "C-k"        'toggle-input-method)
-            (setq maplev-mint-start-options (list "-q" "-P"))
-            (setq maplev-executable-alist '(("11" "maple" nil "maple")
-                                            ("10" "maple" nil "mint")))))
+(use-package maxima
+  :load-path "~/.emacs.d/private/eab-spacemacs/local/eab-misc/emaxima"
+  :config
+  (autoload 'emaxima-mode "emaxima" "EMaxima mode" t)
+  (autoload 'maxima "maxima" "Running Maxima interactively" t)
+  (autoload 'maxima-mode "maxima" "Maxima editing mode" t)
+  (add-to-list 'auto-mode-alist '("\\.max\\'" . maxima-mode))
+  (add-hook 'maxima-mode-hook 
+            (lambda ()
+              (general-define-key
+               :keymaps 'maxima-mode-map
+               "C-M-a"      'nil
+               "C-M-b"      'nil
+               "C-M-e"      'nil
+               "C-M-f"      'nil
+               "M-;"        'nil
+               "C-d"        eab/compile-map
+               "M-h"        'nil))))
 
-(autoload 'cmaple "maplev" "Start maple process" t)
-(autoload 'emaxima-mode "emaxima" "EMaxima mode" t)
-(autoload 'maplev-mode "maplev" "Maple editing mode" t)
-(autoload 'maxima "maxima" "Running Maxima interactively" t)
-(autoload 'maxima-mode "maxima" "Maxima editing mode" t)
-(add-to-list 'auto-mode-alist '("\\.max\\'" . maxima-mode))
-(add-to-list 'auto-mode-alist '("\\.mpl\\'" . maplev-mode))
-(add-to-list 'load-path (eab/config (concat eab-spacemacs-path "local/eab-misc/emaxima")))
-(add-hook 'maxima-mode-hook 
-          (lambda ()
-            (general-define-key
-             :keymaps 'maxima-mode-map
-             "C-M-a"      'nil
-             "C-M-b"      'nil
-             "C-M-e"      'nil
-             "C-M-f"      'nil
-             "M-;"        'nil
-             "C-d"        eab/compile-map
-             "M-h"        'nil)))
+(use-package proced
+  :config
+  (eab/add-hook proced-mode-hook eab/proced-hook
+    (general-define-key
+     :keymaps 'proced-mode-map
+     "O"  'top)))
 
-(eab/add-hook proced-mode-hook eab/proced-hook
-  (general-define-key
-   :keymaps 'proced-mode-map
-   "O"  'top))
 (use-package top-mode
   :load-path "~/.emacs.d/private/eab-spacemacs/local/eab-misc"
   :after (eab-minimal)

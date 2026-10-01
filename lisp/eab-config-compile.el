@@ -100,4 +100,7 @@
   (setq compilation-exit-message-function nil)
   (setq compilation-scroll-output 't))
 
+(use-package eab-gr
+  :after (eab-compile eab-notify))
+
 (provide 'eab-config-compile)

@@ -85,6 +85,34 @@
         (eval-expression-print-length nil))
     (prin1 `,body (current-buffer))))
 
+(defun nthcar (n list)
+  "Return first N elements of LIST.
+If LIST length below N, return entire list.
+If LIST is nil, return nil."
+  (reverse (nthcdr (- (length list) n) (reverse list))))
+
+(defun buffer-only-use-package-p (&optional buffer)
+  "Return non-nil if BUFFER contains only `use-package' and `provide' forms.
+BUFFER defaults to the current buffer.  Comments and whitespace are
+ignored.  An empty buffer or unreadable contents count as invalid."
+  (with-current-buffer (or buffer (current-buffer))
+    (save-excursion
+      (save-restriction
+        (widen)
+        (goto-char (point-min))
+        (catch 'done
+          (let ((count 0) form)
+            (while t
+              ;; (message (number-to-string count))
+              (condition-case nil
+                  (setq form (read (current-buffer)))
+                (end-of-file (throw 'done (> count 0)))
+                (scan-error  (throw 'done nil)))
+              (unless (and (consp form)
+                           (memq (car form) '(use-package provide)))
+                (throw 'done nil))
+              (setq count (1+ count)))))))))
+
 ;; TODO для многих патчей требуется одновременно несколько замен
 ;; значит, если продолжать в этом направлении, надо заменить пару
 ;; (regexp rep) на список пар

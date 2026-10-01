@@ -7,22 +7,24 @@
 ;; Requirements:
 ;; Status: not intended to be distributed yet
 
-(eab/add-hook diff-mode-hook eab/diff-hook
-  (general-define-key
-   :keymaps 'diff-mode-map
-   "M-SPC"      'nil
-   "M-1"        'nil
-   "M-2"        'nil
-   "M-5"        'nil
-   "M-k"        'nil
-   "M-<"        'nil
-   "M->"        'nil
-   "M-K"        'nil
-   "M-h"        'nil
-   "M-n"        'nil
-   "M-N"        'nil
-   "M-o"        'nil
-   "M-p"        'nil))
+(use-package diff-mode
+  :config
+  (eab/add-hook diff-mode-hook eab/diff-hook
+    (general-define-key
+     :keymaps 'diff-mode-map
+     "M-SPC"      'nil
+     "M-1"        'nil
+     "M-2"        'nil
+     "M-5"        'nil
+     "M-k"        'nil
+     "M-<"        'nil
+     "M->"        'nil
+     "M-K"        'nil
+     "M-h"        'nil
+     "M-n"        'nil
+     "M-N"        'nil
+     "M-o"        'nil
+     "M-p"        'nil)))
 
 (use-package diff-hl)
 

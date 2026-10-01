@@ -51,6 +51,78 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
    "M-~"  'ergoemacs-switch-to-previous-frame
    "C-/"  'ergoemacs-toggle-letter-case
    "M-*"  'ergoemacs-select-text-in-quote
-   "M-8"  'ergoemacs-extend-selection))
+   "M-8"  'ergoemacs-extend-selection)
+  (general-define-key
+   "C-t"          'transpose-sexps
+   "M-m"          'forward-sexp
+   "M-n"          'backward-sexp
+   "M-q"          'kill-current-buffer
+   "C-i"          'indent-for-tab-command
+   "C-m"          'newline
+   "C-@"          'set-mark-command
+   "C-S-a"        'eval-expression
+   "C-S-b"        'select-frame-by-name
+   "C-S-s"        'write-file
+   "C-SPC"        'set-mark-command
+   "S-SPC"        'nil
+   "C-c M-f"      'find-file-at-point
+   "C-k"          'toggle-input-method
+   "C-o"          'find-file
+   "C-x C-e"      'eval-defun
+   "C-x C-k k"    'kill-region
+   "C-x M-f"      'find-file-at-point
+   "C-x c"        'customize-variable
+   "C-x e"        'eval-last-sexp
+   "C-x j"        'comment-region
+   "C-x o"        'other-window
+   "C-z"          'repeat
+   "M-!"          'delete-window
+   "M-%"          'query-replace-regexp
+   "M-&"          'count-matches
+   "M-'"          'comment-dwim
+   "M-/"          'dabbrev-expand
+   "M-1"          'delete-other-windows
+   "M-2"          'split-window-vertically
+   "M-5"          'query-replace
+   "M-@"          'split-window-horizontally
+   "M-B"          'backward-kill-sexp
+   "M-C"          'copy-all
+   "M-H"          'move-end-of-line
+   "M-I"          'scroll-down
+   "M-J"          'beginning-of-buffer
+   "M-K"          'scroll-up
+   "M-L"          'end-of-buffer
+   "M-M"          'end-of-defun
+   "M-N"          'beginning-of-defun
+   "M-O"          'forward-paragraph
+   "C-S-SPC"      'mark-defun
+   "M-SPC"        'set-mark-command
+   "C-M-@"        'set-rectangular-region-anchor
+   "M-U"          'backward-paragraph
+   "M-X"          'delete-region
+   "M-b"          'kill-sexp
+   "M-c"          'kill-ring-save
+   "M-e"          'backward-kill-word
+   "M-f"          'delete-char
+   "M-F"          'delete-backward-char
+   "M-g"          'kill-line
+   "M-h"          'move-beginning-of-line
+   "M-i"          'previous-line
+   "M-j"          'backward-char
+   "C-M-j"        'delete-backward-char
+   "M-k"          'next-line
+   "M-l"          'forward-char
+   "M-o"          'forward-word
+   "M-p"          'move-end-of-line
+   "M-r"          'kill-word
+   "M-u"          'backward-word
+   "M-v"          'yank
+   "M-x"          'kill-region
+   "C-c d"        'nil
+   "C-c v"        'nil
+   "C-c w"        'nil
+   "C-x b"        'switch-to-buffer
+   "M-."          'nil
+   ))
 
 (provide 'eab-config-ergoemacs)

@@ -7,36 +7,39 @@
 ;; Requirements:
 ;; Status: not intended to be distributed yet
 
-(eab/add-hook dired-mode-hook eab/dired-hook
-  (general-define-key
-   :keymaps 'dired-mode-map
-   "C-M-b"      'nil
-   "M-a"        'nil
-   "M-i"        'nil
-   "M-j"        'nil
-   "C-n"        'nil
-   "M-c"        'nil
-   "M-g"        'nil
-   "M-G"        'nil
-   "M-v"        'nil
-   "M-!"        'nil
-   "M-l"        'nil
-   "M-p"        'nil
-   "M-o"        'nil
-   "M-s"        'nil
-   "M-u"        'nil
-   "M-m"        'nil
-   "C-o"        'nil
-   "C-p"        'nil
-   "C-k"        'nil
-   "C-S-a"      'nil
-   "C-c C-w"    'dired-do-rename
-   "C-w"        'wdired-change-to-wdired-mode
-   "b"          'browse-url-of-dired-file
-   "o"          'dired-find-file-other-window
-   "C-|"        'eab/dired-see-file
-   "E"          'ediff-files
-   "SPC"        'open-in-external-app))
+(use-package dired
+  :config
+  (eab/add-hook dired-mode-hook eab/dired-hook
+    (general-define-key
+     :keymaps 'dired-mode-map
+     "C-M-b"      'nil
+     "M-a"        'nil
+     "M-i"        'nil
+     "M-j"        'nil
+     "C-n"        'nil
+     "M-c"        'nil
+     "M-g"        'nil
+     "M-G"        'nil
+     "M-v"        'nil
+     "M-!"        'nil
+     "M-l"        'nil
+     "M-p"        'nil
+     "M-o"        'nil
+     "M-s"        'nil
+     "M-u"        'nil
+     "M-m"        'nil
+     "C-o"        'nil
+     "C-p"        'nil
+     "C-k"        'nil
+     "C-S-a"      'nil
+     "C-c C-w"    'dired-do-rename
+     "C-w"        'wdired-change-to-wdired-mode
+     "b"          'browse-url-of-dired-file
+     "o"          'dired-find-file-other-window
+     "C-|"        'eab/dired-see-file
+     "E"          'ediff-files
+     "SPC"        'open-in-external-app)))
+
 (use-package dired-async)
 (use-package dired-x)
 (use-package eab-dired

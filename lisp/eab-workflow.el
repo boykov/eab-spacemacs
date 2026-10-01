@@ -274,4 +274,11 @@
         )))
   (recenter nil t))
 
+(defun multi-occur-in-all-buffers ()
+  "Show all lines matching REGEXP in all buffers."
+  (interactive)
+  (multi-occur
+   (buffer-list)
+   (car (occur-read-primary-args))))
+
 (provide 'eab-workflow)

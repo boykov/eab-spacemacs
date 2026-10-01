@@ -7,31 +7,32 @@
 ;; Requirements:
 ;; Status: not intended to be distributed yet
 
-(general-define-key
- "C-M-:"        'isearch-backward-regexp
- "C-M-;"        'isearch-forward-regexp
- "M-:"          'isearch-backward
- "M-;"          'isearch-forward
- )
-
-(general-define-key
- :keymaps 'isearch-mode-map
- "M-p"  'nil
- "M-n"  'nil
- "M-y"  'nil
- "M-c"  'nil
- "M-s"  'nil
- "C-y"  'nil
- "C-l"  'nil
- "M-r"  'isearch-edit-string
- "C-e"  'isearch-edit-string
- "M-;"  'isearch-repeat-forward
- "M-:"  'isearch-repeat-backward
- "M-v"  'isearch-yank-kill
- "M-k"  'isearch-ring-advance
- "M-i"  'isearch-ring-retreat
- "C-k"  'isearch-toggle-input-method
- "M-5"  'isearch-query-replace)
+(use-package isearch
+  :config
+  (general-define-key
+   "C-M-:"        'isearch-backward-regexp
+   "C-M-;"        'isearch-forward-regexp
+   "M-:"          'isearch-backward
+   "M-;"          'isearch-forward
+   )
+  (general-define-key
+   :keymaps 'isearch-mode-map
+   "M-p"  'nil
+   "M-n"  'nil
+   "M-y"  'nil
+   "M-c"  'nil
+   "M-s"  'nil
+   "C-y"  'nil
+   "C-l"  'nil
+   "M-r"  'isearch-edit-string
+   "C-e"  'isearch-edit-string
+   "M-;"  'isearch-repeat-forward
+   "M-:"  'isearch-repeat-backward
+   "M-v"  'isearch-yank-kill
+   "M-k"  'isearch-ring-advance
+   "M-i"  'isearch-ring-retreat
+   "C-k"  'isearch-toggle-input-method
+   "M-5"  'isearch-query-replace))
 
 (use-package flx-isearch
   :config
@@ -105,4 +106,5 @@
       (isearch-exit)
       ;; TODO: ace -> avy
       (ace-jump-do (concat "\\b" isearch-string)))))
+
 (provide 'eab-config-avy)

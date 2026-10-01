@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.5.2
+
+refactor: reorganize configuration files into use-package blocks
+
+- Consolidate general-define-key bindings into use-package :config blocks
+  for better organization and load-time semantics.
+- Remove deprecated macros (ilam, ilam-no-def) and replace with standard
+  lambda expressions.
+- Restore and restructure eab-workflow, eab-bookmark, eab-gr, eab-desktop,
+  buffer-move, and eab-window to align with new package grouping.
+- Move multi-occur-in-all-buffers from eab-config-eab-misc to eab-workflow.
+- Add nthcar and buffer-only-use-package-p helpers to eab-minimal.el.
+
 ## 0.5.1
 
 refactor: remove Spacemacs submodule and consolidate config

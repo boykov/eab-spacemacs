@@ -7,24 +7,29 @@
 ;; Requirements:
 ;; Status: not intended to be distributed yet
 
-(defmacro ilam (&rest body)
-  "Interactive lambda"
-  `'(:def (lambda ()
-            (interactive)
-            ,@body)))
+(use-package eab-window)
 
-(defmacro ilam-no-def (&rest body)
-  "Interactive lambda"
-  `(lambda ()
-     (interactive)
-     ,@body))
+(use-package buffer-move
+  :config
+  (defun buf-move ()
+    "Begin moving the current buffer to different windows.
+Use the arrow keys to move in the desired direction.  Pressing
+any other key exits this function."
+    (interactive)
+    (let ((map (make-sparse-keymap)))
+      (dolist (x '(("M-i" . buf-move-up)
+                   ("M-j" . buf-move-left)
+                   ("M-k" . buf-move-down)
+                   ("M-l" . buf-move-right)))
+        (define-key map (read-kbd-macro (car x)) (cdr x)))
+      (set-transient-map map t))))
 
 (use-package eab-workgroups2
   :load-path "~/.emacs.d/private/eab-spacemacs/local/workgroups2/src"
   :after (eab-minimal eab-notify)
   :init
   (setq eab/workgroups-save
-          (eab/config (concat (eab/history-dir) ".emacs_workgroups")))
+        (eab/config (concat (eab/history-dir) ".emacs_workgroups")))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; TODO таки приходим постепенно к модальным режимам, как в vim
   ;; альтернативой может служить специальный minor-mode, в котором
@@ -51,9 +56,9 @@
    "O"            'eab/wg-rotate-twice
    "P"            'eab/wg-switch-to-previous-workgroup-1
    "s"            'eab/wg-switch-to-workgroup-history ;; +
-   "S"            'wg-switch-to-workgroup ;; +
+   "S"            'wg-switch-to-workgroup             ;; +
    "x"            'wg-kill-ring-save-working-config ;; wg-kill-ring-save-working-wconfig
-   "v"            'wg-yank-config ;; wg-yank-wconfig
+   "v"            'wg-yank-config                   ;; wg-yank-wconfig
    "r"            'eab/wg-revert-workgroup
    "R"            'wg-revert-workgroup ;; +
    "u"            (ilam (eab/wg-update-workgroup "dflt"))
@@ -65,8 +70,8 @@
    "C-z"          'winner-undo
    "Z"            'winner-redo
    "n"            'eab/wg-create-workgroup-xxx ;; +
-   "N"            'wg-create-workgroup ;; +
-   "k"            'wg-kill-workgroup ;; +
+   "N"            'wg-create-workgroup         ;; +
+   "k"            'wg-kill-workgroup           ;; +
    "c"            (ilam (eab/wg-kill-tmp) (wg-clone-workgroup (wg-current-workgroup) ":tmp:")) ;; +
    "SPC"          'eab/wg-revert-and-update
    ;; DONE по имени буфера: нарушение SPOT!
@@ -98,5 +103,11 @@
   (setq eab/wg-update-list
         (mapcar 'eab/wg-update-list-1 (file-expand-wildcards eab/wg-path)))
   (eab/wg-init))
+
+(use-package eab-desktop
+  :after (autorevert eab-workgroups2))
+
+(use-package eab-bookmark
+  :after (eab-minimal eab-workgroups2))
 
 (provide 'eab-config-workgroups2)
