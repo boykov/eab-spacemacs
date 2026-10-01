@@ -104,3 +104,5 @@
   (custom-set-faces
    '(eat-term-color-4 ((t (:inherit eat-term-color-32))))))
 
+
+(provide 'eab-config-emacs-eat)

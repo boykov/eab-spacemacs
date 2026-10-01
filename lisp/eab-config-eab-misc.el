@@ -7,10 +7,14 @@
 ;; Requirements:
 ;; Status: not intended to be distributed yet
 
-(use-package ob-markdown)
+(use-package ob-markdown
+  :load-path "~/.emacs.d/private/eab-spacemacs/local/eab-misc"
+  :after (org))
 (use-package org-depend
+  :load-path "~/.emacs.d/private/eab-spacemacs/local/eab-misc"
   :after (org))
 (use-package power-macros
+  :load-path "~/.emacs.d/private/eab-spacemacs/local/eab-misc"
   :after (eab-config-term) ;; keybindings.el C-l vs eab-pmacros.el
   :config
   (general-define-key
@@ -47,22 +51,32 @@
 
 ;; dired+ нужен для привычной подсветки
 (use-package dired+
+  :load-path "~/.emacs.d/private/eab-spacemacs/local/eab-misc"
   :init
   (setq diredp-hide-details-initially-flag nil))
-(use-package dired-details)
-(use-package alossage)
-(use-package shell-command-queue)
-(use-package one-key)
-(use-package json-pretty-print)
-(use-package rec-mode)
+(use-package dired-details
+  :load-path "~/.emacs.d/private/eab-spacemacs/local/eab-misc")
+(use-package alossage
+  :load-path "~/.emacs.d/private/eab-spacemacs/local/eab-misc")
+(use-package shell-command-queue
+  :load-path "~/.emacs.d/private/eab-spacemacs/local/eab-misc")
+(use-package one-key
+  :load-path "~/.emacs.d/private/eab-spacemacs/local/eab-misc")
+(use-package json-pretty-print
+  :load-path "~/.emacs.d/private/eab-spacemacs/local/eab-misc")
+(use-package rec-mode
+  :load-path "~/.emacs.d/private/eab-spacemacs/local/eab-misc")
 
 (use-package color-moccur
+  :load-path "~/.emacs.d/private/eab-spacemacs/local/eab-misc"
   :config
   (general-define-key
    "C-:"          'isearch-moccur
    ))
-(use-package moccur-edit)
+(use-package moccur-edit
+  :load-path "~/.emacs.d/private/eab-spacemacs/local/eab-misc")
 (eab/add-hook moccur-mode eab/moccur-hook
+  :load-path "~/.emacs.d/private/eab-spacemacs/local/eab-misc"
   (general-define-key
    :keymaps 'moccur-mode-map
    "M-n"        'nil
@@ -70,9 +84,12 @@
    "M-m"        'nil
    "M-d"        'nil))
 
-(use-package smart-operator)
-(use-package ido-better-flex)
+(use-package smart-operator
+  :load-path "~/.emacs.d/private/eab-spacemacs/local/eab-misc")
+(use-package ido-better-flex
+  :load-path "~/.emacs.d/private/eab-spacemacs/local/eab-misc")
 (use-package ox-extra
+  :load-path "~/.emacs.d/private/eab-spacemacs/local/eab-misc"
   :after (org))
 
 (defun multi-occur-in-all-buffers ()
@@ -118,6 +135,7 @@
    :keymaps 'proced-mode-map
    "O"  'top))
 (use-package top-mode
+  :load-path "~/.emacs.d/private/eab-spacemacs/local/eab-misc"
   :after (eab-minimal)
   :config
   (define-advice top-mode (:after (&rest args) eab-top-mode-after)

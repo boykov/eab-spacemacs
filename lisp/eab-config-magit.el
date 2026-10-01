@@ -107,6 +107,8 @@
 
 ;; TODO: cancel rev-export disabling
 (use-package orgit
-  :after (magit)
+  :after (magit org)
   :config
   (defun orgit-rev-export (path desc format)))
+
+(provide 'eab-config-magit)

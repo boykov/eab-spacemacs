@@ -192,3 +192,4 @@
                "RET"        'paredit-newline)))
   (autoload 'enable-paredit-mode
     "paredit" "Turn on pseudo-structural editing of Lisp code." t))
+(provide 'eab-config-region-bindings-mode)

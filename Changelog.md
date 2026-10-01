@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.5.1
+
+refactor: remove Spacemacs submodule and consolidate config
+
+- Remove spacemacs submodule reference from .gitmodules
+- Update README to reflect use-package/ergoemacs basis instead of Spacemacs layer
+- Simplify init.el by removing Spacemacs layer dependencies and legacy macros
+- Move aaorg/org configuration into eab-config-aaorg.el (now removed,
+  folded into eab-config-eab-org.el)
+- Add eab-config-needorg.el for needorg-related packages
+- Remove aaorg symlink and update eaf submodule reference
+
 ## 0.5.0
 
 refactor: replace Spacemacs layer with use-package-based config

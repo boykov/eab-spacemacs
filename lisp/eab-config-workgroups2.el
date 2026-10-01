@@ -98,3 +98,5 @@
   (setq eab/wg-update-list
         (mapcar 'eab/wg-update-list-1 (file-expand-wildcards eab/wg-path)))
   (eab/wg-init))
+
+(provide 'eab-config-workgroups2)

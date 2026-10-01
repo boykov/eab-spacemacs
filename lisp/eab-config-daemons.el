@@ -77,3 +77,5 @@
         (daemons)))))
 ;; (let* ((eab/daemons-host "chronos") (default-directory (concat "/ssh:" eab/daemons-host "|sudo:root@" eab/daemons-host ":/home/eab/"))) (progn (setq daemons-systemd-is-user nil) (daemons)))
 ;; (let* ((eab/daemons-host "chronos") (default-directory (concat "/ssh:" eab/daemons-host ":/home/eab/"))) (progn (setq daemons-systemd-is-user 't) (daemons)))
+
+(provide 'eab-config-daemons)

@@ -94,3 +94,5 @@
 
   )
 
+
+(provide 'eab-config-ghostel)

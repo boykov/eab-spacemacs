@@ -46,3 +46,5 @@
                 (eab/recentf-eabpool) "\n")
                'utf-8
                (concat recentf-save-file "-eabpool")))))
+
+(provide 'eab-config-recentf)

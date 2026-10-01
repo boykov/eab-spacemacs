@@ -220,3 +220,5 @@ Invokes CALLBACK with the generated message when done."
         :callback `(lambda (response _info)
                      (let ((msg response))
                        (funcall ,callback msg)))))))
+
+(provide 'eab-config-gptel)

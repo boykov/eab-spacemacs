@@ -1,11 +1,11 @@
-# eab use-package based config (ex. eab spacemacs layer)
+# eab use-package/ergoemacs based config (ex. eab spacemacs layer)
 
 See [changes history](Changelog.md).
 
 It consists of subsystems:
 
 * editing model
-  * keybindings, workflows
+  * keybindings (ergoemacs), workflows
 * extensions model
   * packages, dependencies, postload
 * data model

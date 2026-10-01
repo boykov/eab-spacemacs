@@ -6,3 +6,5 @@
 ;; Keywords:
 ;; Requirements:
 ;; Status: not intended to be distributed yet
+
+(provide 'eab-config-template)

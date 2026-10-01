@@ -9,6 +9,15 @@
 
 (use-package cl-macs)
 
+(defmacro eab/config (&rest body) (car `,@body))
+
+(defmacro eab/add-hook (hookname funcname &rest body)
+  "add-hook with lambda progn"
+  (declare (indent defun))
+  `(progn (add-hook ',hookname ',funcname)
+          (defun ,funcname ()
+            (progn ,@body))))
+
 (defmacro ilam (&rest body)
   "Interactive lambda"
   `'(:def (lambda ()
@@ -104,7 +113,7 @@
 (defun eab/loaded-ok (instance)
   (let* ((aaorg
           (if (string= (locate-library "org")
-                       "/home/eab/.emacs.d/private/eab-spacemacs/local/aaorg/org.elc")
+                       "/home/eab/.emacs.d/private/eab-spacemacs/local/org-mode/lisp/org.elc")
               0
             1))
          (numerrors
@@ -131,6 +140,10 @@
       (progn
         (eab/gotify instance "OK" 0)
         (setq-default TeX-master t)))))
+
+(defun display-startup-echo-area-message ()
+  "Change the default welcome message of minibuffer to another one."
+  (message "eab-spacemacs is ready."))
 
 (defun eab/test-dotemacs ()
   (eab/loaded-ok "test-dotemacs")

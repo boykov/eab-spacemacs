@@ -52,3 +52,5 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
    "C-/"  'ergoemacs-toggle-letter-case
    "M-*"  'ergoemacs-select-text-in-quote
    "M-8"  'ergoemacs-extend-selection))
+
+(provide 'eab-config-ergoemacs)

@@ -33,17 +33,11 @@
 (defun eab/describe-key-briefly (key &optional insert untranslated)
   "Like `describe-key-briefly`, but prints the lambda definition if found."
   (interactive "kDescribe key briefly: \nP")
-  (let* ((binding (key-binding key t)))
+  (let* ((binding (keymap-lookup nil (key-description key))))
     (if (and (listp binding) (eq (car binding) 'lambda))
         (message "%s runs an anonymous function: %s"
                  (key-description key)
-                 (require 'lispy)
-                 (if (fboundp 'lispy-alt-multiline)
-                     (with-temp-buffer
-                       (insert (prin1-to-string binding))
-                       (call-interactively 'lispy-alt-multiline)
-                       (buffer-string))
-                   (prin1-to-string binding)))
+                 (prin1-to-string binding))
       (describe-key-briefly key insert untranslated))))
 
 (defun eab/find-function-at-point ()

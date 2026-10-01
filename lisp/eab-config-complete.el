@@ -85,3 +85,4 @@
               (setq yas-trigger-key [tab])
               (add-to-list 'org-tab-first-hook 'yas-org-very-safe-expand)
               (define-key yas-keymap [tab] 'yas-next-field))))
+(provide 'eab-config-complete)

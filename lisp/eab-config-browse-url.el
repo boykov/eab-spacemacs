@@ -12,7 +12,9 @@
   :config
   (general-define-key
    "C-c g"        'eab/google
+   "C-c b"        'browse-url
    )
+  (setq browse-url-mosaic-program nil)
   (setq browse-url-browser-function (quote eab/browse-url))
   (setq browse-url-firefox-program (eab/config "/usr/local/bin/browser-remote"))
   (defun eab/eaf-open-browser (url)
@@ -70,3 +72,5 @@ Opens the Google search results page for the entered query in the default web br
     (let ((str (buffer-substring (region-beginning) (region-end))))
       (call-interactively 'mc/keyboard-quit)
       (google str))))
+
+(provide 'eab-config-browse-url)

@@ -74,6 +74,7 @@
   :load-path "~/.emacs.d/private/eab-spacemacs/local/eab-ace-jump-mode"
   :init
   (evil-mode -1)
+  (or (fboundp 'insert-string) (defalias 'insert-string 'insert))
   :config
   (general-define-key
    :keymaps 'isearch-mode-map
@@ -104,3 +105,4 @@
       (isearch-exit)
       ;; TODO: ace -> avy
       (ace-jump-do (concat "\\b" isearch-string)))))
+(provide 'eab-config-avy)

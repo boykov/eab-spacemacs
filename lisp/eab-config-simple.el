@@ -80,6 +80,11 @@
  )
 
 (general-define-key
+ :keymaps 'query-replace-map
+ "C-e"  'edit
+ "C-r"  'delete-and-edit)
+
+(general-define-key
  :keymaps 'read-expression-map
  "M-g"  'nil)
 
@@ -156,6 +161,7 @@
  max-lisp-eval-depth 10000
  max-specpdl-size 10000
  eshell-history-size 1000
+ gc-cons-threshold 100000000
  )
 
 (mapc (lambda (x) (add-to-list 'extended-command-history x))

@@ -317,3 +317,11 @@
   :disabled
   :config
   (ignoramus-setup))
+
+(use-package auto-install
+  :disabled
+  :config
+  (setq auto-install-directory
+        (eab/config (concat user-emacs-directory "auto-install/"))))
+
+(provide 'eab-config-mode)

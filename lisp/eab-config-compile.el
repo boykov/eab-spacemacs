@@ -99,3 +99,5 @@
   (setq compilation-exit-message-function 'compilation-exit-autoclose)
   (setq compilation-exit-message-function nil)
   (setq compilation-scroll-output 't))
+
+(provide 'eab-config-compile)

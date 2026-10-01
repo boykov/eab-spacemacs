@@ -114,3 +114,4 @@
       (setq helm-org-rifle-input-idle-delay 1))
   (add-to-list 'helm-org-rifle-actions '("eab/hron-todo" . eab/rifle-hron-todo))
   (add-to-list 'helm-org-rifle-actions '("eab/note-todo" . eab/rifle-note-todo)))
+(provide 'eab-config-helm)

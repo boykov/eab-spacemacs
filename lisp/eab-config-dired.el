@@ -61,3 +61,5 @@
    "t" (ilam (dired "~/tmp")))
   (setq eab/dired-map (lookup-key global-map (kbd "C-x d")))
   (add-to-list 'auto-mode-alist '("\\.dired$" . dired-virtual-mode)))
+
+(provide 'eab-config-dired)

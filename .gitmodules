@@ -25,9 +25,6 @@
 [submodule "extensions/org-ql"]
         path = local/org-ql
         url = https://github.com/boykov/org-ql
-[submodule "extensions/spacemacs"]
-        path = local/spacemacs
-        url = git@github.com:boykov/spacemacs.git
 [submodule "extensions/emacs-eat"]
         path = local/emacs-eat
         url = https://codeberg.org/akib/emacs-eat

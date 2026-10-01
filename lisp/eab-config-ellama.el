@@ -8,6 +8,7 @@
 ;; Status: not intended to be distributed yet
 
 (use-package ai-code
+  :after (org)
   :config
   (setq ai-code-backends-infra-use-side-window nil)
   (setq ai-code-mcp-agent-enabled-backends
@@ -63,3 +64,5 @@ END
   (setopt ellama-language "Russian")
   (setopt ellama-provider eab-llm)
   (setopt ellama-coding-provider eab-llm))
+
+(provide 'eab-config-ellama)

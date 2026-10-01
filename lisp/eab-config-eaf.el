@@ -145,3 +145,5 @@ It currently identifies PDF, videos, images, and mindmap file extensions."
             ("M-L" . "scroll_to_end")
             ))))
 
+
+(provide 'eab-config-eaf)

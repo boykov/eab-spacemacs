@@ -51,3 +51,4 @@
     :after (ediff)
     :config
     (setq ediff-diff-options "-w"))
+(provide 'eab-config-ediff)

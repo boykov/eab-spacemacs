@@ -57,3 +57,5 @@
    "G"    'eab/clock-grep)
   (setq eab/grep-map (lookup-key global-map (kbd "C-x G")))
   )
+
+(provide 'eab-config-grep)
