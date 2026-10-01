@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.5.3
+
+feat(config): refactor keybindings using eab/redefine-keymap and organize config files
+
+- Introduce eab/redefine-keymap helper to safely redefine global keybindings
+- Apply it uniformly across multiple config files to standardize key reuse
+- Reorganize keymaps for C-e and C-l prefixes into dedicated use-package blocks
+- Move eepitch, term, files, replace, minibuffer, simple, and eshell
+  configs into separate use-package blocks
+- Remove redundant keymap definitions and duplicated keybinding logic
+- Add new keybindings: kbd macros in kmacro-keymap, helm-locate under
+  C-e l, daemons under C-e d*, EAF bindings
+
 ## 0.5.2
 
 refactor: reorganize configuration files into use-package blocks

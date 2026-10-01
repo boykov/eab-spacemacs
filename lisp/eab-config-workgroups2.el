@@ -7,10 +7,30 @@
 ;; Requirements:
 ;; Status: not intended to be distributed yet
 
-(use-package eab-window)
+(use-package eab-window
+  :config
+  (eab/redefine-keymap "C-e" 'move-end-of-line)
+  (general-define-key
+   :prefix "C-e"
+   "G"    'eab/kill-last-grep
+   "g"    'eab/switch-grep
+   "s"    'eab/switch-async
+   "S"    'eab/switch-shell
+   "m"    'eab/switch-message
+   "h"    'eab/switch-help
+   "c"    'eab/switch-compile
+   "b"    'eab/switch-browser
+   "v"    'eab/switch-viewer
+   "t"    'eab/switch-eepitch-target
+   ))
 
 (use-package buffer-move
   :config
+  (eab/redefine-keymap "C-l" 'recenter-top-bottom)
+  (general-define-key
+   :prefix "C-l"
+   "s"            'buf-move
+   )
   (defun buf-move ()
     "Begin moving the current buffer to different windows.
 Use the arrow keys to move in the desired direction.  Pressing
@@ -108,6 +128,14 @@ any other key exits this function."
   :after (autorevert eab-workgroups2))
 
 (use-package eab-bookmark
-  :after (eab-minimal eab-workgroups2))
+  :after (eab-minimal eab-workgroups2)
+  :config
+  (eab/redefine-keymap "C-l" 'recenter-top-bottom)
+  (general-define-key
+   :prefix "C-l"
+   "b"            'eab/bookmark-set
+   "B"            'eab/bookmark-delete
+   "C-b"          'eab/bookmark-jump
+   ))
 
 (provide 'eab-config-workgroups2)

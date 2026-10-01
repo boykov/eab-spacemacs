@@ -16,9 +16,7 @@
 (defun eab/desktop-dir ()
   (eab/history-dir))
 
-(if (eq (lookup-key global-map (kbd "C-e")) 'move-end-of-line)
-    (global-set-key (kbd "C-e") nil))
-
+(eab/redefine-keymap "C-e" 'move-end-of-line)
 (general-define-key
  :prefix "C-e"
  "X"    (ilam

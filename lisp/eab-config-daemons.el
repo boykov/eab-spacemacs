@@ -11,8 +11,7 @@
 (use-package docker-container
   :after (docker)
   :config
-  (if (eq (lookup-key global-map (kbd "C-e")) 'move-end-of-line)
-    (global-set-key (kbd "C-e") nil))
+  (eab/redefine-keymap "C-e" 'move-end-of-line)
   (general-define-key
    :prefix "C-e"
    "C"    'docker-containers
@@ -36,6 +35,16 @@
 (use-package daemons-systemd
   :after (daemons)
   :config
+  (eab/redefine-keymap "C-e" 'move-end-of-line)
+  (general-define-key
+   :prefix "C-e"
+   "d c"  '(:def (ilam-no-def
+                  (setq eab/daemons-host "chronos")
+                  (call-interactively 'eab/daemons))
+                 :which-key "(c)hronos")
+   "d k"  (ilam (setq eab/daemons-host "kairos") (call-interactively 'eab/daemons))
+   "d y"  (ilam (setq eab/daemons-host "cyclos") (call-interactively 'eab/daemons))
+   )
   (defun daemons-systemd--cmd ()
     "Appends `--user' to the `systemctl' call if `daemons-systemd-is-user' is set"
     (if daemons-systemd-is-user

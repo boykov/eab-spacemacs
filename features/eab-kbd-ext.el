@@ -7,6 +7,15 @@
 ;; Requirements:
 ;; Status: not intended to be distributed yet
 
+;; mini keyboard
+(general-define-key
+ "<kp-insert>"  'nil
+ "<kp-enter>"   'winner-undo
+ "<kp-add>"     'nil
+ "<kp-begin>"   'nil
+ "<M-kp-equal>" 'nil
+ "<kp-delete>"  (ilam (kill-buffer-and-window)))
+
 ;; DONE это ведь то же самое, что просто вызов (eab/free-map git-commit-mode-map)
 (eab/add-hook git-commit-mode-hook eab/git-commit-hook
   (eab/free-map git-commit-mode-map))

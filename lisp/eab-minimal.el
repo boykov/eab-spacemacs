@@ -85,6 +85,10 @@
         (eval-expression-print-length nil))
     (prin1 `,body (current-buffer))))
 
+(defun eab/redefine-keymap (key init-func)
+  (if (eq (lookup-key global-map (kbd key)) init-func)
+      (global-set-key (kbd key) nil)))
+
 (defun nthcar (n list)
   "Return first N elements of LIST.
 If LIST length below N, return entire list.

@@ -42,6 +42,21 @@
 (use-package eab-tramp)
 (use-package eab-eepitch
   :config
+  (eab/redefine-keymap "C-e" 'move-end-of-line)
+  (general-define-key
+   :prefix "C-e"
+   "a"    (ilam (eepitch-ansi-term "1"))
+   "1"    (ilam (eepitch-ansi-term "1"))
+   "2"    (ilam (eepitch-ansi-term "2"))
+   "3"    (ilam (eepitch-ansi-term "3"))
+   "4"    (ilam (eepitch-ansi-term "4"))
+   "5"    (ilam (eepitch-ansi-term "5"))
+   "6"    (ilam (eepitch-ansi-term "6"))
+   "7"    (ilam (eepitch-ansi-term "7"))
+   "8"    (ilam (eepitch-ansi-term "8"))
+   "9"    (ilam (eepitch-ansi-term "9"))
+   "k"    (ilam (eepitch-kill))
+   )
   (general-define-key
    "C-,"          'eab/eepitch-this-line
    "C-r"          'eab/eepitch-this-line
@@ -94,6 +109,11 @@
   (setq smex-save-file (eab/config (concat (eab/history-dir) ".smex-items"))))
 (use-package undo-tree
   :config
+  (eab/redefine-keymap "C-e" 'move-end-of-line)
+  (general-define-key
+   :prefix "C-e"
+   "z"    'undo-tree-visualize
+   )
   (general-define-key
    "M-z"          'undo-tree-undo
    "M-Z"          'undo-tree-redo

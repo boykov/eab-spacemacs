@@ -58,8 +58,6 @@
   (general-define-key
    "C-f"          eab/explore-map
    )
-  (defvar eab/compile-map (make-sparse-keymap)
-    "Compile keymap.")
   (global-set-key (kbd "C-d") nil)
   (general-define-key
    :prefix "C-d"
@@ -67,7 +65,7 @@
    "a"    'eab/compile-helm
    "e"    eab/explore-map
    "d"    'eab/projectile-compile-project
-   "C-d"    'eab/projectile-compile-project
+   "C-d"  'eab/projectile-compile-project
    "s"    (ilam (smart-compile 4))
    "S"    (ilam (eab/projectile-compile-project-custom "make push_unstaged"))
    "l"    (ilam (TeX-command "LaTeX"   'TeX-master-file))
@@ -77,6 +75,9 @@
    "c"    (ilam (eab/projectile-compile-project-custom "make clear"))
    "t"    (ilam (eab/projectile-compile-project-custom "make test"))
    "2"    (ilam (eab/projectile-compile-project-custom "make test2")))
+  (defvar eab/compile-map (make-sparse-keymap)
+    "Compile keymap.")
+  ;; TODO: 
   (setq eab/compile-map (lookup-key global-map (kbd "C-d")))
   :config
   (eab/add-hook compilation-mode-hook eab/compilation-hook

@@ -130,6 +130,11 @@
 
 (use-package proced
   :config
+  (eab/redefine-keymap "C-e" 'move-end-of-line)
+  (general-define-key
+   :prefix "C-e"
+   "o"    'proced
+   )
   (eab/add-hook proced-mode-hook eab/proced-hook
     (general-define-key
      :keymaps 'proced-mode-map

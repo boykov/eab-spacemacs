@@ -75,6 +75,7 @@ It currently identifies PDF, videos, images, and mindmap file extensions."
     (mapc (lambda (x)
             (eval `(eab/eaf-bind-key ,x ,kb)))
           '(
+            ("C-r" . "eaf-send-key-sequence")
             ("C-w" . "eaf-send-key-sequence")
             ("M-<left>" . "eaf-send-key-sequence")
             ("C-<home>" . "eaf-send-ctrl-home-sequence")

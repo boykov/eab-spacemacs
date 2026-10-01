@@ -26,6 +26,13 @@
   :after (eab-server)
   :config
   (general-define-key
+   :keymaps 'kmacro-keymap
+   "m"    'kmacro-start-macro
+   ","    'kmacro-end-or-call-macro-repeat
+   "i"    'kmacro-insert-counter
+   "s"    'kmacro-set-counter
+   "v"    'insert-kbd-macro)
+  (general-define-key
    "M-<"          'kmacro-start-macro
    "M-."          'kmacro-edit-macro
    "M-,"          'eab/kmacro-end-or-call-macro

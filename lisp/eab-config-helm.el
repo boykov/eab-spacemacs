@@ -51,6 +51,10 @@
      "M-L"        'helm-end-of-buffer
      "M-I"        'helm-previous-page)
     (ergoemacs-fix-arrow-keys helm-map)
+    (eab/redefine-keymap "C-e" 'move-end-of-line)
+    (general-define-key
+     :prefix "C-e"
+     "l"    'helm-locate)
     (general-define-key
      :keymaps 'helm-generic-files-map
      "M-i"        'helm-previous-line))

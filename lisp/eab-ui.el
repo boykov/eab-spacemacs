@@ -35,6 +35,32 @@
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 
+(setq frame-title-format
+      `("emacs"
+        ,(if (stringp (daemonp)) (daemonp) "")
+        "@"
+        ,(system-name)
+        " "
+        ;; ": -<{" (:eval (ignore-errors (eab/wg-current-workgroup))) "}>- "
+        (:eval (if (buffer-file-name)
+                   (abbreviate-file-name (buffer-file-name))
+                 "%b"))))
+
+(setq
+ history-length 500
+ max-lisp-eval-depth 10000
+ gc-cons-threshold 100000000
+ )
+
+;; failed to provide feature ‘subr’
+(setq max-specpdl-size 10000)
+
+(mapc (lambda (x) (add-to-list 'read-expression-history x))
+      '(
+        "(setq input-method-function 'key-chord-input-method)"
+        "(tramp-term--initialize \"jupiter\")"
+        ))
+
 (xterm-mouse-mode 0)
 (setq x-select-enable-clipboard t)
 
