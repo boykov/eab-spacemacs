@@ -30,7 +30,7 @@
   (autoload 'flyspell-delay-command "flyspell" "Delay on command." t)
   (autoload 'flyspell-mode "flyspell" "On-the-fly spelling checker." t))
 
-(use-package auto-dictionary
+(use-package auto-dictionary  ;; switcher for flyspell
   :config
   ;; (add-hook 'flyspell-mode-hook (lambda () (auto-dictionary-mode 1)))
   ;; (flyspell-delete-all-overlays)

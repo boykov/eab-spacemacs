@@ -136,7 +136,7 @@
 (autoload 'bat-mode "bat-mode" "DOS and WIndows BAT files" t)
 
 (use-package typescript-mode)
-(use-package idle-highlight-mode)
+(use-package idle-highlight-mode) ;; + no melpa
 
 (use-package bbdb
   :load-path "~/.emacs.d/private/eab-spacemacs/local/bbdb/lisp"

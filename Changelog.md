@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.5.0
+
+refactor: replace Spacemacs layer with use-package-based config
+
+- Remove `.spacemacs` and `packages.el` (Spacemacs-specific files)
+- Remove `fix-esup.el` (unused)
+- Add `init.el` and `early-init.el` as main config files
+- Update README to clarify project is now use-package based
+- Move config from `lisp/*.el` directly into `init.el` via loads
+- Reorganize package setup with explicit `use-package` declarations
+- Fix reported variable checks in `eab-minimal.el`
+
 ## 0.4.42
 
 feat: add new packages and reorganize configuration

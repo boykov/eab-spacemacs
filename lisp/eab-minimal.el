@@ -115,13 +115,16 @@
                (count-matches "Error")
                (count-matches "is void")
                (count-matches "Invalid")))))
-    (if (or configuration-layer-error-count
+    (if (or (and
+             (boundp 'configuration-layer-error-count)
+             configuration-layer-error-count)
             (< 0 numerrors))
         (progn
           (add-to-list 'mode-line-modes '(t " [ERROR] "))
           (eab/gotify
            (concat instance " errors "
-                   (if configuration-layer-error-count
+                   (if (and (boundp 'configuration-layer-error-count)
+                            configuration-layer-error-count)
                        (number-to-string configuration-layer-error-count) "0")
                    " " (number-to-string numerrors))
            "bad" 5))
@@ -160,6 +163,10 @@
         (setq spacemacs-theme-comment-bg nil)
         (disable-theme 'solarized-light)
         (load-theme 'spacemacs-dark 't)))
+  (if (and
+       (eab/ondaemon (eab/server-C))
+       (not noninteractive))
+      (load-theme 'solarized-light 't))
   (setq eab/org-file (concat org-directory "clock/current-time.el"))
   (if (file-exists-p eab/org-file)
       (load eab/org-file)) ;; (setq eab/hron-current-time ..

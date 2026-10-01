@@ -1,4 +1,4 @@
-# eab spacemacs layer
+# eab use-package based config (ex. eab spacemacs layer)
 
 See [changes history](Changelog.md).
 
@@ -21,5 +21,5 @@ It consists of subsystems:
     git submodule update
 
     cd ~/.emacs.d/
-    ln -s private/eab-spacemacs/local/spacemacs/init.el init.el
-    ln -s private/eab-spacemacs/local/spacemacs/early-init.el early-init.el
+    ln -s private/eab-spacemacs/init.el init.el
+    ln -s private/eab-spacemacs/early-init.el early-init.el
