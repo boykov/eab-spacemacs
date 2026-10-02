@@ -88,6 +88,7 @@
   :after (eab-minimal simple)
   :config
   (general-define-key
+   "M-/"          'dabbrev-expand
    "C-c c"        'eab/add-eab-abbrev)
   (eab/search-word eab/add-eab-abbrev "abbrev save" define-abbrev (eab-abbrev-table word word))
   (setq abbrev-file-name
@@ -117,6 +118,11 @@
 (use-package files
   :config
   (general-define-key
+   :keymaps 'eab/ctrl-l-map
+   "C-o"          'find-file)
+  (general-define-key
+   "C-o"          'find-file
+   "C-S-s"        'write-file
    "C-s"          (ilam (save-some-buffers 't))
    )
   ;; DONE: auto-save и торможение при C-s
@@ -135,9 +141,12 @@
   ;; уже привык их задавать вручную
   (setq enable-local-variables nil))
 
-
 (use-package replace
   :config
+  (general-define-key
+   "M-%"          'query-replace-regexp
+   "M-&"          'count-matches
+   "M-5"          'query-replace)
   (general-define-key
    :keymaps 'query-replace-map
    "C-e"  'edit
@@ -213,7 +222,40 @@
           "eab/load-personal"
           ))
   (general-define-key
+   "C-SPC"        'set-mark-command
+   "M-SPC"        'set-mark-command
+   "M-X"          'delete-region
+   "M-f"          'delete-char
+   "M-j"          'backward-char
+   "M-l"          'forward-char
+   "M-o"          'forward-word
+   "M-F"          'delete-backward-char
+   "M-i"          'previous-line
+   "M-h"          'move-beginning-of-line
+   "M-L"          'end-of-buffer
+   "C-S-a"        'eval-expression
+   "C-@"          'set-mark-command
+   "C-m"          'newline
+   "M-q"          'kill-current-buffer
+   "C-t"          'transpose-sexps
+   "C-x C-k k"    'kill-region
+   "M-J"          'beginning-of-buffer
+   "M-H"          'move-end-of-line
+   "M-c"          'kill-ring-save
+   "M-e"          'backward-kill-word
+   "M-g"          'kill-line
+   "C-M-j"        'delete-backward-char
+   "M-k"          'next-line
+   "M-r"          'kill-word
+   "M-u"          'backward-word
+   "M-v"          'yank
+   "M-x"          'kill-region
+   "M-p"          'move-end-of-line
+   )
+  (general-define-key
    :keymaps 'eab/ctrl-l-map
+   "M-a"          'eval-expression
+   "a"            'append-to-buffer
    "S"            'toggle-truncate-lines)
   (general-define-key
    :keymaps 'read-expression-map

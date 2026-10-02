@@ -80,6 +80,10 @@
   (define-key arrow-keys-map "C" 'forward-char)
   (define-key arrow-keys-map "D" 'backward-char))
 
+(general-define-key
+ "M-O"          'forward-paragraph
+ "M-U"          'backward-paragraph
+ )
 ;; (setq paragraph-start ...)
 ;; (setq paragraph-separate ...)
 (setq page-delimiter "^$")

@@ -23,36 +23,10 @@
   :after (eab-notify))
 (use-package general)
 (use-package eab-minimal
-  :after (eab-server)
-  :config
-  (general-define-key
-   :keymaps 'eab/ctrl-l-map
-   "m"            'kmacro-keymap
-   ","            'kmacro-end-or-call-macro-repeat
-   "x"            'kmacro-keymap)
-  (general-define-key
-   :keymaps 'kmacro-keymap
-   "m"    'kmacro-start-macro
-   ","    'kmacro-end-or-call-macro-repeat
-   "i"    'kmacro-insert-counter
-   "s"    'kmacro-set-counter
-   "v"    'insert-kbd-macro)
-  (general-define-key
-   "M-<"          'kmacro-start-macro
-   "M-."          'kmacro-edit-macro
-   "M-,"          'eab/kmacro-end-or-call-macro
-   "C-x Q"        'eab/kbd-macro-query)
-  )
+  :after (eab-server))
 
-(dolist
-    (p
-     (mapcar (lambda (x)
-               (intern (replace-regexp-in-string
-                        (concat eab-spacemacs-path "lisp/") ""
-                        (replace-regexp-in-string ".el$" "" x))))
-             (file-expand-wildcards (concat eab-spacemacs-path "lisp/eab-config-*.el"))))
-  (eval `(use-package ,p
-           :after (eab-minimal))))
+(eab/load-configs)
+(eab/check-only-use-package)
 
 (require 'server)
 (unless (server-running-p) (server-start))

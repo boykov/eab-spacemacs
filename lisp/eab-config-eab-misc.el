@@ -13,6 +13,35 @@
 (use-package org-depend
   :load-path "~/.emacs.d/private/eab-spacemacs/local/eab-misc"
   :after (org))
+
+(use-package kmacro
+  :config
+  (general-define-key
+   :keymaps 'eab/ctrl-l-map
+   "m"            'kmacro-keymap
+   ","            'kmacro-end-or-call-macro-repeat
+   "x"            'kmacro-keymap)
+  (general-define-key
+   :keymaps 'kmacro-keymap
+   "m"    'kmacro-start-macro
+   ","    'kmacro-end-or-call-macro-repeat
+   "i"    'kmacro-insert-counter
+   "s"    'kmacro-set-counter
+   "v"    'insert-kbd-macro)
+  (general-define-key
+   "M-<"          'kmacro-start-macro
+   "M-."          'kmacro-edit-macro
+   "M-,"          'eab/kmacro-end-or-call-macro
+   "C-x Q"        'eab/kbd-macro-query)
+  (define-advice kmacro-end-macro (:after (&rest args) fix-kmacro-input)
+    (setq last-kbd-macro (cl-remove 'with-input-method last-kbd-macro)))
+
+  (defun eab/kmacro-end-or-call-macro ()
+    (interactive)
+    (let ((inhibit-redisplay 't))
+      (call-interactively 'kmacro-end-or-call-macro)))
+  )
+
 (use-package power-macros
   :load-path "~/.emacs.d/private/eab-spacemacs/local/eab-misc"
   :after (eab-config-term) ;; keybindings.el C-l vs eab-pmacros.el
@@ -49,6 +78,7 @@
                                   (mapcar
                                    (lambda (x) (symbol-name x))
                                    (pm-get-available-macros)))))))))
+
 
 ;; dired+ нужен для привычной подсветки
 (use-package dired+

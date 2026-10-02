@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.5.10
+## 0.5.9
+## 0.5.8
+## 0.5.7
+## 0.5.6
+## 0.5.5
+
+refactor(init): modularize config loading and reorganize keybindings
+
+- Replace imperative `dolist` block in `init.el` with `eab/load-configs`
+  and `eab/check-only-use-package` functions in `eab-minimal.el`
+- Extract mode-specific keybindings into `eab-modes.el` and `eab-misc.el`
+- Centralize ergoemacs-style bindings into `eab-config-ergoemacs.el`
+- Group file/replace/window/region bindings in respective config files
+- Move kmacro and spell-related bindings to dedicated config files
+- Adjust search string from "Error" to "error" in message count
+- Add new helper functions for validating and loading config files
+
 ## 0.5.4
 
 refactor: Reorganize keybindings under dedicated keymaps and consolidate config

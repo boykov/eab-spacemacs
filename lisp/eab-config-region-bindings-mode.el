@@ -10,6 +10,10 @@
 (use-package region-bindings-mode
   :after (eab-minimal)
   :config
+  (general-define-key
+   :keymaps 'eab/ctrl-l-map
+   "r"            'region-bindings-mode
+   )
   (region-bindings-mode-enable)
   ;; prevent annoying switching on rk in region-bindings-mode on set-mark-command
   (add-hook 'window-configuration-change-hook

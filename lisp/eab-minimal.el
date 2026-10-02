@@ -73,14 +73,6 @@
                    (current-word))))
        (,function ,@funargs))))
 
-(define-advice kmacro-end-macro (:after (&rest args) fix-kmacro-input)
-  (setq last-kbd-macro (cl-remove 'with-input-method last-kbd-macro)))
-
-(defun eab/kmacro-end-or-call-macro ()
-  (interactive)
-  (let ((inhibit-redisplay 't))
-    (call-interactively 'kmacro-end-or-call-macro)))
-
 (defun eab/replace-in-string (what with in)
   (replace-regexp-in-string (regexp-quote what) with in nil 'literal))
 
@@ -99,6 +91,11 @@
 If LIST length below N, return entire list.
 If LIST is nil, return nil."
   (reverse (nthcdr (- (length list) n) (reverse list))))
+
+(defun file-only-use-package-p (&optional file)
+  (with-temp-buffer
+    (insert-file-contents file)
+    (buffer-only-use-package-p)))
 
 (defun buffer-only-use-package-p (&optional buffer)
   "Return non-nil if BUFFER contains only `use-package' and `provide' forms.
@@ -121,6 +118,32 @@ ignored.  An empty buffer or unreadable contents count as invalid."
                            (memq (car form) '(use-package provide)))
                 (throw 'done nil))
               (setq count (1+ count)))))))))
+
+(defun eab/config-files ()
+  "Return the list of eab-config-*.el files."
+  (file-expand-wildcards (concat eab-spacemacs-path "lisp/eab-config-*.el")))
+
+(defun eab/config-file-to-package (file)
+  "Return the package name (symbol) for eab-config FILE."
+  (intern (replace-regexp-in-string
+           (concat eab-spacemacs-path "lisp/") ""
+           (replace-regexp-in-string ".el$" "" file))))
+
+(defun eab/load-configs ()
+  "Load all eab-config-* packages after `eab-minimal'."
+  (dolist (p (mapcar #'eab/config-file-to-package (eab/config-files)))
+    (eval `(use-package ,p
+             :after (eab-minimal)))))
+
+(defun eab/check-only-use-package ()
+  "Signal an error if eab-config-* files contain wrong forms."
+  (let ((check-only-use-package 't))
+    (dolist (f (eab/config-files))
+      (setq check-only-use-package
+            (and check-only-use-package (file-only-use-package-p f))))
+    (if (not check-only-use-package)
+        (error "eab-config-* files contain wrong forms: use-package and
+ provide are only permitted"))))
 
 ;; TODO для многих патчей требуется одновременно несколько замен
 ;; значит, если продолжать в этом направлении, надо заменить пару
@@ -158,7 +181,7 @@ ignored.  An empty buffer or unreadable contents count as invalid."
             (switch-to-buffer "*Messages*")
             (goto-char (point-min))
             (+ aaorg
-               (count-matches "Error")
+               (count-matches "error")
                (count-matches "is void")
                (count-matches "Invalid")))))
     (if (or (and

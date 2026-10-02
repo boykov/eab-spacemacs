@@ -10,7 +10,16 @@
 (use-package eab-window
   :config
   (general-define-key
+   "M-@"          'split-window-horizontally
+   "M-2"          'split-window-vertically
+   "M-1"          'delete-other-windows
+   "C-x o"        'other-window
+   "M-!"          'delete-window
+   "C-x b"        'switch-to-buffer
+   )
+  (general-define-key
    :keymaps 'eab/ctrl-l-map
+   "C-l"          'recenter-top-bottom
    "O"            'esc-toggle-window-selectability
    "D"            'toggle-window-dedicated
    "g"            'eab/kill-last-grep)
