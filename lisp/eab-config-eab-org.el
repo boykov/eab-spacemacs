@@ -109,6 +109,10 @@
    "C-c r"        'org-capture
    "C-x C-M-p"    'org-open-at-point-global
    )
+  (eab/add-hook ag-mode-hook eab/ag-hook
+    (general-define-key
+     :keymaps 'ag-mode-map
+     "C-w"        'eab/wgrep-change-to-wgrep-mode))
   (eab/add-hook org-mode-hook eab/org-hook
     (general-define-key
      :keymaps 'org-mode-map

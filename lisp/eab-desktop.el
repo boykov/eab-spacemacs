@@ -16,14 +16,6 @@
 (defun eab/desktop-dir ()
   (eab/history-dir))
 
-(general-define-key
- :keymaps 'eab/one-key-map
- "X"    (ilam
-         (desktop-save (eab/desktop-dir))
-         (run-with-timer 0.1 nil 'kill-emacs)
-         (eab/sh-over-bash
-          (concat "sleep 0.3 && emacs --daemon=" eab/daemon-name) "" 't)))
-
 (if (or
      (eab/ondaemon (eab/server-P))
      (eab/ondaemon (eab/server-C))

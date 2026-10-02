@@ -5,6 +5,21 @@
 ## 0.5.8
 ## 0.5.7
 ## 0.5.6
+
+refactor(config): reorganize config loading and improve modularity
+
+- Split eab-config-needorg.el into eab-config-mode.el and eab-config-workgroups2.el
+- Centralize global keymap setup (C-a, C-x d, C-x G) in eab-minimal.el
+- Replace C-l map overrides with proper :keymaps declarations for dired/grep/ag
+- Migrate eab-bookmark C-l binding to its own config
+- Add missing keymaps (eab/wg-map, eab/dired-map, eab/grep-map) as defvars
+- Update Git submodule URL for EAF to HTTPS for consistency
+- Clean up duplicate key definitions and obsolete hooks across config files
+- Remove eab-config-needorg.el entirely
+- Add missing string-edit-at-point and shell-mode keybindings
+- Fix EAF keybindings: restore M-f/M-b and alt-left/right mappings
+- Remove duplicate desktop-save keybinding from eab-desktop.el
+
 ## 0.5.5
 
 refactor(init): modularize config loading and reorganize keybindings

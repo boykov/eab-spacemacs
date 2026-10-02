@@ -4,7 +4,7 @@
 ;;
 ;; Author: artscan@list.ru
 ;; Keywords:
-;; Requirements: cl
+;; Requirements:
 ;; Status: not intended to be distributed yet
 
 (use-package cl-macs)
@@ -13,6 +13,9 @@
 (defvar eab/one-key-map (make-sparse-keymap)  "One-key keymap.")
 (defvar eab/ctrl-l-map (make-sparse-keymap)  "C-l keymap.")
 (defvar eab/compile-map (make-sparse-keymap) "Compile keymap.")
+(defvar eab/wg-map (make-sparse-keymap) "Keymap for workgroups operations.")
+(defvar eab/dired-map (make-sparse-keymap) "keymap for fast dired")
+(defvar eab/grep-map (make-sparse-keymap) "Grep keymap.")
 
 (defmacro eab/config (&rest body) (car `,@body))
 
@@ -81,10 +84,6 @@
   (let ((print-length nil)
         (eval-expression-print-length nil))
     (prin1 `,body (current-buffer))))
-
-(defun eab/redefine-keymap (key init-func)
-  (if (eq (lookup-key global-map (kbd key)) init-func)
-      (global-set-key (kbd key) nil)))
 
 (defun nthcar (n list)
   "Return first N elements of LIST.
@@ -225,6 +224,10 @@ ignored.  An empty buffer or unreadable contents count as invalid."
   (general-define-key "C-e"          eab/one-key-map)
   (general-define-key "C-l"          eab/ctrl-l-map)
   (general-define-key "C-d"          eab/compile-map)
+  (general-define-key "C-a"          eab/wg-map)
+  (general-define-key "C-x d"        eab/dired-map)
+  (general-define-key "C-x G"        eab/grep-map)
+
   (if (file-exists-p power-macros-file) (load power-macros-file))
   (global-eldoc-mode 0)
   (electric-indent-mode -1)

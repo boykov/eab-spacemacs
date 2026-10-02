@@ -50,19 +50,15 @@
    "<f12>"        'eab/make-list-paths
    "<print>"      'eab/make-list-paths
    )
-  (defvar eab/dired-map (make-sparse-keymap)
-    "keymap for fast dired")
-  (global-set-key (kbd "C-x d") nil)
   (setq eab/downloads-path (eab/config "~/downloads/"))
   (general-define-key
-   :prefix "C-x d"
+   :keymaps 'eab/dired-map
    "d" '(ido-dired :which-key "ido-dired")
    "o" (ilam (dired eab/org-publish-directory))
    "h" (ilam (dired "~/desktop"))
    "s" (ilam (dired "~/share"))
    "p" (ilam (dired eab/downloads-path))
    "t" (ilam (dired "~/tmp")))
-  (setq eab/dired-map (lookup-key global-map (kbd "C-x d")))
   (add-to-list 'auto-mode-alist '("\\.dired$" . dired-virtual-mode)))
 
 (provide 'eab-config-dired)

@@ -37,11 +37,8 @@
      "l"          (ilam (so-long-minor-mode 1) (toggle-truncate-lines 1))
      "M-n"        'nil
      "C-w"        'eab/wgrep-change-to-wgrep-mode))
-  (defvar eab/grep-map (make-sparse-keymap)
-    "Grep keymap.")
-  (global-set-key (kbd "C-x G") nil)
   (general-define-key
-   :prefix "C-x G"
+   :keymaps 'eab/grep-map
    "f"    'eab/find-grep
    "g"    'eab/find-grep
    "c"    'eab/clock-grep
@@ -54,7 +51,6 @@
              (eab/grep-switch-0 eab/grep-clock-left eab/grep-clock-right)
              (setq-local eab/grep-switch-cycle 'full)))
    "G"    'eab/clock-grep)
-  (setq eab/grep-map (lookup-key global-map (kbd "C-x G")))
   )
 
 (provide 'eab-config-grep)

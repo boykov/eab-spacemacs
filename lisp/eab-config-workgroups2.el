@@ -73,11 +73,8 @@ any other key exits this function."
   ;; и, например, J I K L для org-shift.. За основу можно взять
   ;; https://github.com/edwtjo/evil-org-mode/blob/master/evil-org.el
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  (defvar eab/wg-map (make-sparse-keymap)
-    "Keymap for workgroups operations.")
-  (global-set-key (kbd "C-a") nil)
   (general-define-key
-   :prefix "C-a"
+   :keymaps 'eab/wg-map
    "a"            (ilam (eab/wg-switch-to-workgroup ":clock:"))
    "A"            (ilam (eab/wg-switch-to-workgroup ":auto:"))
    "e"            (ilam (eab/wg-switch-to-workgroup ":eab-spacemacs:"))
@@ -119,7 +116,6 @@ any other key exits this function."
    ;; "w"            (ilam (eab/org-ql-switch 'eab/org-ql-W-query))
    ;; "W"            (ilam (eab/org-ql-search 'eab/org-ql-W-query))
    "C-s"          'eab/gotify-status)
-  (setq eab/wg-map (lookup-key global-map (kbd "C-a")))
   :config
   (setq wg-use-default-session-file 't)
   (setq wg-control-frames 'nil)
@@ -137,7 +133,15 @@ any other key exits this function."
   (eab/wg-init))
 
 (use-package eab-desktop
-  :after (autorevert eab-workgroups2))
+  :after (autorevert eab-workgroups2)
+  :config
+  (general-define-key
+   :keymaps 'eab/one-key-map
+   "X"    (ilam
+           (desktop-save (eab/desktop-dir))
+           (run-with-timer 0.1 nil 'kill-emacs)
+           (eab/sh-over-bash
+            (concat "sleep 0.3 && emacs --daemon=" eab/daemon-name) "" 't))))
 
 (use-package eab-bookmark
   :after (eab-minimal eab-workgroups2)
@@ -147,6 +151,94 @@ any other key exits this function."
    "b"            'eab/bookmark-set
    "B"            'eab/bookmark-delete
    "C-b"          'eab/bookmark-jump
+   )
+  (general-define-key
+   :keymaps 'bookmark-minibuffer-read-name-map
+   "C-l" (ilam
+          (let ((string
+                 (with-current-buffer
+                     bookmark-current-buffer
+                   (eab/replace-in-string "{{{kb_hide}}}" "" (thing-at-point 'line)))))
+            (insert (substring string 0 -1))))))
+
+(use-package eab-workflow
+  :config
+  (general-define-key
+   "C-M-f"        'toggle-frame-maximized
+   "C-h C-c"      'describe-command
+   "C-h c"        'eab/describe-key-briefly
+   "C-h C-f"      'eab/find-function-at-point
+   "C-h C-k"      'eab/describe-key-find
+   "C-h C-v"      'eab/find-variable-at-point
+   "<f7>"         'eab/fix-windows-coding
+   "<f6>"         'eab/revert-buffer
+   "C-c u"        'eab/unbound-var
+   "C-c U"        'eab/unbound-fun
    ))
+
+(use-package eab-outline
+  :after (eab-minimal))
+
+(use-package eab-ido
+  :after (projectile eab-minimal)
+  :config
+  (general-define-key
+   "C-b"          'eab/cxb
+   )
+  (eab/add-hook ido-minibuffer-setup-hook eab/ido-minibuffer-hook
+    (general-define-key
+     :keymaps 'ido-file-dir-completion-map
+     "M-v"        'yank)
+    (general-define-key
+     :keymaps 'ido-file-completion-map
+     "C-n"        (eab/do-action
+                   (ilam-no-def
+                    (execute-kbd-macro
+                     (read-kbd-macro
+                      "C-x C-f / 2*s h : k a i r o s - h o s t | s u d o : k a i r o s - h o s t : / C-x Q"))))
+     "C-d"        'eab/ace-ibuffer
+     "C-|"        'eab/ido-see-file
+     )
+    (general-define-key
+     :keymaps 'ido-common-completion-map
+     "C-v"        'eab/toggle-cxb-ido-item
+     )
+    (general-define-key
+     :keymaps 'ido-buffer-completion-map
+     "C-k"        'nil
+     "C-d"        'eab/ace-ibuffer
+     "M-RET"      'eab/ido-main
+     "C-M-j"      'eab/ido-main
+     ))
+  (setq ido-save-directory-list-file
+        (eab/config (concat (eab/history-dir) ".ido.last"))))
+
+(use-package eab-smex
+  :after (helm eab-minimal)
+  :config
+  (general-define-key
+   :keymaps 'minibuffer-local-map
+   "M-a"          'eab/smex-extended
+   "C-w"          'eab/smex-repeat)
+  (general-define-key
+   "M-a"          'eab/smex-limited-commands)
+  (setq smex-save-file (eab/config (concat (eab/history-dir) ".smex-items"))))
+
+(use-package undo-tree
+  :config
+  (general-define-key
+   :keymaps 'eab/one-key-map
+   "z"    'undo-tree-visualize
+   )
+  (general-define-key
+   "M-z"          'undo-tree-undo
+   "M-Z"          'undo-tree-redo
+   )
+  (global-undo-tree-mode))
+
+(use-package redo+
+  :config
+  (general-define-key
+   "M-z"          'undo))
 
 (provide 'eab-config-workgroups2)

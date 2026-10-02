@@ -85,10 +85,6 @@
 (add-hook 'bibtex-mode-hook (lambda () (bibtex-set-dialect 'BibTeX)))
 (add-hook 'grep-mode-hook 'org-link-minor-mode)
 (add-hook 'ag-mode-hook 'org-link-minor-mode)
-(eab/add-hook ag-mode-hook eab/ag-hook
-  (general-define-key
-   :keymaps 'ag-mode-map
-   "C-w"        'eab/wgrep-change-to-wgrep-mode))
 
 (with-eval-after-load 'org-ctags (setq org-open-link-functions nil))
 (setq org-adapt-indentation nil)

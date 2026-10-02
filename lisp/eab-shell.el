@@ -15,12 +15,6 @@
 (setq explicit-bash-args '("--noediting" "-i"))
 (setq eab/xdg-open (eab/config (concat eab/ssh-host-local " 'DISPLAY=:0 xdg-open")))
 
-(eab/add-hook shell-mode-hook eab/shell-hook
-    (general-define-key
-     :keymaps 'shell-mode-map
-     "M-p"        'nil
-     "M-n"        'nil))
-
 (defun eab/over-bash (comhead comstr)
   "Run comhead with comstr over bash -i -c."
   (concat "bash -i -c \"" comhead " \\\"" (expand-file-name comstr) "\\\"'\""))

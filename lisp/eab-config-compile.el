@@ -50,9 +50,10 @@
    "C-f"        'eab/magit-status
    "C-j"        'eab/magit-amend-modified
    "{"          (ilam
-                 (if (string=
-                      (projectile-project-root)
-                      "/home/eab/git/eab-system/eab-spacemacs/")
+                 (if (not
+                      (string=
+                       (projectile-project-root)
+                       "/home/eab/git/org-chronos/"))
                      (eab/git-bump-version)))
    "s"          'sort-lines
    "u"          'untabify
@@ -99,6 +100,9 @@
 (use-package eab-gr
   :after (eab-compile eab-notify)
   :config
+  ;; shell and shell-utils
+  (general-define-key
+   "C-S-f"        'eab/gr-status)
   (general-define-key
    :keymaps 'eab/ctrl-l-map
    "C-f"          'eab/gr-status

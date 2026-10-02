@@ -12,6 +12,11 @@
   :init
   (setq eab/trans-path (eab/config "~/git/python/trans.py"))
   :config
+  (eab/add-hook shell-mode-hook eab/shell-hook
+    (general-define-key
+     :keymaps 'shell-mode-map
+     "M-p"        'nil
+     "M-n"        'nil))
   (general-define-key
    :keymaps 'eab/ctrl-l-map
    ;; sync and shell-utils over ssh

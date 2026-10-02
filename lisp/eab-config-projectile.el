@@ -11,7 +11,7 @@
   :after (eab-minimal eab-workgroups2)
   :config
   (general-define-key
-   :prefix "C-a"
+   :keymaps 'eab/wg-map
    "f"            'projectile-switch-project
    "F"            'projectile-discover-projects-in-directory
    )

@@ -9,15 +9,6 @@
 
 (defvar eab/revert-buffer "u")
 
-(general-define-key
- "C-M-f"        'toggle-frame-maximized
- "C-h C-c"      'describe-command
- "C-h c"        'eab/describe-key-briefly
- "C-h C-f"      'eab/find-function-at-point
- "C-h C-k"      'eab/describe-key-find
- "C-h C-v"      'eab/find-variable-at-point
- )
-
 (defun eab/unbound-var ()
   (interactive)
   (let ((sym (symbol-at-point)))

@@ -60,4 +60,43 @@
      "C-p"        'term-send-up
      "C-n"        'term-send-down)))
 
+(use-package eab-eepitch
+  :config
+  (general-define-key
+   :keymaps 'eab/one-key-map
+   "a"    (ilam (eepitch-ansi-term "1"))
+   "1"    (ilam (eepitch-ansi-term "1"))
+   "2"    (ilam (eepitch-ansi-term "2"))
+   "3"    (ilam (eepitch-ansi-term "3"))
+   "4"    (ilam (eepitch-ansi-term "4"))
+   "5"    (ilam (eepitch-ansi-term "5"))
+   "6"    (ilam (eepitch-ansi-term "6"))
+   "7"    (ilam (eepitch-ansi-term "7"))
+   "8"    (ilam (eepitch-ansi-term "8"))
+   "9"    (ilam (eepitch-ansi-term "9"))
+   "k"    (ilam (eepitch-kill))
+   )
+  (general-define-key
+   "C-,"          'eab/eepitch-this-line
+   "C-r"          'eab/eepitch-this-line
+   "C-M-r"        'eab/eepitch-paragraph
+   )
+  (setq eab/eeansi-path (eab/config (expand-file-name "~/.eev/eeansi.sh")))
+  (setq eab/eegchannel-path
+        (eab/config
+         (expand-file-name (concat eab-spacemacs-path "local/eev-current/eegchannel"))))
+  (setq vterm-shell eab/eeansi-path))
+
+(use-package vterm
+  :config
+  (setq
+   vterm-keymap-exceptions
+   '(
+     "C-c" "C-x" "C-u" "C-g" "C-h" "C-l" "M-x" "M-o" "C-v" "M-v"
+     "C-y" "M-y" "M-s" "M-a" "M-i" "M-k" "M-j" "M-l" "C-a" "M-c" "M-p"))
+  (defun vterm-send-meta-c-b ()
+    "Send `M-<backspace>' to the libvterm."
+    (interactive)
+    (vterm-send-key "b" nil t t)))
+
 (provide 'eab-config-term)

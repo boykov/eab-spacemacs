@@ -7,7 +7,164 @@
 ;; Requirements:
 ;; Status: not intended to be distributed yet
 
-(use-package eab-modes)
+(use-package eab-ui
+  :config
+  (eab/add-hook help-mode-hook eab/help-hook
+    (general-define-key
+     :keymaps 'help-mode-map
+     "o"  'ace-link-help
+     "B"  'help-go-back
+     "F"  'help-go-forward))
+  (unless window-system ;; Only use in tty-sessions.
+    (defvar arrow-keys-map (make-sparse-keymap) "Keymap for arrow keys")
+    (define-key esc-map "O" arrow-keys-map)
+    (define-key arrow-keys-map "A" 'previous-line)
+    (define-key arrow-keys-map "B" 'next-line)
+    (define-key arrow-keys-map "C" 'forward-char)
+    (define-key arrow-keys-map "D" 'backward-char))
+  (general-define-key
+   "M-O"          'forward-paragraph
+   "M-U"          'backward-paragraph
+   )
+  (setq auto-save-list-file-prefix (eab/config (concat (eab/history-dir) "auto-save-list/.saves-")))
+  (setq save-place-file (eab/config (concat (eab/history-dir) ".emacs-places")))
+  (setq url-configuration-directory (eab/config (concat (eab/history-dir) "url/")))
+  (eab/config
+   (cond ((eab/onhost "kairos")       (setq source-directory "~/data/github/emacs/src"))
+         ((eab/onhost "chronos")      (setq source-directory "~/data/github/emacs/src"))
+         ((eab/onhost "kairos-emacs") (setq source-directory "~/data/github/emacs/src"))
+         ((eab/onhost "chronos-emacs")(setq source-directory "~/data/github/emacs/src"))
+         ((eab/onhost "cyclos-emacs") (setq source-directory "~/data/github/emacs/src"))))
+  (setq find-function-C-source-directory source-directory)
+  (setq custom-file (eab/config (concat (eab/history-dir) "custom.el"))))
+
+(use-package eab-tramp)
+
+(use-package epa)
+(use-package epa-file
+  :after (epa)
+  :config
+  (epa-file-enable)
+  (setq epa-file-select-keys 'silent))
+(use-package epg
+  :config
+  (setenv "GPG_AGENT_INFO" nil)       ; use gpg without gui window
+  ;; gpg --import ~/.ssh/key_*.gpg
+  (setq epg-gpg-program "gpg")
+  (setq epa-pinentry-mode 'loopback))
+
+;; (load "auctex.el" nil t t)
+(use-package eab-tex)
+
+(use-package which-key
+  :defer
+  :config
+  (setq which-key-idle-delay 2)
+  (which-key-mode))
+(use-package diminish
+  :after (undo-tree which-key)
+  :config
+  (diminish 'which-key-mode "WK")
+  (diminish 'undo-tree-mode "UT"))
+(use-package guide-key
+  :config
+  (guide-key-mode 1))
+
+(use-package eab-modes
+  :config
+  (eab/add-hook fortran-mode-hook eab/fortran-hook
+    (general-define-key
+     :keymaps 'fortran-mode-map
+     "C-d"        eab/compile-map))
+
+  (eab/add-hook text-mode-hook eab/text-hook
+    (general-define-key
+     :keymaps 'text-mode-map
+     "C-c C-c"    'server-edit))
+
+  (define-advice artist-mode (:before (&rest args) eab-artist-mode)
+    (general-define-key
+     :keymaps 'artist-mode-map
+     "C-b"        'nil))
+
+  (eab/add-hook nroff-mode-hook eab/nroff-hook
+    (general-define-key
+     :keymaps 'nroff-mode-map
+     "M-s"        'nil
+     "M-n"        'nil
+     "M-p"        'nil))
+
+  (eab/add-hook f90-mode-hook eab/f90-hook
+    (general-define-key
+     :keymaps 'f90-mode-map
+     "C-j"        'nil
+     "C-d"        eab/compile-map))
+
+  (eab/add-hook message-mode-hook eab/message-hook
+    (general-define-key
+     :keymaps 'message-mode-map
+     "C-c C-c"    'eab/message-send
+     "M-;"        'nil
+     "M-n"        'nil))
+
+  (eab/add-hook makefile-gmake-mode-hook eab/makefile-gmake-mode
+    (general-define-key
+     :keymaps 'makefile-gmake-mode-map
+     "\C-d"       eab/compile-map
+     "M-n"        'nil
+     "M-p"        'nil))
+
+  (eab/add-hook java-mode-hook eab/java-hook
+    (general-define-key
+     :keymaps 'java-mode-map
+     "M-M"        'c-end-of-defun
+     "M-N"        'c-beginning-of-defun
+     "M-j"        'nil
+     "M-a"        'nil
+     "M-e"        'nil))
+
+  (eab/add-hook c-mode-hook eab/c-hook
+    (general-define-key
+     :keymaps 'c-mode-map
+     "C-d"        eab/compile-map
+     "C-M-a"      'nil
+     "C-M-e"      'nil
+     "M-a"        'nil
+     "M-M"        'nil
+     "M-N"        'nil
+     "M-j"        'nil
+     "M-q"        'nil
+     "M-M"        'c-end-of-defun
+     "M-N"        'c-beginning-of-defun
+     "M-e"        'nil))
+
+  (eab/add-hook c++-mode-hook eab/c++-hook
+    (general-define-key
+     :keymaps 'c++-mode-map
+     "C-d"        eab/compile-map
+     "C-M-a"      'nil
+     "C-M-e"      'nil
+     "M-a"        'nil
+     "M-M"        'nil
+     "M-N"        'nil
+     "M-j"        'nil
+     "M-q"        'nil
+     "M-M"        'c-end-of-defun
+     "M-N"        'c-beginning-of-defun
+     "M-e"        'nil))
+
+  (eab/add-hook ruby-mode-hook eab/ruby-hook
+    (general-define-key
+     :keymaps 'ruby-mode-map
+     "C-d"        eab/compile-map
+     "C-M-b"      'nil))
+
+  (eab/add-hook graphviz-dot-mode-hook eab/graphviz-hook
+    (general-define-key
+     :keymaps 'graphviz-dot-mode-map
+     "C-d"        eab/compile-map)
+    (set (make-local-variable 'compile-command) nil)))
+
 (use-package typescript-mode)
 (use-package idle-highlight-mode) ;; + no melpa
 
@@ -79,7 +236,6 @@
 (use-package consult-omni
   :load-path "~/.emacs.d/private/eab-spacemacs/local/consult-omni"
   :init
-  (add-to-list 'load-path (eab/config (concat eab-spacemacs-path "local/consult-omni")))
   (add-to-list 'load-path (eab/config (concat eab-spacemacs-path "local/consult-omni/sources")))
   :config
   (setq consult-omni-multi-sources '("DuckDuckGo API")))

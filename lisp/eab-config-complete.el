@@ -9,6 +9,8 @@
 
 ;; aka config workflow
 
+(use-package string-edit-at-point)
+
 (use-package edit-list
   :after (eab-minimal)
   :config

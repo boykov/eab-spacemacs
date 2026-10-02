@@ -22,32 +22,6 @@
 (setq ido-file-extensions-order '(".Rnw" ".tex"))
 (setq ido-file-extensions-order '(".py" ".r" ".cpp" ".tex" ".txt"))
 
-(eab/add-hook ido-minibuffer-setup-hook eab/ido-minibuffer-hook
-  (general-define-key
-   :keymaps 'ido-file-dir-completion-map
-   "M-v"        'yank)
-  (general-define-key
-   :keymaps 'ido-file-completion-map
-   "C-n"        (eab/do-action
-                 (ilam-no-def
-                  (execute-kbd-macro
-                   (read-kbd-macro
-                    "C-x C-f / 2*s h : k a i r o s - h o s t | s u d o : k a i r o s - h o s t : / C-x Q"))))
-   "C-d"        'eab/ace-ibuffer
-   "C-|"        'eab/ido-see-file
-   )
-  (general-define-key
-   :keymaps 'ido-common-completion-map
-   "C-v"        'eab/toggle-cxb-ido-item
-   )
-  (general-define-key
-   :keymaps 'ido-buffer-completion-map
-   "C-k"        'nil
-   "C-d"        'eab/ace-ibuffer
-   "M-RET"      'eab/ido-main
-   "C-M-j"      'eab/ido-main
-   ))
-
 (defvar eab/cxb-ido-item 'list "list: only projectile's buffers, buffer: all buffers")
 
 (defun eab/toggle-cxb-ido-item ()

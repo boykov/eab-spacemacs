@@ -19,13 +19,6 @@
   (setq savehist-file (eab/config (concat (eab/history-dir) "history")))
   (savehist-mode 1))
 
-(eab/add-hook help-mode-hook eab/help-hook
-    (general-define-key
-     :keymaps 'help-mode-map
-     "o"  'ace-link-help
-     "B"  'help-go-back
-     "F"  'help-go-forward))
-
 (setq ring-bell-function 'ignore)
 
 (setq disabled-command-function nil)
@@ -72,18 +65,6 @@
 (add-hook 'js-mode-hook (lambda () (setq indent-tabs-mode nil)))
 (add-hook 'emacs-lisp-mode-hook (lambda () (setq indent-tabs-mode nil)))
 
-(unless window-system ;; Only use in tty-sessions.
-  (defvar arrow-keys-map (make-sparse-keymap) "Keymap for arrow keys")
-  (define-key esc-map "O" arrow-keys-map)
-  (define-key arrow-keys-map "A" 'previous-line)
-  (define-key arrow-keys-map "B" 'next-line)
-  (define-key arrow-keys-map "C" 'forward-char)
-  (define-key arrow-keys-map "D" 'backward-char))
-
-(general-define-key
- "M-O"          'forward-paragraph
- "M-U"          'backward-paragraph
- )
 ;; (setq paragraph-start ...)
 ;; (setq paragraph-separate ...)
 (setq page-delimiter "^$")
