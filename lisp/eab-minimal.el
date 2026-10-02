@@ -9,6 +9,11 @@
 
 (use-package cl-macs)
 
+(defvar eab/explore-map (make-sparse-keymap) "Keymap for minimal configuration")
+(defvar eab/one-key-map (make-sparse-keymap)  "One-key keymap.")
+(defvar eab/ctrl-l-map (make-sparse-keymap)  "C-l keymap.")
+(defvar eab/compile-map (make-sparse-keymap) "Compile keymap.")
+
 (defmacro eab/config (&rest body) (car `,@body))
 
 (defmacro eab/add-hook (hookname funcname &rest body)
@@ -193,6 +198,11 @@ ignored.  An empty buffer or unreadable contents count as invalid."
    (equal (ido-completing-read-silent
            "prompt: " '("one" "two" "three" "four" "five") "t")
           '("two" "three")))
+  (general-define-key "C-f"          eab/explore-map)
+  (general-define-key "C-e"          eab/one-key-map)
+  (general-define-key "C-l"          eab/ctrl-l-map)
+  (general-define-key "C-d"          eab/compile-map)
+  (if (file-exists-p power-macros-file) (load power-macros-file))
   (global-eldoc-mode 0)
   (electric-indent-mode -1)
   (electric-pair-mode -1)

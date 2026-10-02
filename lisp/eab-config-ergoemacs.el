@@ -53,6 +53,10 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
    "M-*"  'ergoemacs-select-text-in-quote
    "M-8"  'ergoemacs-extend-selection)
   (general-define-key
+   :keymaps 'eab/ctrl-l-map
+   "q"            'ergoemacs-open-last-closed
+   "/"            'ergoemacs-toggle-letter-case)
+  (general-define-key
    "C-t"          'transpose-sexps
    "M-m"          'forward-sexp
    "M-n"          'backward-sexp

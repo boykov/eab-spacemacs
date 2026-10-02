@@ -12,14 +12,54 @@
   :init
   (setq eab/trans-path (eab/config "~/git/python/trans.py"))
   :config
-  (eab/redefine-keymap "C-e" 'move-end-of-line)
   (general-define-key
-   :prefix "C-e"
+   :keymaps 'eab/ctrl-l-map
+   ;; sync and shell-utils over ssh
+   "M-d"          (ilam (call-process-shell-command eab/test-dotemacs-command nil 0))
+   "M-b"          (ilam
+                   (call-process-shell-command
+                    (concat eab/dl.sh-command
+                            (if region-bindings-mode
+                                (buffer-substring (mark) (point))
+                              (current-kill 0)))  nil 0))
+   "M-s"          (ilam (call-process-shell-command eab/sync-rsync-command nil 0))
+   "M-S"          (ilam (call-process-shell-command eab/sync-zfs-command nil 0))
+   ;; shell and shell-utils
+   "f"            'eab/see-file)
+  (general-define-key
+   :keymaps 'eab/one-key-map
    "x"    (ilam
            (eab/sh-over-bash eab/emacs-service-command "" 't)))
   (general-define-key
    "M-A"          'eab/call-shell-command
    )
+  (if (eab/ondaemon "cyclos")
+      (progn
+        (setq eab/sync-rsync-command
+              (eab/config (concat "ssh cyclos"
+                      " screen -d -m bash -c \"echo; "
+                      "rsync -WavR --files-from=/home/eab/.emacs.d/historyCyclos/recentf-eabpool /mnt/lion/ kairos:/mnt/lion/; "
+                      "rsync -WavR --files-from=/home/eab/.emacs.d/historyCyclos/recentf-eabpool /mnt/lion/ chronos:/mnt/lion/; "
+                      "/home/eab/git/auto/notify.sh -a " (eab/gotify-token) " -t \"OK\" -m \"rsync\" -p 0; "
+                      "\"")))
+        (setq eab/sync-zfs-command
+              (eab/config (concat "ssh cyclos" " screen -d -m bash -c \"echo; syncoid.sh chronos kairos\"")))))
+  (if (eab/ondaemon "chronosP")
+      (progn
+        (setq eab/sync-rsync-command
+              (eab/config (concat "ssh cyclos"
+                      " screen -d -m bash -c \"echo; "
+                      "rsync -WavR --files-from=/home/eab/.emacs.d/historyCyclos/recentf-eabpool /mnt/lion/ kairos:/mnt/lion/; "
+                      "rsync -WavR --files-from=/home/eab/.emacs.d/historyCyclos/recentf-eabpool /mnt/lion/ cyclos:/mnt/lion/; "
+                      "/home/eab/git/auto/notify.sh -a " (eab/gotify-token) " -t \"OK\" -m \"rsync\" -p 0; "
+                      "\"")))
+        (setq eab/sync-zfs-command
+              (eab/config (concat "ssh chronos" " screen -d -m bash -c \"echo; syncoid.sh cyclos kairos\"")))))
+  (setq eab/dl.sh-command
+        (eab/config (concat "ssh chronos" " dl.sh ")))
+  (setq eab/test-dotemacs-command
+        ;; host=`dig test-dotemacs.salmon.eab.su TXT +short | tr -d '"'`
+        (eab/config (concat "ssh chronos" " ~/git/auto/test-dotemacs.sh")))
   (let ((emacs-alist
          (eab/config
           `(
@@ -172,6 +212,9 @@
           "eab/clear-extended-history"
           "eab/load-personal"
           ))
+  (general-define-key
+   :keymaps 'eab/ctrl-l-map
+   "S"            'toggle-truncate-lines)
   (general-define-key
    :keymaps 'read-expression-map
    "M-g"  'nil))

@@ -173,9 +173,10 @@
      "M-g"        'org-agenda-kill
      "M-k"        'org-agenda-next-line
      "M-i"        'org-agenda-previous-line))
-  (eab/redefine-keymap "C-l" 'recenter-top-bottom)
   (general-define-key
-   :prefix "C-l"
+   :keymaps 'eab/ctrl-l-map
+   "."            (kbd "C-c . RET")
+   "M-."          (ilam (execute-kbd-macro (read-kbd-macro "C-c . RET C-l RET C-l l")))
    "c"            'org-store-link
    "M-c"          'org-copy-special
    "M-x"          'org-cut-special
@@ -270,6 +271,13 @@
 (use-package eab-org-extension
   :after (eab-org))
 (use-package eab-hron-lib
-  :after (eab-org eab-org-publish))
+  :after (eab-org eab-org-publish)
+  :config
+  (general-define-key
+   :keymaps 'eab/ctrl-l-map
+   "M-h"          'eab/jump-current-time
+   "h"            'eab/hron-todo
+   "C-h"          'eab/hron-todo
+   ))
 
 (provide 'eab-config-eab-org)

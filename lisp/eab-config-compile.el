@@ -38,8 +38,6 @@
 (use-package eab-compile
   :after (ansi-color eab-minimal eab-notify)
   :init
-  (defvar eab/explore-map (make-sparse-keymap)
-    "Keymap for minimal configuration")
   (general-define-key
    :keymaps 'eab/explore-map
    "t"          'git-timemachine
@@ -51,16 +49,17 @@
    "f"          'eab/magit-status
    "C-f"        'eab/magit-status
    "C-j"        'eab/magit-amend-modified
+   "{"          (ilam
+                 (if (string=
+                      (projectile-project-root)
+                      "/home/eab/git/eab-system/eab-spacemacs/")
+                     (eab/git-bump-version)))
    "s"          'sort-lines
    "u"          'untabify
    "C-w"        'whitespace-mode
    "w"          'whitespace-mode)
   (general-define-key
-   "C-f"          eab/explore-map
-   )
-  (global-set-key (kbd "C-d") nil)
-  (general-define-key
-   :prefix "C-d"
+   :keymaps 'eab/compile-map
    "q"    'eab/nocommand
    "a"    'eab/compile-helm
    "e"    eab/explore-map
@@ -75,10 +74,6 @@
    "c"    (ilam (eab/projectile-compile-project-custom "make clear"))
    "t"    (ilam (eab/projectile-compile-project-custom "make test"))
    "2"    (ilam (eab/projectile-compile-project-custom "make test2")))
-  (defvar eab/compile-map (make-sparse-keymap)
-    "Compile keymap.")
-  ;; TODO: 
-  (setq eab/compile-map (lookup-key global-map (kbd "C-d")))
   :config
   (eab/add-hook compilation-mode-hook eab/compilation-hook
     (general-define-key
@@ -102,6 +97,12 @@
   (setq compilation-scroll-output 't))
 
 (use-package eab-gr
-  :after (eab-compile eab-notify))
+  :after (eab-compile eab-notify)
+  :config
+  (general-define-key
+   :keymaps 'eab/ctrl-l-map
+   "C-f"          'eab/gr-status
+   "SPC"          'eab/gr-tag-default-directory
+   ))
 
 (provide 'eab-config-compile)

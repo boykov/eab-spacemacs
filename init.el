@@ -26,6 +26,11 @@
   :after (eab-server)
   :config
   (general-define-key
+   :keymaps 'eab/ctrl-l-map
+   "m"            'kmacro-keymap
+   ","            'kmacro-end-or-call-macro-repeat
+   "x"            'kmacro-keymap)
+  (general-define-key
    :keymaps 'kmacro-keymap
    "m"    'kmacro-start-macro
    ","    'kmacro-end-or-call-macro-repeat

@@ -16,6 +16,9 @@
   :config
   (general-define-key
    "<f10>"        'eab/flyspell-buffer)
+  (general-define-key
+   :keymaps 'eab/ctrl-l-map
+   "F"            'flyspell-mode)
   (eab/add-hook flyspell-mode-hook eab/flyspell-hook
     (general-define-key
      :keymaps 'flyspell-mode-map

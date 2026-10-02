@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.5.4
+
+refactor: Reorganize keybindings under dedicated keymaps and consolidate config
+
+- Replace prefix bindings with dedicated keymaps like eab/ctrl-l-map and eab/one-key-map
+- Move kmacro and ergoemacs bindings into eab/ctrl-l-map for consistency
+- Remove redundant keymap definitions and obsolete `eab/redefine-keymap`
+- Add and centralize ssh/shell sync utilities in eab-config-simple.el
+- Introduce `eab/git-bump-version` for semantic versioning commits in magit
+- Restructure and simplify keybinding definitions across multiple config files
+- Avoid duplicate or outdated bindings by removing legacy keymaps
+  (eab/explore-map, eab/compile-map definitions moved to
+  eab-minimal.el)
+
 ## 0.5.3
 
 feat(config): refactor keybindings using eab/redefine-keymap and organize config files

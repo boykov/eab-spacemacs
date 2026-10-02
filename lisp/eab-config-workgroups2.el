@@ -9,9 +9,13 @@
 
 (use-package eab-window
   :config
-  (eab/redefine-keymap "C-e" 'move-end-of-line)
   (general-define-key
-   :prefix "C-e"
+   :keymaps 'eab/ctrl-l-map
+   "O"            'esc-toggle-window-selectability
+   "D"            'toggle-window-dedicated
+   "g"            'eab/kill-last-grep)
+  (general-define-key
+   :keymaps 'eab/one-key-map
    "G"    'eab/kill-last-grep
    "g"    'eab/switch-grep
    "s"    'eab/switch-async
@@ -26,9 +30,8 @@
 
 (use-package buffer-move
   :config
-  (eab/redefine-keymap "C-l" 'recenter-top-bottom)
   (general-define-key
-   :prefix "C-l"
+   :keymaps 'eab/ctrl-l-map
    "s"            'buf-move
    )
   (defun buf-move ()
@@ -130,9 +133,8 @@ any other key exits this function."
 (use-package eab-bookmark
   :after (eab-minimal eab-workgroups2)
   :config
-  (eab/redefine-keymap "C-l" 'recenter-top-bottom)
   (general-define-key
-   :prefix "C-l"
+   :keymaps 'eab/ctrl-l-map
    "b"            'eab/bookmark-set
    "B"            'eab/bookmark-delete
    "C-b"          'eab/bookmark-jump

@@ -22,10 +22,11 @@
    "C-x C-k e"    'pm-switch-buf
    "C-M-,"        'eab/pm-write-last-kbd-macro
    )
+  (general-define-key
+   :keymaps 'eab/ctrl-l-map
+   "nf"           'eab/pm-write-last-kbd-macro)
   (setq pm-macro-files (eab/config `(,(concat eab-spacemacs-path "lisp/eab-pmacros.el"))))
   (setq power-macros-file (eab/config (concat eab-spacemacs-path "lisp/eab-pmacros.el")))
-  (if (file-exists-p power-macros-file)
-      (load power-macros-file))
   (defun eab/pm-write-last-kbd-macro (name)
     (interactive "MName of macro: ")
     (with-temp-buffer
@@ -130,9 +131,8 @@
 
 (use-package proced
   :config
-  (eab/redefine-keymap "C-e" 'move-end-of-line)
   (general-define-key
-   :prefix "C-e"
+   :keymaps 'eab/one-key-map
    "o"    'proced
    )
   (eab/add-hook proced-mode-hook eab/proced-hook

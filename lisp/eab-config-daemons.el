@@ -11,9 +11,8 @@
 (use-package docker-container
   :after (docker)
   :config
-  (eab/redefine-keymap "C-e" 'move-end-of-line)
   (general-define-key
-   :prefix "C-e"
+   :keymaps 'eab/one-key-map
    "C"    'docker-containers
    "I"    'docker-images)
   (defun eab/tramp-docker-cleanup ()
@@ -35,9 +34,8 @@
 (use-package daemons-systemd
   :after (daemons)
   :config
-  (eab/redefine-keymap "C-e" 'move-end-of-line)
   (general-define-key
-   :prefix "C-e"
+   :keymaps 'eab/one-key-map
    "d c"  '(:def (ilam-no-def
                   (setq eab/daemons-host "chronos")
                   (call-interactively 'eab/daemons))

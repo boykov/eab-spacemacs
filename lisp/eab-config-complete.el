@@ -31,6 +31,9 @@
 
 (use-package auto-complete
   :config
+  (general-define-key
+   :keymaps 'eab/ctrl-l-map
+   "Y"            'auto-complete-mode)
   (eab/add-hook auto-complete-mode-hook eab/ac-complete-mode-hook
     (general-define-key
      :keymaps 'ac-completing-map
@@ -40,6 +43,7 @@
      "M-c"        'ac-expand-common
      "M-k"        'ac-next
      "M-i"        'ac-previous)))
+
 (use-package auto-complete-config)
 (use-package mode-local)
 
@@ -67,6 +71,9 @@
   :config
   (general-define-key
    "C-c i"        'yas-expand)
+  (general-define-key
+   :keymaps 'eab/ctrl-l-map
+   "y"            'yas-minor-mode)
 
   (setq yas-snippet-dirs '())
   ;; cd el-get && git clone https://github.com/AndreaCrotti/yasnippet-snippets
@@ -85,4 +92,5 @@
               (setq yas-trigger-key [tab])
               (add-to-list 'org-tab-first-hook 'yas-org-very-safe-expand)
               (define-key yas-keymap [tab] 'yas-next-field))))
+
 (provide 'eab-config-complete)

@@ -65,10 +65,6 @@ process: e.g. nautilus or gnome-terminals"
                (current-prefix-arg nil))
            (call-interactively 'shell-command)))))
 
-(defun eab/gr-tag-default-directory ()
-  (interactive)
-  (shell-command (concat "gr +#emacs " default-directory)))
-
 ;; CANCELLED: Add
 (defun eab/dired-see-file ()
   "See file by external application with dired."

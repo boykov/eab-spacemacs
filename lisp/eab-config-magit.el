@@ -41,7 +41,10 @@
      "J"          'magit-commit-amend
      "R"          (kbd "r - A e o r i g i n / m a s t e r RET")
      "N"          (kbd "P o m a s t e r 2*RET")
-     "{"          (ilam (execute-kbd-macro (read-kbd-macro "C-u S ESC A g i t SPC c o 2*m i t SPC - m SPC u p d a t e RET g")))
+     "{"          (ilam
+                   (execute-kbd-macro
+                    (read-kbd-macro
+                     "C-u S ESC A g i t SPC c o 2*m i t SPC - m SPC u p d a t e RET g")))
      "M-n"        'nil
      "M-p"        'nil
      "M-s"        'nil
@@ -68,7 +71,31 @@
   (defun eab/magit-amend-modified ()
     (interactive)
     (magit-stage-modified 't)
-    (call-interactively 'magit-commit-amend)))
+    (call-interactively 'magit-commit-amend))
+  (defun eab/git-bump-version ()
+    "Создаёт пустой коммит с patch-инкрементом семантической версии.
+Предыдущая версия берётся из сообщения последнего коммита,
+содержащего vMAJOR.MINOR.PATCH."
+    (interactive)
+    (let* ((subject (string-trim
+                     (shell-command-to-string
+                      "git log -1 --grep='[0-9]*\\.[0-9]*\\.[0-9]*' --pretty=%s")))
+           (_ (when (string-empty-p subject)
+                (user-error "Коммит с семантической версией не найден")))
+           (nums (progn
+                   (string-match
+                    "\\([0-9]+\\)\\.\\([0-9]+\\)\\.\\([0-9]+\\)" subject)
+                   (list (string-to-number (match-string 1 subject))
+                         (string-to-number (match-string 2 subject))
+                         (string-to-number (match-string 3 subject)))))
+           (new-tag (format "%d.%d.%d"
+                            (nth 0 nums) (nth 1 nums) (1+ (nth 2 nums)))))
+      (unless (zerop (shell-command
+                      (format "git commit --allow-empty -m %s"
+                              (shell-quote-argument
+                               (concat "" new-tag)))))
+        (user-error "git commit завершился с ошибкой"))
+      (message "Создан пустой коммит: %s" new-tag))))
 
 (use-package magit-base
   :after (magit)

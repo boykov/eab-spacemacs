@@ -16,9 +16,8 @@
 (defun eab/desktop-dir ()
   (eab/history-dir))
 
-(eab/redefine-keymap "C-e" 'move-end-of-line)
 (general-define-key
- :prefix "C-e"
+ :keymaps 'eab/one-key-map
  "X"    (ilam
          (desktop-save (eab/desktop-dir))
          (run-with-timer 0.1 nil 'kill-emacs)

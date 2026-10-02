@@ -153,6 +153,9 @@
 (use-package smartparens
   :config
   (general-define-key
+   :keymaps 'eab/ctrl-l-map
+   "P"            'smartparens-global-mode)
+  (general-define-key
    "C-t"          'sp-transpose-sexp
    "M-m"          'sp-forward-sexp
    "M-n"          'sp-backward-sexp

@@ -60,6 +60,10 @@
         (sleep-for 3)))
   (eab/async-update-gr :recompile 't :notify 't))
 
+(defun eab/gr-tag-default-directory ()
+  (interactive)
+  (shell-command (concat "gr +#emacs " default-directory)))
+
 (provide 'eab-gr)
 
 ;;; eab-gr.el ends here
