@@ -272,4 +272,69 @@
    (buffer-list)
    (car (occur-read-primary-args))))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun eab--wrap-words (words prefix cont width)
+  "Разбить WORDS на строки не длиннее WIDTH.
+Первая строка начинается с PREFIX, строки продолжения — с CONT."
+  (let ((lines '())
+        (current prefix)
+        (plen (length prefix)))
+    (dolist (w words)
+      (cond
+       ;; строка ещё пуста (только префикс) — просто добавляем слово
+       ((= (length current) plen)
+        (setq current (concat current w)))
+       ;; слово помещается в текущую строку
+       ((<= (+ (length current) 1 (length w)) width)
+        (setq current (concat current " " w)))
+       ;; иначе перенос на новую строку
+       (t
+        (push current lines)
+        (setq current (concat cont w)))))
+    (push current lines)
+    (nreverse lines)))
+
+(defun eab/org-sublist-region (beg end)
+  "Преобразовать выделенный текст (BEG..END) в org-mode подсписок.
+
+Отступ первой строки сохраняется; остальные абзацы становятся её
+подчинёнными элементами org-списка с отступом на 2 пробела больше
+и префиксом \"- \". Продолжения перенесённых строк получают ещё 2
+пробела отступа. Строки результата не длиннее 80 символов."
+  (interactive "r")
+  (let* ((text (buffer-substring-no-properties beg end))
+         (lines (split-string text "\n"))
+         (first (car lines))
+         ;; сохраняем исходный отступ первой строки
+         (indent (progn (string-match "\\`[ \t]*" first)
+                        (match-string 0 first)))
+         (sub-indent (concat indent "  "))
+         (cont-indent (concat indent "    "))
+         ;; группируем остальные строки в абзацы (пустая строка = разделитель)
+         (paragraphs '())
+         (para '()))
+    (dolist (l (cdr lines))
+      (if (string-match-p "\\`[ \t]*\\'" l)
+          (when para
+            (push (string-join (nreverse para) " ") paragraphs)
+            (setq para nil))
+        (push (string-trim l) para)))
+    (when para
+      (push (string-join (nreverse para) " ") paragraphs))
+    (setq paragraphs (nreverse paragraphs))
+    ;; собираем результат
+    (let ((out (list first)))
+      (dolist (p paragraphs)
+        (setq out
+              (append out
+                      (eab--wrap-words
+                       (split-string p "[ \t\n]+" t)
+                       (concat sub-indent "- ")
+                       cont-indent
+                       80))))
+      (delete-region beg end)
+      (insert (string-join out "\n")))))
+
+
 (provide 'eab-workflow)

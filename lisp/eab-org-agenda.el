@@ -10,10 +10,16 @@
 (setq eab/org-ql-T-query
       '(and
         (or
-         (not (tags "noagenda"))
-         (tags "agenda"))
-        (not (tags "neveragenda"))
-        (clocked 600)
+         (and
+          (or
+           (not (tags "noagenda"))
+           (tags "agenda"))
+          (not (tags "neveragenda"))
+          (clocked 600))
+         (and
+          (tags "parent")
+          (tags "agenda")
+          (not (tags "neveragenda"))))
         (and
          (or
           (deadline auto)
@@ -33,7 +39,8 @@
          (clocked 600))
         (and
          (tags "parent")
-         (tags "agenda"))))
+         (tags "agenda")
+         (not (tags "neveragenda")))))
 
 '((setq eab/org-ql-H-query
         '(and

@@ -105,7 +105,7 @@
    "C-c a"        'org-agenda
    "C-c C-M-p"    'org-open-at-point-global
    "C-c C-l"      'org-insert-link
-   "C-c l"        'org-store-link
+   "C-c l"        'eab/org-store-link
    "C-c r"        'org-capture
    "C-x C-M-p"    'org-open-at-point-global
    )
@@ -181,7 +181,7 @@
    :keymaps 'eab/ctrl-l-map
    "."            (kbd "C-c . RET")
    "M-."          (ilam (execute-kbd-macro (read-kbd-macro "C-c . RET C-l RET C-l l")))
-   "c"            'org-store-link
+   "c"            'eab/org-store-link
    "M-c"          'org-copy-special
    "M-x"          'org-cut-special
    "M-v"          'org-paste-special

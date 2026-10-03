@@ -534,15 +534,49 @@
 (defun eab/org-clock-parent ()
   (org-entry-get nil "HRON"))
 
+(defun eab/bind-id-at-point ()
+  "Extract id from [[id:...][bind]] link in the list fragment at point.
+List fragment is delimited by blank lines (or buffer boundaries).
+Return the id string, or nil if there is no such link."
+  (save-excursion
+    (save-restriction
+      (widen)
+      (let (beg end)
+        ;; начало фрагмента: предыдущая пустая строка (или начало буфера)
+        (save-excursion
+          (beginning-of-line)
+          (while (and (not (bobp))
+                      (not (looking-at-p "^[ \t]*$")))
+            (forward-line -1))
+          (unless (bobp)
+            (forward-line 1))
+          (setq beg (point)))
+        ;; конец фрагмента: следующая пустая строка (или конец буфера)
+        (save-excursion
+          (beginning-of-line)
+          (while (and (not (eobp))
+                      (not (looking-at-p "^[ \t]*$")))
+            (forward-line 1))
+          (setq end (point)))
+        ;; поиск ссылки с bind внутри фрагмента
+        (goto-char beg)
+        (when (re-search-forward
+               "\\[\\[id:\\([^][ \t]+\\)\\]\\[bind\\]\\]" end t)
+          (match-string 1))))))
+
 (defun eab/org-clock (&optional start-time at-time)
   "Insert clock string in current buffer"
   (save-window-excursion
     (save-excursion
-      (let ((remote (eab/org-clock-parent)))
+      (let ((remote (eab/bind-id-at-point)))
         (if remote
-            (if (string= remote "parent")
-                (outline-up-heading 1)
-              (org-id-goto remote))))
+            (org-id-goto remote)
+          (while (eab/org-clock-parent)
+            (let ((remote (eab/org-clock-parent)))
+              (if remote
+                  (if (string= remote "parent")
+                      (outline-up-heading 1)
+                    (org-id-goto remote)))))))
       (org-clock-find-position nil)
       (insert-before-markers "\n")
       (backward-char 1)
@@ -762,9 +796,9 @@
   (org-clock-sum)
   (org-minutes-to-clocksum-string org-clock-file-total-minutes))
 
-(defun eab/clock-sum-last-year (&optional headline-filter)
+(cl-defun eab/clock-sum-last-year (&optional (range 'thisyear) &optional headline-filter)
   (interactive)
-  (let ((range (org-clock-special-range 'lastyear)))
+  (let ((range (org-clock-special-range range)))
     (save-excursion
       (save-restriction
         (if (and (featurep 'org-inlinetask)

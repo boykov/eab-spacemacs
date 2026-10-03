@@ -320,5 +320,25 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(define-advice winner-undo (:before (&rest args) eab-winner-undo-before)
+  (region-bindings-mode-disable)
+  (remove-hook 'activate-mark-hook #'ghostel--mark-activated 't))
+(define-advice winner-undo (:after (&rest args) eab-winner-undo-after)
+  (region-bindings-mode-enable)
+  (if (eq major-mode 'ghostel-mode)
+      (add-hook 'activate-mark-hook #'ghostel--mark-activated nil t)))
+(define-advice winner-redo (:before (&rest args) eab-winner-redo-before)
+  (region-bindings-mode-disable)
+  (remove-hook 'activate-mark-hook #'ghostel--mark-activated 't))
+(define-advice winner-redo (:after (&rest args) eab-winner-redo-after)
+  (region-bindings-mode-enable)
+  (if (eq major-mode 'ghostel-mode)
+      (add-hook 'activate-mark-hook #'ghostel--mark-activated nil t)))
+;; (advice-remove 'winner-undo #'eab-winner-undo-before)
+;; (advice-remove 'winner-undo #'eab-winner-undo-after)
+;; (advice-remove 'winner-redo #'eab-winner-redo-before)
+;; (advice-remove 'winner-redo #'eab-winner-redo-after)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (provide 'eab-workgroups2)

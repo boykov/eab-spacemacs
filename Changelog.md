@@ -4,6 +4,22 @@
 ## 0.5.9
 ## 0.5.8
 ## 0.5.7
+
+refactor(org): integrate custom link handling and improve clocking logic
+
+- Replace `org-store-link` with `eab/org-store-link` in keymaps and
+  define `eab/org-store-link-position-block` to handle `position` block links.
+- Enhance `eab/org-clock` to use `eab/bind-id-at-point` for retrieving
+  the bind ID, enabling more robust parent clocking behavior.
+- Add `eab/org-sublist-region` to transform marked text into an org
+  sublist with proper wrapping and indentation.
+- Update recentf filtering to use the new `eab/recentf-filter` helper
+  and support async sync flag updates on save.
+- Adjust EAF and Ghostel key bindings to support missing key sequences
+  and disable problematic ones.
+- Extend gptel configurations with additional models.
+- Fix EAF startup by disabling automatic Python process creation.
+
 ## 0.5.6
 
 refactor(config): reorganize config loading and improve modularity

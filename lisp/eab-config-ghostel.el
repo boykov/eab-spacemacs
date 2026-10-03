@@ -16,6 +16,7 @@
           (define-key map [?\C-c ?\C-j] #'ghostel-semi-char-mode)
           (define-key map [?\M-v] #'ghostel-yank)
           (define-key map (kbd "C-a") 'nil)
+          (define-key map (kbd "C-z") 'nil)
           ;; (key-chord-define map "jj" #'ghostel-semi-char-mode)
           (define-key map [?\C-c ?\C-e] #'ghostel-emacs-mode)
           (define-key map (kbd "C-r") #'ghostel--send-event)
@@ -23,6 +24,10 @@
 
   (define-key ghostel-readonly-fast-exit-mode-map (kbd "C-r") #'ghostel--send-event)
   (define-key ghostel-readonly-mode-map (kbd "C-r") #'ghostel--send-event)
+  (define-key ghostel-readonly-fast-exit-mode-map (kbd "C-a") 'nil)
+  (define-key ghostel-readonly-mode-map (kbd "C-a") 'nil)
+  (define-key ghostel-readonly-fast-exit-mode-map (kbd "C-z") 'nil)
+  (define-key ghostel-readonly-mode-map (kbd "C-z") 'nil)
 
   (key-chord-define ghostel-readonly-fast-exit-mode-map "jj" #'ghostel-readonly-exit)
   (key-chord-define ghostel-readonly-mode-map "jj" #'ghostel-readonly-exit)
@@ -35,7 +40,7 @@
                        [?\e ?\C-c] [?\C-u] [?\C-q] [?\e ?x] [?\e ?:]
                        [?\C-a] [?\C-l] [?\e ?a] [?\e ?s] [?\C-b] [?\e ?1]
                        [?\e ?c] [?\e ?v] [?\e ?g] [?\e ?h] [?\e ?p]
-                       [?\C-p] [?\C-n] [?\C-v] [?\C-o] [?\C-e]
+                       [?\C-p] [?\C-n] [?\C-v] [?\C-o] [?\C-e] [?\C-z]
                        [?\e ?o] [?\e ?j] [?\e ?l] [?\e ?k] [?\e ?i]
                        [?\e ?!] [?\e ?&] [?\C-y] [?\e ?y]))))
           (define-key map (kbd "<C-return>") #'ghostel--send-event)

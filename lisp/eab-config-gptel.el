@@ -81,7 +81,8 @@ END
                               :terminal_id "b24d07f3-ed81-46c7-a395-84b6fdbf23dc")
     :key (eab/webui-token)
     :models '(google/gemini-3.7-flash
-              z-ai/glm-5.3-flash))
+              z-ai/glm-5.3-flash
+              qwen/qwen3-next-80b-a3b-instruct))
   (gptel-make-openai "OpenRouter"
     :host "openrouter.ai"
     :curl-args '("-xsocks5://192.168.2.19:9050")
@@ -92,6 +93,9 @@ END
     :key gptel-api-key
     :models '(openai/gpt-oss-120b
               openai/gpt-oss-120b:nitro
+              typesafe/jev-1.13
+              qwen/qwen3.7-flash
+              qwen/qwen3.5-9b
               z-ai/glm-5.3-flash
               z-ai/glm-5.2
               openai/gpt-6-astra
@@ -99,12 +103,13 @@ END
               perplexity/sonar
               x-ai/grok-4.20-multi-agent
               qwen/qwen-turbo
-              nvidia/nemotron-3-super-120b-a12b:free
               qwen/qwen3-coder-30b-a3b-instruct
+              qwen/qwen3-next-80b-a3b-instruct
               qwen/qwen3-coder-next
               deepseek/deepseek-v3.2
               deepseek/deepseek-v4-pro
               deepseek/deepseek-v4-flash
+              deepseek/deepseek-v4.1-flash
               mistralai/mixtral-8x7b-instruct
               meta-llama/codellama-34b-instruct
               codellama/codellama-70b-instruct
@@ -146,15 +151,12 @@ END
     (execute-kbd-macro
      (read-kbd-macro "C-v m d M-v RET i RET"))
     (setq gptel-model eab/gptel-one-shot-model))
-  (setq eab/gptel-rewrite-note
-        "Rewrite: Все текстовые блоки должны стать элементами org-mode списка.
- Строки текста должны быть не длиннее 80 символов, перенос на следующую строку если длиннее.")
   (defun eab/gptel-rewrite ()
     "Rewrite the current buffer or region.
-This function sets the gptel model to qwen/qwen3-coder-30b-a3b-instruct and
+This function sets the gptel model to qwen/qwen3-next-80b-a3b-instruct and
 calls the gptel-rewrite interactive command."
     (interactive)
-    (setq gptel-model 'qwen/qwen3-coder-30b-a3b-instruct)
+    (setq gptel-model 'qwen/qwen3-next-80b-a3b-instruct)
     (call-interactively 'gptel-rewrite))
   (defun eab/gptel-mode ()
     (interactive)

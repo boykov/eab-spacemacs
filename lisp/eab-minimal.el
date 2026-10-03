@@ -213,13 +213,16 @@ ignored.  An empty buffer or unreadable contents count as invalid."
   (interactive)
   ;; (if (fboundp 'grep-a-lot-clear-stack)
   ;;     (grep-a-lot-clear-stack))
+  ;; (message (prin1-to-string timer-event-last))
   (winner-mode)
   ;; (setq eab/secrets-path (concat user-emacs-directory "eab-private/eab-secrets.el.gpg"))
   ;; (load-file eab/secrets-path)
+  ;; (message (prin1-to-string timer-event-last))
   (cl-assert
    (equal (ido-completing-read-silent
            "prompt: " '("one" "two" "three" "four" "five") "t")
           '("two" "three")))
+  ;; (message (prin1-to-string timer-event-last))
   (general-define-key "C-f"          eab/explore-map)
   (general-define-key "C-e"          eab/one-key-map)
   (general-define-key "C-l"          eab/ctrl-l-map)
@@ -229,6 +232,7 @@ ignored.  An empty buffer or unreadable contents count as invalid."
   (general-define-key "C-x G"        eab/grep-map)
 
   (if (file-exists-p power-macros-file) (load power-macros-file))
+  ;; (message (prin1-to-string timer-event-last))
   (global-eldoc-mode 0)
   (electric-indent-mode -1)
   (electric-pair-mode -1)

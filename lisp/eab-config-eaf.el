@@ -11,6 +11,7 @@
   :load-path "~/.emacs.d/private/eab-spacemacs/local/eaf"
   :if (eab/ondaemon "cyclos")
   :config
+  (setq eaf-start-python-process-when-require nil) ;; fixes Error running timer: (wrong-type-argument number-or-marker-p nil)
   (setq eaf-webengine-pc-user-agent "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36")
   ;; (setq eaf-proxy-host "192.168.2.19")
   ;; (setq eaf-proxy-port "9152")
@@ -60,7 +61,10 @@ It currently identifies PDF, videos, images, and mindmap file extensions."
   ;; FIXED: doesn't work in eaf + remote vnc
   (eaf-create-send-sequence-function "ctrl-home" "C-<home>")
   (eaf-create-send-sequence-function "ctrl-end" "C-<end>")
+  (eaf-create-send-sequence-function "ctrl-tab" "C-TAB")
+  (eaf-create-send-sequence-function "ctrl-backtab" "C-<backtab>")
   (eaf-create-send-sequence-function "ctrl-t" "C-t")
+  (eaf-create-send-sequence-function "shift-ret" "S-<return>")
   (eaf-create-send-sequence-function "ctrl-c" "C-c")
   ;; (eaf-create-send-sequence-function "ctrl-v" "C-v")
   (eaf-create-send-sequence-function "ctrl-f" "C-f")
@@ -80,6 +84,10 @@ It currently identifies PDF, videos, images, and mindmap file extensions."
             ("M-d" . "eaf-send-key-sequence")
             ("C-r" . "eaf-send-key-sequence")
             ("C-w" . "eaf-send-key-sequence")
+            ("C-e" . "eaf-send-key-sequence")
+            ("C-<return>" . "eaf-send-shift-ret-sequence")
+            ("C-s" . "eaf-send-ctrl-tab-sequence")
+            ("C-S-s" . "eaf-send-ctrl-backtab-sequence")
             ("M-<left>" . "eaf-send-key-sequence")
             ("M-<right>" . "eaf-send-key-sequence")
             ("C-<home>" . "eaf-send-ctrl-home-sequence")
@@ -114,7 +122,7 @@ It currently identifies PDF, videos, images, and mindmap file extensions."
             ("M-c" . "copy_text")
             ("M-v" . "yank_text")
             ("C-q" . "insert_or_close_buffer")
-            ("C-e e" . "insert_or_edit_url")
+            ;; ("C-e e" . "insert_or_edit_url")
             )))
   )
 (use-package eaf-pdf-viewer

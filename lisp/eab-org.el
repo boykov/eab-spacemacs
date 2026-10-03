@@ -318,4 +318,27 @@ block from point."
 
 (add-to-list 'org-file-apps '("\\.pdf\\'" . eab/org-eaf-open) 't)
 
+(defun eab/org-file-id ()
+  "ID текущего файла (файловое свойство ID), при отсутствии создаётся."
+  (org-with-wide-buffer
+   (goto-char (point-min))
+   (org-id-get (point) t)))                 ; t => create if missing
+
+(defun eab/org-store-link-position-block ()
+  "Если точка внутри специального блока position, сохранить ссылку.
+Возвращает t, если ссылка сохранена, иначе nil."
+  (let* ((el (org-element-context))
+         (block (org-element-property :value (org-element-context))))
+    (when block
+      (let* ((id  (eab/org-file-id))
+             (link (format "id:%s::%s" id block)))
+        (push (list link block) org-stored-links)
+        (message "Stored: [[%s][%s]]" link block)
+        t))))
+
+(defun eab/org-store-link (&optional arg)
+  (interactive "P")
+  (or (eab/org-store-link-position-block)
+      (call-interactively 'org-store-link)))
+
 (provide 'eab-org)

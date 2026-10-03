@@ -20,14 +20,6 @@
             (lambda ()
               (if (and mark-active (not (use-region-p)))
                   (deactivate-mark))))
-  (define-advice winner-undo (:before (&rest args) eab-winner-undo-before)
-    (region-bindings-mode-disable))
-  (define-advice winner-undo (:after (&rest args) eab-winner-undo-after)
-    (region-bindings-mode-enable))
-  (define-advice winner-redo (:before (&rest args) eab-winner-redo-before)
-    (region-bindings-mode-disable))
-  (define-advice winner-redo (:after (&rest args) eab-winner-redo-after)
-    (region-bindings-mode-enable))
 
   ;; TODO see eab/paper-link
   (defun eab/abbrev-link (abbrev name)
@@ -55,6 +47,7 @@
       (setq region-bindings-mode-disabled-modes '(magit-status-mode magit-diff-mode))
       (general-define-key
        :keymaps 'region-bindings-mode-map
+       "4"        'eab/org-sublist-region
        "3"        'eab/gptel-one-shot-3
        "f"        'eab/gptel-one-shot-fix-garbage
        "w"        (ilam (shell-command-on-region (region-beginning) (region-end) "wc -l"))
