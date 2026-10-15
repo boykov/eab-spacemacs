@@ -3,6 +3,18 @@
 ## 0.5.10
 ## 0.5.9
 ## 0.5.8
+
+feat: integrate dired-async, enhance tramp/rsync handling, and improve workflow tools
+
+- Add `dired-async` support with keybindings for async copying in Dired
+- Replace `ssh` with `scp` in daemons config for improved TRAMP compatibility
+- Implement `eab/tramp-rsync-copy-args-add-a` to ensure `-a` flag for rsync copies
+- Add `eab-patch-tramp.el` to handle edge cases in `tramp-do-copy-or-rename-file`
+- Extend EAF with new keybinding for `C-e` and improved VNC clipboard paste
+- Improve `ido` buffer selection logic and recentf sync behavior
+- Add `eab/insert-text` command and refine ghostel macro sequences
+- Update changelog entries and minor cleanup
+
 ## 0.5.7
 
 refactor(org): integrate custom link handling and improve clocking logic

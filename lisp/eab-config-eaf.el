@@ -64,9 +64,10 @@ It currently identifies PDF, videos, images, and mindmap file extensions."
   (eaf-create-send-sequence-function "ctrl-tab" "C-TAB")
   (eaf-create-send-sequence-function "ctrl-backtab" "C-<backtab>")
   (eaf-create-send-sequence-function "ctrl-t" "C-t")
+  (eaf-create-send-sequence-function "ctrl-e" "C-e")
   (eaf-create-send-sequence-function "shift-ret" "S-<return>")
   (eaf-create-send-sequence-function "ctrl-c" "C-c")
-  ;; (eaf-create-send-sequence-function "ctrl-v" "C-v")
+  (eaf-create-send-sequence-function "ctrl-v" "C-v")
   (eaf-create-send-sequence-function "ctrl-f" "C-f")
   (eaf-create-send-sequence-function "alt-left" "M-<left>")
   (eaf-create-send-sequence-function "alt-right" "M-<right>")
@@ -76,6 +77,17 @@ It currently identifies PDF, videos, images, and mindmap file extensions."
   (defun eab/eaf-send-next ()
     (interactive)
     (eaf-call-async "send_key" eaf--buffer-id "<next>"))
+  (defun eab/eaf-vnc-paste-clip ()
+    "Send current kill to noVNC remote clipboard."
+    (interactive)
+    (eaf-call-async
+     "execute_function_with_args"
+     eaf--buffer-id
+     "set_vnc_clipboard_text"
+     (base64-encode-string
+      (encode-coding-string (current-kill 0) 'utf-8)
+      t))
+    (eaf-send-ctrl-v-sequence))
   (setq eaf-browser-keybinding nil)
   (let ((kb 'eaf-browser-keybinding))
     (mapc (lambda (x)
@@ -84,7 +96,9 @@ It currently identifies PDF, videos, images, and mindmap file extensions."
             ("M-d" . "eaf-send-key-sequence")
             ("C-r" . "eaf-send-key-sequence")
             ("C-w" . "eaf-send-key-sequence")
-            ("C-e" . "eaf-send-key-sequence")
+            ;; ("C-e" . "eaf-send-key-sequence")
+            ("C-e e" . "eaf-send-ctrl-e-sequence")
+            ("C-e C-e" . "eaf-send-ctrl-e-sequence")
             ("C-<return>" . "eaf-send-shift-ret-sequence")
             ("C-s" . "eaf-send-ctrl-tab-sequence")
             ("C-S-s" . "eaf-send-ctrl-backtab-sequence")
@@ -95,8 +109,7 @@ It currently identifies PDF, videos, images, and mindmap file extensions."
             ("C-c" . "eaf-send-ctrl-c-sequence")
             ("C-t" . "eaf-send-ctrl-t-sequence")
             ("C-f" . "eaf-send-ctrl-f-sequence")
-            ("C-v" . "eab/eaf-browser-paste-clip")
-            ("C-v" . "eab/eaf-browser-paste-clip")
+            ("C-v" . "eab/eaf-vnc-paste-clip")
             ("C-<escape>" . "eaf-browser-send-esc-or-exit-fullscreen")
             ("<escape>" . "eaf-browser-send-esc-or-exit-fullscreen")
             ;; ("M-F" . "insert_or_history_forward")

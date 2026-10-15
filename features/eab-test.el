@@ -1,9 +1,18 @@
 ;;; eab-test.el ---  -*- lexical-binding: t -*-
 
-(helm :sources
-      (helm-build-in-file-source
-          "chronos-eab-history"
-          "/ssh:chronos:/home/eab/.bash_history"))
+(defun foo ()
+  (interactive)
+  (helm :sources
+        (helm-build-in-file-source
+            "chronos-eab-history"
+            "/ssh:chronos:/home/eab/.bash_history"
+          :action
+          '(("Insert vertically" .
+             (lambda (_candidate)
+               (insert (mapconcat #'identity (helm-marked-candidates) "\n"))))
+            ("Insert horizontally" .
+             (lambda (_candidate)
+               (insert (mapconcat #'identity (helm-marked-candidates) " "))))))))
 
 (helm :sources
       (helm-build-in-file-source

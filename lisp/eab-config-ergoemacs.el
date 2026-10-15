@@ -102,7 +102,6 @@ In a terminal, this can be either arrow keys (e.g. meta+O A == <up>) or regular 
    "C-c d"        'nil
    "C-c v"        'nil
    "C-c w"        'nil
-   "M-."          'nil
    ))
 
 (provide 'eab-config-ergoemacs)

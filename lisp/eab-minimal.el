@@ -47,6 +47,14 @@
               (run-with-timer 0.01 nil ,@body)
               (abort-recursive-edit)))))
 
+(defmacro eab/do-action-no-def (&rest body)
+  ""
+  `(lambda ()
+     (interactive)
+     (let ((executing-kbd-macro defining-kbd-macro))
+       (run-with-timer 0.01 nil ,@body)
+       (abort-recursive-edit))))
+
 (defun eab/kbd-macro-query ()
   (interactive)
   (let (executing-kbd-macro defining-kbd-macro)
@@ -144,7 +152,7 @@ ignored.  An empty buffer or unreadable contents count as invalid."
         (error "eab-config-* files contain wrong forms: use-package and
  provide are only permitted"))))
 
-;; TODO для многих патчей требуется одновременно несколько замен
+;; DONE: для многих патчей требуется одновременно несколько замен
 ;; значит, если продолжать в этом направлении, надо заменить пару
 ;; (regexp rep) на список пар
 ;; лучше использовать el-patch

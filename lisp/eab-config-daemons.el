@@ -36,9 +36,9 @@
   :config
   (general-define-key
    :keymaps 'eab/one-key-map
-   "d c"  '(:def (ilam-no-def
-                  (setq eab/daemons-host "chronos")
-                  (call-interactively 'eab/daemons))
+   "d c"  `(:def ,(ilam-no-def
+                   (setq eab/daemons-host "chronos")
+                   (call-interactively 'eab/daemons))
                  :which-key "(c)hronos")
    "d k"  (ilam (setq eab/daemons-host "kairos") (call-interactively 'eab/daemons))
    "d y"  (ilam (setq eab/daemons-host "cyclos") (call-interactively 'eab/daemons))
@@ -54,10 +54,10 @@
     (setq daemons-systemd-is-user (not daemons-systemd-is-user))
     (if daemons-systemd-is-user
         (setq default-directory
-              (concat "/ssh:" eab/daemons-host ":/home/eab/")))
+              (concat "/scp:" eab/daemons-host ":/home/eab/")))
     (if (not daemons-systemd-is-user)
         (setq default-directory
-              (concat "/ssh:" eab/daemons-host "|sudo:root@" eab/daemons-host ":/home/eab/")))
+              (concat "/scp:" eab/daemons-host "|sudo:root@" eab/daemons-host ":/home/eab/")))
     (revert-buffer))
   (defun eab/daemons-restart ()
     (interactive)
@@ -78,11 +78,11 @@
     (interactive)
     (shell-command (concat "scp ~/git/auto/lib.sh " eab/daemons-host ":/tmp/lib.sh"))
     (let* ((default-directory
-            (concat "/ssh:" eab/daemons-host "|sudo:root@" eab/daemons-host ":/home/eab/")))
+            (concat "/scp:" eab/daemons-host "|sudo:root@" eab/daemons-host ":/home/eab/")))
       (progn
         (setq daemons-systemd-is-user nil)
         (daemons)))))
-;; (let* ((eab/daemons-host "chronos") (default-directory (concat "/ssh:" eab/daemons-host "|sudo:root@" eab/daemons-host ":/home/eab/"))) (progn (setq daemons-systemd-is-user nil) (daemons)))
-;; (let* ((eab/daemons-host "chronos") (default-directory (concat "/ssh:" eab/daemons-host ":/home/eab/"))) (progn (setq daemons-systemd-is-user 't) (daemons)))
+;; (let* ((eab/daemons-host "chronos") (default-directory (concat "/scp:" eab/daemons-host "|sudo:root@" eab/daemons-host ":/home/eab/"))) (progn (setq daemons-systemd-is-user nil) (daemons)))
+;; (let* ((eab/daemons-host "chronos") (default-directory (concat "/scp:" eab/daemons-host ":/home/eab/"))) (progn (setq daemons-systemd-is-user 't) (daemons)))
 
 (provide 'eab-config-daemons)

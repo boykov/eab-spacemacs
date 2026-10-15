@@ -32,12 +32,12 @@
 
 (defun eab/open-heading-browser ()
   (interactive)
-  (let* ((fname (file-name-nondirectory (buffer-file-name)))
+  (let* ((fname (file-name-nondirectory (buffer-file-name (buffer-base-buffer))))
          (prop (org-entry-properties))
          (path (if prop
                    (cl-find-if
                     (lambda (x) (if (string= "FILE" (car x)) 't nil)) prop)
-                 (cons 'bogus (buffer-file-name))))
+                 (cons 'bogus (buffer-file-name (buffer-base-buffer)))))
          (id (cl-find-if
               (lambda (x)
                 (if (string= "ID" (car x)) 't nil))
@@ -45,10 +45,10 @@
          (prefix (replace-regexp-in-string
                   "eab\/git\/org-chronos" "eab/pub/org" (cdr path))))
     (if current-prefix-arg
-        (browse-url-firefox
+        (eab/browse-url0
          (concat "file://" (replace-regexp-in-string
                             "\.org$" ".html" prefix) "#ID-" (cdr id)))
-      (browse-url-firefox
+      (eab/browse-url0
        (concat "https://my.eab.su/org/clock/"
                (replace-regexp-in-string "\.org$" ".html" fname) "#ID-" (cdr id))))))
 

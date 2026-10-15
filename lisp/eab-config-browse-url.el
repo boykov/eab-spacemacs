@@ -27,19 +27,6 @@ ssh chronos docker exec -u 1000:1000 \
     (if (get-buffer "Firefox")
         (switch-to-buffer-other-window "Firefox")
       (eaf-open-browser "https://eaf-browser.eab.su/?resize=remote")))
-  (defun eab/eaf-browser-paste-clip ()
-    (interactive)
-    (with-temp-file "/tmp/clip.txt"
-      (insert (current-kill 0)))
-    (call-process-shell-command
-     "scp /tmp/clip.txt chronos:/docker/appdata/ff-tmp/clip.txt" nil 0)
-    (call-process-shell-command
-     (concat "
-bash -c \"ssh chronos\" <<EOF
- docker exec firefox sh -c \"cat /tmp/clip.txt | xclip -selection clipboard; \
- sleep 0.1; xdotool key ctrl+v \"
-EOF")
-     nil 0))
   (defun eab/browse-url (url &optional arg)
     (interactive)
     (cond

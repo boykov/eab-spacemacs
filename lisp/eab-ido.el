@@ -45,13 +45,13 @@
   (interactive)
   (let ((tmp wg-dissociate-buffer-on-kill-buffer))
     (setq wg-dissociate-buffer-on-kill-buffer nil)
-    (setq eab/cxb-ido-item
-          ;; (if (ignore-errors (projectile-project-buffer-names))
-          (if (file-remote-p default-directory)
-              'buffer
-            (if (projectile-project-p)
-                'list
-              'buffer)))
+    (setq eab/cxb-ido-item 'buffer
+          ;; (if (file-remote-p default-directory)
+          ;;     'buffer
+          ;;   (if (projectile-project-p)
+          ;;       'list
+          ;;     'buffer))
+          )
     ;; prevent run-hook wg-auto-dissociate-buffer-hook for
     ;; with-temp-buffer in expand-file-name
     (eab/cxb-1)
@@ -71,7 +71,7 @@
  'projectile-project-root
  '(("(file-truename dir)" . "(expand-file-name dir)")))
 
-;; TODO добавить в список буферов "projectile-switch-project",
+;; TODO: добавить в список буферов "projectile-switch-project",
 ;; можно также использовать projectile-discover-projects-in-directory
 ;; аналогично wg-switch-to-workgroup?  Или, может быть, лучше делать
 ;; больше work groups, добавить для draft, например
@@ -101,24 +101,27 @@
         (ace-jump-mode 0)))
      ((eq ido-exit 'eab-main)
       (progn
-        ;; (ido-buffer-internal 'display nil nil nil ido-text nil)
         (let ((bufsw (ido-name (car ido-matches))))
-          ;; (ido-visit-buffer bufsw 'display t)))) ;; DONE добирается до рез-та только со второго раза
           (switch-to-buffer bufsw))))
      (t
-      (if (string= ido-text buf)
-          (helm nil ido-text nil nil nil nil)
-        ;;        (ido-buffer-internal ido-default-buffer-method nil nil nil ido-text nil)
-        (if ido-matches
-            ;; (let ((bufsw (ido-name (car ido-matches))))
-            ;;   (if (remove-if-not (lambda (x) (equal x bufsw)) (eab/wg-names))
-            ;;    (progn
-            ;;      (eab/wg-switch-to-workgroup bufsw)
-            ;;      (eab/wg-switched-msg))
-            ;;  (progn
-            ;;    (eab/wg-update bufsw)
-            ;;    (switch-to-buffer bufsw))))
-            (switch-to-buffer (ido-name (car ido-matches)))))))))
+      (if ido-matches
+          (switch-to-buffer (ido-name (car ido-matches))))
+      ))))
+
+        ;; (ido-buffer-internal 'display nil nil nil ido-text nil)
+          ;; (ido-visit-buffer bufsw 'display t)))) ;; DONE добирается до рез-та только со второго раза
+          ;; (let ((bufsw (ido-name (car ido-matches))))
+          ;;   (if (remove-if-not (lambda (x) (equal x bufsw)) (eab/wg-names))
+          ;;    (progn
+          ;;      (eab/wg-switch-to-workgroup bufsw)
+          ;;      (eab/wg-switched-msg))
+          ;;  (progn
+          ;;    (eab/wg-update bufsw)
+          ;;    (switch-to-buffer bufsw))))
+      ;; (if (string= ido-text buf)
+      ;;     (helm nil ido-text nil nil nil nil) ;; зачем это было?
+      ;;        (ido-buffer-internal ido-default-buffer-method nil nil nil ido-text nil)
+
 
 (defun eab/ido-pattern-transformer (pattern)
   (mapconcat #'(lambda (c)
@@ -130,27 +133,28 @@
 (defun ido-set-matches ()
   "Set `ido-matches' to the list of items matching prompt"
   (when ido-rescan
-    (if (not eab/bookmark-ido)
+    (if (or eab/bookmark-ido (not eab/smex-ido))
         (setq ido-matches
-              (ido-set-matches-1
-               (reverse
-                ;; (if (eq ido-cur-item 'buffer)
-                ;;     (append ido-cur-list (eab/wg-names))
-                ;;   ido-cur-list)
-                ido-cur-list)
-               (not ido-rotate)) ido-rotate nil)
-      (setq ido-matches
-            (cl-remove-duplicates
-             (append
-              (ido-set-matches-1
-               (reverse
-                ido-cur-list)
-               (not ido-rotate))
-              (let ((ido-text (eab/ido-pattern-transformer ido-text)))
+              (cl-remove-duplicates
+               (append
                 (ido-set-matches-1
                  (reverse
                   ido-cur-list)
-                 (not ido-rotate)))) :test #'string=) ido-rotate nil))))
+                 (not ido-rotate))
+                (let ((ido-text (eab/ido-pattern-transformer ido-text)))
+                  (ido-set-matches-1
+                   (reverse
+                    ido-cur-list)
+                   (not ido-rotate)))) :test #'string=) ido-rotate nil)
+      (setq ido-matches
+            (ido-set-matches-1
+             (reverse
+              ido-cur-list)
+             (not ido-rotate)) ido-rotate nil))))
+
+              ;; (if (eq ido-cur-item 'buffer)
+              ;;     (append ido-cur-list (eab/wg-names))
+              ;;   ido-cur-list)
 
 (defun eab/ido-main ()
   "Select the buffer or file named by the prompt.

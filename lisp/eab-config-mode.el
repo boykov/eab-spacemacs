@@ -14,6 +14,7 @@
      :keymaps 'help-mode-map
      "o"  'ace-link-help
      "B"  'help-go-back
+     "M-n" 'nil
      "F"  'help-go-forward))
   (unless window-system ;; Only use in tty-sessions.
     (defvar arrow-keys-map (make-sparse-keymap) "Keymap for arrow keys")

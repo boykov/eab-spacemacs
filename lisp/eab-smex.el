@@ -15,10 +15,12 @@
   "Put item to extended-command-history"
   (add-to-list 'extended-command-history (car smex-ido-cache)))
 
+(defvar eab/smex-ido nil "")
 (defun eab/smex-limited-commands ()
   "Command used instead `execute-extended-command'"
   (interactive)
-  (let ((commands (append (nthcar 10 smex-ido-cache) extended-command-history))) ;; smex-ido-cache))
+  (let ((commands (append (nthcar 10 smex-ido-cache) extended-command-history)) ;; smex-ido-cache))
+        (eab/smex-ido 't))
     (delq nil (delete-dups commands))
     (smex-read-and-run commands)))
 

@@ -44,20 +44,21 @@
                  (mapcar
                   (lambda (x) (buffer-file-name (get-buffer x)))
                   autosaved-buffers))
-                (progn
-                  (async-start
-                   `(lambda ()
-                      (require 'server)
-                      (let ((server-use-tcp 't))
-                        (server-eval-at "kairosP" '(call-process-shell-command
-                                                     "touch /tmp/user/1000/isync-flag")))))
-                  (async-start
-                   `(lambda ()
-                      (require 'server)
-                      (let ((server-use-tcp 't))
-                        (server-eval-at "chronosP" '(call-process-shell-command
-                                                     "touch /tmp/user/1000/isync-flag")))))))))))
-;;  (add-hook 'before-save-hook 'eab/recentf-set-flag)
+                (if (not (file-exists-p "/tmp/user/1000/isync-syncoid"))
+                    (progn
+                      (async-start
+                       `(lambda ()
+                          (require 'server)
+                          (let ((server-use-tcp 't))
+                            (server-eval-at "kairosP" '(call-process-shell-command
+                                                        "touch /tmp/user/1000/isync-flag")))))
+                      (async-start
+                       `(lambda ()
+                          (require 'server)
+                          (let ((server-use-tcp 't))
+                            (server-eval-at "chronosP" '(call-process-shell-command
+                                                         "touch /tmp/user/1000/isync-flag"))))))))))))
+  (add-hook 'before-save-hook 'eab/recentf-set-flag)
 ;;  (remove-hook 'before-save-hook 'eab/recentf-set-flag)
   (defun eab/recentf-eabpool ()
     (mapcar

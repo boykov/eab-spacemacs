@@ -24,6 +24,12 @@
   :config
   ;; Don't use elc with eab/config
   (setq tramp-persistency-file-name (eab/config (concat (eab/history-dir) "tramp")))
+  ;; DONE: scp: ambiguous target add single quotes 'file name with spaces'
+  ;; DONE: remote command continues execution (do with async)
+  ;; (setq tramp-use-scp-direct-remote-copying 't)
+  ;; (setq tramp-copy-size-limit nil)
+  ;; (setq tramp-use-scp-direct-remote-copying nil)
+  ;; (setq tramp-copy-size-limit 10240)
   (setq tramp-default-method "ssh")
   (defun eab/singularity (dir)
     `("singularity"
@@ -37,5 +43,8 @@
   (setq tramp-show-ad-hoc-proxies 't))
 
 (use-package tramp-term)
+(use-package tramp-sh)
+(use-package eab-patch-tramp
+  :after (tramp-sh))
 
 (provide 'eab-tramp)

@@ -336,5 +336,11 @@
       (delete-region beg end)
       (insert (string-join out "\n")))))
 
+(defun eab/insert-text (&optional arg)
+  "Prompt for text and insert it at point."
+  (interactive)
+  (let ((text (read-string "Text to insert: " arg 'eab/insert-history)))
+    (insert text)
+    (execute-kbd-macro (read-kbd-macro "RET"))))
 
 (provide 'eab-workflow)

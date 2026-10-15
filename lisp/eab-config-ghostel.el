@@ -51,6 +51,14 @@
           (define-key map [?\C-y] #'ghostel-yank)
           (define-key map [?\M-v] #'ghostel-yank)
           (define-key map [?\M-y] #'ghostel-yank)
+          ;; (define-key map (kbd "C-R") (ilam-no-def (eab/insert-text))) ;; mixed with C-r
+          (define-key map [?\M-e] (eab/do-action-no-def
+                                   (ilam-no-def
+                                    (execute-kbd-macro
+                                     (read-kbd-macro
+                                      "M-a eab/insert-text RET M-a C-x Q")))))
+          ;; (string-to-vector (kbd "C-c")) => 3
+          (define-key map (kbd "C-c c") (ilam-no-def (let ((last-command-event 3)) (ghostel--send-event))))
           (define-key map [?\M-m] (ilam-no-def (eab/eepitch-prepare-m-r)))
           (define-key map [?\M-r] (ilam-no-def (eab/m-r-ghostel)))
           (define-key map [?\M-j] (ilam-no-def (let ((last-command-event 'left)) (ghostel--send-event))))
@@ -87,13 +95,17 @@
     (re-search-backward "^> EOF")
     (next-line)
     (call-interactively 'kill-ring-save)
-    (ergoemacs-move-cursor-previous-pane -1)
-    (yank)
-    (ergoemacs-move-cursor-previous-pane -1)
+    (let ((item (substring (current-kill 0) 0 -1)))
+      (delete item eab/insert-history)
+      (add-to-list 'eab/insert-history item))
+    ;; (ergoemacs-move-cursor-previous-pane -1)
+    ;; (yank)
+    ;; (ergoemacs-move-cursor-previous-pane -1)
     (ghostel-semi-char-mode)
     (sleep-for 0.2)
     (let ((last-command-event 'right))
-      (ghostel--send-event)))
+      (ghostel--send-event))
+    (eab/insert-text (car eab/insert-history)))
 
   (add-hook 'ghostel-mode-hook (lambda () (setq input-method-function 'key-chord-input-method)))
 

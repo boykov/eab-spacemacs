@@ -12,6 +12,14 @@
   (eab/add-hook dired-mode-hook eab/dired-hook
     (general-define-key
      :keymaps 'dired-mode-map
+     "A"          (ilam
+                   (dired-async-mode 1)
+                   (dired-async--modeline-mode 1)
+                   (call-interactively 'dired-do-copy))
+     "C"          (ilam
+                   (dired-async-mode 0)
+                   (dired-async--modeline-mode 0)
+                   (call-interactively 'dired-do-copy))
      "C-M-b"      'nil
      "M-a"        'nil
      "M-i"        'nil
@@ -53,12 +61,19 @@
   (setq eab/downloads-path (eab/config "~/downloads/"))
   (general-define-key
    :keymaps 'eab/dired-map
+   "k" 'dired-async-kill-process
    "d" '(ido-dired :which-key "ido-dired")
+   "a" (ilam
+        (dired-async-mode 1)
+        (dired-async--modeline-mode 1))
    "o" (ilam (dired eab/org-publish-directory))
    "h" (ilam (dired "~/desktop"))
-   "s" (ilam (dired "~/share"))
+   "s" (ilam
+        (dired-async-mode 0)
+        (dired-async--modeline-mode 0))
    "p" (ilam (dired eab/downloads-path))
    "t" (ilam (dired "~/tmp")))
+  (add-to-list 'magic-mode-alist '("^  \\(/[^ /]+\\)+/?:$" . dired-virtual-mode))
   (add-to-list 'auto-mode-alist '("\\.dired$" . dired-virtual-mode)))
 
 (provide 'eab-config-dired)

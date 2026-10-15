@@ -16,14 +16,38 @@
            (require 'cl-lib)
            (require 'dired-aux)
            (require 'dired-x)
+           (add-to-list 'load-path
+                        (concat user-emacs-directory "private/eab-spacemacs/" "lisp"))
+           (require 'eab-minimal)
            (require 'tramp)
+           (require 'tramp-sh)
            (require 'tramp-container)
-           ;; DONE eab/sussh в async доступна? подставляется
-           (add-to-list 'tramp-methods ',eab/sussh))))))
+           (require 'eab-patch-tramp)
+           (defun eab/tramp-action-sleep (proc _vec)
+             (sleep-for 1))
+           (setq eab/tramp-regexp "")
+           (add-to-list 'tramp-actions-copy-out-of-band
+                        '(eab/tramp-regexp eab/tramp-action-sleep))
+           (setq tramp-copy-size-limit nil)
+           (setq tramp-use-scp-direct-remote-copying 't)
+           ;; DONE eab/sussh в async доступна? подставляется через `,
+           (add-to-list 'tramp-methods ',eab/sussh)))))
+   ("(funcall fn from dest t)" .
+    ,(let ((print-quoted 't))
+       (prin1-to-string
+        `(if (and (not (cdr (tramp-compute-multi-hops (tramp-dissect-file-name dest))))
+                  (and (file-remote-p from) (file-remote-p dest)))
+             (funcall fn from
+                      (concat
+                       (file-name-directory dest)
+                       "'" (file-name-nondirectory dest)
+                       "'") t)
+           (funcall fn from dest t))))))
  :lexical 't)
 
 (dired-async-mode 0)
 (dired-async--modeline-mode 0)
+(setq dired-async-large-file-warning-threshold 1000000000)
 (setq dired-dwim-target 't)
 
 (setq dired-listing-switches "-al -h")
